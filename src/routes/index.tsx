@@ -1,38 +1,29 @@
 import React, { Suspense } from "react";
 import {
-  Redirect,
   Route,
-  BrowserRouter as Router,
-  MemoryRouter,
-  Switch,
-  RouteComponentProps,
+  BrowserRouter,
+  Routes
 } from "react-router-dom";
 import { RoutesEnum } from "./routes.enum";
 
-import SpinningLoader from "../components/common/SpinningLoader";
+import SpinningLoader from "../components/SpinningLoader";
+import Home from "../pages/Home";
+import Chain from "../pages/Chain";
+import Generate from "../pages/Generate";
 
-import { lazyImportWithRetry } from "../utils/lazyRetry";
 
-
-interface MatchProps {
-  id: string;
-}
-
-interface SocialRoutesProps extends RouteComponentProps<MatchProps> {}
-
-const Routes = () => {
+const Routing = () => {
   return (
     <Suspense fallback={<SpinningLoader />}>
-      <Router>
-        <Switch>
- 
-          <Route path={"/sign-in"} exact component={Login} />
-          
-          <Redirect to={"/"} />
-        </Switch>
-      </Router>
+      <BrowserRouter>
+        <Routes>
+          <Route path={RoutesEnum.HOME}  element={<Home/>} />
+          <Route path={RoutesEnum.CHAIN}  element={<Chain/>} />
+          <Route path={RoutesEnum.GENERATE}  element={<Generate/>} />
+        </Routes>
+      </BrowserRouter>
     </Suspense>
   );
 };
 
-export default Routes;
+export default Routing;
