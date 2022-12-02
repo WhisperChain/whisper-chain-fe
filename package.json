@@ -3,6 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@apollo/client": "^3.7.1",
+    "@rainbow-me/rainbowkit": "^0.8.0",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^13.0.0",
     "@testing-library/user-event": "^13.2.1",
@@ -10,6 +12,9 @@
     "@types/node": "^16.7.13",
     "@types/react": "^18.0.0",
     "@types/react-dom": "^18.0.0",
+    "apollo-client": "^2.6.10",
+    "ethers": "^5.7.2",
+    "graphql": "^16.6.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.4.4",
@@ -17,6 +22,7 @@
     "@types/styled-components": "^5.1.11",
     "styled-components": "^5.3.0",
     "typescript": "^4.4.2",
+    "wagmi": "^0.8.9",
     "web-vitals": "^2.1.0"
   },
   "scripts": {
