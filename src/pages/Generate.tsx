@@ -346,8 +346,9 @@ function Generate() {
           <GenerateBtn
             onClick={async () => {
               const images = await getS3UrlfromText(promptText, selectedFilter);
+              const newUrls = [...urls, images];
 
-              setUrls(urls.push(images));
+              setUrls(newUrls);
             }}
           >
             <Button>
