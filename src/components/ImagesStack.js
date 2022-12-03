@@ -129,14 +129,14 @@ const Center = styled.div`
   text-shadow: 0px 4px 20px rgba(13, 3, 29, 0.95);
 `;
 
-const ImagesStack = (imageSrc) => {
+const ImagesStack = (imageDetails) => {
   const [hovered, setHovered] = React.useState(false);
   const { onTabChange } = useBottomTab();
-  console.log("Src", imageSrc);
+  console.log("Src", imageDetails);
   return (
     <StackedImages>
       <Image
-        src={imageSrc}
+        src={imageDetails.imageUrl}
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
       ></Image>
@@ -150,8 +150,8 @@ const ImagesStack = (imageSrc) => {
             <Left>
               <ProfileLogo />
               <User>
-                <Name>Aditya</Name>
-                <Handle>handle</Handle>
+                <Name>{imageDetails.name || "Lewis"}</Name>
+                <Handle>{imageDetails.profileHandle || "Lewis.xyz"}</Handle>
               </User>
             </Left>
             <Right>2:32 pm</Right>

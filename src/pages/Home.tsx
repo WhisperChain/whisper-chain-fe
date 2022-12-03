@@ -124,16 +124,23 @@ const Home = () => {
                   {console.log("Render")}
                   {publicationData.map(
                     (
-                      pub: { pubId: any; comments: { imageUrl: any }[] },
+                      pub: {
+                        pubId: any;
+                        comments: { imageUrl: any }[];
+                        createdAt: any;
+                        timeDifference: any;
+                      },
                       index: any
                     ) => (
                       <Posts key={pub?.pubId + index} className={SEL}>
                         <ImageSlider className="slide">
                           <PostDetail>
-                            <Date>24th November 2022</Date>
-                            <Status>Ended</Status>
+                            <Date>{pub?.createdAt}</Date>
+                            <Status>
+                              {pub?.timeDifference >= 0 ? "Running" : "Ended"}
+                            </Status>
                           </PostDetail>
-                          <ImagesStack imageSrc={pub?.comments[0]?.imageUrl} />
+                          <ImagesStack imageSrc={pub?.comments[index]} />
                         </ImageSlider>
                       </Posts>
                     )

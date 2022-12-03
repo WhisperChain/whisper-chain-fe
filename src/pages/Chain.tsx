@@ -130,16 +130,11 @@ const Chain = () => {
       <ChainWrapper>
         <ChainLogo />
       </ChainWrapper>
-      <PostImage imgSrc="https://bafkreieqap4lq65viaukoxaxkdmptkddlm3kpupevgeboxv7zq4sqcdfx4.ipfs.w3s.link" />
 
+      <PostImage imgSrc="https://bafkreieqap4lq65viaukoxaxkdmptkddlm3kpupevgeboxv7zq4sqcdfx4.ipfs.w3s.link" />
       <ChainWrapper>
         <ChainLogo />
       </ChainWrapper>
-      <PostImage imgSrc="https://static.plgworks.com/assets/images/hon/vespa.jpg" />
-      <ChainWrapper>
-        <ChainLogo />
-      </ChainWrapper>
-      <PostImage imgSrc="https://static.plgworks.com/assets/images/hon/vespa.jpg" />
     </ChainContainer>
   );
 };

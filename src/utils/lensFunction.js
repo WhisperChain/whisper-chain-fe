@@ -125,11 +125,13 @@ export const getLastCommentsOfPosts = async (profileId) => {
       commentsArray.push(commentData);
     });
 
+    var a = moment(item.createdAt);
+    var b = moment();
     dataObject.push({
       pubId: item.id,
       createdAt: moment(item.createdAt).format("Do MMMM YYYY"),
       comments: commentsArray,
-      timeDifference: moment(item.createdAt).fromNow(),
+      timeDifference: a.diff(b, "days"),
     });
     // console.log({ comments, pubId: item.id });
   }
