@@ -154,7 +154,7 @@ const ImagesStack = (imageDetails) => {
                 <Handle>{imageDetails.profileHandle || "Lewis.xyz"}</Handle>
               </User>
             </Left>
-            <Right>2:32 pm</Right>
+            <Right>{imageDetails.createdAt || "2:32 pm"}</Right>
           </Details>
           <Center>Click to view the chain</Center>
         </Backdrop>
