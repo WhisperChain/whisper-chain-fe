@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { getS3UrlfromText } from "../utils/Utils";
 
 const Page = styled.div`
   width: 100%;
@@ -262,7 +263,39 @@ const BtnText = styled.div`
     0px 4.35821px 5.65205px rgba(0, 0, 0, 0.403893);
 `;
 
+const filterOptions = [
+  {
+    label: "CINEMATIC",
+    value:
+      "sharp focus, emitting diodes, smoke, artillery, sparks, racks, system unit, motherboard, by pascal blanche rutkowski repin artstation hyperrealism painting concept art of detailed character design matte painting, 4 k resolution blade runner",
+  },
+  {
+    label: "LUSH ILLUMINATION",
+    value:
+      "unreal engine, greg rutkowski, loish, rhads, beeple, makoto shinkai and lois van baarle, ilya kuvshinov, rossdraws, tom bagshaw, alphonse mucha, global illumination, detailed and intricate environment",
+  },
+  {
+    label: "ROYALISTIC",
+    value:
+      "epic royal background, big royal uncropped crown, royal jewelry, robotic, nature, full shot, symmetrical, Greg Rutkowski, Charlie Bowater, Beeple, Unreal 5, hyperrealistic, dynamic lighting, fantasy art",
+  },
+  {
+    label: "RADIANT SYMMETRY",
+    value:
+      "centered, symmetry, painted, intricate, volumetric lighting, beautiful, rich deep colors masterpiece, sharp focus, ultra detailed, in the style of dan mumford and marc simonetti, astrophotography",
+  },
+  {
+    label: "MASTERPIECE",
+    value:
+      "sf, intricate artwork masterpiece, ominous, matte painting movie poster, golden ratio, trending on cgsociety, intricate, epic, trending on artstation, by artgerm, h. r. giger and beksinski, highly detailed, vibrant, production cinematic character render, ultra high quality model",
+  },
+];
+
 function Generate() {
+  const [promptText, setPromptText] = React.useState("");
+  const [selectedFilter, setSelectedFilter] = React.useState(
+    filterOptions[0].value
+  );
   return (
     <Page>
       <PageLayout>
@@ -284,19 +317,33 @@ function Generate() {
           </PreviousWhisper>
           <PromptSection>
             <Label>Enter prompt</Label>
-            <InputTextArea placeholder="Enter your prompt here to generate your very own whisper"></InputTextArea>
+            <InputTextArea
+              placeholder="Enter your prompt here to generate your very own whisper"
+              value={promptText}
+              onChange={(e) => setPromptText(e.target.value)}
+            ></InputTextArea>
           </PromptSection>
           <FilterSection>
             <Label>Filter</Label>
             <FilterDescription>
               Select different styles that you can apply to your whisper
             </FilterDescription>
-            <SelectBox>
-              <option>Style 1</option>
-              <option>Style 2</option>
+            <SelectBox
+              value={selectedFilter}
+              onChange={(e) => {
+                setSelectedFilter(e.target.value);
+              }}
+            >
+              {filterOptions.map((option) => (
+                <option value={option.value}>{option.label}</option>
+              ))}
             </SelectBox>
           </FilterSection>
-          <GenerateBtn>
+          <GenerateBtn
+            onClick={() => {
+              getS3UrlfromText(promptText, selectedFilter);
+            }}
+          >
             <Button>
               Generate
               <BtnSpan> 0 tries left </BtnSpan>

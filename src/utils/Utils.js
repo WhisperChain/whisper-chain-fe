@@ -4,14 +4,9 @@ export const resetLocalStorage = () => {
   window.localStorage.removeItem("profileId");
 };
 
-export const getS3UrlfromText = async (prompt, filter) => {
-  const data = { prompt };
-  if (filter) {
-    data.filter = filter;
-  }
-
+export const getS3UrlfromText = async (prompt, filter = "") => {
   const resp = await fetch(
-    `http://whisperchain.xyz:3000/whisper/suggestions?prompt=${prompt}`,
+    `http://whisperchain.xyz:3000/whisper/suggestions?prompt=${prompt}&filter=${filter}`,
     {
       method: "GET",
     }
