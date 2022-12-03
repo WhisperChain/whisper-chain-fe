@@ -94,6 +94,7 @@ const InputTextArea = styled.input`
   border-radius: 20px;
   width: 100%;
   height: 96px;
+  color: #ffffff;
 `;
 
 const SelectBox = styled.select`
@@ -124,6 +125,7 @@ const GenerateBtn = styled.div`
   display: flex;
   align-items: flex-end;
   height: 128px;
+  cursor: pointer;
 `;
 
 const Button = styled.button`
@@ -293,6 +295,7 @@ const filterOptions = [
 
 function Generate() {
   const [promptText, setPromptText] = React.useState("");
+  const [urls, setUrls] = React.useState([]);
   const [selectedFilter, setSelectedFilter] = React.useState(
     filterOptions[0].value
   );
@@ -341,12 +344,12 @@ function Generate() {
           </FilterSection>
           <GenerateBtn
             onClick={() => {
-              getS3UrlfromText(promptText, selectedFilter);
+              const urls = getS3UrlfromText(promptText, selectedFilter);
             }}
           >
             <Button>
               Generate
-              <BtnSpan> 0 tries left </BtnSpan>
+              <BtnSpan> {5 - urls.length} tries left </BtnSpan>
             </Button>
           </GenerateBtn>
         </SideBar>
@@ -357,15 +360,12 @@ function Generate() {
               To add a whisper to the chain, hover over it.
             </Description>
           </ImageGalleryTitleBox>
-          {[1, 2, 3, 4, 5].map((item) => (
-            <ImageTryOutputBox key={item}>
-              <ImageTryOutputTitle>Try {item}</ImageTryOutputTitle>
+          {urls.map((url, index) => (
+            <ImageTryOutputBox key={url[0] + index}>
+              <ImageTryOutputTitle>Try {index}</ImageTryOutputTitle>
               <OutputImageBoxWrapper>
                 <OutputImageBox>
-                  <OutputImage
-                    src="https://static.plgworks.com/assets/images/hon/vespa.jpg"
-                    alt="Whisper Image"
-                  />
+                  <OutputImage src={url[0]} alt="Whisper Image" />
                   <AddToChainBtnWrapper>
                     <AddToChainBtn>
                       <BtnText>+ Add to chain</BtnText>
@@ -373,10 +373,7 @@ function Generate() {
                   </AddToChainBtnWrapper>
                 </OutputImageBox>
                 <OutputImageBox>
-                  <OutputImage
-                    src="https://static.plgworks.com/assets/images/hon/vespa.jpg"
-                    alt="Whisper Image"
-                  />
+                  <OutputImage src={url[1]} alt="Whisper Image" />
                   <AddToChainBtnWrapper>
                     <AddToChainBtn>
                       <BtnText> + Add to chain</BtnText>
