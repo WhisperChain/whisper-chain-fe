@@ -1,26 +1,26 @@
 import React, { useContext, useState } from "react";
 
 export const PublicationContext = React.createContext({
-  publiction: {},
+  publication: {},
   setPublication: () => {},
 });
 
 export function usePublicationContext() {
-  const { publiction, setPublication } = useContext(PublicationContext);
+  const { publication, setPublication } = useContext(PublicationContext);
 
   return {
-    publiction,
+    publication,
     setPublication,
   };
 }
 
 export const PubProvider = ({ children }) => {
-  const [publiction, setPublication] = useState({});
+  const [publication, setPublication] = useState({});
 
   return (
     <PublicationContext.Provider
       value={{
-        publiction: publiction,
+        publication: publication,
         setPublication,
       }}
     >

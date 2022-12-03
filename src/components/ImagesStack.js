@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import ProfileLogo from "../assets/ProfileLogo";
 import { useBottomTab } from "../context/BottomTabContext";
+import { usePublicationContext } from "../context/PublicationContext";
 import { TabItems } from "./Main/TabItems";
 
 const StackedImages = styled.div`
@@ -129,9 +130,10 @@ const Center = styled.div`
   text-shadow: 0px 4px 20px rgba(13, 3, 29, 0.95);
 `;
 
-const ImagesStack = (imageDetails) => {
+const ImagesStack = (imageDetails, pub) => {
   const [hovered, setHovered] = React.useState(false);
   const { onTabChange } = useBottomTab();
+  const { setPublication } = usePublicationContext();
   console.log("Src", imageDetails);
   return (
     <StackedImages>
@@ -144,7 +146,10 @@ const ImagesStack = (imageDetails) => {
         <Backdrop
           onMouseEnter={() => setHovered(true)}
           onMouseLeave={() => setHovered(false)}
-          onClick={() => onTabChange(TabItems[2])}
+          onClick={() => {
+            setPublication(pub);
+            onTabChange(TabItems[2]);
+          }}
         >
           <Details>
             <Left>

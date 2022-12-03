@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import { getS3UrlfromText } from "../utils/Utils";
+import { usePublicationContext } from "../context/PublicationContext";
+import { getIpfsUrl, getS3UrlfromText } from "../utils/Utils";
 
 const Page = styled.div`
   width: 100%;
@@ -294,6 +295,7 @@ const filterOptions = [
 ];
 
 function Generate() {
+  const { publication } = usePublicationContext();
   const [promptText, setPromptText] = React.useState("");
   const [urls, setUrls] = React.useState<any>([]);
   const [selectedFilter, setSelectedFilter] = React.useState(
@@ -370,7 +372,11 @@ function Generate() {
               <OutputImageBoxWrapper>
                 <OutputImageBox>
                   <OutputImage src={url[0]} alt="Whisper Image" />
-                  <AddToChainBtnWrapper>
+                  <AddToChainBtnWrapper
+                    onClick={() => {
+                      getIpfsUrl(url[0]);
+                    }}
+                  >
                     <AddToChainBtn>
                       <BtnText>+ Add to chain</BtnText>
                     </AddToChainBtn>
@@ -378,7 +384,11 @@ function Generate() {
                 </OutputImageBox>
                 <OutputImageBox>
                   <OutputImage src={url[1]} alt="Whisper Image" />
-                  <AddToChainBtnWrapper>
+                  <AddToChainBtnWrapper
+                    onClick={() => {
+                      getIpfsUrl(url[1]);
+                    }}
+                  >
                     <AddToChainBtn>
                       <BtnText> + Add to chain</BtnText>
                     </AddToChainBtn>

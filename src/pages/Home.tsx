@@ -140,7 +140,10 @@ const Home = () => {
                               {pub?.timeDifference >= 0 ? "Running" : "Ended"}
                             </Status>
                           </PostDetail>
-                          <ImagesStack imageSrc={pub?.comments[index]} />
+                          <ImagesStack
+                            imageDetails={pub?.comments[index]}
+                            pub={pub}
+                          />
                         </ImageSlider>
                       </Posts>
                     )
