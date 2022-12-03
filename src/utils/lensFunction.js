@@ -120,7 +120,7 @@ export const getLastCommentsOfPosts = async (profileId) => {
         imageUrl: convertIntoIpfsUrl(comment.metadata.media[0].original.url),
         profileHandle: comment.profile.handle,
         name: comment.profile.name,
-        createdAt: comment.createdAt,
+        createdAt: moment(comment.createdAt).format("h:mm a"),
       };
       commentsArray.push(commentData);
     });

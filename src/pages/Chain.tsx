@@ -5,6 +5,7 @@ import { PostImage } from "../components/PostImage";
 import { getCommentFeed, getPublication } from "../utils/lensFunction";
 import AddWhisperBtn from "../components/AddWhisperBtn";
 import { convertIntoIpfsUrl } from "../utils/Utils";
+import moment from "moment";
 
 const ChainContainer = styled.div`
   width: 100%;
@@ -100,7 +101,7 @@ const Chain = () => {
           imageUrl: convertIntoIpfsUrl(comment.metadata.media[0].original.url),
           profileHandle: comment.profile.handle,
           name: comment.profile.name,
-          createdAt: comment.createdAt,
+          createdAt: moment(comment.createdAt).format("h:mm a"),
           lensterProfileUrl: `https://testnet.lenster.xyz/u/${comment.profile.handle}`,
           lensterPostUrl: `https://testnet.lenster.xyz/posts/${comment.id}`,
         };
@@ -125,6 +126,7 @@ const Chain = () => {
 
         <AddWhisperBtn pageIndex={1} />
       </MessageBox>
+
       <ChainWrapper>
         <ChainLogo />
       </ChainWrapper>
