@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import styled from "styled-components";
 import ChainLogo from "../assets/ChainLogo";
 import { PostImage } from "../components/PostImage";
@@ -86,17 +86,16 @@ const ChainWrapper = styled.div`
 const Chain = () => {
   const [chainData, setChainData] = React.useState<any>();
 
-  useEffect(() => {
+  React.useEffect(() => {
     const fetchData = async () => {
       const pubId = (await getPublication("0x5285", 1)).data.publications
         .items[0].id;
 
-      const commentsData = await (await getCommentFeed(pubId, 10)).data
-        .publications.items;
+      const commentsData = (await getCommentFeed(pubId, 10)).data.publications
+        .items;
       const commentArray = [];
       for (let index = 0; index < commentsData.length; index++) {
         const comment = commentsData[index];
-        // console.log({ comment });
         const commentObject = {
           imageUrl: convertIntoIpfsUrl(comment.metadata.media[0].original.url),
           profileHandle: comment.profile.handle,
@@ -107,8 +106,8 @@ const Chain = () => {
         };
         commentArray.push(commentObject);
       }
+
       setChainData(commentArray);
-      // console.log({ commentArray });
     };
     fetchData();
   }, []);
@@ -127,14 +126,17 @@ const Chain = () => {
         <AddWhisperBtn pageIndex={1} />
       </MessageBox>
 
-      <ChainWrapper>
-        <ChainLogo />
-      </ChainWrapper>
-
-      <PostImage imgSrc="https://bafkreieqap4lq65viaukoxaxkdmptkddlm3kpupevgeboxv7zq4sqcdfx4.ipfs.w3s.link" />
-      <ChainWrapper>
-        <ChainLogo />
-      </ChainWrapper>
+      {chainData &&
+        chainData.map((comment: any) => {
+          return (
+            <div>
+              <ChainWrapper>
+                <ChainLogo />
+              </ChainWrapper>
+              <PostImage imgSrc={comment.imageUrl} />
+            </div>
+          );
+        })}
     </ChainContainer>
   );
 };
