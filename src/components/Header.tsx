@@ -8,7 +8,7 @@ const HeadComponent = styled.div`
   height: 88px;
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
   background-color: #0d041d;
   z-index: 1000000;

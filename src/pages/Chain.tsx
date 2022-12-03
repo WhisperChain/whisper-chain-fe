@@ -3,6 +3,12 @@ import styled from "styled-components";
 import ChainLogo from "../assets/ChainLogo";
 import { PostImage } from "../components/PostImage";
 
+const ChainContainer = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+`;
+
 const MessageBox = styled.div`
   width: 512px;
   height: 251px;
@@ -74,7 +80,7 @@ const ChainWrapper = styled.div`
 
 const Chain = () => {
   return (
-    <>
+    <ChainContainer>
       <MessageBox>
         <Message>
           <WhiteText>
@@ -88,9 +94,11 @@ const Chain = () => {
           <ButtonText> Add whisper to chain </ButtonText>
         </ButtonBg>
       </MessageBox>
+
       <ChainWrapper>
         <ChainLogo />
       </ChainWrapper>
+
       <PostImage imgSrc="https://static.plgworks.com/assets/images/hon/vespa.jpg" />
 
       <ChainWrapper>
@@ -101,7 +109,7 @@ const Chain = () => {
         <ChainLogo />
       </ChainWrapper>
       <PostImage imgSrc="https://static.plgworks.com/assets/images/hon/vespa.jpg" />
-    </>
+    </ChainContainer>
   );
 };
 

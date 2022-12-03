@@ -45,14 +45,18 @@ const ImageSlider = styled.div`
   margin-top: 128px;
   display: flex;
   justify-content: flex-start;
+  position: relative;
+`;
+
+const PostDetail = styled.div`
+  position: absolute;
+  top: -50px;
+  left: 0%;
+  // transform: translateX(-50%);
 `;
 
 const Date = styled.div`
-  position: absolute;
-  top: 0px;
   height: 22px;
-  left: 50%;
-  transform: translateX(-50%);
   font-style: normal;
   font-weight: 800;
   font-size: 16px;
@@ -70,10 +74,6 @@ const Date = styled.div`
 `;
 
 const Status = styled.div`
-  top: 40px;
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
   height: 16px;
   font-style: normal;
   font-weight: 400;
@@ -95,6 +95,7 @@ const Home = () => {
       text: "Section 3",
     },
   ]);
+
   return (
     <Page>
       <HomeSection>
@@ -108,8 +109,10 @@ const Home = () => {
                 {fullPages.map(({ text }) => (
                   <Posts key={text} className={SEL}>
                     <ImageSlider className="slide">
-                      <Date>24th November 2022</Date>
-                      <Status>Ended</Status>
+                      <PostDetail>
+                        <Date>24th November 2022</Date>
+                        <Status>Ended</Status>
+                      </PostDetail>
                       <ImagesStack />
                     </ImageSlider>
                   </Posts>

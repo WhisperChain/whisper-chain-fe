@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-export const Image = styled.img`
+const Image = styled.img`
   position: relative;
   width: 512px;
   height: 512px;

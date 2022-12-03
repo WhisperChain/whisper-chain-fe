@@ -20,4 +20,4 @@ export const TabItems = [
   },
 ];
 
-export const DEFAULT_TAB = TabItems[2];
+export const DEFAULT_TAB = TabItems[0];
