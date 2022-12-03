@@ -1,3 +1,5 @@
+import { commentViaDispatcher } from "./lensFunction";
+
 export const resetLocalStorage = () => {
   window.localStorage.removeItem("accessToken");
   window.localStorage.removeItem("refreshToken");
@@ -7,7 +9,7 @@ export const resetLocalStorage = () => {
 export const getS3UrlfromText = async (prompt, filter = "") => {
   console.log(prompt, filter);
   const resp = await fetch(
-    `http://api.whisperchain.xyz:3000/whisper/suggestions?prompt=${prompt}&filter=${filter}`,
+    `http://api.whisperchain.xyz/whisper/suggestions?prompt=${prompt}&filter=${filter}`,
 
     {
       method: "GET",
@@ -20,7 +22,7 @@ export const getS3UrlfromText = async (prompt, filter = "") => {
 
 export const getIpfsUrl = async (url) => {
   const resp = await fetch(
-    `http://api.whisperchain.xyz:3000/whisper?s3_url=${url}`,
+    `http://api.whisperchain.xyz/whisper?s3_url=${url}`,
     {
       method: "GET",
     }
@@ -29,11 +31,20 @@ export const getIpfsUrl = async (url) => {
   const responseJSON = await resp.json();
   const contentId = responseJSON.data.cids.metadata;
   const ipfsUrl = `ipfs://${contentId}`;
-  console.log({ ipfsUrl });
   return ipfsUrl;
 };
 
 export function convertIntoIpfsUrl(url) {
   const cid = url.split("//")[1];
   return `https://${cid}.ipfs.w3s.link`;
+}
+
+export async function getIpfsUrlandUploadPublication(url, pubId, isInTime) {
+  const ipfsUrl = await getIpfsUrl(url);
+  commentViaDispatcher(
+    window.localStorage.getItem("profileId"),
+    pubId,
+    ipfsUrl,
+    isInTime
+  );
 }
