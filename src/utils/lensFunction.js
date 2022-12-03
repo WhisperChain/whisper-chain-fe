@@ -17,6 +17,8 @@ import {
   TRANSACTION_INDEXED,
   VERIFY_AUTHENTICATION,
 } from "./gqlqueries";
+import moment from "moment";
+import { convertIntoIpfsUrl } from "./Utils";
 
 const API_URL = "https://api-mumbai.lens.dev";
 const httpLink = new HttpLink({ uri: API_URL });
@@ -115,17 +117,23 @@ export const getLastCommentsOfPosts = async (profileId) => {
     comments.data.publications.items.map(async (comment) => {
       //   console.log(comment.id);
       const commentData = {
-        imageUrl: comment.metadata.media[0].original.url,
+        imageUrl: convertIntoIpfsUrl(comment.metadata.media[0].original.url),
         profileHandle: comment.profile.handle,
         name: comment.profile.name,
         createdAt: comment.createdAt,
       };
       commentsArray.push(commentData);
     });
-    dataObject.push({ pubId: item.id, comments: commentsArray });
+
+    dataObject.push({
+      pubId: item.id,
+      createdAt: moment(item.createdAt).format("Do MMMM YYYY"),
+      comments: commentsArray,
+      timeDifference: moment(item.createdAt).fromNow(),
+    });
     // console.log({ comments, pubId: item.id });
   }
-  //   console.log({ dataObject });
+  console.log({ dataObject });
   return dataObject;
 };
 

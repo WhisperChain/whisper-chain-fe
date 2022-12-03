@@ -38,3 +38,8 @@ export const getIpfsUrl = async (url) => {
   console.log({ ipfsUrl });
   return ipfsUrl;
 };
+
+export function convertIntoIpfsUrl(url) {
+  const cid = url.split("//")[1];
+  return `https://${cid}.ipfs.w3s.link`;
+}

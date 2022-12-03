@@ -4,6 +4,7 @@ import ChainLogo from "../assets/ChainLogo";
 import { PostImage } from "../components/PostImage";
 import { getCommentFeed, getPublication } from "../utils/lensFunction";
 import AddWhisperBtn from "../components/AddWhisperBtn";
+import { convertIntoIpfsUrl } from "../utils/Utils";
 
 const ChainContainer = styled.div`
   width: 100%;
@@ -95,7 +96,7 @@ const Chain = () => {
         const comment = commentsData[index];
         // console.log({ comment });
         const commentObject = {
-          imageUrl: comment.metadata.media[0].original.url,
+          imageUrl: convertIntoIpfsUrl(comment.metadata.media[0].original.url),
           profileHandle: comment.profile.handle,
           name: comment.profile.name,
           createdAt: comment.createdAt,
