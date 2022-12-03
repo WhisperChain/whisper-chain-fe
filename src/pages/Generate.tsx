@@ -295,10 +295,11 @@ const filterOptions = [
 
 function Generate() {
   const [promptText, setPromptText] = React.useState("");
-  const [urls, setUrls] = React.useState([]);
+  const [urls, setUrls] = React.useState<any>([]);
   const [selectedFilter, setSelectedFilter] = React.useState(
     filterOptions[0].value
   );
+  console.log({ urls });
   return (
     <Page>
       <PageLayout>
@@ -343,8 +344,10 @@ function Generate() {
             </SelectBox>
           </FilterSection>
           <GenerateBtn
-            onClick={() => {
-              const urls = getS3UrlfromText(promptText, selectedFilter);
+            onClick={async () => {
+              const images = await getS3UrlfromText(promptText, selectedFilter);
+
+              setUrls(urls.push(images));
             }}
           >
             <Button>
@@ -360,7 +363,7 @@ function Generate() {
               To add a whisper to the chain, hover over it.
             </Description>
           </ImageGalleryTitleBox>
-          {urls.map((url, index) => (
+          {urls.map((url: any, index: any) => (
             <ImageTryOutputBox key={url[0] + index}>
               <ImageTryOutputTitle>Try {index}</ImageTryOutputTitle>
               <OutputImageBoxWrapper>
