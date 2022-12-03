@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import ChainLogo from "../assets/ChainLogo";
 import { PostImage } from "../components/PostImage";
+import { getCommentFeed, getPublication } from "../utils/lensFunction";
 import AddWhisperBtn from "../components/AddWhisperBtn";
 
 const ChainContainer = styled.div`
@@ -9,7 +10,6 @@ const ChainContainer = styled.div`
   display: flex;
   flex-direction: column;
 `;
-
 const MessageBox = styled.div`
   width: 512px;
   height: 251px;
@@ -80,6 +80,36 @@ const ChainWrapper = styled.div`
 `;
 
 const Chain = () => {
+  const [chainData, setChainData] = React.useState<any>();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const pubId = (await getPublication("0x5285", 1)).data.publications
+        .items[0].id;
+
+      const commentsData = await (
+        await getCommentFeed(pubId, 10)
+      ).data.publications.items;
+      const commentArray = [];
+      for (let index = 0; index < commentsData.length; index++) {
+        const comment = commentsData[index];
+        // console.log({ comment });
+        const commentObject = {
+          imageUrl: comment.metadata.media[0].original.url,
+          profileHandle: comment.profile.handle,
+          name: comment.profile.name,
+          createdAt: comment.createdAt,
+          lensterProfileUrl: `https://testnet.lenster.xyz/u/${comment.profile.handle}`,
+          lensterPostUrl: `https://testnet.lenster.xyz/posts/${comment.id}`,
+        };
+        commentArray.push(commentObject);
+      }
+      setChainData(commentArray);
+      // console.log({ commentArray });
+    };
+    fetchData();
+  }, []);
+
   return (
     <ChainContainer>
       <MessageBox>
@@ -93,11 +123,9 @@ const Chain = () => {
 
         <AddWhisperBtn pageIndex={1} />
       </MessageBox>
-
       <ChainWrapper>
         <ChainLogo />
       </ChainWrapper>
-
       <PostImage imgSrc="https://static.plgworks.com/assets/images/hon/vespa.jpg" />
 
       <ChainWrapper>

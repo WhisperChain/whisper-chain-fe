@@ -1,11 +1,11 @@
 import React from "react";
 import styled from "styled-components";
-import Header from "../components/Header";
 import ReactFullpage from "@fullpage/react-fullpage";
 
 import HomeMessage from "../components/HomeMessage";
 import ImagesStack from "../components/ImagesStack";
 import Link from "../assets/Link";
+import { getLastCommentsOfPosts } from "../utils/lensFunction";
 
 const Page = styled.div`
   width: 100vw;
@@ -95,6 +95,16 @@ const Home = () => {
       text: "Section 3",
     },
   ]);
+
+  const [publicationData, setPublicationData] = React.useState<any>([]);
+
+  React.useEffect(() => {
+    async function fetchData() {
+      const data = await getLastCommentsOfPosts("0x5285");
+      setPublicationData(data);
+    }
+    fetchData();
+  }, []);
 
   return (
     <Page>

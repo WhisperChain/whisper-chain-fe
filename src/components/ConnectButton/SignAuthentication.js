@@ -65,7 +65,6 @@ function SignAuthentication() {
           style={{ width: 36, height: 36, borderRadius: 18 }}
         />
       ) : null}
-      <button onClick={refreshAuthentication}>Refresh Authentication</button>
     </div>
   );
 }

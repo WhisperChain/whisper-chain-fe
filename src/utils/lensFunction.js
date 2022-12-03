@@ -73,13 +73,14 @@ export const getProfile = async (address) => {
   });
 };
 
-export const getPublication = async (profileId) => {
+export const getPublication = async (profileId, limit = 10) => {
   return await apolloClient.query({
     query: gql(GET_PUBLICATIONS),
     variables: {
       request: {
         profileId: profileId,
         publicationTypes: ["POST"],
+        limit,
         metadata: {
           mainContentFocus: "IMAGE",
         },
@@ -104,12 +105,28 @@ export const getCommentFeed = async (publicationId, limit = 10) => {
 };
 
 export const getLastCommentsOfPosts = async (profileId) => {
-  const resp = await getPublication(profileId);
-  console.log(resp.data.publications.items);
-  resp.data.publications.items.map(async (item) => {
+  const dataObject = [];
+  const resp = await getPublication(profileId, 5);
+  const publicationItems = resp.data.publications.items;
+  for (let i = 0; i < publicationItems.length; i++) {
+    const item = publicationItems[i];
     const comments = await getCommentFeed(item.id, 3);
-    console.log({ comments, pubId: item.id });
-  });
+    const commentsArray = [];
+    comments.data.publications.items.map(async (comment) => {
+      //   console.log(comment.id);
+      const commentData = {
+        imageUrl: comment.metadata.media[0].original.url,
+        profileHandle: comment.profile.handle,
+        name: comment.profile.name,
+        createdAt: comment.createdAt,
+      };
+      commentsArray.push(commentData);
+    });
+    dataObject.push({ pubId: item.id, comments: commentsArray });
+    // console.log({ comments, pubId: item.id });
+  }
+  //   console.log({ dataObject });
+  return dataObject;
 };
 
 export const setDispatcher = async (profileId) => {

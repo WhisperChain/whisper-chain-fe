@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import Logo from "../assets/Logo";
-import WalletBtn from "../assets/WalletBtn";
+import CustomConnectButton from "./ConnectButton";
 
 const HeadComponent = styled.div`
   width: 100%;
@@ -18,7 +18,7 @@ const Header = () => {
   return (
     <HeadComponent>
       <Logo />
-      <WalletBtn />
+      <CustomConnectButton />
     </HeadComponent>
   );
 };

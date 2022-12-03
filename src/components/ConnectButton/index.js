@@ -1,5 +1,6 @@
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import React from "react";
+import WalletBtn from "../../assets/WalletBtn";
 import { resetLocalStorage } from "../../utils/Utils";
 import "./ConnectButton.css";
 import SignAuthentication from "./SignAuthentication";
@@ -39,15 +40,14 @@ const CustomConnectButton = () => {
             {(() => {
               if (!connected) {
                 return (
-                  <button
+                  <div
                     onClick={() => {
                       resetLocalStorage();
                       openConnectModal();
                     }}
-                    className="ConnectButton"
                   >
-                    Connect Wallet
-                  </button>
+                    <WalletBtn />
+                  </div>
                 );
               }
 
