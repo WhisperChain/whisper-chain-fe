@@ -4,6 +4,7 @@ import {
   getAuthentication,
   getChallengeText,
   getProfile,
+  refreshAuthentication,
 } from "../../utils/lensFunction";
 
 function SignAuthentication() {
@@ -64,6 +65,7 @@ function SignAuthentication() {
           style={{ width: 36, height: 36, borderRadius: 18 }}
         />
       ) : null}
+      <button onClick={refreshAuthentication}>Refresh Authentication</button>
     </div>
   );
 }

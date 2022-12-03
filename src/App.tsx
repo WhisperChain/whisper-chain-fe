@@ -10,6 +10,13 @@ import { getPublication } from "./utils/lensFunction";
 import { AuthProvider } from "./context/AuthContext";
 import { BottomTabProvider } from "./context/BottomTabContext";
 import Main from "./components/Main";
+import {
+  commentViaDispatcher,
+  getLastCommentsOfPosts,
+} from "./utils/lensFunction";
+import Login from "./components/Login";
+import "@rainbow-me/rainbowkit/styles.css";
+import { getS3UrlfromText } from "./utils/Utils";
 
 function App() {
   const { chains, provider } = useRef(
@@ -44,6 +51,16 @@ function App() {
       provider,
     })
   ).current;
+
+  const createComment = async () => {
+    const ipfsUrl = await getS3UrlfromText("india");
+    commentViaDispatcher(
+      window.localStorage.getItem("profileId"),
+      "0x5285-0x1a",
+      ipfsUrl,
+      true
+    );
+  };
 
   return (
     <WagmiConfig client={wagmiClient}>
