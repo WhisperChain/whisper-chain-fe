@@ -4,7 +4,7 @@ import Logo from "../assets/Logo";
 import CustomConnectButton from "./ConnectButton";
 
 const HeadComponent = styled.div`
-  width: 100%;
+  width: 88vw;
   height: 88px;
   display: flex;
   flex-direction: row;

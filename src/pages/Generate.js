@@ -17,7 +17,7 @@ const PageLayout = styled.div`
   display: flex;
   gap: 20px;
   color: white;
-  height: 100vh;
+  justify-content: space-around;
 `;
 
 const SideBar = styled.div`
@@ -176,7 +176,7 @@ const ImageGallery = styled.div`
   background: rgba(111, 26, 255, 0.1);
   backdrop-filter: blur(8px);
   border-radius: 64px 64px 0px 0px;
-  overflow: scroll;
+  overflow: auto;
 `;
 
 const ImageGalleryTitleBox = styled.div`
@@ -316,9 +316,8 @@ function Generate() {
       const pubId = (await getPublication("0x5285", 1)).data.publications
         .items[0].id;
 
-      const comment = await (
-        await getCommentFeed(pubId, 1)
-      ).data.publications.items[0];
+      const comment = await (await getCommentFeed(pubId, 1)).data.publications
+        .items[0];
       console.log({ pubId });
       setPubsId(pubId);
       setPreviousImageUrl(
@@ -333,19 +332,7 @@ function Generate() {
       fetchData();
     }
   }, []);
-  return isLoading ? (
-    <div
-      style={{
-        height: "500px",
-        color: "white",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <span> Loading...</span>
-    </div>
-  ) : (
+  return (
     <Page>
       <PageLayout>
         <SideBar>
@@ -406,58 +393,76 @@ function Generate() {
             </Button>
           </GenerateBtn>
         </SideBar>
+
         <ImageGallery>
-          <ImageGalleryTitleBox>
-            <Title>Your generations</Title>
-            <Description>
-              To add a whisper to the chain, hover over it.
-            </Description>
-          </ImageGalleryTitleBox>
-          {urls.map((url, index) => (
-            <ImageTryOutputBox key={url[0] + index}>
-              <ImageTryOutputTitle>
-                Try {urls.length - index}
-              </ImageTryOutputTitle>
-              <OutputImageBoxWrapper>
-                <OutputImageBox>
-                  <OutputImage src={url[0]} alt="Whisper Image" />
-                  <AddToChainBtnWrapper
-                    onClick={async () => {
-                      setIsloading(true);
-                      await getIpfsUrlandUploadPublication(
-                        url[0],
-                        pubsId,
-                        true
-                      );
-                      setIsloading(false);
-                    }}
-                  >
-                    <AddToChainBtn>
-                      <BtnText>+ Add to chain</BtnText>
-                    </AddToChainBtn>
-                  </AddToChainBtnWrapper>
-                </OutputImageBox>
-                <OutputImageBox>
-                  <OutputImage src={url[1]} alt="Whisper Image" />
-                  <AddToChainBtnWrapper
-                    onClick={async () => {
-                      setIsloading(true);
-                      await getIpfsUrlandUploadPublication(
-                        url[1],
-                        pubsId,
-                        true
-                      );
-                      setIsloading(false);
-                    }}
-                  >
-                    <AddToChainBtn>
-                      <BtnText> + Add to chain</BtnText>
-                    </AddToChainBtn>
-                  </AddToChainBtnWrapper>
-                </OutputImageBox>
-              </OutputImageBoxWrapper>
-            </ImageTryOutputBox>
-          ))}
+          {isLoading ? (
+            <div
+              style={{
+                height: "500px",
+                color: "white",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                width: "832px",
+              }}
+            >
+              <span> Loading...</span>
+            </div>
+          ) : (
+            <>
+              <ImageGalleryTitleBox>
+                <Title>Your generations</Title>
+                <Description>
+                  To add a whisper to the chain, hover over it.
+                </Description>
+              </ImageGalleryTitleBox>
+              {urls.map((url, index) => (
+                <ImageTryOutputBox key={url[0] + index}>
+                  <ImageTryOutputTitle>
+                    Try {urls.length - index}
+                  </ImageTryOutputTitle>
+                  <OutputImageBoxWrapper>
+                    <OutputImageBox>
+                      <OutputImage src={url[0]} alt="Whisper Image" />
+                      <AddToChainBtnWrapper
+                        onClick={async () => {
+                          setIsloading(true);
+                          await getIpfsUrlandUploadPublication(
+                            url[0],
+                            pubsId,
+                            true
+                          );
+                          setIsloading(false);
+                        }}
+                      >
+                        <AddToChainBtn>
+                          <BtnText>+ Add to chain</BtnText>
+                        </AddToChainBtn>
+                      </AddToChainBtnWrapper>
+                    </OutputImageBox>
+                    <OutputImageBox>
+                      <OutputImage src={url[1]} alt="Whisper Image" />
+                      <AddToChainBtnWrapper
+                        onClick={async () => {
+                          setIsloading(true);
+                          await getIpfsUrlandUploadPublication(
+                            url[1],
+                            pubsId,
+                            true
+                          );
+                          setIsloading(false);
+                        }}
+                      >
+                        <AddToChainBtn>
+                          <BtnText> + Add to chain</BtnText>
+                        </AddToChainBtn>
+                      </AddToChainBtnWrapper>
+                    </OutputImageBox>
+                  </OutputImageBoxWrapper>
+                </ImageTryOutputBox>
+              ))}
+            </>
+          )}
         </ImageGallery>
       </PageLayout>
     </Page>
