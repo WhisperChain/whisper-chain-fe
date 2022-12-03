@@ -305,6 +305,7 @@ function Generate() {
   const [promptText, setPromptText] = React.useState("");
   const [urls, setUrls] = React.useState([]);
   const [pubsId, setPubsId] = React.useState();
+  const [isLoading, setIsloading] = React.useState(false);
   const [selectedFilter, setSelectedFilter] = React.useState(
     filterOptions[0].value
   );
@@ -332,7 +333,19 @@ function Generate() {
       fetchData();
     }
   }, []);
-  return (
+  return isLoading ? (
+    <div
+      style={{
+        height: "500px",
+        color: "white",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      <span> Loading...</span>
+    </div>
+  ) : (
     <Page>
       <PageLayout>
         <SideBar>
@@ -374,10 +387,17 @@ function Generate() {
           </FilterSection>
           <GenerateBtn
             onClick={async () => {
-              const images = await getS3UrlfromText(promptText, selectedFilter);
-              const newUrls = [...urls, images];
+              if (urls.length < 5) {
+                setIsloading(true);
+                const images = await getS3UrlfromText(
+                  promptText,
+                  selectedFilter
+                );
+                const newUrls = [images, ...urls];
 
-              setUrls(newUrls);
+                setUrls(newUrls);
+                setIsloading(false);
+              }
             }}
           >
             <Button>
@@ -395,13 +415,21 @@ function Generate() {
           </ImageGalleryTitleBox>
           {urls.map((url, index) => (
             <ImageTryOutputBox key={url[0] + index}>
-              <ImageTryOutputTitle>Try {index + 1}</ImageTryOutputTitle>
+              <ImageTryOutputTitle>
+                Try {urls.length - index}
+              </ImageTryOutputTitle>
               <OutputImageBoxWrapper>
                 <OutputImageBox>
                   <OutputImage src={url[0]} alt="Whisper Image" />
                   <AddToChainBtnWrapper
-                    onClick={() => {
-                      getIpfsUrlandUploadPublication(url[0], pubsId, true);
+                    onClick={async () => {
+                      setIsloading(true);
+                      await getIpfsUrlandUploadPublication(
+                        url[0],
+                        pubsId,
+                        true
+                      );
+                      setIsloading(false);
                     }}
                   >
                     <AddToChainBtn>
@@ -412,8 +440,14 @@ function Generate() {
                 <OutputImageBox>
                   <OutputImage src={url[1]} alt="Whisper Image" />
                   <AddToChainBtnWrapper
-                    onClick={() => {
-                      getIpfsUrlandUploadPublication(url[1], pubsId, true);
+                    onClick={async () => {
+                      setIsloading(true);
+                      await getIpfsUrlandUploadPublication(
+                        url[1],
+                        pubsId,
+                        true
+                      );
+                      setIsloading(false);
                     }}
                   >
                     <AddToChainBtn>

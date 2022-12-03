@@ -1,4 +1,8 @@
-import { commentViaDispatcher } from "./lensFunction";
+import {
+  commentViaDispatcher,
+  refreshAuthentication,
+  verifyAuthentication,
+} from "./lensFunction";
 
 export const resetLocalStorage = () => {
   window.localStorage.removeItem("accessToken");
@@ -41,7 +45,9 @@ export function convertIntoIpfsUrl(url) {
 
 export async function getIpfsUrlandUploadPublication(url, pubId, isInTime) {
   const ipfsUrl = await getIpfsUrl(url);
-  commentViaDispatcher(
+  await refreshAuthentication();
+
+  await commentViaDispatcher(
     window.localStorage.getItem("profileId"),
     pubId,
     ipfsUrl,

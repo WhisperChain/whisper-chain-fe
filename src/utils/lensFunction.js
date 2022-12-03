@@ -211,10 +211,11 @@ export const refreshAuthentication = async () => {
 };
 
 export const verifyAuthentication = async () => {
-  const res = await apolloClient.mutate({
-    mutation: gql(VERIFY_AUTHENTICATION),
+  console.log("verifying auth", window.localStorage.getItem("accessToken"));
+  const res = await apolloClient.query({
+    query: gql(VERIFY_AUTHENTICATION),
     variables: {
-      refreshToken: window.localStorage.getItem("accessToken"),
+      accessToken: window.localStorage.getItem("accessToken"),
     },
   });
   console.log({ res });
