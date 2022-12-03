@@ -5,6 +5,7 @@ import ReactFullpage from "@fullpage/react-fullpage";
 
 import HomeMessage from "../components/HomeMessage";
 import PostImage from "../components/PostImage";
+import Link from "../assets/Link";
 
 const Page = styled.div`
   width: 100vw;
@@ -18,14 +19,19 @@ const LeftSection = styled.div`
   width: 50%;
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
 `;
 const RightSection = styled.div`
   position: fixed;
-  top: 216px;
+  top: 220px;
   right: 0;
-  transform: translateX(-20%);
+  transform: translateX(-50%);
+`;
+const LinkWrapper = styled.div`
+  position: fixed;
+  top: -40px;
+  right: 0;
+  transform: translateX(-70%);
 `;
 const SEL = "custom-section";
 const SECTION_SEL = `.${SEL}`;
@@ -45,6 +51,8 @@ const Date = styled.div`
   position: absolute;
   top: 0px;
   height: 22px;
+  left: 50%;
+  transform: translateX(-50%);
   font-style: normal;
   font-weight: 800;
   font-size: 16px;
@@ -62,8 +70,10 @@ const Date = styled.div`
 `;
 
 const Status = styled.div`
-  top: 20px;
+  top: 40px;
   position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
   height: 16px;
   font-style: normal;
   font-weight: 400;
@@ -108,12 +118,11 @@ const Home = () => {
               </ReactFullpage.Wrapper>
             )}
           />
-          {/* <PostImage />
-          <PostImage />
-          <PostImage />
-          <PostImage /> */}
         </LeftSection>
         <RightSection>
+          <LinkWrapper>
+            <Link />
+          </LinkWrapper>
           <HomeMessage />
         </RightSection>
       </HomeSection>
