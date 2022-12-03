@@ -39,6 +39,7 @@ const Backdrop = styled.div`
 const Image2 = styled.img`
   position: absolute;
   bottom: 32px;
+  height: 512px;
   width: 452px;
 
   display: flex;
@@ -48,6 +49,7 @@ const Image2 = styled.img`
 
 const Image3 = styled.img`
   position: absolute;
+  height: 512px;
   width: 404px;
   bottom: 0px;
   display: flex;
@@ -127,13 +129,14 @@ const Center = styled.div`
   text-shadow: 0px 4px 20px rgba(13, 3, 29, 0.95);
 `;
 
-const ImagesStack = () => {
+const ImagesStack = (imageSrc) => {
   const [hovered, setHovered] = React.useState(false);
   const { onTabChange } = useBottomTab();
+  console.log("Src", imageSrc);
   return (
     <StackedImages>
       <Image
-        src="https://static.plgworks.com/assets/images/hon/vespa.jpg"
+        src={imageSrc}
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
       ></Image>

@@ -13,7 +13,6 @@ const PageLayout = styled.div`
 `;
 
 const SideBar = styled.div`
-  margin-left: 128px;
   width: 344px;
   display: flex;
   flex-direction: column;

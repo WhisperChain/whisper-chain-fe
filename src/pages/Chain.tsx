@@ -10,6 +10,8 @@ const ChainContainer = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
+  justify-content: center;
+  align-items: center;
 `;
 const MessageBox = styled.div`
   width: 512px;
@@ -88,9 +90,8 @@ const Chain = () => {
       const pubId = (await getPublication("0x5285", 1)).data.publications
         .items[0].id;
 
-      const commentsData = await (
-        await getCommentFeed(pubId, 10)
-      ).data.publications.items;
+      const commentsData = await (await getCommentFeed(pubId, 10)).data
+        .publications.items;
       const commentArray = [];
       for (let index = 0; index < commentsData.length; index++) {
         const comment = commentsData[index];
@@ -127,7 +128,7 @@ const Chain = () => {
       <ChainWrapper>
         <ChainLogo />
       </ChainWrapper>
-      <PostImage imgSrc="https://static.plgworks.com/assets/images/hon/vespa.jpg" />
+      <PostImage imgSrc="https://bafkreieqap4lq65viaukoxaxkdmptkddlm3kpupevgeboxv7zq4sqcdfx4.ipfs.w3s.link" />
 
       <ChainWrapper>
         <ChainLogo />

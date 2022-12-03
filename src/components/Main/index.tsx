@@ -4,10 +4,11 @@ import Header from "../Header";
 import styled from "styled-components";
 
 const Page = styled.div`
-  width: 80%;
+  width: 100%;
   display: flex;
   margin: 0 auto;
   flex-direction: column;
+  align-items: center;
 `;
 
 export default function Main() {

@@ -8,7 +8,7 @@ import Link from "../assets/Link";
 import { getLastCommentsOfPosts } from "../utils/lensFunction";
 
 const Page = styled.div`
-  width: 100vw;
+  width: 100%;
 `;
 const HomeSection = styled.div`
   position: relative;
@@ -101,35 +101,47 @@ const Home = () => {
   React.useEffect(() => {
     async function fetchData() {
       const data = await getLastCommentsOfPosts("0x5285");
+      console.log("Useeffect", data);
       setPublicationData(data);
     }
     fetchData();
   }, []);
 
+  React.useEffect(() => {
+    console.log("Useeffect Data", publicationData.length);
+  }, [publicationData]);
+
   return (
     <Page>
       <HomeSection>
         <LeftSection>
-          <ReactFullpage
-            debug /* Debug logging */
-            licenseKey={"YOUR_KEY_HERE"} // Get one from https://alvarotrigo.com/fullPage/pricing/
-            sectionSelector={SECTION_SEL}
-            render={(comp) => (
-              <ReactFullpage.Wrapper>
-                {fullPages.map(({ text }) => (
-                  <Posts key={text} className={SEL}>
-                    <ImageSlider className="slide">
-                      <PostDetail>
-                        <Date>24th November 2022</Date>
-                        <Status>Ended</Status>
-                      </PostDetail>
-                      <ImagesStack />
-                    </ImageSlider>
-                  </Posts>
-                ))}
-              </ReactFullpage.Wrapper>
-            )}
-          />
+          {publicationData.length > 0 && (
+            <ReactFullpage
+              licenseKey={"YOUR_KEY_HERE"} // Get one from https://alvarotrigo.com/fullPage/pricing/
+              sectionSelector={SECTION_SEL}
+              render={(comp) => (
+                <ReactFullpage.Wrapper>
+                  {console.log("Render")}
+                  {publicationData.map(
+                    (
+                      pub: { pubId: any; comments: { imageUrl: any }[] },
+                      index: any
+                    ) => (
+                      <Posts key={pub?.pubId + index} className={SEL}>
+                        <ImageSlider className="slide">
+                          <PostDetail>
+                            <Date>24th November 2022</Date>
+                            <Status>Ended</Status>
+                          </PostDetail>
+                          <ImagesStack imageSrc={pub?.comments[0]?.imageUrl} />
+                        </ImageSlider>
+                      </Posts>
+                    )
+                  )}
+                </ReactFullpage.Wrapper>
+              )}
+            />
+          )}
         </LeftSection>
         <RightSection>
           <LinkWrapper>
