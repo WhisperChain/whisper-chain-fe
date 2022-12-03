@@ -47,10 +47,6 @@ function App() {
       <RainbowKitProvider chains={chains}>
         <div>
           <div>
-            <div className="logo">
-              <span className="logoYellow">Whisper</span>
-              <span className="logoGrey">.xyz</span>
-            </div>
             <Routing />
             <button
               onClick={() => {

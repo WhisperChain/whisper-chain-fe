@@ -32,7 +32,7 @@ const apolloClient = new ApolloClient({
   cache: new InMemoryCache(),
 });
 
-export const getChallengeText = async (address) => {
+export const getChallengeText = async (address: string | undefined) => {
   return await apolloClient.query({
     query: gql(GET_CHALLENGE),
     variables: {
@@ -43,7 +43,10 @@ export const getChallengeText = async (address) => {
   });
 };
 
-export const getAuthentication = async (address, signature) => {
+export const getAuthentication = async (
+  address: string | undefined,
+  signature: any
+) => {
   return await apolloClient.mutate({
     mutation: gql(AUTHENTICATION),
     variables: {
@@ -55,7 +58,7 @@ export const getAuthentication = async (address, signature) => {
   });
 };
 
-export const getProfile = async (address) => {
+export const getProfile = async (address: string | undefined) => {
   return await apolloClient.query({
     query: gql(GET_PROFILE),
     variables: {
@@ -67,7 +70,7 @@ export const getProfile = async (address) => {
   });
 };
 
-export const getPublication = async (profileId) => {
+export const getPublication = async (profileId: string | null) => {
   return await apolloClient.query({
     query: gql(GET_PUBLICATIONS),
     variables: {
@@ -79,7 +82,7 @@ export const getPublication = async (profileId) => {
   });
 };
 
-export const getCommentFeed = async (publicationId) => {
+export const getCommentFeed = async (publicationId: any) => {
   return await apolloClient.query({
     query: gql(GET_PUBLICATIONS),
     variables: {

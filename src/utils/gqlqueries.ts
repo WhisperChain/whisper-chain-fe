@@ -63,7 +63,7 @@ export const GET_PROFILE = `
 export const GET_PUBLICATIONS = `query Publications($request: PublicationsQueryRequest!) {
     publications(request: $request) {
       items {
-        __typename 
+        __typename
         ... on Post {
           ...PostFields,
           hasCollectedByMe,
@@ -79,12 +79,12 @@ export const GET_PUBLICATIONS = `query Publications($request: PublicationsQueryR
       }
     }
   }
-  
+
   fragment MediaFields on Media {
     url
     mimeType
   }
-  
+
   fragment ProfileFields on Profile {
     id
     name
@@ -98,15 +98,15 @@ export const GET_PUBLICATIONS = `query Publications($request: PublicationsQueryR
     handle
     ownedBy
   }
-  
-  fragment PublicationStatsFields on PublicationStats { 
+
+  fragment PublicationStatsFields on PublicationStats {
     totalAmountOfMirrors
     totalAmountOfCollects
     totalAmountOfComments
     totalUpvotes
     totalDownvotes
   }
-  
+
   fragment MetadataOutputFields on MetadataOutput {
     name
     description
@@ -123,14 +123,14 @@ export const GET_PUBLICATIONS = `query Publications($request: PublicationsQueryR
       value
     }
   }
-  
+
   fragment Erc20Fields on Erc20 {
     name
     symbol
     decimals
     address
   }
-  
+
   fragment PostFields on Post {
     id
     profile {
@@ -155,7 +155,7 @@ export const GET_PUBLICATIONS = `query Publications($request: PublicationsQueryR
     mirrors(by: null)
     hasCollectedByMe
   }
-  
+
   fragment CommentBaseFields on Comment {
     id
     profile {
@@ -180,7 +180,7 @@ export const GET_PUBLICATIONS = `query Publications($request: PublicationsQueryR
     mirrors(by: null)
     hasCollectedByMe
   }
-  
+
   fragment CommentFields on Comment {
     ...CommentBaseFields
     mainPost {
@@ -188,8 +188,8 @@ export const GET_PUBLICATIONS = `query Publications($request: PublicationsQueryR
         ...PostFields
       }
      }
-  } 
-  
+  }
+
   fragment CollectModuleFields on CollectModule {
     __typename
     ... on FreeCollectModuleSettings {
@@ -254,7 +254,7 @@ export const GET_PUBLICATIONS = `query Publications($request: PublicationsQueryR
       collectModuleReturnData
     }
   }
-  
+
   fragment ReferenceModuleFields on ReferenceModule {
     ... on FollowOnlyReferenceModuleSettings {
       type
