@@ -4,7 +4,7 @@ import Header from "../components/Header";
 import ReactFullpage from "@fullpage/react-fullpage";
 
 import HomeMessage from "../components/HomeMessage";
-import PostImage from "../components/PostImage";
+import ImagesStack from "../components/ImagesStack";
 import Link from "../assets/Link";
 
 const Page = styled.div`
@@ -19,7 +19,7 @@ const LeftSection = styled.div`
   width: 50%;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-end;
 `;
 const RightSection = styled.div`
   position: fixed;
@@ -97,7 +97,6 @@ const Home = () => {
   ]);
   return (
     <Page>
-      <Header />
       <HomeSection>
         <LeftSection>
           <ReactFullpage
@@ -111,7 +110,7 @@ const Home = () => {
                     <ImageSlider className="slide">
                       <Date>24th November 2022</Date>
                       <Status>Ended</Status>
-                      <PostImage />
+                      <ImagesStack />
                     </ImageSlider>
                   </Posts>
                 ))}

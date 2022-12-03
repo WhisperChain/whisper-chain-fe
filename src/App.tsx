@@ -7,6 +7,9 @@ import { chain, configureChains, createClient, WagmiConfig } from "wagmi";
 import { publicProvider } from "wagmi/providers/public";
 import { getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import { getPublication } from "./utils/lensFunction";
+import { AuthProvider } from "./context/AuthContext";
+import { BottomTabProvider } from "./context/BottomTabContext";
+import Main from "./components/Main";
 
 function App() {
   const { chains, provider } = useRef(
@@ -45,18 +48,11 @@ function App() {
   return (
     <WagmiConfig client={wagmiClient}>
       <RainbowKitProvider chains={chains}>
-        <div>
-          <div>
-            <Routing />
-            <button
-              onClick={() => {
-                getPublication(window.localStorage.getItem("profileId"));
-              }}
-            >
-              Get Publications
-            </button>
-          </div>
-        </div>
+        <AuthProvider>
+          <BottomTabProvider>
+            <Main />
+          </BottomTabProvider>
+        </AuthProvider>
       </RainbowKitProvider>
     </WagmiConfig>
   );

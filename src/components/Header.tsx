@@ -10,6 +10,8 @@ const HeadComponent = styled.div`
   flex-direction: row;
   justify-content: space-around;
   align-items: center;
+  background-color: #0d041d;
+  z-index: 1000000;
 `;
 
 const Header = () => {
