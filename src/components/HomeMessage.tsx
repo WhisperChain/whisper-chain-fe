@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import AddWhisperBtn from "./AddWhisperBtn";
 
 const MessageBox = styled.div`
   width: 512px;
@@ -40,7 +41,7 @@ const Bold = styled.span`
 const ButtonBg = styled.div`
   width: 200px;
   height: 48px;
-
+  cursor: pointer;
   background: radial-gradient(
     107.14% 107.14% at 50% 80.95%,
     #ffe431 0%,
@@ -85,9 +86,7 @@ const HomeMessage = () => {
         <br />
         <WhiteText>Go ahead, give it a try?</WhiteText>
       </Message>
-      <ButtonBg>
-        <ButtonText> Add whisper to chain </ButtonText>
-      </ButtonBg>
+      <AddWhisperBtn pageIndex={1} />
     </MessageBox>
   );
 };

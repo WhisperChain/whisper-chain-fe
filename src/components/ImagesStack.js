@@ -1,6 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 import ProfileLogo from "../assets/ProfileLogo";
+import { useBottomTab } from "../context/BottomTabContext";
+import { TabItems } from "./Main/TabItems";
 
 const StackedImages = styled.div`
   display: flex;
@@ -127,7 +129,7 @@ const Center = styled.div`
 
 const ImagesStack = () => {
   const [hovered, setHovered] = React.useState(false);
-
+  const { onTabChange } = useBottomTab();
   return (
     <StackedImages>
       <Image
@@ -139,6 +141,7 @@ const ImagesStack = () => {
         <Backdrop
           onMouseEnter={() => setHovered(true)}
           onMouseLeave={() => setHovered(false)}
+          onClick={() => onTabChange(TabItems[2])}
         >
           <Details>
             <Left>

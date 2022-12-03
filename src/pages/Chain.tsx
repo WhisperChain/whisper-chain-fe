@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import ChainLogo from "../assets/ChainLogo";
 import { PostImage } from "../components/PostImage";
+import AddWhisperBtn from "../components/AddWhisperBtn";
 
 const ChainContainer = styled.div`
   width: 100%;
@@ -90,9 +91,7 @@ const Chain = () => {
           </WhiteText>
         </Message>
 
-        <ButtonBg>
-          <ButtonText> Add whisper to chain </ButtonText>
-        </ButtonBg>
+        <AddWhisperBtn pageIndex={1} />
       </MessageBox>
 
       <ChainWrapper>

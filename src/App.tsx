@@ -17,6 +17,7 @@ import {
 import Login from "./components/Login";
 import "@rainbow-me/rainbowkit/styles.css";
 import { getS3UrlfromText } from "./utils/Utils";
+import { PubProvider } from "./context/PublicationContext";
 
 function App() {
   const { chains, provider } = useRef(
@@ -67,7 +68,9 @@ function App() {
       <RainbowKitProvider chains={chains}>
         <AuthProvider>
           <BottomTabProvider>
-            <Main />
+            <PubProvider>
+              <Main />
+            </PubProvider>
           </BottomTabProvider>
         </AuthProvider>
       </RainbowKitProvider>
