@@ -1,6 +1,6 @@
 import logo from "./logo.svg";
 import "./App.css";
-import Routing from "./routes";
+
 import React, { useRef } from "react";
 import "./App.css";
 import { chain, configureChains, createClient, WagmiConfig } from "wagmi";
