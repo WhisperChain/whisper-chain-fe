@@ -36,6 +36,10 @@ ingress:
       paths:
         - path: /
           pathType: Prefix
+    - host: whisperchain.xyz
+      paths:
+        - path: /
+          pathType: Prefix
 
 resources:
   limits:
