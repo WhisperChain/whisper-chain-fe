@@ -6,6 +6,7 @@ import { getCommentFeed, getPublication } from "../utils/lensFunction";
 import AddWhisperBtn from "../components/AddWhisperBtn";
 import { convertIntoIpfsUrl } from "../utils/Utils";
 import moment from "moment";
+import SpinningLoader from "../components/SpinningLoader";
 
 const ChainContainer = styled.div`
   width: 100%;
@@ -141,9 +142,11 @@ const ChainWrapper = styled.div`
 
 const Chain = () => {
   const [chainData, setChainData] = React.useState<any>();
+  const [isLoading, setIsloading] = React.useState(false);
 
   React.useEffect(() => {
     const fetchData = async () => {
+      setIsloading(true);
       const pubId = (await getPublication("0x5285", 1)).data.publications
         .items[0].id;
 
@@ -164,11 +167,14 @@ const Chain = () => {
       }
 
       setChainData(commentArray);
+      setIsloading(false);
     };
     fetchData();
   }, []);
 
-  return (
+  return isLoading ? (
+    <SpinningLoader height="80vh" width="100%" />
+  ) : (
     <ChainContainer>
       <MessageBox>
         <Message>

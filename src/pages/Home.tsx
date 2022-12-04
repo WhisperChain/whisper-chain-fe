@@ -6,6 +6,7 @@ import HomeMessage from "../components/HomeMessage";
 import ImagesStack from "../components/ImagesStack";
 import Link from "../assets/Link";
 import { getLastCommentsOfPosts } from "../utils/lensFunction";
+import SpinningLoader from "../components/SpinningLoader";
 
 const Page = styled.div`
   width: 100%;
@@ -97,21 +98,22 @@ const Home = () => {
   // ]);
 
   const [publicationData, setPublicationData] = React.useState<any>([]);
+  const [isLoading, setIsloading] = React.useState(false);
 
   React.useEffect(() => {
     async function fetchData() {
+      setIsloading(true);
       const data = await getLastCommentsOfPosts("0x5285");
       console.log("Useeffect", data);
       setPublicationData(data);
+      setIsloading(false);
     }
     fetchData();
   }, []);
 
-  React.useEffect(() => {
-    console.log("Useeffect Data", publicationData.length);
-  }, [publicationData]);
-
-  return (
+  return isLoading ? (
+    <SpinningLoader height="80vh" width="80%" />
+  ) : (
     <Page>
       <HomeSection>
         <LeftSection>
