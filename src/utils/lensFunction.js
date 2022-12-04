@@ -114,16 +114,25 @@ export const getLastCommentsOfPosts = async (profileId) => {
     const item = publicationItems[i];
     const comments = await getCommentFeed(item.id, 3);
     const commentsArray = [];
-    comments.data.publications.items.map(async (comment) => {
-      //   console.log(comment.id);
-      const commentData = {
-        imageUrl: convertIntoIpfsUrl(comment.metadata.media[0].original.url),
-        profileHandle: comment.profile.handle,
-        name: comment.profile.name,
-        createdAt: moment(comment.createdAt).format("h:mm a"),
-      };
-      commentsArray.push(commentData);
-    });
+    if (comments.data.publications.items.length >= 1) {
+      comments.data.publications.items.map(async (comment) => {
+        //   console.log(comment.id);
+        const commentData = {
+          imageUrl: convertIntoIpfsUrl(comment.metadata.media[0].original.url),
+          profileHandle: comment.profile.handle,
+          name: comment.profile.name,
+          createdAt: moment(comment.createdAt).format("h:mm a"),
+        };
+        commentsArray.push(commentData);
+      });
+    } else {
+      commentsArray.push({
+        imageUrl: convertIntoIpfsUrl(item.metadata.media[0].original.url),
+        profileHandle: item.profile.handle,
+        name: item.profile.name,
+        createdAt: moment(item.createdAt).format("h:mm a"),
+      });
+    }
 
     var a = moment(item.createdAt);
     var b = moment();

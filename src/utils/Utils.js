@@ -39,8 +39,14 @@ export const getIpfsUrl = async (url) => {
 };
 
 export function convertIntoIpfsUrl(url) {
-  const cid = url.split("//")[1];
-  return `https://${cid}.ipfs.w3s.link`;
+  if (url.toString().startsWith("ipfs://")) {
+    const cid = url.split("ipfs://")[1];
+    return `https://${cid}.ipfs.w3s.link`;
+  } else if (!url.toString().startsWith("https://")) {
+    return `https://${url}`;
+  } else {
+    return url;
+  }
 }
 
 export async function getIpfsUrlandUploadPublication(url, pubId, isInTime) {
