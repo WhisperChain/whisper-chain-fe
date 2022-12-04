@@ -53,16 +53,6 @@ function App() {
     })
   ).current;
 
-  const createComment = async () => {
-    const ipfsUrl = await getS3UrlfromText("india");
-    commentViaDispatcher(
-      window.localStorage.getItem("profileId"),
-      "0x5285-0x1a",
-      ipfsUrl,
-      true
-    );
-  };
-
   return (
     <WagmiConfig client={wagmiClient}>
       <RainbowKitProvider chains={chains}>

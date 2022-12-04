@@ -60,7 +60,7 @@ function SignAuthentication() {
     <div>
       {window.localStorage.getItem("profileId") ? (
         <img
-          src="https://bafkreiaofujclpixbazb2ama7okz4exoa3wc24z7uy6uftslzpxon3lhoy.ipfs.w3s.link/"
+          src="https://bafybeibteoilghxjxkxpdeakpk3v4qc6w74yz4ozew4u75zuygy4c3sfbe.ipfs.w3s.link/"
           alt="profile"
           style={{ width: 36, height: 36, borderRadius: 18 }}
         />

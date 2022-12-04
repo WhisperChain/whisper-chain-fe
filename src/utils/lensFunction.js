@@ -116,12 +116,13 @@ export const getLastCommentsOfPosts = async (profileId) => {
     const commentsArray = [];
     if (comments.data.publications.items.length >= 1) {
       comments.data.publications.items.map(async (comment) => {
-        //   console.log(comment.id);
         const commentData = {
           imageUrl: convertIntoIpfsUrl(comment.metadata.media[0].original.url),
           profileHandle: comment.profile.handle,
           name: comment.profile.name,
           createdAt: moment(comment.createdAt).format("h:mm a"),
+          lensterProfileUrl: `https://testnet.lenster.xyz/u/${comment.profile.handle}`,
+          lensterPostUrl: `https://testnet.lenster.xyz/posts/${comment.id}`,
         };
         commentsArray.push(commentData);
       });
@@ -131,6 +132,8 @@ export const getLastCommentsOfPosts = async (profileId) => {
         profileHandle: item.profile.handle,
         name: item.profile.name,
         createdAt: moment(item.createdAt).format("h:mm a"),
+        lensterProfileUrl: `https://testnet.lenster.xyz/u/${item.profile.handle}`,
+        lensterPostUrl: `https://testnet.lenster.xyz/posts/${item.id}`,
       });
     }
 
@@ -231,12 +234,12 @@ export const verifyAuthentication = async () => {
   return res?.data?.verify;
 };
 
-export const collectPost = async () => {
+export const collectPost = async (publicationId) => {
   return await apolloClient.mutate({
     mutation: gql(CREATE_COLLECT),
     variables: {
       request: {
-        publicationId: "0x5670-0x02",
+        publicationId,
       },
     },
   });

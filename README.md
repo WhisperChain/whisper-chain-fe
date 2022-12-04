@@ -1,50 +1,69 @@
-<<<<<<< HEAD
-# whisper-chain-fe
-=======
-# Getting Started with Create React App
+# whisper-chain
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Flow-wise Implementation Details
+### Wallet connect flow (Lens, Rainbowkit)
+- From any page, the user can connect her wallet using the *connect component* in the page header.
+- Using *Rainbowkit UI*, the user can select which wallet to connect (Metamask, coinbase, etc.)
+- After the wallet is selected, the corresponding *wallet address* is obtained.
+- For *authenticating with Lens*, a challenge text is signed and sent to Lens using the selected wallet. Lens provides an access token, which helps in further API calls.
+- Using the *access token*, we fetch the Lens profile, if exists, OR take the user to the Lens profile creation flow.
+- Optionally, if time permits for the hackathon, the user will be able to set a dispatcher for help in not requiring the signing of every interaction.
 
-## Available Scripts
+### Home page flow (Lens)
+- The frontend browser fetches a list of publications using *Lens GraphQL APIs*.
+- The last 3 comments for each publication are also fetched using GraphQL APIs.
 
-In the project directory, you can run:
+### Generate whisper flow (Stability AI, Lens, IPFS, NFTPort)
+- To describe the last image of the chain to the best of her ability, the user fills in the *prompt* and selects the *art type*.
+- On clicking generate, an API call is made to the Whisper Chain backend for fetching 2 image suggestions. In the backend, an API call to fetch 2 image suggestions for the prompt is made to *stability AI*. The image content is uploaded in *AWS S3*. The S3 URLs are returned back to the frontend.
+- The generated image suggestions are displayed in the frontend.
+- The user either selects one of the generated suggestions or changes the prompt & art type and clicks to generate more suggestions.
+- On selecting one of the suggestions and clicking on add to the chain, another API call is made to the backend. In the backend, the selected image is downloaded from AWS S3 and uploaded to *IPFS* using *web3.storage*. Image metadata is uploaded to IPFS using *Infura storage*. The CIDs of both image and metadata are returned to the frontend in response to the API call.
+- Upload of metadata to IPFS is implemented using *NFTPort*.
+- The lens API call to *comment via dispatcher* is made from the frontend. If the comment is being made within 24 hours of the initial post generation, then a time fee collect module is attached at the time of comment generation. If this collect module is attached, other users will have the opportunity to collect the comment by paying WMATIC. The collected WMATIC amount comes to the Whisper Chain’s wallet.
 
-### `yarn start`
+### Distribution of collect proceeds to commenters (Lens, Polygon, Push Protocol)
+- This flow is executed in a background cron on the backend server.
+- Lens graphql APIs are used to get posts in the last some hours and also their comments data is fetched. The number of users who have collected publications is computed for the whole thread. Also, wallet addresses of the number of unique users who commented are fetched.
+- Total WMATIC proceeds from all publication collects are then distributed to all the commenters equally using a smart contract deployed on the Mumbai Polygon chain. [Link to the smart contract](https://mumbai.polygonscan.com/address/0x6F2cAAF4bF579847C7A1947c99BA5b8eFe7f3e6e).
+- A notification is sent to these users using Push Protocol, after sending them WMATIC.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Sponsor-wise Implementation Details
+### Lens Protocol
+- Lens protocol is being used in all the 4 flows described under "Flow-wise Implementation Details" section.
+- We have fetched post and comment data using Lens GraphQL APIs from both web frontend and backend.
+- Wallet connect flow
+    - For *authenticating with Lens*, a challenge text is signed and sent to Lens using the selected wallet. Lens provides an access token, which helps in further API calls.
+    - Using the *access token*, we fetch the Lens profile, if exists, OR take the user to the Lens profile creation flow.
+- Generate whisper flow
+    - *Comment via dispatcher* is implemented from the frontend using Lens GraphQL API.
+    - We have attached a time fee (WMATIC) collect module at the time of comment generation.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+### IPFS (General Storage Track)
+- Whisper image selected by user is uploaded to *IPFS* using *web3.storage*. 
+- Image metadata is uploaded to IPFS using *Infura storage*.
+- Upload of metadata to IPFS is implemented using *NFTPort*.
 
-### `yarn test`
+### Polygon (For Best Public Goods)
+- Total WMATIC proceeds from all publication collects are distributed to all the commenters equally using a smart contract deployed on the Mumbai Polygon chain. [Link to the smart contract](https://mumbai.polygonscan.com/address/0x6F2cAAF4bF579847C7A1947c99BA5b8eFe7f3e6e).
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Push Protocol (Push Notification Implementation)
+- A notification is sent to these users using Push Protocol, after sending them WMATIC.
 
-### `yarn build`
+### NFTPort
+- Upload of metadata to IPFS is implemented using *NFTPort*.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Future Scopes
+- Looking to build further on the hackathon and moulding it to a usable product.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
->>>>>>> bb4a53f (Initialize project using Create React App)
+## Setting Up
+### Environment variables
+```
+STABILITY_API_KEY: <Stability API key
+S3_ACCESS_KEY_ID: S3 access key ID
+S3_SECRET_ACCESS_KEY: S3 secret access key
+S3_BUCKET: S3 bucket
+S3_REGION: S3 region
+IPFS_TOKEN: IPFS token
+TX_SIGNER: Transaction signer
+```
