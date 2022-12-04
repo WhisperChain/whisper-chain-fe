@@ -314,7 +314,7 @@ function Generate() {
   const [previousImageUrl, setPreviousImageUrl] = React.useState();
   React.useEffect(() => {
     const fetchData = async () => {
-      const pubId = (await getPublication("0x5285", 1)).data.publications
+      const pubId = (await getPublication("0x59cf", 1)).data.publications
         .items[0].id;
 
       const comment = await (await getCommentFeed(pubId, 1)).data.publications

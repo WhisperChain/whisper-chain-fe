@@ -103,7 +103,7 @@ const Home = () => {
   React.useEffect(() => {
     async function fetchData() {
       setIsloading(true);
-      const data = await getLastCommentsOfPosts("0x5285");
+      const data = await getLastCommentsOfPosts("0x59cf");
       console.log("Useeffect", data);
       setPublicationData(data);
       setIsloading(false);
