@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import SpinningLoader from "../components/SpinningLoader";
+import ToastMessage from "../components/ToastMessage";
 import { usePublicationContext } from "../context/PublicationContext";
 import { getCommentFeed, getPublication } from "../utils/lensFunction";
 import {
@@ -9,6 +10,9 @@ import {
   getIpfsUrlandUploadPublication,
   getS3UrlfromText,
 } from "../utils/Utils";
+import { toast } from "react-toastify";
+import { useBottomTab } from "../context/BottomTabContext";
+import { TabItems } from "../components/Main/TabItems";
 
 const Page = styled.div`
   width: 100%;
@@ -313,6 +317,33 @@ function Generate() {
 
   const [previousImageUrl, setPreviousImageUrl] = React.useState();
   React.useEffect(() => {
+    toast(
+      <ToastMessage
+        message="You have successfully added your whisper to your chain"
+        color="#ffffff"
+        backgroundColor="green"
+      />,
+      {
+        position: "top-center",
+        autoClose: 2000,
+        closeOnClick: false,
+        closeButton: false,
+        rtl: false,
+        pauseOnFocusLoss: false,
+        draggable: false,
+        className: "invite-copy-toast",
+        style: {
+          padding: "16px 24px",
+          height: "58px",
+          background: "green",
+          color: "white",
+          borderRadius: "16px",
+          boxShadow: "0px 4px 16px -2px rgba(0, 0, 0, 0.08)",
+          width: "max-content",
+          margin: "0",
+        },
+      }
+    );
     const fetchData = async () => {
       const pubId = (await getPublication("0x5285", 1)).data.publications
         .items[0].id;
@@ -333,6 +364,10 @@ function Generate() {
       fetchData();
     }
   }, []);
+
+  const pageIndex = 2;
+  const { onTabChange } = useBottomTab();
+
   return (
     <Page>
       <PageLayout>
@@ -441,6 +476,7 @@ function Generate() {
                             true
                           );
                           setIsloading(false);
+                          onTabChange(TabItems[pageIndex]);
                         }}
                       >
                         <AddToChainBtn>
