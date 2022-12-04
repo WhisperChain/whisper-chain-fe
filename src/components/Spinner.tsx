@@ -21,8 +21,7 @@ const LoaderDiv = styled.div<{
   border: ${({ border }) => border}px solid
     rgba(255, 255, 255, ${({ borderOpacity }) => borderOpacity});
   border-top: ${({ border }) => border}px solid
-    ${({ opacity, theme, color }) =>
-      `${color || theme.color.purple500}${opacity}`};
+    ${({ opacity, theme, color }) => `${color}${opacity}`};
   transform: translateY(-50%);
   border-radius: 50%;
   width: ${({ size }) => size}px;
@@ -44,7 +43,7 @@ const Spinner: React.FC<SpinnerProps> = ({
   opacity = "ff",
   border = 8,
   borderOpacity = 0,
-  color = "",
+  color = "#ffffff",
 }) => {
   return (
     <LoaderDiv

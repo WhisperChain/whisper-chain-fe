@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import SpinningLoader from "../components/SpinningLoader";
 import { usePublicationContext } from "../context/PublicationContext";
 import { getCommentFeed, getPublication } from "../utils/lensFunction";
 import {
@@ -316,9 +317,8 @@ function Generate() {
       const pubId = (await getPublication("0x5285", 1)).data.publications
         .items[0].id;
 
-      const comment = await (
-        await getCommentFeed(pubId, 1)
-      ).data.publications.items[0];
+      const comment = await (await getCommentFeed(pubId, 1)).data.publications
+        .items[0];
       console.log({ pubId });
       setPubsId(pubId);
       setPreviousImageUrl(
@@ -397,18 +397,7 @@ function Generate() {
 
         <ImageGallery>
           {isLoading ? (
-            <div
-              style={{
-                height: "500px",
-                color: "white",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                width: "832px",
-              }}
-            >
-              <span> Loading...</span>
-            </div>
+            <SpinningLoader height="50vw" width="831px" />
           ) : (
             <>
               <ImageGalleryTitleBox>

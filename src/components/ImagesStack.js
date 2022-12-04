@@ -40,7 +40,7 @@ const Backdrop = styled.div`
 
 const Image2 = styled.img`
   position: absolute;
-  bottom: 32px;
+  bottom: 22px;
   height: 512px;
   width: 452px;
 
