@@ -35,6 +35,7 @@ const Backdrop = styled.div`
   z-index: 10;
   backdrop-filter: blur(4px);
   border-radius: 48px;
+  cursor: pointer;
 `;
 
 const Image2 = styled.img`
@@ -67,6 +68,7 @@ const Details = styled.div`
 const Left = styled.div`
   display: flex;
   width: 360px;
+  cursor: pointer;
 `;
 
 const Name = styled.div`

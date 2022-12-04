@@ -46,34 +46,90 @@ const WhiteText = styled.div`
   color: #e7d9ff;
 `;
 
-const ButtonBg = styled.div`
-  width: 200px;
-  height: 48px;
-
-  background: radial-gradient(
-    107.14% 107.14% at 50% 80.95%,
-    #ffe431 0%,
-    #ffe11a 100%
+const Backdrop = styled.div`
+  width: 512px;
+  height: 512px;
+  position: absolute;
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.66) 0%,
+    rgba(0, 0, 0, 0.4) 100%
   );
-  box-shadow: 0px 8px 32px rgba(254, 233, 45, 0.32),
-    inset 0px -4px 8px rgba(119, 103, 0, 0.6), inset 0px -8px 16px #ffbe16;
-  border-radius: 40px;
-  margin-top: 50px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  z-index: 10;
+  backdrop-filter: blur(4px);
+  border-radius: 48px;
 `;
 
-const ButtonText = styled.div`
+const Image2 = styled.img`
+  position: absolute;
+  bottom: 32px;
+  height: 512px;
+  width: 452px;
+
+  display: flex;
+  border-radius: 48px;
+  z-index: 2;
+`;
+
+const Image3 = styled.img`
+  position: absolute;
+  height: 512px;
+  width: 404px;
+  bottom: 0px;
+  display: flex;
+  border-radius: 48px;
+  z-index: 1;
+`;
+
+const Details = styled.div`
+  display: flex;
+  position: relative;
+  padding: 40px;
+`;
+
+const Left = styled.div`
+  display: flex;
+  width: 360px;
+`;
+
+const Name = styled.div`
   font-style: normal;
   font-weight: 800;
   font-size: 16px;
   line-height: 100%;
+  /* identical to box height, or 16px */
 
-  text-align: center;
+  letter-spacing: -0.01em;
+  font-feature-settings: "tnum" on, "onum" on, "salt" on, "ss01" on, "ss02" on,
+    "ss03" on, "ss04" on, "ss05" on;
+
+  color: #ffffff;
+`;
+
+const Handle = styled.div`
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 100%;
+  /* identical to box height, or 16px */
+
   letter-spacing: -0.03em;
+  font-feature-settings: "tnum" on, "onum" on, "ordn" on, "salt" on, "ss01" on,
+    "ss02" on, "ss03" on, "ss04" on, "ss05" on;
 
-  color: #111111;
+  color: #ffffff;
+`;
+
+const Right = styled.div`
+  display: flex;
+  color: #ffffff;
+`;
+
+const User = styled.div`
+  margin-left: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 `;
 
 const ChainWrapper = styled.div`
@@ -127,13 +183,13 @@ const Chain = () => {
       </MessageBox>
 
       {chainData &&
-        chainData.map((comment: any) => {
+        chainData.map((comment: any, index: any) => {
           return (
-            <div>
+            <div key={index}>
               <ChainWrapper>
                 <ChainLogo />
               </ChainWrapper>
-              <PostImage imgSrc={comment.imageUrl} />
+              <PostImage imageDetails={comment} />
             </div>
           );
         })}
