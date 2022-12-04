@@ -357,40 +357,12 @@ function Generate() {
 
   const [previousImageUrl, setPreviousImageUrl] = React.useState();
   React.useEffect(() => {
-    toast(
-      <ToastMessage
-        message="You have successfully added your whisper to your chain"
-        color="#ffffff"
-        backgroundColor="green"
-      />,
-      {
-        position: "top-center",
-        autoClose: 2000,
-        closeOnClick: false,
-        closeButton: false,
-        rtl: false,
-        pauseOnFocusLoss: false,
-        draggable: false,
-        className: "invite-copy-toast",
-        style: {
-          padding: "16px 24px",
-          height: "58px",
-          background: "green",
-          color: "white",
-          borderRadius: "16px",
-          boxShadow: "0px 4px 16px -2px rgba(0, 0, 0, 0.08)",
-          width: "max-content",
-          margin: "0",
-        },
-      }
-    );
     const fetchData = async () => {
       const pubId = (await getPublication("0x59cf", 1)).data.publications
         .items[0].id;
 
-      const comment = await (
-        await getCommentFeed(pubId, 1)
-      ).data.publications.items[0];
+      const comment = await (await getCommentFeed(pubId, 1)).data.publications
+        .items[0];
       console.log({ pubId });
       setPubsId(pubId);
       setPreviousImageUrl(
@@ -499,6 +471,7 @@ function Generate() {
                             true
                           );
                           setIsloading(false);
+                          onTabChange(TabItems[pageIndex]);
                         }}
                       >
                         <AddToChainBtn>
