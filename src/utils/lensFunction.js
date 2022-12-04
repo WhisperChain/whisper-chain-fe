@@ -234,12 +234,12 @@ export const verifyAuthentication = async () => {
   return res?.data?.verify;
 };
 
-export const collectPost = async () => {
+export const collectPost = async (publicationId) => {
   return await apolloClient.mutate({
     mutation: gql(CREATE_COLLECT),
     variables: {
       request: {
-        publicationId: "0x5670-0x02",
+        publicationId,
       },
     },
   });
