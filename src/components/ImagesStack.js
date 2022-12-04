@@ -130,18 +130,20 @@ const Center = styled.div`
   text-shadow: 0px 4px 20px rgba(13, 3, 29, 0.95);
 `;
 
-const ImagesStack = (imageDetails, pub) => {
+const ImagesStack = ({ imageDetails, pub }) => {
   const [hovered, setHovered] = React.useState(false);
   const { onTabChange } = useBottomTab();
   const { setPublication } = usePublicationContext();
   console.log("Src", imageDetails);
   return (
     <StackedImages>
-      <Image
-        src={imageDetails.imageUrl}
-        onMouseEnter={() => setHovered(true)}
-        onMouseLeave={() => setHovered(false)}
-      ></Image>
+      {imageDetails?.imageUrl && (
+        <Image
+          src={imageDetails?.imageUrl}
+          onMouseEnter={() => setHovered(true)}
+          onMouseLeave={() => setHovered(false)}
+        ></Image>
+      )}
       {hovered && (
         <Backdrop
           onMouseEnter={() => setHovered(true)}
@@ -155,11 +157,11 @@ const ImagesStack = (imageDetails, pub) => {
             <Left>
               <ProfileLogo />
               <User>
-                <Name>{imageDetails.name || "Lewis"}</Name>
-                <Handle>{imageDetails.profileHandle || "Lewis.xyz"}</Handle>
+                <Name>{imageDetails?.name || "Lewis"}</Name>
+                <Handle>{imageDetails?.profileHandle || "Lewis.xyz"}</Handle>
               </User>
             </Left>
-            <Right>{imageDetails.createdAt || "2:32 pm"}</Right>
+            <Right>{imageDetails?.createdAt || "2:32 pm"}</Right>
           </Details>
           <Center>Click to view the chain</Center>
         </Backdrop>

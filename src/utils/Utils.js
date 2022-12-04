@@ -54,3 +54,8 @@ export async function getIpfsUrlandUploadPublication(url, pubId, isInTime) {
     isInTime
   );
 }
+
+// export const getRandomName = () => {
+//   const names = ["A", "B", "C", "D", "E"];
+//   Math.random();
+// };

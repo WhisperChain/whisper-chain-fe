@@ -316,8 +316,9 @@ function Generate() {
       const pubId = (await getPublication("0x5285", 1)).data.publications
         .items[0].id;
 
-      const comment = await (await getCommentFeed(pubId, 1)).data.publications
-        .items[0];
+      const comment = await (
+        await getCommentFeed(pubId, 1)
+      ).data.publications.items[0];
       console.log({ pubId });
       setPubsId(pubId);
       setPreviousImageUrl(

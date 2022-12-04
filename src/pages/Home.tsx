@@ -84,17 +84,17 @@ const Status = styled.div`
 `;
 
 const Home = () => {
-  const [fullPages, setFullPages] = React.useState([
-    {
-      text: "Section 1",
-    },
-    {
-      text: "Section 2",
-    },
-    {
-      text: "Section 3",
-    },
-  ]);
+  // const [fullPages, setFullPages] = React.useState([
+  //   {
+  //     text: "Section 1",
+  //   },
+  //   {
+  //     text: "Section 2",
+  //   },
+  //   {
+  //     text: "Section 3",
+  //   },
+  // ]);
 
   const [publicationData, setPublicationData] = React.useState<any>([]);
 
@@ -115,39 +115,42 @@ const Home = () => {
     <Page>
       <HomeSection>
         <LeftSection>
-          {publicationData.length > 0 && (
+          {publicationData && publicationData.length > 0 && (
             <ReactFullpage
               licenseKey={"YOUR_KEY_HERE"} // Get one from https://alvarotrigo.com/fullPage/pricing/
               sectionSelector={SECTION_SEL}
               render={(comp) => (
                 <ReactFullpage.Wrapper>
                   {console.log("Render")}
-                  {publicationData.map(
-                    (
-                      pub: {
-                        pubId: any;
-                        comments: { imageUrl: any }[];
-                        createdAt: any;
-                        timeDifference: any;
-                      },
-                      index: any
-                    ) => (
-                      <Posts key={pub?.pubId + index} className={SEL}>
-                        <ImageSlider className="slide">
-                          <PostDetail>
-                            <Date>{pub?.createdAt}</Date>
-                            <Status>
-                              {pub?.timeDifference >= 0 ? "Running" : "Ended"}
-                            </Status>
-                          </PostDetail>
-                          <ImagesStack
-                            imageDetails={pub?.comments[index]}
-                            pub={pub}
-                          />
-                        </ImageSlider>
-                      </Posts>
-                    )
-                  )}
+                  {publicationData &&
+                    publicationData.map(
+                      (
+                        pub: {
+                          pubId: any;
+                          comments: { imageUrl: any }[];
+                          createdAt: any;
+                          timeDifference: any;
+                        },
+                        index: any
+                      ) => (
+                        <Posts key={pub?.pubId + index} className={SEL}>
+                          <ImageSlider className="slide">
+                            <PostDetail>
+                              <Date>{pub?.createdAt}</Date>
+                              <Status>
+                                {pub?.timeDifference >= 0 ? "Running" : "Ended"}
+                              </Status>
+                            </PostDetail>
+                            {pub?.comments[0] ? (
+                              <ImagesStack
+                                imageDetails={pub?.comments[0]}
+                                pub={pub}
+                              />
+                            ) : null}
+                          </ImageSlider>
+                        </Posts>
+                      )
+                    )}
                 </ReactFullpage.Wrapper>
               )}
             />
