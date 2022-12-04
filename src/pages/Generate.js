@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import SpinningLoader from "../components/SpinningLoader";
+import ToastMessage from "../components/ToastMessage";
 import { usePublicationContext } from "../context/PublicationContext";
 import { getCommentFeed, getPublication } from "../utils/lensFunction";
 import {
@@ -9,6 +10,9 @@ import {
   getIpfsUrlandUploadPublication,
   getS3UrlfromText,
 } from "../utils/Utils";
+import { toast } from "react-toastify";
+import { useBottomTab } from "../context/BottomTabContext";
+import { TabItems } from "../components/Main/TabItems";
 
 const Page = styled.div`
   width: 100%;
@@ -357,9 +361,8 @@ function Generate() {
       const pubId = (await getPublication("0x59cf", 1)).data.publications
         .items[0].id;
 
-      const comment = await (
-        await getCommentFeed(pubId, 1)
-      ).data.publications.items[0];
+      const comment = await (await getCommentFeed(pubId, 1)).data.publications
+        .items[0];
       console.log({ pubId });
       setPubsId(pubId);
       setPreviousImageUrl(
@@ -374,6 +377,10 @@ function Generate() {
       fetchData();
     }
   }, []);
+
+  const pageIndex = 2;
+  const { onTabChange } = useBottomTab();
+
   return (
     <Page>
       <PageLayout>
@@ -464,6 +471,7 @@ function Generate() {
                             true
                           );
                           setIsloading(false);
+                          onTabChange(TabItems[pageIndex]);
                         }}
                       >
                         <AddToChainBtn>
@@ -482,6 +490,7 @@ function Generate() {
                             true
                           );
                           setIsloading(false);
+                          onTabChange(TabItems[pageIndex]);
                         }}
                       >
                         <AddToChainBtn>
