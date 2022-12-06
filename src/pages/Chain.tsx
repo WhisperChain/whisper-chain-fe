@@ -71,7 +71,9 @@ const Chain = () => {
       for (let index = 0; index < commentsData.length; index++) {
         const comment = commentsData[index];
         const commentObject = {
-          imageUrl: convertIntoIpfsUrl(comment.metadata.media[0].original.url),
+          imageUrl: comment.metadata.media[0]?.original?.url
+            ? convertIntoIpfsUrl(comment.metadata.media[0]?.original?.url)
+            : null,
           profileHandle: comment.profile.handle,
           name: comment.profile.name,
           createdAt: moment(comment.createdAt).format("h:mm a"),
@@ -81,7 +83,9 @@ const Chain = () => {
         commentArray.push(commentObject);
       }
       commentArray.push({
-        imageUrl: convertIntoIpfsUrl(pubItem.metadata.media[0].original.url),
+        imageUrl: pubItem.metadata.media[0]?.original?.url
+          ? convertIntoIpfsUrl(pubItem.metadata.media[0]?.original?.url)
+          : null,
         profileHandle: pubItem.profile.handle,
         name: pubItem.profile.name,
         createdAt: moment(pubItem.createdAt).format("h:mm a"),
@@ -113,14 +117,14 @@ const Chain = () => {
 
       {chainData &&
         chainData.map((comment: any, index: any) => {
-          return (
+          return comment.imageUrl ? (
             <div key={index}>
               <ChainWrapper>
                 <ChainLogo />
               </ChainWrapper>
               <PostImage imageDetails={comment} />
             </div>
-          );
+          ) : null;
         })}
     </ChainContainer>
   );
