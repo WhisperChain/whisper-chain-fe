@@ -137,7 +137,7 @@ export const PostImage: React.FC<Props> = ({ imageDetails }) => {
                 window.open(imageDetails.lensterProfileUrl, "_blank");
               }}
             >
-              <ProfileLogo />
+              <ProfileLogo profileImageUrl={imageDetails.profileImageUrl} />
               <User>
                 <Name>{imageDetails.name || "Lewis"}</Name>
                 <Handle>{imageDetails.profileHandle || "Lewis.xyz"}</Handle>

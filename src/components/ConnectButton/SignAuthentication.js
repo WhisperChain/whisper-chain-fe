@@ -4,13 +4,12 @@ import {
   getAuthentication,
   getChallengeText,
   getProfile,
-  refreshAuthentication,
 } from "../../utils/lensFunction";
 
 function SignAuthentication() {
   const { address } = useAccount();
   const { signMessageAsync } = useSignMessage();
-  let isModalOpen = false;
+  const isModalOpen = React.useRef(false);
 
   const getChallenge = async () => {
     const resp = await getChallengeText(address);
@@ -41,17 +40,16 @@ function SignAuthentication() {
         message: challenge,
       });
       authenticate(signature);
-      isModalOpen = false;
+      isModalOpen.current = false;
     } else {
       alert("Connect Wallet to sign In");
-      isModalOpen = false;
+      isModalOpen.current = false;
     }
   }
 
   useEffect(() => {
-    console.log("in useeffect", isModalOpen);
-    if (!window.localStorage.getItem("refreshToken") && !isModalOpen) {
-      isModalOpen = true;
+    if (!window.localStorage.getItem("refreshToken") && !isModalOpen.current) {
+      isModalOpen.current = true;
       signMsg();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -60,7 +58,7 @@ function SignAuthentication() {
     <div>
       {window.localStorage.getItem("profileId") ? (
         <img
-          src="https://bafybeibteoilghxjxkxpdeakpk3v4qc6w74yz4ozew4u75zuygy4c3sfbe.ipfs.w3s.link/"
+          src={`https://cdn.stamp.fyi/avatar/eth:${address}?s=250`}
           alt="profile"
           style={{ width: 36, height: 36, borderRadius: 18 }}
         />

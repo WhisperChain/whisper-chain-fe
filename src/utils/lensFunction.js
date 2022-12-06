@@ -19,6 +19,7 @@ import {
 } from "./gqlqueries";
 import moment from "moment";
 import { convertIntoIpfsUrl } from "./Utils";
+import ToastMessage from "../components/ToastMessage";
 
 const API_URL = "https://api-mumbai.lens.dev";
 const httpLink = new HttpLink({ uri: API_URL });
@@ -121,6 +122,7 @@ export const getLastCommentsOfPosts = async (profileId) => {
           profileHandle: comment.profile.handle,
           name: comment.profile.name,
           createdAt: moment(comment.createdAt).format("h:mm a"),
+          profileImageUrl: `https://cdn.stamp.fyi/avatar/eth:${comment.profile.ownedBy}?s=250`,
           lensterProfileUrl: `https://testnet.lenster.xyz/u/${comment.profile.handle}`,
           lensterPostUrl: `https://testnet.lenster.xyz/posts/${comment.id}`,
         };
@@ -145,9 +147,7 @@ export const getLastCommentsOfPosts = async (profileId) => {
       comments: commentsArray,
       timeDifference: a.diff(b, "days"),
     });
-    // console.log({ comments, pubId: item.id });
   }
-  console.log({ dataObject });
   return dataObject;
 };
 
@@ -163,8 +163,7 @@ export const setDispatcher = async (profileId) => {
 };
 
 export async function txIndexed(txHash) {
-  console.log({ txHash });
-  const resp = await apolloClient.query({
+  await apolloClient.query({
     query: gql(TRANSACTION_INDEXED),
     variables: {
       request: {
@@ -172,7 +171,6 @@ export async function txIndexed(txHash) {
       },
     },
   });
-  console.log({ resp });
 }
 
 export async function commentViaDispatcher(
@@ -210,27 +208,29 @@ export async function commentViaDispatcher(
 }
 
 export const refreshAuthentication = async () => {
-  const res = await apolloClient.mutate({
-    mutation: gql(REFRESH_AUTHENTICATION),
-    variables: {
-      refreshToken: window.localStorage.getItem("refreshToken"),
-    },
-  });
-  console.log({ res });
-  const { accessToken, refreshToken } = res.data?.refresh;
-  window.localStorage.setItem("accessToken", accessToken);
-  window.localStorage.setItem("refreshToken", refreshToken);
+  if (window.localStorage.getItem("refreshToken")) {
+    const res = await apolloClient.mutate({
+      mutation: gql(REFRESH_AUTHENTICATION),
+      variables: {
+        refreshToken: window.localStorage.getItem("refreshToken"),
+      },
+    });
+    console.log({ res });
+    const { accessToken, refreshToken } = res.data?.refresh;
+    window.localStorage.setItem("accessToken", accessToken);
+    window.localStorage.setItem("refreshToken", refreshToken);
+  } else {
+    ToastMessage({ message: "Connect to Wallet", showCloseBtn: true });
+  }
 };
 
 export const verifyAuthentication = async () => {
-  console.log("verifying auth", window.localStorage.getItem("accessToken"));
   const res = await apolloClient.query({
     query: gql(VERIFY_AUTHENTICATION),
     variables: {
       accessToken: window.localStorage.getItem("accessToken"),
     },
   });
-  console.log({ res });
   return res?.data?.verify;
 };
 

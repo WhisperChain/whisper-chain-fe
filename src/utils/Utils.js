@@ -11,7 +11,6 @@ export const resetLocalStorage = () => {
 };
 
 export const getS3UrlfromText = async (prompt, filter = "") => {
-  console.log(prompt, filter);
   const resp = await fetch(
     `https://whisperchain.xyz/api/whisper/suggestions?prompt=${prompt}&filter=${filter}`,
 

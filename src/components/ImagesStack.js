@@ -157,7 +157,7 @@ const ImagesStack = ({ imageDetails, pub }) => {
         >
           <Details>
             <Left>
-              <ProfileLogo />
+              <ProfileLogo profileImageUrl={imageDetails?.profileImageUrl} />
               <User>
                 <Name>{imageDetails?.name || "Lewis"}</Name>
                 <Handle>{imageDetails?.profileHandle || "Lewis.xyz"}</Handle>

@@ -361,15 +361,14 @@ function Generate() {
       const pubId = (await getPublication("0x59cf", 1)).data.publications
         .items[0].id;
 
-      const comment = await (await getCommentFeed(pubId, 1)).data.publications
-        .items[0];
-      console.log({ pubId });
+      const comment = await (
+        await getCommentFeed(pubId, 1)
+      ).data.publications.items[0];
       setPubsId(pubId);
       setPreviousImageUrl(
         convertIntoIpfsUrl(comment.metadata.media[0].original.url)
       );
     };
-    console.log({ publication });
     if (publication?.id) {
       setPubsId(publication?.id);
       setPreviousImageUrl(publication?.comments?.[0].imageUrl);

@@ -77,6 +77,7 @@ const Chain = () => {
           profileHandle: comment.profile.handle,
           name: comment.profile.name,
           createdAt: moment(comment.createdAt).format("h:mm a"),
+          profileImageUrl: `https://cdn.stamp.fyi/avatar/eth:${comment.profile.ownedBy}?s=250`,
           lensterProfileUrl: `https://testnet.lenster.xyz/u/${comment.profile.handle}`,
           lensterPostUrl: `https://testnet.lenster.xyz/posts/${comment.id}`,
         };
@@ -89,6 +90,7 @@ const Chain = () => {
         profileHandle: pubItem.profile.handle,
         name: pubItem.profile.name,
         createdAt: moment(pubItem.createdAt).format("h:mm a"),
+        profileImageUrl: `https://cdn.stamp.fyi/avatar/eth:${pubItem.profile.ownedBy}?s=250`,
         lensterProfileUrl: `https://testnet.lenster.xyz/u/${pubItem.profile.handle}`,
         lensterPostUrl: `https://testnet.lenster.xyz/posts/${pubItem.id}`,
       });
