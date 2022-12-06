@@ -13,7 +13,7 @@ export const resetLocalStorage = () => {
 export const getS3UrlfromText = async (prompt, filter = "") => {
   console.log(prompt, filter);
   const resp = await fetch(
-    `http://api.whisperchain.xyz/whisper/suggestions?prompt=${prompt}&filter=${filter}`,
+    `https://whisperchain.xyz/api/whisper/suggestions?prompt=${prompt}&filter=${filter}`,
 
     {
       method: "GET",
@@ -26,7 +26,7 @@ export const getS3UrlfromText = async (prompt, filter = "") => {
 
 export const getIpfsUrl = async (url) => {
   const resp = await fetch(
-    `http://api.whisperchain.xyz/whisper?s3_url=${url}`,
+    `https://whisperchain.xyz/api/whisper?s3_url=${url}`,
     {
       method: "GET",
     }
