@@ -1,22 +1,13 @@
-import logo from "./logo.svg";
 import "./App.css";
-
 import React, { useRef } from "react";
 import "./App.css";
 import { chain, configureChains, createClient, WagmiConfig } from "wagmi";
 import { publicProvider } from "wagmi/providers/public";
 import { getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
-import { getPublication } from "./utils/lensFunction";
 import { AuthProvider } from "./context/AuthContext";
 import { BottomTabProvider } from "./context/BottomTabContext";
 import Main from "./components/Main";
-import {
-  commentViaDispatcher,
-  getLastCommentsOfPosts,
-} from "./utils/lensFunction";
-import Login from "./components/Login";
 import "@rainbow-me/rainbowkit/styles.css";
-import { getS3UrlfromText } from "./utils/Utils";
 import { PubProvider } from "./context/PublicationContext";
 
 function App() {

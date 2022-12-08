@@ -1,12 +1,9 @@
-import {
-  commentViaDispatcher,
-  refreshAuthentication,
-  verifyAuthentication,
-} from "./lensFunction";
+import { Constants } from "./Constants";
+import { commentViaDispatcher, refreshAuthentication } from "./lensFunction";
 
 export const resetLocalStorage = () => {
-  window.localStorage.removeItem("accessToken");
-  window.localStorage.removeItem("refreshToken");
+  window.localStorage.removeItem(Constants.LOCAL_STORAGE_ACCESS_TOKEN_KEY);
+  window.localStorage.removeItem(Constants.LOCAL_STORAGE_REFRESH_TOKEN_KEY);
   window.localStorage.removeItem("profileId");
 };
 
@@ -18,7 +15,6 @@ export const getS3UrlfromText = async (prompt, filter = "") => {
       method: "GET",
     }
   );
-  console.log({ resp });
   const responseJSON = await resp.json();
   return responseJSON?.data?.s3_urls;
 };
@@ -30,7 +26,6 @@ export const getIpfsUrl = async (url) => {
       method: "GET",
     }
   );
-  console.log({ resp });
   const responseJSON = await resp.json();
   const contentId = responseJSON.data.cids.metadata;
   const ipfsUrl = `ipfs://${contentId}`;

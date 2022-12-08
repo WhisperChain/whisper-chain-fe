@@ -7,6 +7,7 @@ import AddWhisperBtn from "../components/AddWhisperBtn";
 import { convertIntoIpfsUrl } from "../utils/Utils";
 import moment from "moment";
 import SpinningLoader from "../components/SpinningLoader";
+import { usePublicationContext } from "../context/PublicationContext";
 
 const ChainContainer = styled.div`
   width: 100%;
@@ -55,15 +56,17 @@ const ChainWrapper = styled.div`
 `;
 
 const Chain = () => {
-  const [chainData, setChainData] = React.useState<any>();
+  const [chainData, setChainData] = React.useState();
   const [isLoading, setIsloading] = React.useState(false);
+  const { publication } = usePublicationContext();
 
   React.useEffect(() => {
     const fetchData = async () => {
       setIsloading(true);
-      const pubItem = (await getPublication("0x59cf", 1)).data.publications
-        .items[0];
-      const pubId = pubItem.id;
+      const pubItem =
+        publication ||
+        (await getPublication("0x59cf", 1)).data.publications.items[0];
+      const pubId = publication?.pubId || pubItem.id;
 
       const commentsData = (await getCommentFeed(pubId, 20)).data.publications
         .items;
@@ -76,7 +79,7 @@ const Chain = () => {
             : null,
           profileHandle: comment.profile.handle,
           name: comment.profile.name,
-          createdAt: moment(comment.createdAt).format("h:mm a"),
+          createdAt: moment(comment.createdAt).format("h:mm a") || "",
           profileImageUrl: `https://cdn.stamp.fyi/avatar/eth:${comment.profile.ownedBy}?s=250`,
           lensterProfileUrl: `https://testnet.lenster.xyz/u/${comment.profile.handle}`,
           lensterPostUrl: `https://testnet.lenster.xyz/posts/${comment.id}`,
@@ -89,7 +92,7 @@ const Chain = () => {
           : null,
         profileHandle: pubItem.profile.handle,
         name: pubItem.profile.name,
-        createdAt: moment(pubItem.createdAt).format("h:mm a"),
+        createdAt: moment(pubItem?.createdAt)?.format("h:mm a") || "00:00 am",
         profileImageUrl: `https://cdn.stamp.fyi/avatar/eth:${pubItem.profile.ownedBy}?s=250`,
         lensterProfileUrl: `https://testnet.lenster.xyz/u/${pubItem.profile.handle}`,
         lensterPostUrl: `https://testnet.lenster.xyz/posts/${pubItem.id}`,
@@ -99,6 +102,7 @@ const Chain = () => {
       setIsloading(false);
     };
     fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return isLoading ? (
@@ -114,11 +118,11 @@ const Chain = () => {
           </WhiteText>
         </Message>
 
-        <AddWhisperBtn pageIndex={1} />
+        <AddWhisperBtn pageIndex={1} publication={publication} />
       </MessageBox>
 
       {chainData &&
-        chainData.map((comment: any, index: any) => {
+        chainData.map((comment, index) => {
           return comment.imageUrl ? (
             <div key={index}>
               <ChainWrapper>

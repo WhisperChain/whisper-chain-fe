@@ -358,19 +358,23 @@ function Generate() {
   const [previousImageUrl, setPreviousImageUrl] = React.useState();
   React.useEffect(() => {
     const fetchData = async () => {
-      const pubId = (await getPublication("0x59cf", 1)).data.publications
-        .items[0].id;
+      const pub = (await getPublication("0x59cf", 1)).data.publications
+        .items[0];
+      const pubId = pub.id;
 
       const comment = await (
         await getCommentFeed(pubId, 1)
       ).data.publications.items[0];
       setPubsId(pubId);
       setPreviousImageUrl(
-        convertIntoIpfsUrl(comment.metadata.media[0].original.url)
+        convertIntoIpfsUrl(
+          comment.metadata.media[0].original.url ??
+            pub.metadata.media[0].original.url
+        )
       );
     };
-    if (publication?.id) {
-      setPubsId(publication?.id);
+    if (publication?.pubId) {
+      setPubsId(publication?.pubId);
       setPreviousImageUrl(publication?.comments?.[0].imageUrl);
     } else {
       fetchData();

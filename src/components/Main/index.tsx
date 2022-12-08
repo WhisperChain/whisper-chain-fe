@@ -13,7 +13,6 @@ const Page = styled.div`
 
 export default function Main() {
   const { currentTab } = useBottomTab();
-  console.log({ currentTab });
   const { Component } = currentTab;
   return (
     <Page>

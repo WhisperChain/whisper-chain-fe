@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { useAccount, useSignMessage } from "wagmi";
+import { Constants } from "../../utils/Constants";
 import {
   getAuthentication,
   getChallengeText,
@@ -20,10 +21,15 @@ function SignAuthentication() {
     try {
       const res = await getAuthentication(address, signature);
       const { accessToken, refreshToken } = res.data.authenticate;
-      window.localStorage.setItem("accessToken", accessToken);
-      window.localStorage.setItem("refreshToken", refreshToken);
+      window.localStorage.setItem(
+        Constants.LOCAL_STORAGE_ACCESS_TOKEN_KEY,
+        accessToken
+      );
+      window.localStorage.setItem(
+        Constants.LOCAL_STORAGE_REFRESH_TOKEN_KEY,
+        refreshToken
+      );
       const profileRes = await getProfile(address);
-      console.log(profileRes.data.profiles.items);
       window.localStorage.setItem(
         "profileId",
         profileRes.data.profiles.items[0].id
@@ -48,7 +54,10 @@ function SignAuthentication() {
   }
 
   useEffect(() => {
-    if (!window.localStorage.getItem("refreshToken") && !isModalOpen.current) {
+    if (
+      !window.localStorage.getItem(Constants.LOCAL_STORAGE_REFRESH_TOKEN_KEY) &&
+      !isModalOpen.current
+    ) {
       isModalOpen.current = true;
       signMsg();
     }

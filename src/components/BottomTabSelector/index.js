@@ -22,7 +22,6 @@ const Container = styled.div`
 
 export default function BottomTabSelector() {
   const { currentTab, onTabChange } = useBottomTab();
-  console.log("Selecrted t: ", currentTab);
   return (
     <Container className={styles.container}>
       {TabItems.map((tab) => {

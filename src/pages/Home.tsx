@@ -104,7 +104,6 @@ const Home = () => {
     async function fetchData() {
       setIsloading(true);
       const data = await getLastCommentsOfPosts("0x59cf");
-      console.log("Useeffect", data);
       setPublicationData(data);
       setIsloading(false);
     }
@@ -121,9 +120,8 @@ const Home = () => {
             <ReactFullpage
               licenseKey={"YOUR_KEY_HERE"} // Get one from https://alvarotrigo.com/fullPage/pricing/
               sectionSelector={SECTION_SEL}
-              render={(comp) => (
+              render={(state) => (
                 <ReactFullpage.Wrapper>
-                  {console.log("Render")}
                   {publicationData &&
                     publicationData.map(
                       (
@@ -132,6 +130,7 @@ const Home = () => {
                           comments: { imageUrl: any }[];
                           createdAt: any;
                           timeDifference: any;
+                          metadata: any;
                         },
                         index: any
                       ) => (
@@ -143,6 +142,7 @@ const Home = () => {
                                 {pub?.timeDifference >= 0 ? "Running" : "Ended"}
                               </Status>
                             </PostDetail>
+
                             {pub?.comments[0] ? (
                               <ImagesStack
                                 imageDetails={pub?.comments[0]}
@@ -162,7 +162,7 @@ const Home = () => {
           <LinkWrapper>
             <Link />
           </LinkWrapper>
-          <HomeMessage />
+          <HomeMessage publication={publicationData[0]} />
         </RightSection>
       </HomeSection>
     </Page>

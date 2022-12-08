@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { useBottomTab } from "../context/BottomTabContext";
+import { usePublicationContext } from "../context/PublicationContext";
 import { TabItems } from "./Main/TabItems";
 
 const ButtonBg = styled.div`
@@ -33,12 +34,14 @@ const ButtonText = styled.div`
   color: #111111;
 `;
 
-const AddWhisperBtn = (pageIndex) => {
+const AddWhisperBtn = ({ pageIndex, publication }) => {
+  const { setPublication } = usePublicationContext();
   pageIndex = 1;
   const { onTabChange } = useBottomTab();
   return (
     <ButtonBg
       onClick={() => {
+        setPublication(publication);
         onTabChange(TabItems[pageIndex]);
       }}
     >

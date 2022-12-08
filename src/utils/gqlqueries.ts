@@ -343,7 +343,7 @@ mutation Refresh($refreshToken: Jwt!) {
 export const VERIFY_AUTHENTICATION = `
 query Query($accessToken: Jwt!) {
     verify(request: {
-      "accessToken": $accessToken
+      accessToken: $accessToken
     })
   }
 `;
