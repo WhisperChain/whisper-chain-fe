@@ -6,6 +6,7 @@ import {
   getChallengeText,
   getProfile,
 } from "../../utils/lensFunction";
+import { convertIntoIpfsUrl } from "../../utils/Utils";
 
 function SignAuthentication() {
   const { address } = useAccount();
@@ -30,9 +31,13 @@ function SignAuthentication() {
         refreshToken
       );
       const profileRes = await getProfile(address);
+      const profile = profileRes.data.profiles.items[0];
+      window.localStorage.setItem("profileId", profile.id);
       window.localStorage.setItem(
-        "profileId",
-        profileRes.data.profiles.items[0].id
+        "profileImageUrl",
+        profile.picture
+          ? convertIntoIpfsUrl(profile.picture?.original?.url)
+          : `https://cdn.stamp.fyi/avatar/eth:${profile.ownedBy}?s=250`
       );
     } catch (error) {
       console.log({ error });
@@ -67,7 +72,7 @@ function SignAuthentication() {
     <div>
       {window.localStorage.getItem("profileId") ? (
         <img
-          src={`https://cdn.stamp.fyi/avatar/eth:${address}?s=250`}
+          src={window.localStorage.getItem("profileImageUrl")}
           alt="profile"
           style={{ width: 36, height: 36, borderRadius: 18 }}
         />

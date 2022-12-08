@@ -123,7 +123,9 @@ export const getLastCommentsOfPosts = async (profileId) => {
           profileHandle: comment.profile.handle,
           name: comment.profile.name,
           createdAt: moment(comment.createdAt).format("h:mm a"),
-          profileImageUrl: `https://cdn.stamp.fyi/avatar/eth:${comment.profile.ownedBy}?s=250`,
+          profileImageUrl: comment.profile.picture
+            ? convertIntoIpfsUrl(comment.profile.picture?.original?.url)
+            : `https://cdn.stamp.fyi/avatar/eth:${comment.profile.ownedBy}?s=250`,
           lensterProfileUrl: `https://testnet.lenster.xyz/u/${comment.profile.handle}`,
           lensterPostUrl: `https://testnet.lenster.xyz/posts/${comment.id}`,
         };
@@ -137,6 +139,9 @@ export const getLastCommentsOfPosts = async (profileId) => {
         createdAt: moment(item.createdAt).format("h:mm a"),
         lensterProfileUrl: `https://testnet.lenster.xyz/u/${item.profile.handle}`,
         lensterPostUrl: `https://testnet.lenster.xyz/posts/${item.id}`,
+        profileImageUrl: item.profile.picture
+          ? convertIntoIpfsUrl(item.profile.picture?.original?.url)
+          : `https://cdn.stamp.fyi/avatar/eth:${item.profile.ownedBy}?s=250`,
       });
     }
 

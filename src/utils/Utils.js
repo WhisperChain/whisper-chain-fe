@@ -5,6 +5,7 @@ export const resetLocalStorage = () => {
   window.localStorage.removeItem(Constants.LOCAL_STORAGE_ACCESS_TOKEN_KEY);
   window.localStorage.removeItem(Constants.LOCAL_STORAGE_REFRESH_TOKEN_KEY);
   window.localStorage.removeItem("profileId");
+  window.localStorage.removeItem("profileImageUrl");
 };
 
 export const getS3UrlfromText = async (prompt, filter = "") => {

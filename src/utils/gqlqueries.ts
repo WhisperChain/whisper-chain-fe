@@ -97,6 +97,13 @@ export const GET_PUBLICATIONS = `query Publications($request: PublicationsQueryR
     }
     handle
     ownedBy
+    picture {
+      ... on MediaSet {
+        original {
+          ...MediaFields
+        }
+      }
+    }
   }
 
   fragment PublicationStatsFields on PublicationStats {

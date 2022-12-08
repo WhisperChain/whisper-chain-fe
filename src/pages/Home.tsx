@@ -120,7 +120,7 @@ const Home = () => {
             <ReactFullpage
               licenseKey={"YOUR_KEY_HERE"} // Get one from https://alvarotrigo.com/fullPage/pricing/
               sectionSelector={SECTION_SEL}
-              render={(state) => (
+              render={() => (
                 <ReactFullpage.Wrapper>
                   {publicationData &&
                     publicationData.map(
