@@ -10,6 +10,7 @@ import {
 } from "../utils/Utils";
 import { useBottomTab } from "../context/BottomTabContext";
 import { TabItems } from "../components/Main/TabItems";
+import Image from 'next/image';
 
 const Page = styled.div`
   width: 100%;
@@ -68,12 +69,6 @@ const WhisperImage = styled.div`
   height: 256px;
   filter: drop-shadow(0px 11.52px 14.4px rgba(25, 30, 0, 0.16))
     drop-shadow(0px 1.44248px 1.8031px rgba(44, 52, 0, 0.08));
-`;
-
-const Image = styled.img`
-  border-radius: 48px;
-  width: 256px;
-  height: 256px;
 `;
 
 const PromptSection = styled.div`
@@ -226,15 +221,6 @@ const OutputImageBox = styled.div`
   position: relative;
   width: 396px;
   height: 396px;
-`;
-
-const OutputImage = styled.img`
-  width: 396px;
-  height: 396px;
-  box-sizing: border-box;
-  position: absolute;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 56px;
 `;
 
 const AddToChainBtnWrapper = styled.div`
@@ -391,7 +377,7 @@ function Generate() {
               </Description>
             </Summary>
             <WhisperImage>
-              <Image src={previousImageUrl} alt="Whisper Image" />
+              <Image src={previousImageUrl} width={256} height={256} className="rounded-[48px]" alt="Whisper Image" />
             </WhisperImage>
           </PreviousWhisper>
           <PromptSection>
@@ -458,7 +444,13 @@ function Generate() {
                   </ImageTryOutputTitle>
                   <OutputImageBoxWrapper>
                     <OutputImageBox>
-                      <OutputImage src={url[0]} alt="Whisper Image" />
+                      <Image
+                        src={url[0]}
+                        alt="Whisper Image"
+                        width={396}
+                        height={396}
+                        className="absolute rounded-[56px] border-solid border-[1px] border-[#ffffff33]" 
+                       />
                       <AddToChainBtnWrapper
                         onClick={async () => {
                           setIsloading(true);
@@ -477,7 +469,13 @@ function Generate() {
                       </AddToChainBtnWrapper>
                     </OutputImageBox>
                     <OutputImageBox>
-                      <OutputImage src={url[1]} alt="Whisper Image" />
+                      <Image
+                        src={url[1]}
+                        alt="Whisper Image"
+                        width={396}
+                        height={396}
+                        className="absolute rounded-[56px] border-solid border-[1px] border-[#ffffff33]" 
+                       />
                       <AddToChainBtnWrapper
                         onClick={async () => {
                           setIsloading(true);

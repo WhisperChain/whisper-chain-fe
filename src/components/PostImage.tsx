@@ -1,6 +1,8 @@
 import React from "react";
 import styled from "styled-components";
 import ProfileLogo from "../assets/ProfileLogo";
+import Image from 'next/image';
+
 
 const ImagePost = styled.div`
   display: flex;
@@ -8,15 +10,6 @@ const ImagePost = styled.div`
   align-items: center;
   position: relative;
   overflow: hidden;
-`;
-
-const Image = styled.img`
-  position: relative;
-  width: 512px;
-  height: 512px;
-  display: flex;
-  border-radius: 48px;
-  z-index: 3;
 `;
 
 const Backdrop = styled.div`
@@ -122,7 +115,11 @@ export const PostImage: React.FC<Props> = ({ imageDetails }) => {
         src={imageDetails.imageUrl}
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
-      ></Image>
+        alt="Chain Image"
+        width={512}
+        height={512}
+        className="relative flex z-[3] rounded-[48px]"
+      />
       {hovered && (
         <Backdrop
           onMouseEnter={() => setHovered(true)}

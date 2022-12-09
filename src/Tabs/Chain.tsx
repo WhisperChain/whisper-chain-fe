@@ -7,30 +7,7 @@ import AddWhisperBtn from "../components/AddWhisperBtn";
 import { convertIntoIpfsUrl } from "../utils/Utils";
 import moment from "moment";
 import SpinningLoader from "../components/SpinningLoader";
-
-const ChainContainer = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-`;
-const MessageBox = styled.div`
-  width: 512px;
-  height: 251px;
-  background: radial-gradient(
-    51.4% 51.4% at 48.6% 50%,
-    #16082d 0%,
-    #100324 100%
-  );
-  border: 4px solid rgba(111, 26, 255, 0.24);
-  backdrop-filter: blur(48px);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  border-radius: 48px;
-  box-sizing: border-box;
-`;
+import style from "./Chain.module.css";
 
 const Message = styled.div`
   width: 409px;
@@ -104,8 +81,8 @@ const Chain = () => {
   return isLoading ? (
     <SpinningLoader height="80vh" width="100%" />
   ) : (
-    <ChainContainer>
-      <MessageBox>
+    <div>
+      <div className={`w-[512px] h-[251px] flex flex-col items-center rounded-[48px] ${style.messageBox}`}>
         <Message>
           <WhiteText>
             This was the last image added to the thread, try to describe this
@@ -115,7 +92,7 @@ const Chain = () => {
         </Message>
 
         <AddWhisperBtn pageIndex={1} />
-      </MessageBox>
+      </div>
 
       {chainData &&
         chainData.map((comment: any, index: any) => {
@@ -128,7 +105,7 @@ const Chain = () => {
             </div>
           ) : null;
         })}
-    </ChainContainer>
+    </div>
   );
 };
 

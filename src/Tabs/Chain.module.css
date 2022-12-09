@@ -1,0 +1,5 @@
+.messageBox{
+   background: radial-gradient(51.4% 51.4% at 48.6% 50%, #16082d 0%,#100324 100%);
+   border: 4px solid rgba(111, 26, 255, 0.24);
+   backdrop-filter: blur(48px);
+}

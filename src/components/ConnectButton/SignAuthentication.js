@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { useAccount, useSignMessage } from "wagmi";
+import Image from 'next/image';
 import {
   getAuthentication,
   getChallengeText,
@@ -57,10 +58,12 @@ function SignAuthentication() {
   return (
     <div>
       {window.localStorage.getItem("profileId") ? (
-        <img
+        <Image
           src={`https://cdn.stamp.fyi/avatar/eth:${address}?s=250`}
           alt="profile"
-          style={{ width: 36, height: 36, borderRadius: 18 }}
+          className="rounded-[18px]"
+          width={36}
+          height={36}
         />
       ) : null}
     </div>
