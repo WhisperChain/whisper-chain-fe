@@ -1,8 +1,4 @@
-import {
-  commentViaDispatcher,
-  refreshAuthentication,
-  verifyAuthentication,
-} from "./lensFunction";
+import { commentViaDispatcher, refreshAuthentication } from "./lensFunction";
 
 export const resetLocalStorage = () => {
   window.localStorage.removeItem("accessToken");

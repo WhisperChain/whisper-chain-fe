@@ -1,0 +1,7 @@
+.Page {
+  width: 100%;
+  display: flex;
+  margin: 0 auto;
+  flex-direction: column;
+  align-items: center;
+}

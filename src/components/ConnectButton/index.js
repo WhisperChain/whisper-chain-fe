@@ -2,7 +2,6 @@ import { ConnectButton } from "@rainbow-me/rainbowkit";
 import React from "react";
 import WalletBtn from "../../assets/WalletBtn";
 import { resetLocalStorage } from "../../utils/Utils";
-import "./ConnectButton.css";
 import SignAuthentication from "./SignAuthentication";
 
 const CustomConnectButton = () => {

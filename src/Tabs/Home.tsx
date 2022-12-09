@@ -85,18 +85,6 @@ const Status = styled.div`
 `;
 
 const Home = () => {
-  // const [fullPages, setFullPages] = React.useState([
-  //   {
-  //     text: "Section 1",
-  //   },
-  //   {
-  //     text: "Section 2",
-  //   },
-  //   {
-  //     text: "Section 3",
-  //   },
-  // ]);
-
   const [publicationData, setPublicationData] = React.useState<any>([]);
   const [isLoading, setIsloading] = React.useState(false);
 
