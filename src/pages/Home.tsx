@@ -7,6 +7,8 @@ import ImagesStack from "../components/ImagesStack";
 import Link from "../assets/Link";
 import { getLastCommentsOfPosts } from "../utils/lensFunction";
 import SpinningLoader from "../components/SpinningLoader";
+import moment from "moment";
+import { getTimerClock } from "../utils/Utils";
 
 const Page = styled.div`
   width: 100%;
@@ -137,9 +139,13 @@ const Home = () => {
                         <Posts key={pub?.pubId + index} className={SEL}>
                           <ImageSlider className="slide">
                             <PostDetail>
-                              <Date>{pub?.createdAt}</Date>
+                              <Date>
+                                {moment(pub?.createdAt).format("Do MMMM YYYY")}
+                              </Date>
                               <Status>
-                                {pub?.timeDifference >= 0 ? "Running" : "Ended"}
+                                {pub?.timeDifference < 24 * 60
+                                  ? getTimerClock(pub?.timeDifference)
+                                  : "Ended"}
                               </Status>
                             </PostDetail>
 

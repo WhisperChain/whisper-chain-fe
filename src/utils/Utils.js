@@ -60,3 +60,10 @@ export async function getIpfsUrlandUploadPublication(url, pubId, isInTime) {
 //   const names = ["A", "B", "C", "D", "E"];
 //   Math.random();
 // };
+
+export const getTimerClock = (timeDifference) => {
+  const timeRemaining = 24 * 60 - timeDifference;
+  const hours = Math.floor(timeRemaining / 60);
+  const minutes = timeRemaining % 60;
+  return `${hours}h : ${minutes}m `;
+};
