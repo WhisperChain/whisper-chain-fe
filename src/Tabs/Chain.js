@@ -102,7 +102,7 @@ const Chain = () => {
           </WhiteText>
         </Message>
 
-        <AddWhisperBtn pageIndex={1} />
+        <AddWhisperBtn pageIndex={1} publication={publication} />
       </div>
       {chainData &&
         chainData.map((comment, index) => {

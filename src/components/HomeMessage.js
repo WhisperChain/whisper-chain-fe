@@ -38,7 +38,7 @@ const Bold = styled.span`
   font-weight: bold;
 `;
 
-const HomeMessage = (publication: any) => {
+const HomeMessage = ({ publication }) => {
   return (
     <MessageBox>
       <Message>

@@ -10,7 +10,7 @@ import {
 } from "../utils/Utils";
 import { useBottomTab } from "../context/BottomTabContext";
 import { TabItems } from "../components/Main/TabItems";
-import Image from 'next/image';
+import Image from "next/image";
 
 const Page = styled.div`
   width: 100%;
@@ -381,7 +381,13 @@ function Generate() {
               </Description>
             </Summary>
             <WhisperImage>
-              <Image src={previousImageUrl} width={256} height={256} className="rounded-[48px]" alt="Whisper Image" />
+              <Image
+                src={previousImageUrl}
+                width={256}
+                height={256}
+                className="rounded-[48px]"
+                alt="Whisper Image"
+              />
             </WhisperImage>
           </PreviousWhisper>
           <PromptSection>
@@ -403,8 +409,10 @@ function Generate() {
                 setSelectedFilter(e.target.value);
               }}
             >
-              {filterOptions.map((option,index) => (
-                <option key={index} value={option.value}>{option.label}</option>
+              {filterOptions.map((option, index) => (
+                <option key={index} value={option.value}>
+                  {option.label}
+                </option>
               ))}
             </SelectBox>
           </FilterSection>
@@ -453,8 +461,8 @@ function Generate() {
                         alt="Whisper Image"
                         width={396}
                         height={396}
-                        className="absolute rounded-[56px] border-solid border-[1px] border-[#ffffff33]" 
-                       />
+                        className="absolute rounded-[56px] border-solid border-[1px] border-[#ffffff33]"
+                      />
                       <AddToChainBtnWrapper
                         onClick={async () => {
                           setIsloading(true);
@@ -478,8 +486,8 @@ function Generate() {
                         alt="Whisper Image"
                         width={396}
                         height={396}
-                        className="absolute rounded-[56px] border-solid border-[1px] border-[#ffffff33]" 
-                       />
+                        className="absolute rounded-[56px] border-solid border-[1px] border-[#ffffff33]"
+                      />
                       <AddToChainBtnWrapper
                         onClick={async () => {
                           setIsloading(true);
