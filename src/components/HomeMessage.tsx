@@ -38,14 +38,14 @@ const Bold = styled.span`
   font-weight: bold;
 `;
 
-const HomeMessage = () => {
+const HomeMessage = (publication: any) => {
   return (
     <MessageBox>
       <Message>
         <WhiteText>Hey there 👋,</WhiteText>
         <WhiteText>
           Welcome to <Bold>Whisper Chain.</Bold> This is our take on chinese
-          whisper. You’re on the homepage where you will see daily chains that
+          whisper. You're on the homepage where you will see daily chains that
           are started by us
         </WhiteText>
         <br />
@@ -56,7 +56,7 @@ const HomeMessage = () => {
         <br />
         <WhiteText>Go ahead, give it a try?</WhiteText>
       </Message>
-      <AddWhisperBtn pageIndex={1} />
+      <AddWhisperBtn pageIndex={1} publication={publication} />
     </MessageBox>
   );
 };

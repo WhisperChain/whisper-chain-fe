@@ -8,6 +8,7 @@ import { convertIntoIpfsUrl } from "../utils/Utils";
 import moment from "moment";
 import SpinningLoader from "../components/SpinningLoader";
 import style from "./Chain.module.css";
+import { usePublicationContext } from "../context/PublicationContext";
 
 const Message = styled.div`
   width: 409px;
@@ -32,15 +33,18 @@ const ChainWrapper = styled.div`
 `;
 
 const Chain = () => {
-  const [chainData, setChainData] = React.useState<any>();
+  const [chainData, setChainData] = React.useState();
   const [isLoading, setIsloading] = React.useState(false);
+  const { publication } = usePublicationContext();
 
   React.useEffect(() => {
     const fetchData = async () => {
       setIsloading(true);
-      const pubItem = (await getPublication("0x59cf", 1)).data.publications
-        .items[0];
-      const pubId = pubItem.id;
+      const pubItem =
+        Object.keys(publication).length > 0
+          ? publication
+          : (await getPublication("0x59cf", 1)).data.publications.items[0];
+      const pubId = publication?.pubId || pubItem.id;
 
       const commentsData = (await getCommentFeed(pubId, 20)).data.publications
         .items;
@@ -53,8 +57,10 @@ const Chain = () => {
             : null,
           profileHandle: comment.profile.handle,
           name: comment.profile.name,
-          createdAt: moment(comment.createdAt).format("h:mm a"),
-          profileImageUrl: `https://cdn.stamp.fyi/avatar/eth:${comment.profile.ownedBy}?s=250`,
+          createdAt: moment(comment.createdAt).format("h:mm a") || "",
+          profileImageUrl: comment.profile.picture
+            ? convertIntoIpfsUrl(comment.profile.picture?.original?.url)
+            : `https://cdn.stamp.fyi/avatar/eth:${comment.profile.ownedBy}?s=250`,
           lensterProfileUrl: `https://testnet.lenster.xyz/u/${comment.profile.handle}`,
           lensterPostUrl: `https://testnet.lenster.xyz/posts/${comment.id}`,
         };
@@ -66,8 +72,10 @@ const Chain = () => {
           : null,
         profileHandle: pubItem.profile.handle,
         name: pubItem.profile.name,
-        createdAt: moment(pubItem.createdAt).format("h:mm a"),
-        profileImageUrl: `https://cdn.stamp.fyi/avatar/eth:${pubItem.profile.ownedBy}?s=250`,
+        createdAt: moment(pubItem?.createdAt)?.format("h:mm a") || "00:00 am",
+        profileImageUrl: pubItem.profile.picture
+          ? convertIntoIpfsUrl(pubItem.profile.picture?.original?.url)
+          : `https://cdn.stamp.fyi/avatar/eth:${pubItem.profile.ownedBy}?s=250`,
         lensterProfileUrl: `https://testnet.lenster.xyz/u/${pubItem.profile.handle}`,
         lensterPostUrl: `https://testnet.lenster.xyz/posts/${pubItem.id}`,
       });
@@ -76,13 +84,16 @@ const Chain = () => {
       setIsloading(false);
     };
     fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return isLoading ? (
     <SpinningLoader height="80vh" width="100%" />
   ) : (
     <div>
-      <div className={`w-[512px] h-[251px] flex flex-col items-center rounded-[48px] ${style.messageBox}`}>
+      <div
+        className={`w-[512px] h-[251px] flex flex-col items-center rounded-[48px] ${style.messageBox}`}
+      >
         <Message>
           <WhiteText>
             This was the last image added to the thread, try to describe this
@@ -93,9 +104,8 @@ const Chain = () => {
 
         <AddWhisperBtn pageIndex={1} />
       </div>
-
       {chainData &&
-        chainData.map((comment: any, index: any) => {
+        chainData.map((comment, index) => {
           return comment.imageUrl ? (
             <div key={index}>
               <ChainWrapper>

@@ -1,11 +1,13 @@
 import React, { useEffect } from "react";
 import { useAccount, useSignMessage } from "wagmi";
-import Image from 'next/image';
+import Image from "next/image";
+import { Constants } from "../../utils/Constants";
 import {
   getAuthentication,
   getChallengeText,
   getProfile,
 } from "../../utils/lensFunction";
+import { convertIntoIpfsUrl } from "../../utils/Utils";
 
 function SignAuthentication() {
   const { address } = useAccount();
@@ -21,13 +23,22 @@ function SignAuthentication() {
     try {
       const res = await getAuthentication(address, signature);
       const { accessToken, refreshToken } = res.data.authenticate;
-      window.localStorage.setItem("accessToken", accessToken);
-      window.localStorage.setItem("refreshToken", refreshToken);
-      const profileRes = await getProfile(address);
-      console.log(profileRes.data.profiles.items);
       window.localStorage.setItem(
-        "profileId",
-        profileRes.data.profiles.items[0].id
+        Constants.LOCAL_STORAGE_ACCESS_TOKEN_KEY,
+        accessToken
+      );
+      window.localStorage.setItem(
+        Constants.LOCAL_STORAGE_REFRESH_TOKEN_KEY,
+        refreshToken
+      );
+      const profileRes = await getProfile(address);
+      const profile = profileRes.data.profiles.items[0];
+      window.localStorage.setItem("profileId", profile.id);
+      window.localStorage.setItem(
+        "profileImageUrl",
+        profile.picture
+          ? convertIntoIpfsUrl(profile.picture?.original?.url)
+          : `https://cdn.stamp.fyi/avatar/eth:${profile.ownedBy}?s=250`
       );
     } catch (error) {
       console.log({ error });
@@ -49,7 +60,10 @@ function SignAuthentication() {
   }
 
   useEffect(() => {
-    if (!window.localStorage.getItem("refreshToken") && !isModalOpen.current) {
+    if (
+      !window.localStorage.getItem(Constants.LOCAL_STORAGE_REFRESH_TOKEN_KEY) &&
+      !isModalOpen.current
+    ) {
       isModalOpen.current = true;
       signMsg();
     }
@@ -59,7 +73,7 @@ function SignAuthentication() {
     <div>
       {window.localStorage.getItem("profileId") ? (
         <Image
-          src={`https://cdn.stamp.fyi/avatar/eth:${address}?s=250`}
+          src={window.localStorage.getItem("profileImageUrl")}
           alt="profile"
           className="rounded-[18px]"
           width={36}

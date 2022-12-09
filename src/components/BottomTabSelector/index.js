@@ -4,7 +4,6 @@ import styles from "./BottomTabSelector.module.css";
 
 export default function BottomTabSelector() {
   const { currentTab, onTabChange } = useBottomTab();
-  console.log("Selecrted t: ", currentTab);
   return (
     <div className={styles.container}>
       {TabItems.map((tab, index) => {

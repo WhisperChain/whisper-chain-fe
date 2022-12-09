@@ -7,6 +7,8 @@ import ImagesStack from "../components/ImagesStack";
 import Link from "../assets/Link";
 import { getLastCommentsOfPosts } from "../utils/lensFunction";
 import SpinningLoader from "../components/SpinningLoader";
+import moment from "moment";
+import { getTimerClock } from "../utils/Utils";
 
 const Page = styled.div`
   width: 100%;
@@ -92,7 +94,6 @@ const Home = () => {
     async function fetchData() {
       setIsloading(true);
       const data = await getLastCommentsOfPosts("0x59cf");
-      console.log("Useeffect", data);
       setPublicationData(data);
       setIsloading(false);
     }
@@ -109,9 +110,8 @@ const Home = () => {
             <ReactFullpage
               licenseKey={"YOUR_KEY_HERE"} // Get one from https://alvarotrigo.com/fullPage/pricing/
               sectionSelector={SECTION_SEL}
-              render={(comp) => (
+              render={() => (
                 <ReactFullpage.Wrapper>
-                  {console.log("Render")}
                   {publicationData &&
                     publicationData.map(
                       (
@@ -120,17 +120,23 @@ const Home = () => {
                           comments: { imageUrl: any }[];
                           createdAt: any;
                           timeDifference: any;
+                          metadata: any;
                         },
                         index: any
                       ) => (
                         <Posts key={pub?.pubId + index} className={SEL}>
                           <ImageSlider className="slide">
                             <PostDetail>
-                              <Date>{pub?.createdAt}</Date>
+                              <Date>
+                                {moment(pub?.createdAt).format("Do MMMM YYYY")}
+                              </Date>
                               <Status>
-                                {pub?.timeDifference >= 0 ? "Running" : "Ended"}
+                                {pub?.timeDifference < 24 * 60
+                                  ? getTimerClock(pub?.timeDifference)
+                                  : "Ended"}
                               </Status>
                             </PostDetail>
+
                             {pub?.comments[0] ? (
                               <ImagesStack
                                 imageDetails={pub?.comments[0]}
@@ -150,7 +156,7 @@ const Home = () => {
           <LinkWrapper>
             <Link />
           </LinkWrapper>
-          <HomeMessage />
+          <HomeMessage publication={publicationData[0]} />
         </RightSection>
       </HomeSection>
     </Page>

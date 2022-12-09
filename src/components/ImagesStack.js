@@ -107,7 +107,6 @@ const ImagesStack = ({ imageDetails, pub }) => {
   const [hovered, setHovered] = React.useState(false);
   const { onTabChange } = useBottomTab();
   const { setPublication } = usePublicationContext();
-  console.log("Src", imageDetails);
   return (
     <StackedImages>
       {imageDetails?.imageUrl && (

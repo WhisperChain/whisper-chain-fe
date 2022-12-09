@@ -97,6 +97,13 @@ export const GET_PUBLICATIONS = `query Publications($request: PublicationsQueryR
     }
     handle
     ownedBy
+    picture {
+      ... on MediaSet {
+        original {
+          ...MediaFields
+        }
+      }
+    }
   }
 
   fragment PublicationStatsFields on PublicationStats {
@@ -343,7 +350,7 @@ mutation Refresh($refreshToken: Jwt!) {
 export const VERIFY_AUTHENTICATION = `
 query Query($accessToken: Jwt!) {
     verify(request: {
-      "accessToken": $accessToken
+      accessToken: $accessToken
     })
   }
 `;
