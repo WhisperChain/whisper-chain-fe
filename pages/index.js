@@ -1,3 +1,4 @@
+import '@rainbow-me/rainbowkit/styles.css';
 import { getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import { useRef } from "react";
 import { chain, configureChains, createClient, WagmiConfig } from "wagmi";
