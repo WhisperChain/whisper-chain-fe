@@ -1,16 +1,13 @@
 import React from "react";
 import styled from "styled-components";
 import SpinningLoader from "../components/SpinningLoader";
-import ToastMessage from "../components/ToastMessage";
 import { usePublicationContext } from "../context/PublicationContext";
 import { getCommentFeed, getPublication } from "../utils/lensFunction";
 import {
-  getIpfsUrl,
   convertIntoIpfsUrl,
   getIpfsUrlandUploadPublication,
   getS3UrlfromText,
 } from "../utils/Utils";
-import { toast } from "react-toastify";
 import { useBottomTab } from "../context/BottomTabContext";
 import { TabItems } from "../components/Main/TabItems";
 
@@ -375,6 +372,7 @@ function Generate() {
     } else {
       fetchData();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const pageIndex = 2;
