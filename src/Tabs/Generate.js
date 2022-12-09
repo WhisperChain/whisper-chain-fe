@@ -399,8 +399,8 @@ function Generate() {
                 setSelectedFilter(e.target.value);
               }}
             >
-              {filterOptions.map((option) => (
-                <option value={option.value}>{option.label}</option>
+              {filterOptions.map((option,index) => (
+                <option key={index} value={option.value}>{option.label}</option>
               ))}
             </SelectBox>
           </FilterSection>

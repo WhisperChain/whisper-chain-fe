@@ -7,10 +7,11 @@ export default function BottomTabSelector() {
   console.log("Selecrted t: ", currentTab);
   return (
     <div className={styles.container}>
-      {TabItems.map((tab) => {
+      {TabItems.map((tab, index) => {
         const isSelected = tab.id === currentTab.id;
         return (
           <div
+            key={index}
             onClick={() => onTabChange(tab)}
             id={tab.id}
             className={`${styles.tabContainer} ${
