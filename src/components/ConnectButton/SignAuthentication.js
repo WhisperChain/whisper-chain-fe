@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useAccount, useSignMessage } from "wagmi";
 import Image from "next/image";
 import { Constants } from "../../utils/Constants";
@@ -6,12 +6,19 @@ import {
   getAuthentication,
   getChallengeText,
   getProfile,
+  refreshAuthentication,
+  setDispatcher,
 } from "../../utils/lensFunction";
-import { convertIntoIpfsUrl } from "../../utils/Utils";
+import { getProfileImage } from "../../utils/Utils";
+import SignTypedData from "./SignTypedData";
 
 function SignAuthentication() {
   const { address } = useAccount();
+  const typedDataRef = React.useRef({});
+  const [typedData, setTypedData] = useState(typedDataRef.current);
+  const enableDispatcherTxnId = React.useRef();
   const { signMessageAsync } = useSignMessage();
+  const dispatcher = React.useRef(null);
   const isModalOpen = React.useRef(false);
 
   const getChallenge = async () => {
@@ -33,13 +40,9 @@ function SignAuthentication() {
       );
       const profileRes = await getProfile(address);
       const profile = profileRes.data.profiles.items[0];
+      dispatcher.current = profile.dispatcher;
       window.localStorage.setItem("profileId", profile.id);
-      window.localStorage.setItem(
-        "profileImageUrl",
-        profile.picture
-          ? convertIntoIpfsUrl(profile.picture?.original?.url)
-          : `https://cdn.stamp.fyi/avatar/eth:${profile.ownedBy}?s=250`
-      );
+      window.localStorage.setItem("profile", JSON.stringify(profile));
     } catch (error) {
       console.log({ error });
     }
@@ -59,6 +62,20 @@ function SignAuthentication() {
     }
   }
 
+  const enableDispatcher = async () => {
+    refreshAuthentication();
+    const res = await setDispatcher(window.localStorage.getItem("profileId"));
+    enableDispatcherTxnId.current = res.data?.createSetDispatcherTypedData?.id;
+    const dispatcherTypedData =
+      res.data?.createSetDispatcherTypedData?.typedData;
+    delete dispatcherTypedData.domain.__typename;
+    delete dispatcherTypedData.types.__typename;
+    delete dispatcherTypedData.value.__typename;
+
+    typedDataRef.current = dispatcherTypedData;
+    setTypedData(typedDataRef.current);
+  };
+
   useEffect(() => {
     if (
       !window.localStorage.getItem(Constants.LOCAL_STORAGE_REFRESH_TOKEN_KEY) &&
@@ -69,17 +86,32 @@ function SignAuthentication() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
   return (
     <div>
       {window.localStorage.getItem("profileId") ? (
         <Image
-          src={window.localStorage.getItem("profileImageUrl")}
+          src={getProfileImage()}
           alt="profile"
           className="rounded-[18px]"
           width={36}
           height={36}
         />
       ) : null}
+      {JSON.parse(window.localStorage.getItem("profile"))?.dispatcher
+        ?.address ? null : (
+        <div>
+          <button style={{ color: "white" }} onClick={enableDispatcher}>
+            Enable Dispatcher
+          </button>
+          {Object.keys(typedData)?.length > 0 ? (
+            <SignTypedData
+              typedData={typedDataRef.current}
+              id={enableDispatcherTxnId.current}
+            />
+          ) : null}
+        </div>
+      )}
     </div>
   );
 }
