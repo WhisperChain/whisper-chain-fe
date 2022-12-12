@@ -38,7 +38,7 @@ const Bold = styled.span`
   font-weight: bold;
 `;
 
-const HomeMessage = ({ publication }) => {
+const HomeMessage = ({ publication, currentSlideIndex }) => {
   return (
     <MessageBox>
       <Message>
@@ -55,6 +55,8 @@ const HomeMessage = ({ publication }) => {
         </WhiteText>
         <br />
         <WhiteText>Go ahead, give it a try?</WhiteText>
+        <br />
+        <WhiteText>Current Slide Index - {currentSlideIndex}</WhiteText>
       </Message>
       <AddWhisperBtn pageIndex={1} publication={publication} />
     </MessageBox>

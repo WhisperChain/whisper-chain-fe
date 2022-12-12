@@ -1,6 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-import ReactFullpage from "@fullpage/react-fullpage";
 
 import HomeMessage from "../components/HomeMessage";
 import ImagesStack from "../components/ImagesStack";
@@ -9,6 +8,18 @@ import { getLastCommentsOfPosts } from "../utils/lensFunction";
 import SpinningLoader from "../components/SpinningLoader";
 import moment from "moment";
 import { getTimerClock } from "../utils/Utils";
+
+
+// Import Swiper React components
+import { Swiper, SwiperSlide } from 'swiper/react';
+
+// Import Swiper styles
+import "swiper/css";
+import "swiper/css/effect-creative";
+
+// import required modules
+import { Mousewheel, EffectCreative } from "swiper";
+
 
 const Page = styled.div`
   width: 100%;
@@ -29,6 +40,7 @@ const RightSection = styled.div`
   top: 220px;
   right: 0;
   transform: translateX(-50%);
+  z-index: 2;
 `;
 const LinkWrapper = styled.div`
   position: fixed;
@@ -41,6 +53,9 @@ const SECTION_SEL = `.${SEL}`;
 
 const Posts = styled.div`
   width: 100%;
+  left: 16em;
+  position: absolute;
+  top: 0;
 `;
 
 const ImageSlider = styled.div`
@@ -89,6 +104,7 @@ const Status = styled.div`
 const Home = () => {
   const [publicationData, setPublicationData] = React.useState<any>([]);
   const [isLoading, setIsloading] = React.useState(false);
+  const [currentSlideIndex, setCurrentSlideIndex] = React.useState(0);
 
   React.useEffect(() => {
     async function fetchData() {
@@ -104,62 +120,74 @@ const Home = () => {
     <SpinningLoader height="80vh" width="80%" />
   ) : (
     <Page>
-      <HomeSection>
+      <HomeSection id="home-section">
         <LeftSection>
-          {publicationData && publicationData.length > 0 && (
-            <ReactFullpage
-              licenseKey={"YOUR_KEY_HERE"} // Get one from https://alvarotrigo.com/fullPage/pricing/
-              sectionSelector={SECTION_SEL}
-              render={() => (
-                <ReactFullpage.Wrapper>
-                  {publicationData &&
-                    publicationData.map(
-                      (
-                        pub: {
-                          pubId: any;
-                          comments: { imageUrl: any }[];
-                          createdAt: any;
-                          timeDifference: any;
-                          metadata: any;
-                        },
-                        index: any
-                      ) => (
-                        <Posts key={pub?.pubId + index} className={SEL}>
-                          <ImageSlider className="slide">
-                            <PostDetail>
-                              <Date>
-                                {moment(pub?.createdAt).format("Do MMMM YYYY")}
-                              </Date>
-                              <Status>
-                                {pub?.timeDifference < 24 * 60
-                                  ? getTimerClock(pub?.timeDifference)
-                                  : "Ended"}
-                              </Status>
-                            </PostDetail>
+          <Swiper
+            spaceBetween={50}
+            slidesPerView={1}
+            direction={"vertical"}
+            mousewheel={{
+              eventsTarget: '#home-section',
+            }}
+            effect={"creative"}
+            creativeEffect={{
+              prev: {
+                translate: [0, "-100%", 0],
+              },
+              next: {
+                translate: [0, "100%", 0],
+              },
+            }}
+            modules={[Mousewheel, EffectCreative]}
+            onSlideChange={(swiper) => setCurrentSlideIndex(swiper.activeIndex)}
+          >
+            {publicationData &&
+              publicationData.map(
+                (
+                  pub: {
+                    pubId: any;
+                    comments: { imageUrl: any }[];
+                    createdAt: any;
+                    timeDifference: any;
+                    metadata: any;
+                  },
+                  index: any
+                ) => (
+                  <SwiperSlide key={pub?.pubId + index}>
+                    <Posts className={SEL}>
+                      <ImageSlider className="slide">
+                        <PostDetail>
+                          <Date>
+                            {moment(pub?.createdAt).format("Do MMMM YYYY")}
+                          </Date>
+                          <Status>
+                            {pub?.timeDifference < 24 * 60
+                              ? getTimerClock(pub?.timeDifference)
+                              : "Ended"}
+                          </Status>
+                        </PostDetail>
 
-                            {pub?.comments[0] ? (
-                              <ImagesStack
-                                imageDetails={pub?.comments[0]}
-                                pub={pub}
-                              />
-                            ) : null}
-                          </ImageSlider>
-                        </Posts>
-                      )
-                    )}
-                </ReactFullpage.Wrapper>
+                        {pub?.comments[0] ? (
+                          <ImagesStack
+                            imageDetails={pub?.comments[0]}
+                            pub={pub}
+                          />
+                        ) : null}
+                      </ImageSlider>
+                    </Posts>
+                  </SwiperSlide>
+                )
               )}
-            />
-          )}
+          </Swiper>
         </LeftSection>
         <RightSection>
           <LinkWrapper>
             <Link />
           </LinkWrapper>
-          <HomeMessage publication={publicationData[0]} />
+          <HomeMessage publication={publicationData[0]} currentSlideIndex={currentSlideIndex} />
         </RightSection>
       </HomeSection>
-    </Page>
+    </Page >
   );
 };
 
