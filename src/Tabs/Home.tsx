@@ -9,9 +9,8 @@ import SpinningLoader from "../components/SpinningLoader";
 import moment from "moment";
 import { getTimerClock } from "../utils/Utils";
 
-
 // Import Swiper React components
-import { Swiper, SwiperSlide } from 'swiper/react';
+import { Swiper, SwiperSlide } from "swiper/react";
 
 // Import Swiper styles
 import "swiper/css";
@@ -19,7 +18,6 @@ import "swiper/css/effect-creative";
 
 // import required modules
 import { Mousewheel, EffectCreative } from "swiper";
-
 
 const Page = styled.div`
   width: 100%;
@@ -127,7 +125,7 @@ const Home = () => {
             slidesPerView={1}
             direction={"vertical"}
             mousewheel={{
-              eventsTarget: '#home-section',
+              eventsTarget: "#home-section",
             }}
             effect={"creative"}
             creativeEffect={{
@@ -184,10 +182,13 @@ const Home = () => {
           <LinkWrapper>
             <Link />
           </LinkWrapper>
-          <HomeMessage publication={publicationData[0]} currentSlideIndex={currentSlideIndex} />
+          <HomeMessage
+            publication={publicationData[currentSlideIndex]}
+            currentSlideIndex={currentSlideIndex}
+          />
         </RightSection>
       </HomeSection>
-    </Page >
+    </Page>
   );
 };
 
