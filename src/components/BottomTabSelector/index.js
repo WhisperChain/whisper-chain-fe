@@ -17,6 +17,7 @@ export default function BottomTabSelector() {
               isSelected ? styles.selectedTab : {}
             }`}
           >
+            {tab.Image()}
             <div>{tab.tabName}</div>
           </div>
         );
