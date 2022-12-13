@@ -1,41 +1,35 @@
 import React from "react";
-import styled from "styled-components";
 import ChainLogo from "../assets/ChainLogo";
 import { PostImage } from "../components/PostImage";
 import { getCommentFeed, getPublication } from "../utils/lensFunction";
 import AddWhisperBtn from "../components/AddWhisperBtn";
-import { convertIntoIpfsUrl } from "../utils/Utils";
+import { convertIntoIpfsUrl, timer } from "../utils/Utils";
 import moment from "moment";
 import SpinningLoader from "../components/SpinningLoader";
 import style from "./Chain.module.css";
 import { usePublicationContext } from "../context/PublicationContext";
+import InfoLogo from "../assets/InfoLogo";
+import { Tooltip } from 'react-tooltip';
+import 'react-tooltip/dist/react-tooltip.css';
 
-const Message = styled.div`
-  width: 409px;
-  display: flex;
-  flex-direction: column;
-  margin-top: 40px;
-`;
-
-const WhiteText = styled.div`
-  font-style: normal;
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 150%;
-  color: #e7d9ff;
-`;
-
-const ChainWrapper = styled.div`
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
 
 const Chain = () => {
   const [chainData, setChainData] = React.useState();
   const [isLoading, setIsloading] = React.useState(false);
   const { publication } = usePublicationContext();
+  const [firstCreatedAt,setFirstCreatedAt] = React.useState();
+  const [infoContainer,setInfoConatiner] = React.useState(true);
+  // console.log(firstCreatedAt);
+   const [hours, minutes] = timer("2022-12-14");
+  // const handleInfoHover = (hoverstate) => {
+  //   if(hoverstate){
+  //     return setInfoConatiner(true);
+  //   }
+  //   else{
+  //     return setInfoConatiner(false);
+  //   }
+  // }
+  
 
   React.useEffect(() => {
     const fetchData = async () => {
@@ -80,6 +74,7 @@ const Chain = () => {
         lensterPostUrl: `https://testnet.lenster.xyz/posts/${pubItem.id}`,
       });
 
+      setFirstCreatedAt(pubItem.createdAt);
       setChainData(commentArray);
       setIsloading(false);
     };
@@ -128,17 +123,45 @@ const Chain = () => {
           </svg>
           <span className="ml-[10px]">Go to Last image</span>
         </a>
+      <div className="flex flex-col items-start absolute left-[10%] decoration-white">
+        <div className="h-[22px] not-italic font-extrabold text-[16px] leading-[140%] tracking-wide text-[#dddddd] mb-[7px]">
+          {moment(firstCreatedAt).format("Do MMMM YYYY")}
+        </div>
+        <div className="flex justify-center items-center h-[16px] not-italic font-normal text-[16px] leading-[100%] tracking-wide text-[#dddddd]">
+          {(hours+ minutes) < 0
+            ? "Ended"
+            : 
+            <div className="flex justify-center items-center">
+              <div className={`flex justify-center items-center w-[40px] h-[20px] bg-[#6F1AFF] rounded-[4.92188px] backdrop-blur-sm ${style.timerText} text-[11px] mr-[5px]`}>{hours} h</div>
+              :
+              <div className={`flex justify-center items-center w-[40px] h-[20px] bg-[#6F1AFF] rounded-[4.92188px] backdrop-blur-sm ${style.timerText} text-[11px] mx-[5px]`}>{minutes} m</div>
+            </div>
+          }
+          <div id="custom-inline-styles" >
+            <InfoLogo/>
+          </div>
+          <Tooltip anchorId="custom-inline-styles"
+              events={['hover']} 
+              style={{ display:"flex",position:"relative" , backgroundColor: "rgba(19, 9, 36, 0.5)", color: "#222", alignItems: "flex-start",
+              backdropFilter:"blur(12px)",width: "343px",height: "120px",zIndex:10, gap:"16px",padding: "12px", borderRadius:"24px", top:"43px",left:"-19px"}}
+              // className="flex items-start z-10 p-[12px] gap-[16px] relative w-fit h-[120px] rounded-[24px] backdrop-blur-sm left-[-16px] top-[41px]"
+              content= {<div  className="flex items-start z-10 p-[12px] gap-[16px] relative decoration-white ">
+                  <InfoLogo/>
+                  <p>Proceeds from all collects, within 24 hours from the begining, will be distributed equally to all the participants of this chain.</p>
+                </div>}
+            />
+        </div>
       </div>
       <div
         className={`w-[512px] h-[251px] flex flex-col items-center rounded-[48px] ${style.messageBox}`}
       >
-        <Message>
-          <WhiteText>
+        <div className="flex flex-col w-[409px] mt-[40px]">
+          <div className="not-italic text-[#e7d9ff] text-[16px] leading-[150%] font-normal">
             This was the last image added to the thread, try to describe this
             image in your own words as best you can, and add your generation to
             this thread.
-          </WhiteText>
-        </Message>
+          </div>
+        </div>
 
         <AddWhisperBtn pageIndex={1} publication={publication} />
       </div>
@@ -146,14 +169,15 @@ const Chain = () => {
         chainData.map((comment, index) => {
           return comment.imageUrl ? (
             <div key={index}>
-              <ChainWrapper>
+              <div className="flex w-full items-center justify-center">
                 <ChainLogo />
-              </ChainWrapper>
+              </div>
               <PostImage imageDetails={comment} />
             </div>
           ) : null;
         })}
     </div>
+  </div>
   );
 };
 

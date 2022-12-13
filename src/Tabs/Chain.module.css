@@ -15,3 +15,21 @@
    cursor: pointer;
    opacity: 0.4;
 }
+
+.timerText {
+   font-family: 'Space Mono';
+}
+
+.tooltip {
+   display: flex;
+   flex-direction: row;
+   align-items: flex-start;
+   padding: 12px;
+   gap: 16px;
+   position: relative;
+   width: 343px;
+   height: 120px;
+   background: rgba(19, 9, 36, 0.5);
+   backdrop-filter: blur(12px);
+   border-radius: 24px;
+}
