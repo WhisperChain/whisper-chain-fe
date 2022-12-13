@@ -7,9 +7,40 @@
     align-items: center;
     z-index: 1000000;
 }
+
 .DropdownBtn{
     box-shadow: 0px 8px 32px rgba(29, 155, 240, 0.32), inset 0px -4px 8px rgba(255, 255, 255, 0.6), inset 0px -8px 16px rgba(29, 155, 240, 0.2);
 }
+
 .SignInbtn{
     box-shadow: 0px 8px 32px rgba(111, 26, 255, 0.32), inset 0px -4px 8px rgba(255, 255, 255, 0.6), inset 0px -8px 16px rgba(71, 0, 192, 0.2);
+}
+
+.ModalContainer{
+        font-family: 'Satoshi Variable';
+        font-style: normal;
+        font-weight: 700;
+        font-size: 16px;
+        line-height: 160%;
+        text-align: center;
+        font-feature-settings: 'salt' on;
+        color: #000000;
+}
+
+.TwitterContainer{
+    background: rgba(29, 155, 240, 0.1);
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    color: #1D9BF0;
+}
+
+.LensContainer {
+    background: rgba(93, 186, 0, 0.1);
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    color: #5DBA00;
+}
+
+.FarcasterContainer {
+    background: radial-gradient(107.14% 107.14% at 50% 80.95%, rgba(111, 26, 255, 0.1) 0%, rgba(198, 164, 255, 0.1) 100%);
+    border: 1px solid rgba(0, 0, 0, 0.2);
+     color: #6F1AFF;
 }
