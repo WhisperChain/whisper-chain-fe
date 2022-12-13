@@ -97,8 +97,7 @@ const Center = styled.div`
   transform: translateX(-50%);
   text-align: center;
   letter-spacing: -0.03em;
-
-  color: #ffffff;
+  color: #6F1AFF;
 
   text-shadow: 0px 4px 20px rgba(13, 3, 29, 0.95);
 `;
@@ -139,7 +138,7 @@ const ImagesStack = ({ imageDetails, pub }) => {
             </Left>
             <Right>{imageDetails?.createdAt || "2:32 pm"}</Right>
           </Details>
-          <Center>Click to view the chain</Center>
+          <Center>  view the chain</Center>
         </Backdrop>
       )}
       <Image

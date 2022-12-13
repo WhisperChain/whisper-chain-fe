@@ -7,14 +7,8 @@ import { TabItems } from "./Main/TabItems";
 const ButtonBg = styled.div`
   width: 200px;
   height: 48px;
-
-  background: radial-gradient(
-    107.14% 107.14% at 50% 80.95%,
-    #ffe431 0%,
-    #ffe11a 100%
-  );
-  box-shadow: 0px 8px 32px rgba(254, 233, 45, 0.32),
-    inset 0px -4px 8px rgba(119, 103, 0, 0.6), inset 0px -8px 16px #ffbe16;
+  background: radial-gradient(107.14% 107.14% at 50% 80.95%, #6F1AFF 0%, #C6A4FF 100%);
+  box-shadow: 0px 8px 32px rgba(111, 26, 255, 0.32), inset 0px -4px 8px rgba(185, 143, 255, 0.6), inset 0px -8px 16px #4700C0;
   border-radius: 40px;
   margin-top: 50px;
   display: flex;
@@ -27,11 +21,9 @@ const ButtonText = styled.div`
   font-weight: 800;
   font-size: 16px;
   line-height: 100%;
-
   text-align: center;
   letter-spacing: -0.03em;
-
-  color: #111111;
+  color: #FFFFFF;
 `;
 
 const AddWhisperBtn = ({ pageIndex, publication }) => {

@@ -1,65 +1,82 @@
 import React from "react";
 import styled from "styled-components";
 import AddWhisperBtn from "./AddWhisperBtn";
-
-const MessageBox = styled.div`
-  width: 512px;
-  height: 512px;
-  background: radial-gradient(
-    51.4% 51.4% at 48.6% 50%,
-    #16082d 0%,
-    #100324 100%
-  );
-  border: 4px solid rgba(111, 26, 255, 0.24);
-  backdrop-filter: blur(48px);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  border-radius: 48px;
-  box-sizing: border-box;
-`;
-
-const Message = styled.div`
-  width: 409px;
-  display: flex;
-  flex-direction: column;
-  margin-top: 86px;
-`;
-
-const WhiteText = styled.div`
-  font-style: normal;
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 150%;
-  color: #e7d9ff;
-`;
-
-const Bold = styled.span`
-  font-weight: bold;
-`;
+import styles from "./HomeMessage.module.css";
+import Image from 'next/image';
 
 const HomeMessage = ({ publication, currentSlideIndex }) => {
   return (
-    <MessageBox>
-      <Message>
-        <WhiteText>Hey there 👋,</WhiteText>
-        <WhiteText>
-          Welcome to <Bold>Whisper Chain.</Bold> This is our take on chinese
-          whisper. You're on the homepage where you will see daily chains that
-          are started by us
-        </WhiteText>
-        <br />
-        <WhiteText>
-          Try to recreate the last whisper you see as best as you can and add it
-          to the chain.
-        </WhiteText>
-        <br />
-        <WhiteText>Go ahead, give it a try?</WhiteText>
-        <br />
-        <WhiteText>Current Slide Index - {currentSlideIndex}</WhiteText>
-      </Message>
+    <div className={`${styles.MessageBox}`}>
+      <div className={`w-[512px] flex justify-center text-center rounded-[48px]`}>
+        <div className={`${styles.Message}`}>
+          <div className="text-black font-bold text-[16px] leading-[160%] ">Welcome to Whisper chain</div>
+          <div className="text-black text-[16px] leading-[160%] w-[432px]">A new fun take on age old game some of you might know as Chinese whisper or Telephone. But with a twist of A.I,</div>
+        </div>
+      </div>
+      <div className="flex justify-evenly mt-[50px]">
+        <Image
+          width={80}
+          height={80}
+          className=""
+          alt="Stack Image 2"
+          src="/../public/Rectangle-1.png"
+        />
+        <Image
+          width={80}
+          height={80}
+          className=""
+          alt="Stack Image 2"
+          src="/../public/Rectangle-2.png"
+        />
+        <Image
+          width={80}
+          height={80}
+          className=""
+          alt="Stack Image 2"
+          src="/../public/Rectangle-3.png"
+        />
+        <Image
+          width={80}
+          height={80}
+          className=""
+          alt="Stack Image 2"
+          src="/../public/Rectangle-4.png"
+        />
+      </div>
+      <div className="flex justify-evenly mt-[50px]">
+        <Image
+          width={80}
+          height={80}
+          className=""
+          alt="Stack Image 2"
+          src="/../public/Rectangle-5.png"
+        />
+        <Image
+          width={80}
+          height={80}
+          className=""
+          alt="Stack Image 2"
+          src="/../public/Rectangle-6-1.png"
+        />
+        <Image
+          width={80}
+          height={80}
+          className=""
+          alt="Stack Image 2"
+          src="/../public/Rectangle-7.png"
+        />
+        <Image
+          width={80}
+          height={80}
+          className=""
+          alt="Stack Image 2"
+          src="/../public/Rectangle-4.png"
+        />
+      </div>
+      <div className="flex justify-center">
       <AddWhisperBtn pageIndex={1} publication={publication} />
-    </MessageBox>
+      </div>
+    </div>
   );
 };
 

@@ -80,7 +80,7 @@ const Date = styled.div`
   /* or 22px */
 
   letter-spacing: -0.03em;
-  color: #dddddd;
+  color: rgba(0, 0, 0, 0.8);;
 
   /* Inside auto layout */
 
@@ -96,7 +96,7 @@ const Status = styled.div`
   font-size: 16px;
   line-height: 100%;
   letter-spacing: -0.03em;
-  color: #dddddd;
+  color: rgba(0, 0, 0, 0.8);;
 `;
 
 const Home = () => {
