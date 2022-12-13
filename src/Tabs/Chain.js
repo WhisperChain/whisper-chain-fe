@@ -87,10 +87,48 @@ const Chain = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const buttonRef = React.useRef();
+  React.useEffect(() => {
+    const onScroll = () => {
+      let dContainer = buttonRef.current;
+      if (dContainer) {
+        let rect = dContainer.getBoundingClientRect();
+        console.log(rect.top);
+        if (rect.top == 10) {
+          handleScrollDark();
+        } else {
+          handleScrollLight();
+        }
+      }
+    };
+    window.addEventListener("scroll", onScroll);
+  }, [buttonRef]);
+
+  const handleScrollDark = () => {
+    let lastImageButton = document.getElementById("lastImage");
+    if (lastImageButton) {
+      lastImageButton.style.opacity = "1";
+    }
+  }
+  const handleScrollLight = () => {
+    let lastImageButton = document.getElementById("lastImage");
+    if (lastImageButton) {
+      lastImageButton.style.opacity = "0.4";
+    }
+  }
+
   return isLoading ? (
     <SpinningLoader height="80vh" width="100%" />
   ) : (
     <div>
+      <div className="flex justify-center my-[30px] sticky top-[10px] z-[99]">
+        <a href="#Header" id="lastImage" className={`rounded-[30px] flex items-center justify-center ${style.lastImageButton}`} ref={buttonRef}>
+          <svg width="14" height="9" viewBox="0 0 14 9" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M1 7.42401L7 1.42401L13 7.42401" stroke="#FFE11A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+          <span className="ml-[10px]">Go to Last image</span>
+        </a>
+      </div>
       <div
         className={`w-[512px] h-[251px] flex flex-col items-center rounded-[48px] ${style.messageBox}`}
       >

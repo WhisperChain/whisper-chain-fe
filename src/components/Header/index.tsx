@@ -5,7 +5,7 @@ import styles from "./Header.module.css";
 
 const Header = () => {
   return (
-    <div className={styles.HeadComponent}>
+    <div className={styles.HeadComponent} id="Header">
       <Logo />
       <CustomConnectButton />
     </div>

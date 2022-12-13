@@ -1,5 +1,17 @@
-.messageBox{
-   background: radial-gradient(51.4% 51.4% at 48.6% 50%, #16082d 0%,#100324 100%);
+.messageBox {
+   background: radial-gradient(51.4% 51.4% at 48.6% 50%, #16082d 0%, #100324 100%);
    border: 4px solid rgba(111, 26, 255, 0.24);
    backdrop-filter: blur(48px);
+}
+
+.lastImageButton {
+   background: black;
+   border: 1.024px solid rgba(255, 255, 255, 0.16);
+   color: #FFE11A;
+   font-weight: 800;
+   font-size: 16px;
+   width: 204.8px;
+   height: 49.15px;
+   cursor: pointer;
+   opacity: 0.4;
 }
