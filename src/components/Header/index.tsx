@@ -1,15 +1,21 @@
 import React from "react";
 import Logo from "../../assets/Logo";
 import CustomConnectButton from "../ConnectButton";
-import SignIn from "../ConnectButton/SignIn";
 import styles from "./Header.module.css";
 
 const Header = () => {
   return (
     <div className={styles.HeadComponent}>
       <Logo />
-      <SignIn/>
-      <CustomConnectButton />
+      <div className="flex ml-auto gap-[16px]">
+        <button className={` w-[92px] h-[36px] bg-[#FFFFFF] rounded-[40px] ${styles.DropdownBtn}`}>
+            Twitter
+        </button>
+        <button className={` w-[92px] h-[36px] bg-[#FFFFFF] rounded-[40px] ${styles.SignInbtn}`}>
+            Sign In
+        </button>
+        <CustomConnectButton />
+      </div>
     </div>
   );
 };
