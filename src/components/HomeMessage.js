@@ -38,44 +38,14 @@ const Bold = styled.span`
   font-weight: bold;
 `;
 
-const ButtonBg = styled.div`
-  width: 200px;
-  height: 48px;
-  cursor: pointer;
-  background: radial-gradient(
-    107.14% 107.14% at 50% 80.95%,
-    #ffe431 0%,
-    #ffe11a 100%
-  );
-  box-shadow: 0px 8px 32px rgba(254, 233, 45, 0.32),
-    inset 0px -4px 8px rgba(119, 103, 0, 0.6), inset 0px -8px 16px #ffbe16;
-  border-radius: 40px;
-  margin-top: 100px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
-const ButtonText = styled.div`
-  font-style: normal;
-  font-weight: 800;
-  font-size: 16px;
-  line-height: 100%;
-
-  text-align: center;
-  letter-spacing: -0.03em;
-
-  color: #111111;
-`;
-
-const HomeMessage = () => {
+const HomeMessage = ({ publication, currentSlideIndex }) => {
   return (
     <MessageBox>
       <Message>
         <WhiteText>Hey there 👋,</WhiteText>
         <WhiteText>
           Welcome to <Bold>Whisper Chain.</Bold> This is our take on chinese
-          whisper. You’re on the homepage where you will see daily chains that
+          whisper. You're on the homepage where you will see daily chains that
           are started by us
         </WhiteText>
         <br />
@@ -85,8 +55,10 @@ const HomeMessage = () => {
         </WhiteText>
         <br />
         <WhiteText>Go ahead, give it a try?</WhiteText>
+        <br />
+        <WhiteText>Current Slide Index - {currentSlideIndex}</WhiteText>
       </Message>
-      <AddWhisperBtn pageIndex={1} />
+      <AddWhisperBtn pageIndex={1} publication={publication} />
     </MessageBox>
   );
 };

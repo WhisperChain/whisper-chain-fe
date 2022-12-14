@@ -1,6 +1,6 @@
-import Home from "../../pages/Home";
-import Chain from "../../pages/Chain";
-import Generate from "../../pages/Generate";
+import Home from "../../Tabs/Home";
+import Chain from "../../Tabs/Chain";
+import Generate from "../../Tabs/Generate";
 
 export const TabItems = [
   {

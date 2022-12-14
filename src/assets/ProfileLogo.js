@@ -1,5 +1,4 @@
 function ProfileLogo({ profileImageUrl }) {
-  console.log({ profileImageUrl });
   return (
     <svg
       width="40"

@@ -1,18 +1,16 @@
 import React from "react";
 import styled from "styled-components";
 import SpinningLoader from "../components/SpinningLoader";
-import ToastMessage from "../components/ToastMessage";
 import { usePublicationContext } from "../context/PublicationContext";
 import { getCommentFeed, getPublication } from "../utils/lensFunction";
 import {
-  getIpfsUrl,
   convertIntoIpfsUrl,
   getIpfsUrlandUploadPublication,
   getS3UrlfromText,
 } from "../utils/Utils";
-import { toast } from "react-toastify";
 import { useBottomTab } from "../context/BottomTabContext";
 import { TabItems } from "../components/Main/TabItems";
+import Image from "next/image";
 
 const Page = styled.div`
   width: 100%;
@@ -71,12 +69,6 @@ const WhisperImage = styled.div`
   height: 256px;
   filter: drop-shadow(0px 11.52px 14.4px rgba(25, 30, 0, 0.16))
     drop-shadow(0px 1.44248px 1.8031px rgba(44, 52, 0, 0.08));
-`;
-
-const Image = styled.img`
-  border-radius: 48px;
-  width: 256px;
-  height: 256px;
 `;
 
 const PromptSection = styled.div`
@@ -231,15 +223,6 @@ const OutputImageBox = styled.div`
   height: 396px;
 `;
 
-const OutputImage = styled.img`
-  width: 396px;
-  height: 396px;
-  box-sizing: border-box;
-  position: absolute;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 56px;
-`;
-
 const AddToChainBtnWrapper = styled.div`
   position: absolute;
   bottom: 12px;
@@ -358,23 +341,28 @@ function Generate() {
   const [previousImageUrl, setPreviousImageUrl] = React.useState();
   React.useEffect(() => {
     const fetchData = async () => {
-      const pubId = (await getPublication("0x59cf", 1)).data.publications
-        .items[0].id;
+      const pub = (await getPublication("0x59cf", 1)).data.publications
+        .items[0];
+      const pubId = pub.id;
 
       const comment = await (
         await getCommentFeed(pubId, 1)
       ).data.publications.items[0];
       setPubsId(pubId);
       setPreviousImageUrl(
-        convertIntoIpfsUrl(comment.metadata.media[0].original.url)
+        convertIntoIpfsUrl(
+          comment.metadata.media[0].original.url ??
+            pub.metadata.media[0].original.url
+        )
       );
     };
-    if (publication?.id) {
-      setPubsId(publication?.id);
+    if (publication?.pubId) {
+      setPubsId(publication?.pubId);
       setPreviousImageUrl(publication?.comments?.[0].imageUrl);
     } else {
       fetchData();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const pageIndex = 2;
@@ -393,7 +381,13 @@ function Generate() {
               </Description>
             </Summary>
             <WhisperImage>
-              <Image src={previousImageUrl} alt="Whisper Image" />
+              <Image
+                src={previousImageUrl}
+                width={256}
+                height={256}
+                className="rounded-[48px]"
+                alt="Whisper Image"
+              />
             </WhisperImage>
           </PreviousWhisper>
           <PromptSection>
@@ -415,8 +409,10 @@ function Generate() {
                 setSelectedFilter(e.target.value);
               }}
             >
-              {filterOptions.map((option) => (
-                <option value={option.value}>{option.label}</option>
+              {filterOptions.map((option, index) => (
+                <option key={index} value={option.value}>
+                  {option.label}
+                </option>
               ))}
             </SelectBox>
           </FilterSection>
@@ -460,7 +456,13 @@ function Generate() {
                   </ImageTryOutputTitle>
                   <OutputImageBoxWrapper>
                     <OutputImageBox>
-                      <OutputImage src={url[0]} alt="Whisper Image" />
+                      <Image
+                        src={url[0]}
+                        alt="Whisper Image"
+                        width={396}
+                        height={396}
+                        className="absolute rounded-[56px] border-solid border-[1px] border-[#ffffff33]"
+                      />
                       <AddToChainBtnWrapper
                         onClick={async () => {
                           setIsloading(true);
@@ -479,7 +481,13 @@ function Generate() {
                       </AddToChainBtnWrapper>
                     </OutputImageBox>
                     <OutputImageBox>
-                      <OutputImage src={url[1]} alt="Whisper Image" />
+                      <Image
+                        src={url[1]}
+                        alt="Whisper Image"
+                        width={396}
+                        height={396}
+                        className="absolute rounded-[56px] border-solid border-[1px] border-[#ffffff33]"
+                      />
                       <AddToChainBtnWrapper
                         onClick={async () => {
                           setIsloading(true);

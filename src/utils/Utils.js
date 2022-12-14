@@ -1,13 +1,11 @@
-import {
-  commentViaDispatcher,
-  refreshAuthentication,
-  verifyAuthentication,
-} from "./lensFunction";
+import { Constants } from "./Constants";
+import { commentViaDispatcher, refreshAuthentication } from "./lensFunction";
 
 export const resetLocalStorage = () => {
-  window.localStorage.removeItem("accessToken");
-  window.localStorage.removeItem("refreshToken");
+  window.localStorage.removeItem(Constants.LOCAL_STORAGE_ACCESS_TOKEN_KEY);
+  window.localStorage.removeItem(Constants.LOCAL_STORAGE_REFRESH_TOKEN_KEY);
   window.localStorage.removeItem("profileId");
+  window.localStorage.removeItem("profileImageUrl");
 };
 
 export const getS3UrlfromText = async (prompt, filter = "") => {
@@ -18,7 +16,6 @@ export const getS3UrlfromText = async (prompt, filter = "") => {
       method: "GET",
     }
   );
-  console.log({ resp });
   const responseJSON = await resp.json();
   return responseJSON?.data?.s3_urls;
 };
@@ -30,7 +27,6 @@ export const getIpfsUrl = async (url) => {
       method: "GET",
     }
   );
-  console.log({ resp });
   const responseJSON = await resp.json();
   const contentId = responseJSON.data.cids.metadata;
   const ipfsUrl = `ipfs://${contentId}`;
@@ -64,3 +60,10 @@ export async function getIpfsUrlandUploadPublication(url, pubId, isInTime) {
 //   const names = ["A", "B", "C", "D", "E"];
 //   Math.random();
 // };
+
+export const getTimerClock = (timeDifference) => {
+  const timeRemaining = 24 * 60 - timeDifference;
+  const hours = Math.floor(timeRemaining / 60);
+  const minutes = timeRemaining % 60;
+  return `${hours}h : ${minutes}m `;
+};

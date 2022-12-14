@@ -20,12 +20,13 @@ import {
 import moment from "moment";
 import { convertIntoIpfsUrl } from "./Utils";
 import ToastMessage from "../components/ToastMessage";
+import { Constants } from "./Constants";
 
 const API_URL = "https://api-mumbai.lens.dev";
 const httpLink = new HttpLink({ uri: API_URL });
 
 const authLink = new ApolloLink((operation, forward) => {
-  const token = localStorage.getItem("accessToken");
+  const token = localStorage.getItem(Constants.LOCAL_STORAGE_ACCESS_TOKEN_KEY);
 
   operation.setContext({
     headers: {
@@ -122,7 +123,9 @@ export const getLastCommentsOfPosts = async (profileId) => {
           profileHandle: comment.profile.handle,
           name: comment.profile.name,
           createdAt: moment(comment.createdAt).format("h:mm a"),
-          profileImageUrl: `https://cdn.stamp.fyi/avatar/eth:${comment.profile.ownedBy}?s=250`,
+          profileImageUrl: comment.profile.picture
+            ? convertIntoIpfsUrl(comment.profile.picture?.original?.url)
+            : `https://cdn.stamp.fyi/avatar/eth:${comment.profile.ownedBy}?s=250`,
           lensterProfileUrl: `https://testnet.lenster.xyz/u/${comment.profile.handle}`,
           lensterPostUrl: `https://testnet.lenster.xyz/posts/${comment.id}`,
         };
@@ -136,6 +139,9 @@ export const getLastCommentsOfPosts = async (profileId) => {
         createdAt: moment(item.createdAt).format("h:mm a"),
         lensterProfileUrl: `https://testnet.lenster.xyz/u/${item.profile.handle}`,
         lensterPostUrl: `https://testnet.lenster.xyz/posts/${item.id}`,
+        profileImageUrl: item.profile.picture
+          ? convertIntoIpfsUrl(item.profile.picture?.original?.url)
+          : `https://cdn.stamp.fyi/avatar/eth:${item.profile.ownedBy}?s=250`,
       });
     }
 
@@ -143,9 +149,11 @@ export const getLastCommentsOfPosts = async (profileId) => {
     var b = moment();
     dataObject.push({
       pubId: item.id,
-      createdAt: moment(item.createdAt).format("Do MMMM YYYY"),
+      profile: item.profile,
+      createdAt: item.createdAt,
       comments: commentsArray,
-      timeDifference: a.diff(b, "days"),
+      timeDifference: b.diff(a, "minutes"),
+      metadata: item.metadata,
     });
   }
   return dataObject;
@@ -204,21 +212,30 @@ export async function commentViaDispatcher(
       },
     },
   });
-  console.log({ resp });
+
+  txIndexed(resp?.data?.createPostViaDispatcher?.txHash);
 }
 
 export const refreshAuthentication = async () => {
-  if (window.localStorage.getItem("refreshToken")) {
+  if (window.localStorage.getItem(Constants.LOCAL_STORAGE_REFRESH_TOKEN_KEY)) {
     const res = await apolloClient.mutate({
       mutation: gql(REFRESH_AUTHENTICATION),
       variables: {
-        refreshToken: window.localStorage.getItem("refreshToken"),
+        refreshToken: window.localStorage.getItem(
+          Constants.LOCAL_STORAGE_REFRESH_TOKEN_KEY
+        ),
       },
     });
-    console.log({ res });
+    // console.log({ res });
     const { accessToken, refreshToken } = res.data?.refresh;
-    window.localStorage.setItem("accessToken", accessToken);
-    window.localStorage.setItem("refreshToken", refreshToken);
+    window.localStorage.setItem(
+      Constants.LOCAL_STORAGE_ACCESS_TOKEN_KEY,
+      accessToken
+    );
+    window.localStorage.setItem(
+      Constants.LOCAL_STORAGE_REFRESH_TOKEN_KEY,
+      refreshToken
+    );
   } else {
     ToastMessage({ message: "Connect to Wallet", showCloseBtn: true });
   }
@@ -228,7 +245,9 @@ export const verifyAuthentication = async () => {
   const res = await apolloClient.query({
     query: gql(VERIFY_AUTHENTICATION),
     variables: {
-      accessToken: window.localStorage.getItem("accessToken"),
+      accessToken: window.localStorage.getItem(
+        Constants.LOCAL_STORAGE_ACCESS_TOKEN_KEY
+      ),
     },
   });
   return res?.data?.verify;
