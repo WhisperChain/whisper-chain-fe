@@ -5,13 +5,15 @@
 }
 
 .lastImageButton {
-   background: black;
-   border: 1.024px solid rgba(255, 255, 255, 0.16);
-   color: #FFE11A;
+   background: rgba(255, 255, 255, 0.1);
+   border: 1px solid rgba(255, 255, 255, 0.2);
+   box-shadow: 0px 8px 8px -8px rgba(0, 0, 0, 0.2), 0px 16px 24px rgba(0, 0, 0, 0.16);
+   backdrop-filter: blur(60px);
+   color: rgba(0,0,0, 0.6);
    font-weight: 800;
    font-size: 16px;
-   width: 204.8px;
-   height: 49.15px;
+   width: 163px;
+   height: 40px;
    cursor: pointer;
    opacity: 0;
 }

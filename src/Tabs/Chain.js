@@ -8,14 +8,17 @@ import moment from "moment";
 import SpinningLoader from "../components/SpinningLoader";
 import style from "./Chain.module.css";
 import { usePublicationContext } from "../context/PublicationContext";
-import InfoLogo from "../assets/InfoLogo";
-import { Tooltip } from "react-tooltip";
-import "react-tooltip/dist/react-tooltip.css";
+import { useBottomTab } from "../context/BottomTabContext";
+import { TabItems } from "../components/Main/TabItems";
+// import InfoLogo from "../assets/InfoLogo";
+// import { Tooltip } from "react-tooltip";
+// import "react-tooltip/dist/react-tooltip.css";
 
 const Chain = () => {
   const [chainData, setChainData] = React.useState();
   const [isLoading, setIsloading] = React.useState(false);
   const { publication } = usePublicationContext();
+  const { onTabChange } = useBottomTab();
   const [firstCreatedAt, setFirstCreatedAt] = React.useState();
   const [infoContainer, setInfoConatiner] = React.useState(true);
   // console.log(firstCreatedAt);
@@ -87,7 +90,7 @@ const Chain = () => {
       if (dContainer) {
         let rect = dContainer.getBoundingClientRect();
         console.log(rect.top);
-        if (rect.top <= 10) {
+        if (rect.top <= 87.5) {
           handleScrollDark();
         } else {
           handleScrollLight();
@@ -115,35 +118,45 @@ const Chain = () => {
   ) : (
     <div>
       <div className="flex flex-col items-center justify-center my-[30px]">
-        <a
-          onClick={() => {
-            window.scrollTo(0, 0);
-          }}
-          id="lastImage"
-          className={`rounded-[30px] flex  sticky top-[10px] z-[99] items-center justify-center ${style.lastImageButton}`}
-          ref={buttonRef}
-        >
-          <svg
-            width="14"
-            height="9"
-            viewBox="0 0 14 9"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
+        <div className="flex flex-col w-full mb-[0px] sticky top-[10px] z-[1000]">
+          <div
+            onClick={() => {
+              onTabChange(TabItems[0]);
+            }}
+            className="flex flex-row items-start not-italic font-medium text-[16px] leading-[140%] text-center text-[#0000003C] mb-[55px] cursor-pointer"
           >
-            <path
-              d="M1 7.42401L7 1.42401L13 7.42401"
-              stroke="#FFE11A"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-          </svg>
-          <span className="ml-[10px]">Go to Last image</span>
-        </a>
-        <div className="flex flex-col items-start absolute left-[10%] decoration-white">
-          <div className="h-[22px] not-italic font-extrabold text-[16px] leading-[140%] tracking-wide text-[#dddddd] mb-[7px]">
-            {moment(firstCreatedAt).format("Do MMMM YYYY")}
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 20 20"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M16.875 10H3.125"
+                stroke="black"
+                stroke-opacity="0.6"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+              <path
+                d="M8.75 4.375L3.125 10L8.75 15.625"
+                stroke="black"
+                stroke-opacity="0.6"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+            <span className="ml-[12px]">Back</span>
           </div>
+          <div className="flex flex-row items-start justify-between w-full">
+            <div className="flex flex-col items-start sticky decoration-white">
+              <div className="h-[22px] not-italic font-medium text-[16px] leading-[140%] tracking-[-0.03em] text-[#000000] ">
+                {moment(firstCreatedAt).format("Do MMMM YYYY")}
+              </div>
+              {/*
           <div className="flex justify-center items-center h-[16px] not-italic font-normal text-[16px] leading-[100%] tracking-wide text-[#dddddd]">
             {hours + minutes < 0 ? (
               "Ended"
@@ -196,6 +209,35 @@ const Chain = () => {
                 </div>
               }
             />
+          </div> */}
+            </div>
+            <a
+              onClick={() => {
+                console.log("clicked");
+                window.scrollTo(0, 0);
+              }}
+              id="lastImage"
+              className={`rounded-[20px] flex z-[10000] items-center justify-center ${style.lastImageButton}`}
+              ref={buttonRef}
+            >
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 20 20"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M16.25 13.75L10 7.5L3.75 13.75"
+                  stroke="black"
+                  stroke-opacity="0.6"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+              <span className="ml-[10px]">Back to top</span>
+            </a>
           </div>
         </div>
         <div
