@@ -17,3 +17,16 @@
     flex-direction: column;
     margin-top: 40px;
 }
+
+.ImageDiv{
+    background: rgba(255, 255, 255, 0.8);
+}
+
+.ImageDivText{
+    font-family: 'Satoshi Variable';
+    font-style: normal;
+        font-weight: 700;
+        font-size: 12px;
+        line-height: 140%;
+        text-align: center;
+}

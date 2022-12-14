@@ -125,7 +125,7 @@ const ImagesStack = ({ imageDetails, pub }) => {
           onMouseLeave={() => setHovered(false)}
           onClick={() => {
             setPublication(pub);
-            onTabChange(TabItems[2]);
+            onTabChange(TabItems[1]);
           }}
         >
           <Details>

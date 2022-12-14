@@ -43,7 +43,7 @@ const RightSection = styled.div`
 const LinkWrapper = styled.div`
   position: fixed;
   top: -40px;
-  right: 0;
+  right: -135px;
   transform: translateX(-70%);
 `;
 const SEL = "custom-section";
@@ -118,7 +118,7 @@ const Home = () => {
     <SpinningLoader height="80vh" width="80%" />
   ) : (
     <Page>
-      <HomeSection id="home-section">
+      <HomeSection id="home-section" className="h-[781px]">
         <LeftSection>
           <Swiper
             spaceBetween={50}

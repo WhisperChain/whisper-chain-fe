@@ -14,7 +14,8 @@ const ButtonBg = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
+  z-index:10;
+  cursor:pointer;
 `;
 
 const ButtonText = styled.div`
@@ -29,7 +30,7 @@ const ButtonText = styled.div`
 
 const AddWhisperBtn = ({ pageIndex, publication }) => {
   const { setPublication } = usePublicationContext();
-  pageIndex = 1;
+  pageIndex = 2;
   const { onTabChange } = useBottomTab();
   return (
     <ButtonBg
