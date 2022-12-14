@@ -182,10 +182,7 @@ const Home = () => {
           <LinkWrapper>
             <Link />
           </LinkWrapper>
-          <HomeMessage
-            publication={publicationData[currentSlideIndex]}
-            currentSlideIndex={currentSlideIndex}
-          />
+          <HomeMessage publication={publicationData[currentSlideIndex]} />
         </RightSection>
       </HomeSection>
     </Page>
