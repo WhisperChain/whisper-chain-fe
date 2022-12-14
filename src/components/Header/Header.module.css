@@ -27,20 +27,27 @@
         color: #000000;
 }
 
-.TwitterContainer{
+/* .TwitterContainer{
     background: rgba(29, 155, 240, 0.1);
     border: 1px solid rgba(0, 0, 0, 0.2);
     color: #1D9BF0;
-}
+} */
 
 .LensContainer {
-    background: rgba(93, 186, 0, 0.1);
+    background: #ABFE2C;
     border: 1px solid rgba(0, 0, 0, 0.2);
-    color: #5DBA00;
+    color: #00501E;;
 }
 
-.FarcasterContainer {
+/* .FarcasterContainer {
     background: radial-gradient(107.14% 107.14% at 50% 80.95%, rgba(111, 26, 255, 0.1) 0%, rgba(198, 164, 255, 0.1) 100%);
     border: 1px solid rgba(0, 0, 0, 0.2);
-     color: #6F1AFF;
+    color: #6F1AFF;
+} */
+
+.LensInfo{
+    font-family: 'Satoshi Variable';
+    line-height: 160%;
+    font-feature-settings: 'salt' on;
+    color: rgba(0, 0, 0, 0.8);
 }

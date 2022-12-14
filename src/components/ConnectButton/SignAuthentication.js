@@ -70,17 +70,18 @@ function SignAuthentication() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
-    <div>
-      {window.localStorage.getItem("profileId") ? (
-        <Image
-          src={window.localStorage.getItem("profileImageUrl") || "https://cdn.stamp.fyi/avatar/eth:0x3a72452af2ddc056330bbcb43898134c9adb51cf?s=250"}
-          alt="profile"
-          className="rounded-[18px]"
-          width={36}
-          height={36}
-        />
-      ) : null}
-    </div>
+    <div>Signing...</div>
+    // <div>
+    //   {window.localStorage.getItem("profileId") ? (
+    //     <Image
+    //       src={window.localStorage.getItem("profileImageUrl") || "https://cdn.stamp.fyi/avatar/eth:0x3a72452af2ddc056330bbcb43898134c9adb51cf?s=250"}
+    //       alt="profile"
+    //       className="rounded-[18px]"
+    //       width={36}
+    //       height={36}
+    //     />
+    //   ) : null}
+    // </div>
   );
 }
 

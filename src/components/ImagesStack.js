@@ -5,6 +5,9 @@ import { useBottomTab } from "../context/BottomTabContext";
 import { usePublicationContext } from "../context/PublicationContext";
 import { TabItems } from "./Main/TabItems";
 import Image from 'next/image';
+import styles from "./ImageStack.module.css";
+import PlusIcon from "../assets/PlusIcon";
+import EyeIcon from "../assets/EyeIcon";
 
 const StackedImages = styled.div`
   display: flex;
@@ -19,13 +22,9 @@ const Backdrop = styled.div`
   width: 512px;
   height: 512px;
   position: absolute;
-  background: linear-gradient(
-    180deg,
-    rgba(0, 0, 0, 0.66) 0%,
-    rgba(0, 0, 0, 0.4) 100%
-  );
+  background: rgba(255, 255, 255, 0.6);
   z-index: 10;
-  backdrop-filter: blur(4px);
+  backdrop-filter: blur(8px);
   border-radius: 48px;
   cursor: pointer;
 `;
@@ -44,68 +43,63 @@ const Left = styled.div`
 
 const Name = styled.div`
   font-style: normal;
-  font-weight: 800;
-  font-size: 16px;
   line-height: 100%;
-  /* identical to box height, or 16px */
-
   letter-spacing: -0.01em;
-  font-feature-settings: "tnum" on, "onum" on, "salt" on, "ss01" on, "ss02" on,
-    "ss03" on, "ss04" on, "ss05" on;
-
-  color: #ffffff;
+  color: #000000;
+  font-family: 'Satoshi Variable';
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 100%;
+  font-feature-settings: 'tnum' on, 'onum' on, 'salt' on, 'ss01' on, 'ss02' on, 'ss03' on, 'ss04' on, 'ss05' on;
 `;
 
 const Handle = styled.div`
   font-style: normal;
   font-weight: 400;
-  font-size: 16px;
-  line-height: 100%;
-  /* identical to box height, or 16px */
-
   letter-spacing: -0.03em;
-  font-feature-settings: "tnum" on, "onum" on, "ordn" on, "salt" on, "ss01" on,
-    "ss02" on, "ss03" on, "ss04" on, "ss05" on;
-
-  color: #ffffff;
+  font-family: 'Satoshi Variable';
+  font-size: 14px;
+  line-height: 100%;
+  font-feature-settings: 'tnum' on, 'onum' on, 'ordn' on, 'salt' on, 'ss01' on, 'ss02' on, 'ss03' on, 'ss04' on, 'ss05' on;
+  color: rgba(0, 0, 0, 0.6);
 `;
 
-const Right = styled.div`
-  display: flex;
-  color: #ffffff;
-`;
 
 const User = styled.div`
   margin-left: 5px;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: start;
 `;
 
 const Center = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  font-style: normal;
-  font-weight: 800;
-  font-size: 20px;
-  line-height: 100%;
-  /* identical to box height, or 20px */
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translateX(-50%);
   text-align: center;
+  color: #6F1AFF;
+  font-family: 'Satoshi Variable';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 100%;
+  text-align: center;
   letter-spacing: -0.03em;
   color: #6F1AFF;
-
-  text-shadow: 0px 4px 20px rgba(13, 3, 29, 0.95);
+  gap: 8px;
 `;
 
-const ImagesStack = ({ imageDetails, pub }) => {
+const ImagesStack = ({ imageDetails: imageDetailsArray ,  pub }) => {
   const [hovered, setHovered] = React.useState(false);
   const { onTabChange } = useBottomTab();
   const { setPublication } = usePublicationContext();
+  const imageDetails = imageDetailsArray[0];
+  console.log({imageDetailsArray});
   return (
     <StackedImages>
       {imageDetails?.imageUrl && (
@@ -133,12 +127,19 @@ const ImagesStack = ({ imageDetails, pub }) => {
               <ProfileLogo profileImageUrl={imageDetails?.profileImageUrl} />
               <User>
                 <Name>{imageDetails?.name || "Lewis"}</Name>
-                <Handle>{imageDetails?.profileHandle || "Lewis.xyz"}</Handle>
+                <Handle>{"@"+imageDetails?.profileHandle || "Lewis.xyz"}</Handle>
               </User>
             </Left>
-            <Right>{imageDetails?.createdAt || "2:32 pm"}</Right>
+            {/* <Right>{imageDetails?.createdAt || "2:32 pm"}</Right> */}
+            <button className="flex justify-center items-center gap-[6px] z-20">
+              <PlusIcon />
+              <div className={`not-italic font-medium text-[16px]  ${styles.FollowBtn}`}>Follow</div>
+            </button>
           </Details>
-          <Center>  view the chain</Center>
+          <Center>
+            <EyeIcon />
+            View Chain
+            </Center>
         </Backdrop>
       )}
       <Image
@@ -146,14 +147,15 @@ const ImagesStack = ({ imageDetails, pub }) => {
         height={512}
         className="absolute bottom-[22px] rounded-[48px] flex z-[2]"
         alt="Stack Image 2"
-        src="https://i.picsum.photos/id/193/512/512.jpg?hmac=ay70CF2_XM0GJBcUQzMN6UNHDn0-kgSIu8KcENreNgM" 
-      />
+        src={imageDetailsArray[1]?.imageUrl ? imageDetailsArray[1].imageUrl : "https://i.picsum.photos/id/193/512/512.jpg?hmac=ay70CF2_XM0GJBcUQzMN6UNHDn0-kgSIu8KcENreNgM"}
+        />
+       
       <Image
         width={404}
         height={512}
         className="absolute bottom-[0px] rounded-[48px] flex z-[1]"
         alt="Stack Image 3"
-        src="https://i.picsum.photos/id/524/512/512.jpg?hmac=2VlA0x6Y7osphrvDzR52TVkYjcc493rqcizd8HEXphY" 
+         src={imageDetailsArray[2]?.imageUrl ? imageDetailsArray[2].imageUrl : "https://i.picsum.photos/id/524/512/512.jpg?hmac=2VlA0x6Y7osphrvDzR52TVkYjcc493rqcizd8HEXphY" }
       />
     </StackedImages>
   );

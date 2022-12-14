@@ -73,20 +73,14 @@ const PostDetail = styled.div`
 
 const Date = styled.div`
   height: 22px;
-  font-style: normal;
-  font-weight: 800;
   font-size: 16px;
   line-height: 140%;
-  /* or 22px */
-
   letter-spacing: -0.03em;
-  color: rgba(0, 0, 0, 0.8);;
-
-  /* Inside auto layout */
-
-  flex: none;
-  order: 0;
-  flex-grow: 0;
+  color: rgba(0, 0, 0, 0.8);
+  font-family: 'Satoshi Variable';
+  font-style: normal;
+  font-weight: 500;
+  font-feature-settings: 'pnum' on, 'onum' on, 'zero' on, 'salt' on, 'ss01' on, 'ss02' on, 'ss03' on, 'ss05' on, 'ss04' on;
 `;
 
 const Status = styled.div`
@@ -158,16 +152,16 @@ const Home = () => {
                           <Date>
                             {moment(pub?.createdAt).format("Do MMMM YYYY")}
                           </Date>
-                          <Status>
+                          {/* <Status>
                             {pub?.timeDifference < 24 * 60
                               ? getTimerClock(pub?.timeDifference)
                               : "Ended"}
-                          </Status>
+                          </Status> */}
                         </PostDetail>
 
                         {pub?.comments[0] ? (
                           <ImagesStack
-                            imageDetails={pub?.comments[0]}
+                            imageDetails={pub?.comments}
                             pub={pub}
                           />
                         ) : null}
