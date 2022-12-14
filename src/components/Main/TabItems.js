@@ -1,6 +1,6 @@
 import Home from "../../Tabs/Home";
 import Chain from "../../Tabs/Chain";
-import Generate from "../../Tabs/Generate";
+import Generate from "../../Tabs/GenerateImage";
 import HomeLogo from "../../assets/tabLogos/HomeLogo";
 import ChainLogo from "../../assets/tabLogos/ChainLogo";
 import GenerateLogo from "../../assets/tabLogos/GenerateLogo";
@@ -26,4 +26,4 @@ export const TabItems = [
   },
 ];
 
-export const DEFAULT_TAB = TabItems[0];
+export const DEFAULT_TAB = TabItems[2];

@@ -1,0 +1,136 @@
+.mainContainer {
+  outline: 1px solid;
+}
+
+.sidebarContainer {
+  width: min-content;
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+  padding: 12px;
+  gap: 24px;
+
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.4752) 0%, rgba(255, 255, 255, 0.288) 100%);
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 12px;
+
+  box-sizing: border-box;
+}
+
+.mainText {
+  font-style: normal;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 140%;
+
+  color: #000000;
+}
+
+.subText {
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 140%;
+
+  color: rgba(0, 0, 0, 0.8);
+}
+
+.textareaInput {
+  background: rgba(255, 255, 255, 0.88);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+
+  width: 336px;
+  height: 96px;
+
+  font-style: normal;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 140%;
+
+  color: rgba(0, 0, 0, 0.8);
+  padding: 8px 12px;
+}
+
+.selectBoxInput {
+  padding: 7px 12px;
+  gap: 8px;
+
+  width: 336px;
+  height: 40px;
+
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(60px);
+}
+
+.generateButton {
+  padding: 7px 24px;
+  gap: 8px;
+
+  width: 336px;
+  height: 40px;
+
+  background: #FFFFFF;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+
+  text-align: center;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 160%;
+}
+
+.generateButtonText {
+  background: radial-gradient(107.14% 107.14% at 50% 80.95%, #6F1AFF 0%, #C6A4FF 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.tryCounts {
+  background: radial-gradient(107.14% 107.14% at 50% 80.95%, #6F1AFF 0%, #C6A4FF 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  opacity: 0.6;
+}
+
+.imageGalleryContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 12px;
+  gap: 8px;
+
+  width: 840px;
+  height: 754px;
+
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.66) 0%, rgba(255, 255, 255, 0.4) 100%);
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 12px;
+
+  box-sizing: border-box;
+  overflow: scroll;
+}
+
+.imageTryOutputBox {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 8px 0px;
+  margin-bottom: 32px;
+
+  width: 100%;
+
+  border-radius: 8px;
+
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(60px);
+}

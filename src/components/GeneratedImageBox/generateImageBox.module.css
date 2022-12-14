@@ -1,0 +1,27 @@
+.addToChainButton {
+  background: radial-gradient(107.14% 107.14% at 50% 80.95%,
+      #000000 0%,
+      #232323 100%);
+  box-shadow: 0px 8px 32px rgba(0, 0, 0, 0.32),
+    inset 0px -4px 8px rgba(75, 75, 75, 0.6), inset 0px -8px 16px #000000;
+  border-radius: 20px;
+  width: 204.8px;
+  height: 49.15px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.addToChainBtnText {
+  font-style: normal;
+  font-weight: 800;
+  font-size: 16px;
+  line-height: 100%;
+  text-align: center;
+  letter-spacing: -0.03em;
+  color: #ffe11a;
+  text-shadow: 0px 65.536px 84.992px #000000,
+    0px 14.6383px 18.9841px rgba(0, 0, 0, 0.596107),
+    0px 4.35821px 5.65205px rgba(0, 0, 0, 0.403893);
+}
