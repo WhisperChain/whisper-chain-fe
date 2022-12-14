@@ -9,5 +9,5 @@ RUN mv $ENV.env .env
 
 RUN npx next build
 RUN rm -f .env.local
-EXPOSE 3000
-CMD ["npx", "next", "start"]
+EXPOSE 80
+CMD ["npx", "next", "start", "-p","80"]
