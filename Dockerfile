@@ -1,4 +1,4 @@
-FROM node:18
+FROM node:16
 WORKDIR /app
 ARG ENV
 ADD package.json /app
