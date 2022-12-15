@@ -38,3 +38,11 @@
   width: 478px/3;
   gap: 4px;
 }
+
+.infoTab{
+  width: -webkit-fill-available;
+  font-family: 'Satoshi Variable';
+  line-height: 160%;
+  font-feature-settings: 'salt' on;
+  color: rgba(0, 0, 0, 0.6);
+}
