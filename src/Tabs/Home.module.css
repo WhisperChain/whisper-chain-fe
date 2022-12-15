@@ -1,0 +1,11 @@
+.Date{
+    letter-spacing: -0.03em;
+    color: rgba(0, 0, 0, 0.8);
+    font-family: 'Satoshi Variable';
+    font-feature-settings: 'pnum' on, 'onum' on, 'zero' on, 'salt' on, 'ss01' on, 'ss02' on, 'ss03' on, 'ss05' on, 'ss04' on;
+}
+
+/* .status{
+    letter-spacing: -0.03em;
+    color: rgba(0, 0, 0, 0.8);
+} */
