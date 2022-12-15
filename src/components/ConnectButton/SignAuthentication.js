@@ -73,7 +73,10 @@ function SignAuthentication() {
     <div>
       {window.localStorage.getItem("profileId") ? (
         <Image
-          src={window.localStorage.getItem("profileImageUrl") || "https://cdn.stamp.fyi/avatar/eth:0x3a72452af2ddc056330bbcb43898134c9adb51cf?s=250"}
+          src={
+            window.localStorage.getItem("profileImageUrl") ||
+            "https://cdn.stamp.fyi/avatar/eth:0x3a72452af2ddc056330bbcb43898134c9adb51cf?s=250"
+          }
           alt="profile"
           className="rounded-[18px]"
           width={36}

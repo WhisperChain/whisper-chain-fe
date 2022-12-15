@@ -1,5 +1,6 @@
 import React from "react";
 import ChainLogo from "../assets/ChainLogo";
+import ViewOnLensLogo from "../assets/ViewOnLensLogo";
 import { PostImage } from "../components/PostImage";
 import { getCommentFeed, getPublication } from "../utils/lensFunction";
 import AddWhisperBtn from "../components/AddWhisperBtn";
@@ -90,7 +91,7 @@ const Chain = () => {
       if (dContainer) {
         let rect = dContainer.getBoundingClientRect();
         console.log(rect.top);
-        if (rect.top <= 87.5) {
+        if (rect.top < 0) {
           handleScrollDark();
         } else {
           handleScrollLight();
@@ -117,7 +118,7 @@ const Chain = () => {
     <SpinningLoader height="80vh" width="100%" />
   ) : (
     <div>
-      <div className="flex flex-col items-center justify-center my-[30px]">
+      <div>
         <div className="flex flex-col w-full mb-[0px] sticky top-[10px] z-[1000]">
           <div
             onClick={() => {
@@ -151,13 +152,13 @@ const Chain = () => {
             </svg>
             <span className="ml-[12px]">Back</span>
           </div>
-          <div className="flex flex-row items-start justify-between w-full">
-            <div className="flex flex-col items-start sticky decoration-white">
-              <div className="h-[22px] not-italic font-medium text-[16px] leading-[140%] tracking-[-0.03em] text-[#000000] ">
+          <div className="flex flex-row items-center justify-between w-full">
+            <div className="flex flex-col items-center sticky decoration-white">
+              <div className="not-italic font-medium text-[16px] leading-[140%] tracking-[-0.03em] text-[#000000] ">
                 {moment(firstCreatedAt).format("Do MMMM YYYY")}
               </div>
               {/*
-          <div className="flex justify-center items-center h-[16px] not-italic font-normal text-[16px] leading-[100%] tracking-wide text-[#dddddd]">
+  <div className="flex justify-center items-center h-[16px] not-italic font-normal text-[16px] leading-[100%] tracking-wide text-[#dddddd]">
             {hours + minutes < 0 ? (
               "Ended"
             ) : (
@@ -218,7 +219,6 @@ const Chain = () => {
               }}
               id="lastImage"
               className={`rounded-[20px] flex z-[10000] items-center justify-center ${style.lastImageButton}`}
-              ref={buttonRef}
             >
               <svg
                 width="20"
@@ -238,32 +238,38 @@ const Chain = () => {
               </svg>
               <span className="ml-[10px]">Back to top</span>
             </a>
-          </div>
-        </div>
-        <div
-          className={`w-[512px] h-[251px] flex flex-col items-center rounded-[48px] ${style.messageBox}`}
-        >
-          <div className="flex flex-col w-[409px] mt-[40px]">
-            <div className="not-italic text-[#e7d9ff] text-[16px] leading-[150%] font-normal">
-              This was the last image added to the thread, try to describe this
-              image in your own words as best you can, and add your generation
-              to this thread.
+            <div>
+              <ViewOnLensLogo />
             </div>
           </div>
-
-          <AddWhisperBtn pageIndex={1} publication={publication} />
         </div>
-        {chainData &&
-          chainData.map((comment, index) => {
-            return comment.imageUrl ? (
-              <div key={index}>
-                <div className="flex w-full items-center justify-center">
-                  <ChainLogo />
-                </div>
-                <PostImage imageDetails={comment} />
+        <div className="flex flex-col items-center justify-center overflow-scroll">
+          <div
+            className={`w-[512px] h-[251px] flex flex-col items-center rounded-[48px] ${style.messageBox}`}
+            ref={buttonRef}
+          >
+            <div className="flex flex-col w-[409px] mt-[40px]">
+              <div className="not-italic text-[#e7d9ff] text-[16px] leading-[150%] font-normal">
+                This was the last image added to the thread, try to describe
+                this image in your own words as best you can, and add your
+                generation to this thread.
               </div>
-            ) : null;
-          })}
+            </div>
+
+            <AddWhisperBtn pageIndex={1} publication={publication} />
+          </div>
+          {chainData &&
+            chainData.map((comment, index) => {
+              return comment.imageUrl ? (
+                <div key={index}>
+                  <div className="flex w-full items-center justify-center">
+                    <ChainLogo />
+                  </div>
+                  <PostImage imageDetails={comment} />
+                </div>
+              ) : null;
+            })}
+        </div>
       </div>
     </div>
   );
