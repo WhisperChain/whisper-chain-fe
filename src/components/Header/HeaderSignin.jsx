@@ -1,6 +1,7 @@
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import React from "react";
 import Image from "next/image";
+import styles from "./Header.module.css";
 
 
 const HearderSignin = ({handleOpen}) => {
@@ -20,7 +21,7 @@ const HearderSignin = ({handleOpen}) => {
           account &&
           chain &&
           (!authenticationStatus || authenticationStatus === "authenticated");
-          console.log("connected" + connected);
+          // console.log("connected" + connected);
         return (
           <div
             {...(!ready && {
@@ -35,7 +36,7 @@ const HearderSignin = ({handleOpen}) => {
             {(() => {
               if (!connected) {
                 return (
-                   <button onClick={handleOpen} className={` w-[92px] h-[36px] bg-[#FFFFFF] rounded-[40px] `}>
+                   <button onClick={handleOpen} className={` w-[92px] h-[36px] bg-[#FFFFFF] rounded-[40px] not-italic font-bold text-[#6F1AFF] ${styles.HeaderSignInbtn}`}>
                       Sign In
                   </button>
                 );

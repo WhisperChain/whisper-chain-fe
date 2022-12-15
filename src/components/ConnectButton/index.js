@@ -4,6 +4,7 @@ import WalletBtn from "../../assets/WalletBtn";
 import { resetLocalStorage } from "../../utils/Utils";
 import SignAuthentication from "./SignAuthentication";
 import styled from "styled-components";
+import LensIcon from "../../assets/LensIcon";
 
 const Signin = styled.div`
     background: #ABFE2C;
@@ -50,10 +51,12 @@ const CustomConnectButton = () => {
                     onClick={() => {
                       resetLocalStorage();
                       openConnectModal();
-                      
                     }}
                   >
-                  <Signin className={`flex justify-center box-border items-center w-[234px] h-[40px] backdrop-blur rounded-[4px]`}>Sign in with Lens</Signin>
+                  <Signin className={`flex justify-center box-border items-center w-[234px] h-[40px] backdrop-blur rounded-[4px] gap-[8px]`}>
+                    <LensIcon/>
+                    Sign in with Lens
+                    </Signin>
                   </div>
                 );
               }
