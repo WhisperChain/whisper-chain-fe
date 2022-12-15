@@ -4,7 +4,7 @@ import CustomConnectButton from "../ConnectButton";
 import styles from "./Header.module.css";
 import Modal from "react-modal";
 import CheckedCircle from "../../assets/CheckedCircle";
-import HearderSignin from "../HeaderSignin";
+import HearderSignin from "./HeaderSignin";
 
 const Header = () => {
 
