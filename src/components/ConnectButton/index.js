@@ -7,9 +7,7 @@ import styled from "styled-components";
 import LensIcon from "../../assets/LensIcon";
 
 const Signin = styled.div`
-    background: #ABFE2C;
     border: 1px solid rgba(0, 0, 0, 0.2);
-    color: #00501E;
 `;
 
 const CustomConnectButton = () => {
@@ -53,7 +51,7 @@ const CustomConnectButton = () => {
                       openConnectModal();
                     }}
                   >
-                  <Signin className={`flex justify-center box-border items-center w-[234px] h-[40px] backdrop-blur rounded-[4px] gap-[8px]`}>
+                  <Signin className={`flex justify-center box-border items-center w-[234px] h-[40px] bg-[#ABFE2C] text-[#00501E] backdrop-blur rounded-[4px] gap-[8px] cursor-pointer`}>
                     <LensIcon/>
                     Sign in with Lens
                     </Signin>

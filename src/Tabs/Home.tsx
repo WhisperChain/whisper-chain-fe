@@ -114,6 +114,7 @@ const Home = () => {
     <Page>
       <HomeSection id="home-section" className="h-[781px]">
         <LeftSection>
+          <img src="https://whisperchain-staging-assests.s3.amazonaws.com/Rectangle1.png"></img>
           <Swiper
             spaceBetween={50}
             slidesPerView={1}

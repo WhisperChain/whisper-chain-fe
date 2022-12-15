@@ -16,8 +16,8 @@ export default function BottomTabSelector() {
         <InfoLogo/>
         <button className={`hover:text-[#000000]`}>How it works</button>
       </div>
-      <div className="flex w-full relative justify-end right-[32px] gap-1 hover:text-[#000000]">Made with 🧡 by
-        <button onClick={handleClick}>PLG</button>
+      <div className="flex w-full relative justify-end right-[32px] gap-1">
+        <div className="hover:text-[#000000]">Made with 🧡 by <button onClick={handleClick}>PLG</button></div>
       </div>
     </div>
     <div className={styles.container}>
