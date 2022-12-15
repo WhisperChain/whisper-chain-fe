@@ -16,9 +16,11 @@ import styles from "./generateImage.module.css";
 import MagicStickIcon from "../../assets/MagicStickIcon";
 import WhisperImage from "../../components/WhisperImage";
 import GeneratedImageBox from "../../components/GeneratedImageBox";
+import { useRouter } from "next/router";
 
 function Generate() {
   const { publication } = usePublicationContext();
+  const router = useRouter();
   const [promptText, setPromptText] = React.useState("");
   const [urls, setUrls] = React.useState([]);
   const [pubsId, setPubsId] = React.useState();
@@ -41,7 +43,7 @@ function Generate() {
       setPreviousImageUrl(
         convertIntoIpfsUrl(
           comment.metadata.media[0].original.url ??
-          pub.metadata.media[0].original.url
+            pub.metadata.media[0].original.url
         )
       );
     };
@@ -53,19 +55,14 @@ function Generate() {
     }
   }, []);
 
-  const pageIndex = 2;
   const { onTabChange } = useBottomTab();
 
   const onImageClickHandler = async () => {
     setIsloading(true);
-    await getIpfsUrlandUploadPublication(
-      url[0],
-      pubsId,
-      true
-    );
+    await getIpfsUrlandUploadPublication(url[0], pubsId, true);
     setIsloading(false);
-    onTabChange(TabItems[pageIndex]);
-  }
+    router.push("/chain");
+  };
 
   return (
     <div className="w-full h-[90vh]">
@@ -75,9 +72,7 @@ function Generate() {
           {/* Previos Whisper Image */}
           <div className="w-full">
             <div className="flex flex-col mb-[8px]">
-              <div className={styles.mainText}>
-                Previous whisper
-              </div>
+              <div className={styles.mainText}>Previous whisper</div>
               <div className={styles.subText}>
                 This was the last whisper added to the chain, try to describe
                 this whisper as best you can.
@@ -128,7 +123,8 @@ function Generate() {
           </div>
           {/* Generate Image Button */}
           <div className="w-full">
-            <div className="flex items-center cursor-pointer"
+            <div
+              className="flex items-center cursor-pointer"
               onClick={async () => {
                 if (urls.length < 5) {
                   setIsloading(true);
@@ -145,12 +141,13 @@ function Generate() {
             >
               <button className={styles.generateButton}>
                 <div className="flex items-center justify-between">
-
                   <div>
                     <span className={styles.generateButtonText}>
                       Generate whisper
                     </span>
-                    <span className={styles.tryCounts}> &#x2022; {5 - urls.length} tries left </span>
+                    <span className={styles.tryCounts}>
+                      &#x2022; {5 - urls.length} tries left
+                    </span>
                   </div>
                   <div>
                     <MagicStickIcon />

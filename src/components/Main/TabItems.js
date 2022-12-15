@@ -1,21 +1,13 @@
 import Home from "../../Tabs/Home";
-import Chain from "../../Tabs/Chain";
 import Generate from "../../Tabs/GenerateImage";
-import HomeLogo from "../../assets/tabLogos/HomeLogo";
 import ChainLogo from "../../assets/tabLogos/ChainLogo";
 import GenerateLogo from "../../assets/tabLogos/GenerateLogo";
 
 export const TabItems = [
   {
-    id: "Home",
-    tabName: "Home",
+    id: "Chains",
+    tabName: "Chains",
     Component: Home,
-    Image: HomeLogo,
-  },
-  {
-    id: "Chain",
-    tabName: "Chain",
-    Component: Chain,
     Image: ChainLogo,
   },
   {
