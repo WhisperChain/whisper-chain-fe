@@ -4,3 +4,25 @@
         font-feature-settings: 'salt' on;
         color: rgba(0, 0, 0, 0.6);
 }
+
+.backdrop{
+    background: rgba(255, 255, 255, 0.6);
+}
+
+.name{
+    letter-spacing: -0.01em;    
+    font-family: 'Satoshi Variable';
+    font-feature-settings: 'tnum' on, 'onum' on, 'salt' on, 'ss01' on, 'ss02' on, 'ss03' on, 'ss04' on, 'ss05' on;
+}
+
+.center{
+    font-family: 'Satoshi Variable';
+    letter-spacing: -0.03em;
+}
+
+.Handle{
+    letter-spacing: -0.03em;
+    font-family: 'Satoshi Variable';
+    font-feature-settings: 'tnum' on, 'onum' on, 'ordn' on, 'salt' on, 'ss01' on, 'ss02' on, 'ss03' on, 'ss04' on, 'ss05' on;
+    color: rgba(0, 0, 0, 0.6);
+}

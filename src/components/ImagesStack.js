@@ -1,5 +1,4 @@
 import React from "react";
-import styled from "styled-components";
 import ProfileLogo from "../assets/ProfileLogo";
 import { useBottomTab } from "../context/BottomTabContext";
 import { usePublicationContext } from "../context/PublicationContext";
@@ -9,91 +8,6 @@ import styles from "./ImageStack.module.css";
 import PlusIcon from "../assets/PlusIcon";
 import EyeIcon from "../assets/EyeIcon";
 
-const StackedImages = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  position: relative;
-  overflow: hidden;
-  height: 572px;
-`;
-
-const Backdrop = styled.div`
-  width: 512px;
-  height: 512px;
-  position: absolute;
-  background: rgba(255, 255, 255, 0.6);
-  z-index: 10;
-  backdrop-filter: blur(8px);
-  border-radius: 48px;
-  cursor: pointer;
-`;
-
-const Details = styled.div`
-  display: flex;
-  position: relative;
-  padding: 40px;
-`;
-
-const Left = styled.div`
-  display: flex;
-  width: 360px;
-  cursor: pointer;
-`;
-
-const Name = styled.div`
-  font-style: normal;
-  line-height: 100%;
-  letter-spacing: -0.01em;
-  color: #000000;
-  font-family: 'Satoshi Variable';
-  font-weight: 700;
-  font-size: 14px;
-  line-height: 100%;
-  font-feature-settings: 'tnum' on, 'onum' on, 'salt' on, 'ss01' on, 'ss02' on, 'ss03' on, 'ss04' on, 'ss05' on;
-`;
-
-const Handle = styled.div`
-  font-style: normal;
-  font-weight: 400;
-  letter-spacing: -0.03em;
-  font-family: 'Satoshi Variable';
-  font-size: 14px;
-  line-height: 100%;
-  font-feature-settings: 'tnum' on, 'onum' on, 'ordn' on, 'salt' on, 'ss01' on, 'ss02' on, 'ss03' on, 'ss04' on, 'ss05' on;
-  color: rgba(0, 0, 0, 0.6);
-`;
-
-
-const User = styled.div`
-  margin-left: 5px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: start;
-`;
-
-const Center = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translateX(-50%);
-  text-align: center;
-  color: #6F1AFF;
-  font-family: 'Satoshi Variable';
-  font-style: normal;
-  font-weight: 500;
-  font-size: 16px;
-  line-height: 100%;
-  text-align: center;
-  letter-spacing: -0.03em;
-  color: #6F1AFF;
-  gap: 8px;
-`;
-
 const ImagesStack = ({ imageDetails: imageDetailsArray ,  pub }) => {
   const [hovered, setHovered] = React.useState(false);
   const { onTabChange } = useBottomTab();
@@ -101,7 +15,7 @@ const ImagesStack = ({ imageDetails: imageDetailsArray ,  pub }) => {
   const imageDetails = imageDetailsArray[0];
   console.log({imageDetailsArray});
   return (
-    <StackedImages>
+    <div className="flex flex-col items-center relative overflow-hidden h-[572px]">
       {imageDetails?.imageUrl && (
         <Image
          src={imageDetails.imageUrl}
@@ -114,33 +28,34 @@ const ImagesStack = ({ imageDetails: imageDetailsArray ,  pub }) => {
         />
       )}
       {hovered && (
-        <Backdrop
+        <div
           onMouseEnter={() => setHovered(true)}
           onMouseLeave={() => setHovered(false)}
           onClick={() => {
             setPublication(pub);
             onTabChange(TabItems[1]);
           }}
+           className={`w-[512px] h-[512px] absolute z-[10] backdrop-blur rounded-[48px] cursor-pointer ${styles.Backdrop}`}
         >
-          <Details>
-            <Left>
+          <div className="flex relative p-[40px]">
+            <div className="flex w-[360px] cursor-pointer">
               <ProfileLogo profileImageUrl={imageDetails?.profileImageUrl} />
-              <User>
-                <Name>{imageDetails?.name || "Lewis"}</Name>
-                <Handle>{"@"+imageDetails?.profileHandle || "Lewis.xyz"}</Handle>
-              </User>
-            </Left>
+              <div className="ml-[5px] flex flex-col justify-center items-start">
+                <div className={`not-italic leading-[100%] text-[#000000] font-bold text-[14px] ${styles.name}`}>{imageDetails?.name || "Lewis"}</div>
+                <div className={`not-italic font-normal text-[14px] leading-[100%] ${styles.Handle}`}>{"@"+imageDetails?.profileHandle || "Lewis.xyz"}</div>
+              </div>
+            </div>
             {/* <Right>{imageDetails?.createdAt || "2:32 pm"}</Right> */}
             <button className="flex justify-center items-center gap-[6px] z-20">
               <PlusIcon />
               <div className={`not-italic font-medium text-[16px]  ${styles.FollowBtn}`}>Follow</div>
             </button>
-          </Details>
-          <Center>
+          </div>
+          <div className={`flex justify-center items-center absolute top-[50%] left-[50%] -translate-x-[50%] text-center text-[#6F1AFF] not-italic font-medium text-[16px] leading-[100%] gap-[8px] ${styles.center}`}>
             <EyeIcon />
             View Chain
-            </Center>
-        </Backdrop>
+            </div>
+        </div>
       )}
       <Image
         width={452}
@@ -157,7 +72,7 @@ const ImagesStack = ({ imageDetails: imageDetailsArray ,  pub }) => {
         alt="Stack Image 3"
          src={imageDetailsArray[2]?.imageUrl ? imageDetailsArray[2].imageUrl : "https://i.picsum.photos/id/524/512/512.jpg?hmac=2VlA0x6Y7osphrvDzR52TVkYjcc493rqcizd8HEXphY" }
       />
-    </StackedImages>
+    </div>
   );
 };
 
