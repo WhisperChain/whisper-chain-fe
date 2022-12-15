@@ -2,7 +2,10 @@ import React from "react";
 import styled from "styled-components";
 import ProfileLogo from "../assets/ProfileLogo";
 import Image from 'next/image';
-
+import styles from "./ImageStack.module.css";
+import PlusIcon from "../assets/PlusIcon";
+import EyeIcon from "../assets/EyeIcon";
+import CollectIcon from "../assets/collectIcon";
 
 const ImagePost = styled.div`
   display: flex;
@@ -19,11 +22,7 @@ const Backdrop = styled.div`
   top: 0;
   left: 0;
   // transform: translate(50%, 50%);
-  background: linear-gradient(
-    180deg,
-    rgba(0, 0, 0, 0.66) 0%,
-    rgba(0, 0, 0, 0.4) 100%
-  );
+  background: rgba(255, 255, 255, 0.6);
   z-index: 10;
   backdrop-filter: blur(4px);
   border-radius: 48px;
@@ -85,28 +84,24 @@ const Center = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  font-style: normal;
-  font-weight: 800;
-  font-size: 20px;
-  line-height: 100%;
-  /* identical to box height, or 20px */
   position: absolute;
-  top: 50%;
+  top: 85%;
   left: 50%;
   transform: translateX(-50%);
   text-align: center;
+  color: #6F1AFF;
+  font-family: 'Satoshi Variable';
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 100%;
+  text-align: center;
   letter-spacing: -0.03em;
-  cursor: pointer;
-  color: #ffffff;
-
-  text-shadow: 0px 4px 20px rgba(13, 3, 29, 0.95);
+  color: #6F1AFF;
+  gap: 18px;
 `;
 
-interface Props {
-  imageDetails: any;
-}
-
-export const PostImage: React.FC<Props> = ({ imageDetails }) => {
+export const PostImage = ({ imageDetails }) => {
   const [hovered, setHovered] = React.useState(false);
 
   return (
@@ -140,9 +135,17 @@ export const PostImage: React.FC<Props> = ({ imageDetails }) => {
                 <Handle>{imageDetails.profileHandle || "Lewis.xyz"}</Handle>
               </User>
             </Left>
-            <Right>{imageDetails.createdAt || "2:32 pm"}</Right>
+            <Right>
+              <button className="flex justify-center items-center gap-[6px] z-20">
+                <PlusIcon />
+                <div className={`not-italic font-medium text-[16px]  ${styles.FollowBtn}`}>Follow</div>
+              </button>
+            </Right>
           </Details>
-          <Center>Click to view this post on Lens</Center>
+          <Center>
+            <a hef="/" className={`flex items-center p-[10px] w-[208px] h-[40px] justify-center  ${styles.viewOnLensBtn}`}> <EyeIcon /> <span className="ml-[10px]">View on lens</span></a>
+            <a href="" className={`flex items-center p-[10px] w-[208px] h-[40px] justify-center  ${styles.viewOnLensBtn}`}> <CollectIcon /> <span className="ml-[10px]">Collect this post</span></a>
+          </Center>
         </Backdrop>
       )}
     </ImagePost>
