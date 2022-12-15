@@ -110,6 +110,10 @@ function SignAuthentication() {
     //       <SignTypedData
     //         typedData={typedDataRef.current}
     //         id={enableDispatcherTxnId.current}
+    //         onSuccess= {async ()=>{
+    //           const profileRes = await getProfile(address);
+    //           const profile = profileRes.data.profiles.items[0];
+    //           window.localStorage.setItem("profile", JSON.stringify(profile));}}
     //       />
     //     ) : null}
     //   </div>

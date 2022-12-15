@@ -59,6 +59,8 @@ const Chain = () => {
             : `https://cdn.stamp.fyi/avatar/eth:${comment.profile.ownedBy}?s=250`,
           lensterProfileUrl: `https://testnet.lenster.xyz/u/${comment.profile.handle}`,
           lensterPostUrl: `https://testnet.lenster.xyz/posts/${comment.id}`,
+          profileId: comment.profile.id,
+          isFollowedByMe: comment.profile.isFollowedByMe,
         };
         commentArray.push(commentObject);
       }
@@ -74,6 +76,8 @@ const Chain = () => {
           : `https://cdn.stamp.fyi/avatar/eth:${pubItem.profile.ownedBy}?s=250`,
         lensterProfileUrl: `https://testnet.lenster.xyz/u/${pubItem.profile.handle}`,
         lensterPostUrl: `https://testnet.lenster.xyz/posts/${pubItem.id}`,
+        profileId: pubItem.profile.id,
+        isFollowedByMe: pubItem.profile.isFollowedByMe,
       });
 
       setFirstCreatedAt(pubItem.createdAt);

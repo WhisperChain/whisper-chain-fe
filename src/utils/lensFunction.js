@@ -14,6 +14,7 @@ import {
   GET_PROFILE,
   GET_PUBLICATIONS,
   REFRESH_AUTHENTICATION,
+  REQUEST_FOLLOW_QUERY,
   SET_DISPATCHER,
   TRANSACTION_INDEXED,
   VERIFY_AUTHENTICATION,
@@ -129,6 +130,8 @@ export const getLastCommentsOfPosts = async (profileId) => {
             : `https://cdn.stamp.fyi/avatar/eth:${comment.profile.ownedBy}?s=250`,
           lensterProfileUrl: `https://testnet.lenster.xyz/u/${comment.profile.handle}`,
           lensterPostUrl: `https://testnet.lenster.xyz/posts/${comment.id}`,
+          profileId: comment.profile.id,
+          isFollowedByMe: comment.profile.isFollowedByMe,
         };
         commentsArray.push(commentData);
       });
@@ -143,6 +146,8 @@ export const getLastCommentsOfPosts = async (profileId) => {
         profileImageUrl: item.profile.picture
           ? convertIntoIpfsUrl(item.profile.picture?.original?.url)
           : `https://cdn.stamp.fyi/avatar/eth:${item.profile.ownedBy}?s=250`,
+        profileId: item.profile.id,
+        isFollowedByMe: item.profile.isFollowedByMe,
       });
     }
 
@@ -274,4 +279,20 @@ export const broadcastRequest = async (request) => {
   });
 
   return result?.data?.broadcast;
+};
+
+export const requestFollow = async (profileId, followModule = null) => {
+  return apolloClient.mutate({
+    mutation: gql(REQUEST_FOLLOW_QUERY),
+    variables: {
+      request: {
+        follow: [
+          {
+            profile: profileId,
+            followModule,
+          },
+        ],
+      },
+    },
+  });
 };

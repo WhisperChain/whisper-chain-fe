@@ -97,6 +97,7 @@ export const GET_PUBLICATIONS = `query Publications($request: PublicationsQueryR
     }
     handle
     ownedBy
+    isFollowedByMe
     picture {
       ... on MediaSet {
         original {
@@ -394,3 +395,40 @@ export const BROADCAST = `mutation Broadcast($request: BroadcastRequest!) {
       }
     }
   }`;
+
+export const REQUEST_FOLLOW_QUERY = `
+mutation ($request: FollowRequest!){
+  createFollowTypedData(
+      request: $request
+    ) {
+      id
+      expiresAt
+      typedData {
+        domain {
+          name
+          chainId
+          version
+          verifyingContract
+          __typename
+        }
+        types {
+          FollowWithSig {
+            name
+            type
+            __typename
+          }
+          __typename
+        }
+        value {
+          nonce
+          deadline
+          profileIds
+          datas
+          __typename
+        }
+        __typename
+      }
+      __typename
+    }
+  }
+`;
