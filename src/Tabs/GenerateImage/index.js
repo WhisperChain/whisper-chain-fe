@@ -9,7 +9,6 @@ import {
 } from "../../utils/Utils";
 import { useBottomTab } from "../../context/BottomTabContext";
 import { TabItems } from "../../components/Main/TabItems";
-import Image from "next/image";
 import { FILTER_OPTIONS } from "./filterDropdownOptions";
 
 import styles from "./generateImage.module.css";
