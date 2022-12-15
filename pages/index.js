@@ -1,7 +1,9 @@
 import "@rainbow-me/rainbowkit/styles.css";
 import { getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import { useRef } from "react";
-import { chain, configureChains, createClient, WagmiConfig } from "wagmi";
+import { configureChains, createClient, goerli, mainnet, WagmiConfig } from "wagmi";
+import { arbitrum, optimism, polygon, polygonMumbai } from "wagmi/chains";
+
 import Main from "../src/components/Main";
 import { AuthProvider } from "../src/context/AuthContext";
 import { BottomTabProvider } from "../src/context/BottomTabContext";
@@ -12,13 +14,13 @@ function App() {
   const { chains, provider } = useRef(
     configureChains(
       [
-        chain.mainnet,
-        chain.polygon,
-        chain.optimism,
-        chain.arbitrum,
-        chain.polygon,
-        chain.polygonMumbai,
-        chain.goerli,
+        mainnet,
+        polygon,
+        optimism,
+        arbitrum,
+        polygon,
+        polygonMumbai,
+        goerli,
       ],
       [
         // alchemyProvider({ apiKey: 'CHu5o-Y1e5EoW_49i3DY_uw4WZnEpp4B' }),
