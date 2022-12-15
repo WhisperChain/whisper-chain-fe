@@ -10,7 +10,7 @@ import SpinningLoader from "../components/SpinningLoader";
 import style from "./Chain.module.css";
 import { usePublicationContext } from "../context/PublicationContext";
 import { useBottomTab } from "../context/BottomTabContext";
-import { TabItems } from "../components/Main/TabItems";
+import { useRouter } from "next/router";
 // import InfoLogo from "../assets/InfoLogo";
 // import { Tooltip } from "react-tooltip";
 // import "react-tooltip/dist/react-tooltip.css";
@@ -20,6 +20,7 @@ const Chain = () => {
   const [isLoading, setIsloading] = React.useState(false);
   const { publication } = usePublicationContext();
   const { onTabChange } = useBottomTab();
+  const router = useRouter();
   const [firstCreatedAt, setFirstCreatedAt] = React.useState();
   const [infoContainer, setInfoConatiner] = React.useState(true);
   // console.log(firstCreatedAt);
@@ -126,7 +127,7 @@ const Chain = () => {
         <div className="flex flex-col w-full mb-[0px] sticky top-[10px] z-[1000]">
           <div
             onClick={() => {
-              onTabChange(TabItems[0]);
+              router.push("/");
             }}
             className="flex flex-row items-start not-italic font-medium text-[16px] leading-[140%] text-center text-[#0000003C] mb-[55px] cursor-pointer"
           >

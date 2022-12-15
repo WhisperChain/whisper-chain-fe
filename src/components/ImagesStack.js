@@ -1,15 +1,14 @@
 import React from "react";
 import styled from "styled-components";
 import ProfileLogo from "../assets/ProfileLogo";
-import { useBottomTab } from "../context/BottomTabContext";
 import { usePublicationContext } from "../context/PublicationContext";
-import { TabItems } from "./Main/TabItems";
 import Image from "next/image";
 import styles from "./ImageStack.module.css";
 import PlusIcon from "../assets/PlusIcon";
 import EyeIcon from "../assets/EyeIcon";
 import SignTypedData from "./ConnectButton/SignTypedData";
 import { refreshAuthentication, requestFollow } from "../utils/lensFunction";
+import { useRouter } from "next/router";
 
 const StackedImages = styled.div`
   display: flex;
@@ -99,11 +98,12 @@ const Center = styled.div`
 
 const ImagesStack = ({ imageDetails: imageDetailsArray, pub }) => {
   const [hovered, setHovered] = React.useState(false);
-  const { onTabChange } = useBottomTab();
   const { setPublication } = usePublicationContext();
   const imageDetails = imageDetailsArray[0];
   const [typedData, setTypedData] = React.useState({});
   const followRequestId = React.useRef({});
+  const router = useRouter();
+
   return (
     <StackedImages>
       {imageDetails?.imageUrl && (
@@ -123,7 +123,7 @@ const ImagesStack = ({ imageDetails: imageDetailsArray, pub }) => {
           onMouseLeave={() => setHovered(false)}
           onClick={() => {
             setPublication(pub);
-            onTabChange(TabItems[1]);
+            router.push("/chain");
           }}
         >
           <Details>

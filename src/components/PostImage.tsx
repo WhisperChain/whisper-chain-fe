@@ -1,8 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import ProfileLogo from "../assets/ProfileLogo";
-import Image from 'next/image';
-
+import Image from "next/image";
 
 const ImagePost = styled.div`
   display: flex;
