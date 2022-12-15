@@ -1,12 +1,16 @@
 import React from "react";
 import { Constants } from "./Constants";
-import { commentViaDispatcher, refreshAuthentication } from "./lensFunction";
+import {
+  broadcastRequest,
+  commentViaDispatcher,
+  refreshAuthentication,
+} from "./lensFunction";
 
 export const resetLocalStorage = () => {
   window.localStorage.removeItem(Constants.LOCAL_STORAGE_ACCESS_TOKEN_KEY);
   window.localStorage.removeItem(Constants.LOCAL_STORAGE_REFRESH_TOKEN_KEY);
   window.localStorage.removeItem("profileId");
-  window.localStorage.removeItem("profileImageUrl");
+  window.localStorage.removeItem("profile");
 };
 
 export const getS3UrlfromText = async (prompt, filter = "") => {
@@ -57,10 +61,9 @@ export async function getIpfsUrlandUploadPublication(url, pubId, isInTime) {
   );
 }
 
-// export const getRandomName = () => {
-//   const names = ["A", "B", "C", "D", "E"];
-//   Math.random();
-// };
+export const broadcastData = async (id, data) => {
+  return await broadcastRequest({ id, signature: data });
+};
 
 export const getTimerClock = (timeDifference) => {
   const timeRemaining = 24 * 60 - timeDifference;
@@ -84,12 +87,20 @@ export const timer = (targetDate) => {
   }, [countDownDate]);
   return getReturnValues(countDown);
 };
-  const getReturnValues = (countDown) => {
-    // calculate time left
-    const hours = Math.floor(
-      (countDown % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
-    );
-    const minutes = Math.floor((countDown % (1000 * 60 * 60)) / (1000 * 60));
 
-    return [hours, minutes];
+const getReturnValues = (countDown) => {
+  // calculate time left
+  const hours = Math.floor(
+    (countDown % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+  );
+  const minutes = Math.floor((countDown % (1000 * 60 * 60)) / (1000 * 60));
+
+  return [hours, minutes];
+};
+
+export const getProfileImage = () => {
+  const profile = JSON.parse(window.localStorage.getItem("profile"));
+  return profile.picture
+    ? convertIntoIpfsUrl(profile.picture?.original?.url)
+    : `https://cdn.stamp.fyi/avatar/eth:${profile.ownedBy}?s=250`;
 };

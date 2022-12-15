@@ -7,6 +7,7 @@ import {
 } from "@apollo/client";
 import {
   AUTHENTICATION,
+  BROADCAST,
   CREATE_COLLECT,
   CREATE_COMMENT_VIA_DISPATCHER,
   GET_CHALLENGE,
@@ -171,7 +172,7 @@ export const setDispatcher = async (profileId) => {
 };
 
 export async function txIndexed(txHash) {
-  await apolloClient.query({
+  return await apolloClient.query({
     query: gql(TRANSACTION_INDEXED),
     variables: {
       request: {
@@ -262,4 +263,15 @@ export const collectPost = async (publicationId) => {
       },
     },
   });
+};
+
+export const broadcastRequest = async (request) => {
+  const result = await apolloClient.mutate({
+    mutation: gql(BROADCAST),
+    variables: {
+      request,
+    },
+  });
+
+  return result?.data?.broadcast;
 };
