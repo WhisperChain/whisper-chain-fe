@@ -4,8 +4,11 @@ import styles from "./HomeMessage.module.css";
 import Image from "next/image";
 import ImageLinkTop from "../assets/ImageLinkTop";
 import ImageLinkBottom from "../assets/ImageLinkBottom";
+import WhisperImage from "./WhisperImage";
 
 const HomeMessage = ({ publication }) => {
+  const array1 =[1,2,3];
+  const array2 =[4,5,6,7];
   return (
     <div className={`${styles.MessageBox}`}>
       <div
@@ -34,60 +37,35 @@ const HomeMessage = ({ publication }) => {
             A.I. starts a thread
           </div>
         </div>
-        <Image
-          width={80}
-          height={80}
-          className=""
-          alt="Stack Image 2"
-          src="/../public/Rectangle-2.png"
-        />
-        <Image
-          width={80}
-          height={80}
-          className=""
-          alt="Stack Image 2"
-          src="/../public/Rectangle-3.png"
-        />
-        <Image
-          width={80}
-          height={80}
-          className=""
-          alt="Stack Image 2"
-          src="/../public/Rectangle-4.png"
-        />
+         {array1.map((index) => {
+          return (
+            <WhisperImage
+              key={index}
+              width={80}
+              height={80}
+              classes=""
+              alt={`image${index}`}
+              imgSrcUrl={`${process.env.NEXT_PUBLIC_AWS_CDN_URL}/whisperHomePage/Rectangle${index}.png`}
+            />
+          )
+         })}
       </div>
       <div className="fixed top-[326px] left-[73px] z-0">
         <ImageLinkBottom />
       </div>
       <div className="flex relative justify-evenly mt-[50px] z-10">
-        <Image
-          width={80}
-          height={80}
-          className=""
-          alt="Stack Image 2"
-          src="/../public/Rectangle-5.png"
-        />
-        <Image
-          width={80}
-          height={80}
-          className=""
-          alt="Stack Image 2"
-          src="/../public/Rectangle-6-1.png"
-        />
-        <Image
-          width={80}
-          height={80}
-          className=""
-          alt="Stack Image 2"
-          src="/../public/Rectangle-7.png"
-        />
-        <Image
-          width={80}
-          height={80}
-          className=""
-          alt="Stack Image 2"
-          src="/../public/Rectangle-4.png"
-        />
+        {array2.map((index) => {
+          return (
+            <WhisperImage
+              key={index}
+              width={80}
+              height={80}
+              classes=""
+              alt={`image${index}`}
+              imgSrcUrl={`${process.env.NEXT_PUBLIC_AWS_CDN_URL}/whisperHomePage/Rectangle${index}.png`}
+            />
+          )
+         })}
       </div>
       <div className="flex justify-center">
         <AddWhisperBtn pageIndex={1} publication={publication} />

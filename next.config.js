@@ -21,6 +21,10 @@ module.exports = {
         protocol: 'https',
         hostname: 'plg-whisperchain-xyz.s3.amazonaws.com',
         pathname: '/stability/**'
+      },
+      {
+        protocol: 'https',
+        hostname: 'whisperchain-static.quick-poc.com',
       }
     ],
   },
