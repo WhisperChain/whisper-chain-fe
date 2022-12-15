@@ -43,7 +43,7 @@ const Spinner: React.FC<SpinnerProps> = ({
   opacity = "ff",
   border = 8,
   borderOpacity = 0,
-  color = "#ffffff",
+  color = "#f5f5f5",
 }) => {
   return (
     <LoaderDiv

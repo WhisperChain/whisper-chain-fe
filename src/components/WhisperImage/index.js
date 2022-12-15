@@ -19,7 +19,12 @@ export default function WhisperImage({
       className={classes}
       alt={alt}
     />) : (
-      <SpinningLoader height={`${height}px`} width={`${width}px`} />
+      <div
+        className={`w-fit backdrop-blur-[60px] rounded-[8px]`}
+        style={{ background: "rgba(255, 255, 255, 0.4)" }}
+      >
+        <SpinningLoader height={`${height}px`} width={`${width}px`} />
+      </div >
     )
   )
 }

@@ -66,6 +66,21 @@ function Generate() {
     onTabChange(TabItems[pageIndex]);
   }
 
+  const generateImageClickHandler = async () => {
+    if (urls.length < 5) {
+      setUrls([1, ...urls])
+      setIsloading(true);
+      const images = await getS3UrlfromText(
+        promptText,
+        selectedFilter
+      );
+      const newUrls = [images, ...urls];
+
+      setUrls(newUrls);
+      setIsloading(false);
+    }
+  }
+
   return (
     <div className="w-full h-[90vh]">
       <div className="flex gap-[16px] justify-center items-center">
@@ -128,19 +143,7 @@ function Generate() {
           {/* Generate Image Button */}
           <div className="w-full">
             <div className="flex items-center cursor-pointer"
-              onClick={async () => {
-                if (urls.length < 5) {
-                  setIsloading(true);
-                  const images = await getS3UrlfromText(
-                    promptText,
-                    selectedFilter
-                  );
-                  const newUrls = [images, ...urls];
-
-                  setUrls(newUrls);
-                  setIsloading(false);
-                }
-              }}
+              onClick={generateImageClickHandler}
             >
               <button className={styles.generateButton}>
                 <div className="flex items-center justify-between">
@@ -161,34 +164,30 @@ function Generate() {
         </div>
         {/* Image Gallery */}
         <div className={styles.imageGalleryContainer}>
-          {isLoading ? (
-            <SpinningLoader height="50vw" width="831px" />
-          ) : (
-            <>
-              <div className="text-center py-[4px] px-[8px] w-full">
-                <div className={styles.mainText}>Your generations</div>
-              </div>
-              {urls.map((url, index) => (
-                <div className={styles.imageTryOutputBox} key={url[0] + index}>
-                  <div className="text-center py-[4px] px-[8px] w-full">
-                    <div className={styles.mainText}>
-                      Try {urls.length - index}
-                    </div>
-                  </div>
-                  <div className="flex items-center justify-center w-full gap-[16px]">
-                    <GeneratedImageBox
-                      imgSrcUrl={url[0]}
-                      clickHandler={onImageClickHandler}
-                    />
-                    <GeneratedImageBox
-                      imgSrcUrl={url[1]}
-                      clickHandler={onImageClickHandler}
-                    />
+          <div className="text-center py-[4px] px-[8px] w-full">
+            <div className={styles.mainText}>Your generations</div>
+          </div>
+          {
+            urls.map((url, index) => (
+              <div className={styles.imageTryOutputBox} key={index}>
+                <div className="text-center py-[4px] px-[8px] w-full">
+                  <div className={styles.mainText}>
+                    Try {urls.length - index}
                   </div>
                 </div>
-              ))}
-            </>
-          )}
+                <div className="flex items-center justify-center w-full gap-[16px]">
+                  <GeneratedImageBox
+                    imgSrcUrl={url[0]}
+                    clickHandler={onImageClickHandler}
+                  />
+                  <GeneratedImageBox
+                    imgSrcUrl={url[1]}
+                    clickHandler={onImageClickHandler}
+                  />
+                </div>
+              </div>
+            ))
+          }
         </div>
       </div>
     </div>
