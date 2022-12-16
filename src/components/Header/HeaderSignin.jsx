@@ -43,6 +43,10 @@ const HearderSignin = ({handleOpen}) => {
               }
           
               return window?.localStorage.getItem("profileId") ? (
+                <div className="flex justify-center items-center gap-[8px]">  
+                    <div className="box-border flex justify-center items-center py-[4px] px-[8px]  w-auto h-[30px] bg-[255,255,255/60] border-[1px] border-solid border-[0,0,0/5] rounded-[4px] backdrop-blur">
+                      <div className={`not-italic text-[14px] leading-[160%] text-[#000000] text-center font-medium ${styles.HandlerName}`}>{JSON.parse(window.localStorage.getItem("profile")).handle}</div>
+                    </div>
                     <Image
                       src={window.localStorage.getItem("profileImageUrl") || "https://cdn.stamp.fyi/avatar/eth:0x3a72452af2ddc056330bbcb43898134c9adb51cf?s=250"}
                       alt="profile"
@@ -50,6 +54,7 @@ const HearderSignin = ({handleOpen}) => {
                       width={36}
                       height={36}
                     />
+                </div>
                   ) : 
                 null
             })()}
