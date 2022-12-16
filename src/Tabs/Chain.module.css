@@ -15,7 +15,7 @@
    width: 163px;
    height: 40px;
    cursor: pointer;
-   opacity: 0;
+   display: none;
 }
 
 .timerText {
