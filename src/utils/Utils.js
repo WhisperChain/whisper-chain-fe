@@ -38,20 +38,34 @@ export const getIpfsUrl = async (url) => {
   return ipfsUrl;
 };
 
-export const postWhisperResponse = async (url, txHash) => {
+export const createIpfsObjects = async (url) => {
   const resp = await fetch(
-    `https://whisperchain.quick-poc.com/api/lens/whispers`,
+    "https://whisperchain.quick-poc.com/api/lens/ipfs-objects",
     {
       method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
       body: JSON.stringify({
         s3_url: url,
-        transaction_hash: txHash,
-        whisper_ipfs_object_id: 1,
-        image_ipfs_object_id: 1,
-        chain_id: 1,
       }),
     }
   );
+  const responseJSON = await resp.json();
+  return responseJSON.data;
+};
+
+export const postWhisperResponse = async (url, txHash) => {
+  await fetch("https://whisperchain.quick-poc.com/api/lens/whispers", {
+    method: "POST",
+    body: JSON.stringify({
+      s3_url: url,
+      transaction_hash: txHash,
+      whisper_ipfs_object_id: 1,
+      image_ipfs_object_id: 1,
+      chain_id: 1,
+    }),
+  });
 };
 
 export function convertIntoIpfsUrl(url) {
@@ -66,7 +80,18 @@ export function convertIntoIpfsUrl(url) {
 }
 
 export async function getIpfsUrlandUploadPublication(url, pubId, isInTime) {
-  const ipfsUrl = await getIpfsUrl(url);
+  const metadataResponse = await createIpfsObjects(url);
+  const ipfsObjectIds = metadataResponse?.ipfs_object_ids;
+  const ipfsObjects = metadataResponse?.ipfs_object;
+  let ipfsUrl = "";
+  {
+    ipfsObjectIds.map((id) => {
+      const ipfsObject = ipfsObjects[id];
+      if (ipfsObject.entity_kind === "WHISPER") {
+        ipfsUrl = `ipfs://${ipfsObject.cid}`;
+      }
+    });
+  }
   await refreshAuthentication();
 
   const res = await commentViaDispatcher(
