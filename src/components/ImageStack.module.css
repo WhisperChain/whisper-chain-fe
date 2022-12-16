@@ -19,6 +19,9 @@
     background: rgba(255, 255, 255, 0.56);
     border: 1px solid rgba(255, 255, 255, 0.2);
 }
+.bottomBox:hover{
+    background: rgba(255, 255, 255, 0.2);
+}
 
 .bottomBoxText{
     font-family: 'Satoshi Variable';
@@ -35,5 +38,9 @@
     border: 1px solid rgba(0, 0, 0, 0.2);
     color: #000000;
     cursor: pointer;
+}
+
+.viewOnLensBtn:hover {
+    background: rgba(255, 255, 255, 0.2);
 }
 

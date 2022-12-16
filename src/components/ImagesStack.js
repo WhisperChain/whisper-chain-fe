@@ -16,6 +16,7 @@ const ImagesStack = ({ imageDetails: imageDetailsArray, pub }) => {
   const [typedData, setTypedData] = React.useState({});
   const followRequestId = React.useRef({});
   const router = useRouter();
+  const [followed, setFollowed] = React.useState();
 
   return (
     <div className="flex flex-col items-center relative overflow-hidden h-[572px]">
@@ -67,7 +68,7 @@ const ImagesStack = ({ imageDetails: imageDetailsArray, pub }) => {
               >
                 <PlusIcon />
                 <div
-                  className={`not-italic font-medium text-[16px] text-[#FFFFFF] ${styles.FollowBtn}`}
+                  className={`not-italic font-medium text-[16px] text-[#FFFFFF] hover:text-[]  ${styles.FollowBtn}`}
                 >
                   Follow
                 </div>
@@ -87,8 +88,8 @@ const ImagesStack = ({ imageDetails: imageDetailsArray, pub }) => {
               }}
             >
               <div className={`flex justify-center items-center absolute text-center text-[#000000] not-italic font-medium text-[16px] leading-[100%] gap-[8px] ${styles.bottomBoxText}`}>
-              <EyeIcon />
-              <div>View Chain </div>
+                <EyeIcon />
+                <div>View Chain </div>
               </div>
           </div>
           </div>
