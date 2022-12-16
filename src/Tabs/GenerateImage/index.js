@@ -5,7 +5,8 @@ import { getCommentFeed, getPublication } from "../../utils/lensFunction";
 import {
   convertIntoIpfsUrl,
   getIpfsUrlandUploadPublication,
-  getS3UrlfromText,
+  getImagesFromPrompt,
+  postWhisperResponse,
 } from "../../utils/Utils";
 import { useBottomTab } from "../../context/BottomTabContext";
 import { TabItems } from "../../components/Main/TabItems";
@@ -42,7 +43,7 @@ function Generate() {
       setPreviousImageUrl(
         convertIntoIpfsUrl(
           comment.metadata.media[0].original.url ??
-          pub.metadata.media[0].original.url
+            pub.metadata.media[0].original.url
         )
       );
     };
@@ -56,27 +57,35 @@ function Generate() {
 
   const { onTabChange } = useBottomTab();
 
-  const onImageClickHandler = async () => {
+  const onImageClickHandler = async (url) => {
     setIsloading(true);
-    await getIpfsUrlandUploadPublication(url[0], pubsId, true);
+    const txHash = await getIpfsUrlandUploadPublication(url, pubsId, true);
+    console.log({ txHash });
+    await postWhisperResponse(url, txHash);
     setIsloading(false);
     router.push("/chain");
   };
 
   const generateImageClickHandler = async () => {
     if (urls.length < 5) {
-      setUrls([1, ...urls])
+      setUrls([1, ...urls]);
       setIsloading(true);
-      const images = await getS3UrlfromText(
-        promptText,
-        selectedFilter
-      );
+      const response = await getImagesFromPrompt(promptText, selectedFilter);
+      const suggestionIds = response.suggestions_ids;
+      const suggestions = response.suggestions;
+      const images = [];
+      {
+        suggestionIds.map((id) => {
+          const suggestion = suggestions[id];
+          images.push(suggestion?.image_url);
+        });
+      }
       const newUrls = [images, ...urls];
 
       setUrls(newUrls);
       setIsloading(false);
     }
-  }
+  };
 
   return (
     <div className="w-full h-[90vh]">
@@ -137,7 +146,8 @@ function Generate() {
           </div>
           {/* Generate Image Button */}
           <div className="w-full">
-            <div className="flex items-center cursor-pointer"
+            <div
+              className="flex items-center cursor-pointer"
               onClick={generateImageClickHandler}
             >
               <button className={styles.generateButton}>
@@ -163,27 +173,27 @@ function Generate() {
           <div className="text-center py-[4px] px-[8px] w-full">
             <div className={styles.mainText}>Your generations</div>
           </div>
-          {
-            urls.map((url, index) => (
-              <div className={styles.imageTryOutputBox} key={index}>
-                <div className="text-center py-[4px] px-[8px] w-full">
-                  <div className={styles.mainText}>
-                    Try {urls.length - index}
-                  </div>
-                </div>
-                <div className="flex items-center justify-center w-full gap-[16px]">
-                  <GeneratedImageBox
-                    imgSrcUrl={url[0]}
-                    clickHandler={onImageClickHandler}
-                  />
-                  <GeneratedImageBox
-                    imgSrcUrl={url[1]}
-                    clickHandler={onImageClickHandler}
-                  />
-                </div>
+          {urls.map((url, index) => (
+            <div className={styles.imageTryOutputBox} key={index}>
+              <div className="text-center py-[4px] px-[8px] w-full">
+                <div className={styles.mainText}>Try {urls.length - index}</div>
               </div>
-            ))
-          }
+              <div className="flex items-center justify-center w-full gap-[16px]">
+                <GeneratedImageBox
+                  imgSrcUrl={url[0]}
+                  clickHandler={() => {
+                    onImageClickHandler(url[0]);
+                  }}
+                />
+                <GeneratedImageBox
+                  imgSrcUrl={url[1]}
+                  clickHandler={() => {
+                    onImageClickHandler(url[1]);
+                  }}
+                />
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </div>

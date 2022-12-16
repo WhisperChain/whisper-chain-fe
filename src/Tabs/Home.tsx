@@ -17,8 +17,7 @@ import "swiper/css/effect-creative";
 
 // import required modules
 import { Mousewheel, EffectCreative } from "swiper";
-import styles from "./Home.module.css"
-
+import styles from "./Home.module.css";
 
 const SEL = "custom-section";
 const SECTION_SEL = `.${SEL}`;
@@ -52,7 +51,7 @@ const Home = () => {
             direction={"vertical"}
             mousewheel={{
               eventsTarget: "#home-section",
-              releaseOnEdges: true
+              releaseOnEdges: true,
             }}
             effect={"creative"}
             creativeEffect={{
@@ -82,7 +81,9 @@ const Home = () => {
                     <div className={`${SEL} w-full left-[16em] absolute top-0`}>
                       <div className="slide w-full mt-[128px] flex justify-start relative">
                         <div className="absolute top-[-50px] left-[0%]">
-                          <div className={`h-[22px] text-[16px] not-italic font-medium leading-[140%] ${styles.Date}`}>
+                          <div
+                            className={`h-[22px] text-[16px] not-italic font-medium leading-[140%] ${styles.Date}`}
+                          >
                             {moment(pub?.createdAt).format("Do MMMM YYYY")}
                           </div>
                           {/* <div className={`h-[16px] not-italic font-normal font-[16px] leading-[100%] ${styles.status}`}>
@@ -93,10 +94,7 @@ const Home = () => {
                         </div>
 
                         {pub?.comments[0] ? (
-                          <ImagesStack
-                            imageDetails={pub?.comments}
-                            pub={pub}
-                          />
+                          <ImagesStack imageDetails={pub?.comments} pub={pub} />
                         ) : null}
                       </div>
                     </div>
