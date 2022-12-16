@@ -3,12 +3,8 @@ import React from "react";
 import WalletBtn from "../../assets/WalletBtn";
 import { resetLocalStorage } from "../../utils/Utils";
 import SignAuthentication from "./SignAuthentication";
-import styled from "styled-components";
 import LensIcon from "../../assets/LensIcon";
 
-const Signin = styled.div`
-    border: 1px solid rgba(0, 0, 0, 0.2);
-`;
 
 const CustomConnectButton = () => {
   return (
@@ -51,10 +47,10 @@ const CustomConnectButton = () => {
                       openConnectModal();
                     }}
                   >
-                  <Signin className={`flex justify-center box-border items-center w-[234px] h-[40px] bg-[#ABFE2C] text-[#00501E] backdrop-blur rounded-[4px] gap-[8px] cursor-pointer`}>
+                  <div className={`flex justify-center box-border items-center w-[234px] h-[40px] bg-[#ABFE2C] text-[#00501E] backdrop-blur rounded-[4px] gap-[8px] cursor-pointer border-[1px] border-solid border-black/20`}>
                     <LensIcon/>
                     Sign in with Lens
-                    </Signin>
+                    </div>
                   </div>
                 );
               }
