@@ -43,7 +43,7 @@ function Generate() {
       setPreviousImageUrl(
         convertIntoIpfsUrl(
           comment.metadata.media[0].original.url ??
-            pub.metadata.media[0].original.url
+          pub.metadata.media[0].original.url
         )
       );
     };
@@ -181,15 +181,15 @@ function Generate() {
               <div className="flex items-center justify-center w-full gap-[16px]">
                 <GeneratedImageBox
                   imgSrcUrl={url[0]}
-                  clickHandler={() => {
-                    onImageClickHandler(url[0]);
-                  }}
+                  clickHandler={() =>
+                    onImageClickHandler(url[0])
+                  }
                 />
                 <GeneratedImageBox
                   imgSrcUrl={url[1]}
-                  clickHandler={() => {
-                    onImageClickHandler(url[1]);
-                  }}
+                  clickHandler={() =>
+                    onImageClickHandler(url[1])
+                  }
                 />
               </div>
             </div>
