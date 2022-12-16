@@ -115,11 +115,14 @@ const Home = () => {
       <HomeSection id="home-section" className="h-[781px]">
         <LeftSection>
           <Swiper
+            freeMode
+            followFinger
             spaceBetween={50}
             slidesPerView={1}
             direction={"vertical"}
             mousewheel={{
               eventsTarget: "#home-section",
+              releaseOnEdges: true
             }}
             effect={"creative"}
             creativeEffect={{
