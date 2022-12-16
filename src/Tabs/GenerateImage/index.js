@@ -139,21 +139,6 @@ function Generate() {
           <div className="w-full">
             <div className="flex items-center cursor-pointer"
               onClick={generateImageClickHandler}
-            <div
-              className="flex items-center cursor-pointer"
-              onClick={async () => {
-                if (urls.length < 5) {
-                  setIsloading(true);
-                  const images = await getS3UrlfromText(
-                    promptText,
-                    selectedFilter
-                  );
-                  const newUrls = [images, ...urls];
-
-                  setUrls(newUrls);
-                  setIsloading(false);
-                }
-              }}
             >
               <button className={styles.generateButton}>
                 <div className="flex items-center justify-between">
