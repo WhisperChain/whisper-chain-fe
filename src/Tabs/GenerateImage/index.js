@@ -54,8 +54,6 @@ function Generate() {
     }
   }, []);
 
-  const { onTabChange } = useBottomTab();
-
   const onImageClickHandler = async () => {
     setIsloading(true);
     await getIpfsUrlandUploadPublication(url[0], pubsId, true);
@@ -86,27 +84,30 @@ function Generate() {
           {/* Previos Whisper Image */}
           <div className="w-full">
             <div className="flex flex-col mb-[8px]">
-              <div className={styles.mainText}>Previous whisper</div>
+              <div className={styles.mainText}>Last whisper of {`December 13th`} chain</div>
               <div className={styles.subText}>
-                This was the last whisper added to the chain, try to describe
-                this whisper as best you can.
+                Try to describe this whisper as best you can.
               </div>
             </div>
-            <WhisperImage
-              imgSrcUrl={previousImageUrl}
-              width={256}
-              height={256}
-              priority={true}
-              alt="Whisper Image"
-              classes="rounded-[8px]"
-            />
+            <div className="w-[256px] h-[256px]">
+              <WhisperImage
+                imgSrcUrl={previousImageUrl}
+                width={256}
+                height={256}
+                priority={true}
+                alt="Whisper Image"
+                classes="rounded-[8px]"
+              />
+            </div>
           </div>
           {/* Generate Image form (prompt and filter option) */}
           <div className="w-full">
             <div className="flex flex-col items-start p-0 gap-[8px] w-auto">
               <div className={styles.mainText}>Enter prompt</div>
               <textarea
-                className={styles.textareaInput}
+                className={`${styles.promptInput} text-sm shadow-sm placeholder-[#1d0545b8]
+                  focus:outline-none focus:border-[#6f1aff3d] focus:ring-1 focus:ring-[#6f1aff3d]
+                `}
                 placeholder="Enter your prompt here to generate your very own whisper"
                 value={promptText}
                 onChange={(e) => setPromptText(e.target.value)}
@@ -114,11 +115,11 @@ function Generate() {
             </div>
           </div>
           {/* Select filter option */}
-          <div className="w-full mb-[52px]">
+          <div className="w-full">
             <div className="box-border">
               <div className={styles.mainText}>Filter</div>
               <div className={`${styles.subText} mb-[8px]`}>
-                Select different styles that you can apply to your whisper
+                Select a style to create more refined whispers
               </div>
               <select
                 className={styles.selectBoxInput}
@@ -136,18 +137,21 @@ function Generate() {
             </div>
           </div>
           {/* Generate Image Button */}
-          <div className="w-full">
+          <div className={`w-full absolute bottom-[16px] ${promptText === "" ? 'opacity-50 cursor-not-allowed	pointer-events-none' : ''}`}>
             <div className="flex items-center cursor-pointer"
               onClick={generateImageClickHandler}
             >
               <button className={styles.generateButton}>
                 <div className="flex items-center justify-between">
-                  <div>
+                  <div className="flex items-center gap-[5px]">
                     <span className={styles.generateButtonText}>
                       Generate whisper
                     </span>
                     <span className={styles.tryCounts}>
-                      &#x2022; {5 - urls.length} tries left
+                      &#x2022;
+                    </span>
+                    <span className={styles.tryCounts}>
+                      {5 - urls.length} tries left
                     </span>
                   </div>
                   <div>
@@ -160,18 +164,11 @@ function Generate() {
         </div>
         {/* Image Gallery */}
         <div className={styles.imageGalleryContainer}>
-          <div className="text-center py-[4px] px-[8px] w-full">
-            <div className={styles.mainText}>Your generations</div>
-          </div>
+          <div className={styles.galleryMainText}>Your generations</div>
           {
             urls.map((url, index) => (
               <div className={styles.imageTryOutputBox} key={index}>
-                <div className="text-center py-[4px] px-[8px] w-full">
-                  <div className={styles.mainText}>
-                    Try {urls.length - index}
-                  </div>
-                </div>
-                <div className="flex items-center justify-center w-full gap-[16px]">
+                <div className="flex items-center justify-center w-full gap-[12px]">
                   <GeneratedImageBox
                     imgSrcUrl={url[0]}
                     clickHandler={onImageClickHandler}

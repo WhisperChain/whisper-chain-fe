@@ -27,6 +27,8 @@ module.exports = {
         hostname: 'whisperchain-static.quick-poc.com',
       }
     ],
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048],
+    path: process.env.W_CDN_IMAGE_RESIZER_URL,
   },
 
   compiler: {
