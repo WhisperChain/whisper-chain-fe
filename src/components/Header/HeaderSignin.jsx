@@ -2,6 +2,7 @@ import { ConnectButton } from "@rainbow-me/rainbowkit";
 import React from "react";
 import Image from "next/image";
 import styles from "./Header.module.css";
+import { getProfileImage } from "../../utils/Utils";
 
 
 const HearderSignin = ({handleOpen}) => {
@@ -48,7 +49,7 @@ const HearderSignin = ({handleOpen}) => {
                       <div className={`not-italic text-[14px] leading-[160%] text-[#000000] text-center font-medium ${styles.HandlerName}`}>{JSON.parse(window.localStorage.getItem("profile")).handle}</div>
                     </div>
                     <Image
-                      src={window.localStorage.getItem("profileImageUrl") || "https://cdn.stamp.fyi/avatar/eth:0x3a72452af2ddc056330bbcb43898134c9adb51cf?s=250"}
+                      src={getProfileImage() ?? "https://cdn.stamp.fyi/avatar/eth:0x3a72452af2ddc056330bbcb43898134c9adb51cf?s=250"}
                       alt="profile"
                       className="rounded-[18px]"
                       width={36}

@@ -12,7 +12,7 @@ import {
 import { getProfileImage } from "../../utils/Utils";
 import SignTypedData from "./SignTypedData";
 
-function SignAuthentication() {
+function SignAuthentication({ onSignInComplete }) {
   const { address } = useAccount();
   const typedDataRef = React.useRef({});
   const [typedData, setTypedData] = useState(typedDataRef.current);
@@ -43,8 +43,10 @@ function SignAuthentication() {
       dispatcher.current = profile.dispatcher;
       window.localStorage.setItem("profileId", profile.id);
       window.localStorage.setItem("profile", JSON.stringify(profile));
+      onSignInComplete?.();
     } catch (error) {
       console.log({ error });
+      onSignInComplete?.();
     }
   };
 
