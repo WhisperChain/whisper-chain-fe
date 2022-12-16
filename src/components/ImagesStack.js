@@ -1,13 +1,12 @@
 import React from "react";
 import styled from "styled-components";
 import ProfileLogo from "../assets/ProfileLogo";
-import { useBottomTab } from "../context/BottomTabContext";
 import { usePublicationContext } from "../context/PublicationContext";
-import { TabItems } from "./Main/TabItems";
-import Image from 'next/image';
+import Image from "next/image";
 import styles from "./ImageStack.module.css";
 import PlusIcon from "../assets/PlusIcon";
 import EyeIcon from "../assets/EyeIcon";
+import { useRouter } from "next/router";
 
 const StackedImages = styled.div`
   display: flex;
@@ -46,24 +45,25 @@ const Name = styled.div`
   line-height: 100%;
   letter-spacing: -0.01em;
   color: #000000;
-  font-family: 'Satoshi Variable';
+  font-family: "Satoshi Variable";
   font-weight: 700;
   font-size: 14px;
   line-height: 100%;
-  font-feature-settings: 'tnum' on, 'onum' on, 'salt' on, 'ss01' on, 'ss02' on, 'ss03' on, 'ss04' on, 'ss05' on;
+  font-feature-settings: "tnum" on, "onum" on, "salt" on, "ss01" on, "ss02" on,
+    "ss03" on, "ss04" on, "ss05" on;
 `;
 
 const Handle = styled.div`
   font-style: normal;
   font-weight: 400;
   letter-spacing: -0.03em;
-  font-family: 'Satoshi Variable';
+  font-family: "Satoshi Variable";
   font-size: 14px;
   line-height: 100%;
-  font-feature-settings: 'tnum' on, 'onum' on, 'ordn' on, 'salt' on, 'ss01' on, 'ss02' on, 'ss03' on, 'ss04' on, 'ss05' on;
+  font-feature-settings: "tnum" on, "onum" on, "ordn" on, "salt" on, "ss01" on,
+    "ss02" on, "ss03" on, "ss04" on, "ss05" on;
   color: rgba(0, 0, 0, 0.6);
 `;
-
 
 const User = styled.div`
   margin-left: 5px;
@@ -82,35 +82,35 @@ const Center = styled.div`
   left: 50%;
   transform: translateX(-50%);
   text-align: center;
-  color: #6F1AFF;
-  font-family: 'Satoshi Variable';
+  color: #6f1aff;
+  font-family: "Satoshi Variable";
   font-style: normal;
   font-weight: 500;
   font-size: 16px;
   line-height: 100%;
   text-align: center;
   letter-spacing: -0.03em;
-  color: #6F1AFF;
+  color: #6f1aff;
   gap: 8px;
 `;
 
-const ImagesStack = ({ imageDetails: imageDetailsArray ,  pub }) => {
+const ImagesStack = ({ imageDetails: imageDetailsArray, pub }) => {
   const [hovered, setHovered] = React.useState(false);
-  const { onTabChange } = useBottomTab();
   const { setPublication } = usePublicationContext();
   const imageDetails = imageDetailsArray[0];
-  console.log({imageDetailsArray});
+  const router = useRouter();
+
   return (
     <StackedImages>
       {imageDetails?.imageUrl && (
         <Image
-         src={imageDetails.imageUrl}
-         onMouseEnter={() => setHovered(true)}
-         onMouseLeave={() => setHovered(false)}
-         alt="Stack Image"
-         width={512}
-         height={512}
-         className="relative flex z-[3] rounded-[48px]"
+          src={imageDetails.imageUrl}
+          onMouseEnter={() => setHovered(true)}
+          onMouseLeave={() => setHovered(false)}
+          alt="Stack Image"
+          width={512}
+          height={512}
+          className="relative flex z-[3] rounded-[48px]"
         />
       )}
       {hovered && (
@@ -119,7 +119,7 @@ const ImagesStack = ({ imageDetails: imageDetailsArray ,  pub }) => {
           onMouseLeave={() => setHovered(false)}
           onClick={() => {
             setPublication(pub);
-            onTabChange(TabItems[1]);
+            router.push("/chain");
           }}
         >
           <Details>
@@ -127,19 +127,25 @@ const ImagesStack = ({ imageDetails: imageDetailsArray ,  pub }) => {
               <ProfileLogo profileImageUrl={imageDetails?.profileImageUrl} />
               <User>
                 <Name>{imageDetails?.name || "Lewis"}</Name>
-                <Handle>{"@"+imageDetails?.profileHandle || "Lewis.xyz"}</Handle>
+                <Handle>
+                  {"@" + imageDetails?.profileHandle || "Lewis.xyz"}
+                </Handle>
               </User>
             </Left>
             {/* <Right>{imageDetails?.createdAt || "2:32 pm"}</Right> */}
             <button className="flex justify-center items-center gap-[6px] z-20">
               <PlusIcon />
-              <div className={`not-italic font-medium text-[16px]  ${styles.FollowBtn}`}>Follow</div>
+              <div
+                className={`not-italic font-medium text-[16px]  ${styles.FollowBtn}`}
+              >
+                Follow
+              </div>
             </button>
           </Details>
           <Center>
             <EyeIcon />
             View Chain
-            </Center>
+          </Center>
         </Backdrop>
       )}
       <Image
@@ -147,15 +153,23 @@ const ImagesStack = ({ imageDetails: imageDetailsArray ,  pub }) => {
         height={512}
         className="absolute bottom-[22px] rounded-[48px] flex z-[2]"
         alt="Stack Image 2"
-        src={imageDetailsArray[1]?.imageUrl ? imageDetailsArray[1].imageUrl : "https://i.picsum.photos/id/193/512/512.jpg?hmac=ay70CF2_XM0GJBcUQzMN6UNHDn0-kgSIu8KcENreNgM"}
-        />
-       
+        src={
+          imageDetailsArray[1]?.imageUrl
+            ? imageDetailsArray[1].imageUrl
+            : "https://i.picsum.photos/id/193/512/512.jpg?hmac=ay70CF2_XM0GJBcUQzMN6UNHDn0-kgSIu8KcENreNgM"
+        }
+      />
+
       <Image
         width={404}
         height={512}
         className="absolute bottom-[0px] rounded-[48px] flex z-[1]"
         alt="Stack Image 3"
-         src={imageDetailsArray[2]?.imageUrl ? imageDetailsArray[2].imageUrl : "https://i.picsum.photos/id/524/512/512.jpg?hmac=2VlA0x6Y7osphrvDzR52TVkYjcc493rqcizd8HEXphY" }
+        src={
+          imageDetailsArray[2]?.imageUrl
+            ? imageDetailsArray[2].imageUrl
+            : "https://i.picsum.photos/id/524/512/512.jpg?hmac=2VlA0x6Y7osphrvDzR52TVkYjcc493rqcizd8HEXphY"
+        }
       />
     </StackedImages>
   );
