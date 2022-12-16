@@ -45,11 +45,14 @@ const Home = () => {
       <div id="home-section" className="flex h-[781px] relative">
         <div className="flex flex-col justify-end w-2/4">
           <Swiper
+            freeMode
+            followFinger
             spaceBetween={50}
             slidesPerView={1}
             direction={"vertical"}
             mousewheel={{
               eventsTarget: "#home-section",
+              releaseOnEdges: true
             }}
             effect={"creative"}
             creativeEffect={{

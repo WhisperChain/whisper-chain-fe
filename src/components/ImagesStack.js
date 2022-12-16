@@ -1,19 +1,22 @@
 import React from "react";
 import ProfileLogo from "../assets/ProfileLogo";
-import { useBottomTab } from "../context/BottomTabContext";
 import { usePublicationContext } from "../context/PublicationContext";
-import { TabItems } from "./Main/TabItems";
 import Image from "next/image";
 import styles from "./ImageStack.module.css";
 import PlusIcon from "../assets/PlusIcon";
 import EyeIcon from "../assets/EyeIcon";
+import SignTypedData from "./ConnectButton/SignTypedData";
+import { refreshAuthentication, requestFollow } from "../utils/lensFunction";
+import { useRouter } from "next/router";
 
 const ImagesStack = ({ imageDetails: imageDetailsArray, pub }) => {
   const [hovered, setHovered] = React.useState(false);
-  const { onTabChange } = useBottomTab();
   const { setPublication } = usePublicationContext();
   const imageDetails = imageDetailsArray[0];
-  console.log({ imageDetailsArray });
+  const [typedData, setTypedData] = React.useState({});
+  const followRequestId = React.useRef({});
+  const router = useRouter();
+
   return (
     <div className="flex flex-col items-center relative overflow-hidden h-[572px]">
       {imageDetails?.imageUrl && (
@@ -33,7 +36,7 @@ const ImagesStack = ({ imageDetails: imageDetailsArray, pub }) => {
           onMouseLeave={() => setHovered(false)}
           onClick={() => {
             setPublication(pub);
-            onTabChange(TabItems[1]);
+            router.push("/chain");
           }}
           className={`w-[512px] h-[512px] absolute z-[10] backdrop-blur rounded-[48px] cursor-pointer ${styles.Backdrop}`}
         >
@@ -54,14 +57,32 @@ const ImagesStack = ({ imageDetails: imageDetailsArray, pub }) => {
               </div>
             </div>
             {/* <Right>{imageDetails?.createdAt || "2:32 pm"}</Right> */}
-            <button className="flex justify-center items-center gap-[6px] z-20">
-              <PlusIcon />
+            {!imageDetails?.isFollowedByMe ? (
+              <button
+                className="flex justify-center items-center gap-[6px] z-20"
+                onClick={async () => {
+                  console.log("call Follow Function");
+                  await refreshAuthentication();
+                  const res = await requestFollow(imageDetails?.profileId);
+                  followRequestId.current = res.data?.createFollowTypedData?.id;
+                  setTypedData(res.data?.createFollowTypedData?.typedData);
+                  console.log({ res });
+                }}
+              >
+                <PlusIcon />
+                <div
+                  className={`not-italic font-medium text-[16px]  ${styles.FollowBtn}`}
+                >
+                  Follow
+                </div>
+              </button>
+            ) : (
               <div
                 className={`not-italic font-medium text-[16px]  ${styles.FollowBtn}`}
               >
-                Follow
+                Following
               </div>
-            </button>
+            )}
           </div>
           <div
             className={`flex justify-center items-center absolute top-[50%] left-[50%] -translate-x-[50%] text-center text-[#6F1AFF] not-italic font-medium text-[16px] leading-[100%] gap-[8px] ${styles.center}`}
@@ -71,6 +92,13 @@ const ImagesStack = ({ imageDetails: imageDetailsArray, pub }) => {
           </div>
         </div>
       )}
+      {Object.keys(typedData)?.length > 0 ? (
+        <SignTypedData
+          typedData={typedData}
+          id={followRequestId.current}
+          onSuccess={() => {}}
+        />
+      ) : null}
       <Image
         width={452}
         height={512}

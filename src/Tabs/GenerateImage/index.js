@@ -9,16 +9,17 @@ import {
 } from "../../utils/Utils";
 import { useBottomTab } from "../../context/BottomTabContext";
 import { TabItems } from "../../components/Main/TabItems";
-import Image from "next/image";
 import { FILTER_OPTIONS } from "./filterDropdownOptions";
 
 import styles from "./generateImage.module.css";
 import MagicStickIcon from "../../assets/MagicStickIcon";
 import WhisperImage from "../../components/WhisperImage";
 import GeneratedImageBox from "../../components/GeneratedImageBox";
+import { useRouter } from "next/router";
 
 function Generate() {
   const { publication } = usePublicationContext();
+  const router = useRouter();
   const [promptText, setPromptText] = React.useState("");
   const [urls, setUrls] = React.useState([]);
   const [pubsId, setPubsId] = React.useState();
@@ -53,18 +54,28 @@ function Generate() {
     }
   }, []);
 
-  const pageIndex = 2;
   const { onTabChange } = useBottomTab();
 
   const onImageClickHandler = async () => {
     setIsloading(true);
-    await getIpfsUrlandUploadPublication(
-      url[0],
-      pubsId,
-      true
-    );
+    await getIpfsUrlandUploadPublication(url[0], pubsId, true);
     setIsloading(false);
-    onTabChange(TabItems[pageIndex]);
+    router.push("/chain");
+  };
+
+  const generateImageClickHandler = async () => {
+    if (urls.length < 5) {
+      setUrls([1, ...urls])
+      setIsloading(true);
+      const images = await getS3UrlfromText(
+        promptText,
+        selectedFilter
+      );
+      const newUrls = [images, ...urls];
+
+      setUrls(newUrls);
+      setIsloading(false);
+    }
   }
 
   return (
@@ -75,9 +86,7 @@ function Generate() {
           {/* Previos Whisper Image */}
           <div className="w-full">
             <div className="flex flex-col mb-[8px]">
-              <div className={styles.mainText}>
-                Previous whisper
-              </div>
+              <div className={styles.mainText}>Previous whisper</div>
               <div className={styles.subText}>
                 This was the last whisper added to the chain, try to describe
                 this whisper as best you can.
@@ -129,28 +138,17 @@ function Generate() {
           {/* Generate Image Button */}
           <div className="w-full">
             <div className="flex items-center cursor-pointer"
-              onClick={async () => {
-                if (urls.length < 5) {
-                  setIsloading(true);
-                  const images = await getS3UrlfromText(
-                    promptText,
-                    selectedFilter
-                  );
-                  const newUrls = [images, ...urls];
-
-                  setUrls(newUrls);
-                  setIsloading(false);
-                }
-              }}
+              onClick={generateImageClickHandler}
             >
               <button className={styles.generateButton}>
                 <div className="flex items-center justify-between">
-
                   <div>
                     <span className={styles.generateButtonText}>
                       Generate whisper
                     </span>
-                    <span className={styles.tryCounts}> &#x2022; {5 - urls.length} tries left </span>
+                    <span className={styles.tryCounts}>
+                      &#x2022; {5 - urls.length} tries left
+                    </span>
                   </div>
                   <div>
                     <MagicStickIcon />
@@ -162,34 +160,30 @@ function Generate() {
         </div>
         {/* Image Gallery */}
         <div className={styles.imageGalleryContainer}>
-          {isLoading ? (
-            <SpinningLoader height="50vw" width="831px" />
-          ) : (
-            <>
-              <div className="text-center py-[4px] px-[8px] w-full">
-                <div className={styles.mainText}>Your generations</div>
-              </div>
-              {urls.map((url, index) => (
-                <div className={styles.imageTryOutputBox} key={url[0] + index}>
-                  <div className="text-center py-[4px] px-[8px] w-full">
-                    <div className={styles.mainText}>
-                      Try {urls.length - index}
-                    </div>
-                  </div>
-                  <div className="flex items-center justify-center w-full gap-[16px]">
-                    <GeneratedImageBox
-                      imgSrcUrl={url[0]}
-                      clickHandler={onImageClickHandler}
-                    />
-                    <GeneratedImageBox
-                      imgSrcUrl={url[1]}
-                      clickHandler={onImageClickHandler}
-                    />
+          <div className="text-center py-[4px] px-[8px] w-full">
+            <div className={styles.mainText}>Your generations</div>
+          </div>
+          {
+            urls.map((url, index) => (
+              <div className={styles.imageTryOutputBox} key={index}>
+                <div className="text-center py-[4px] px-[8px] w-full">
+                  <div className={styles.mainText}>
+                    Try {urls.length - index}
                   </div>
                 </div>
-              ))}
-            </>
-          )}
+                <div className="flex items-center justify-center w-full gap-[16px]">
+                  <GeneratedImageBox
+                    imgSrcUrl={url[0]}
+                    clickHandler={onImageClickHandler}
+                  />
+                  <GeneratedImageBox
+                    imgSrcUrl={url[1]}
+                    clickHandler={onImageClickHandler}
+                  />
+                </div>
+              </div>
+            ))
+          }
         </div>
       </div>
     </div>

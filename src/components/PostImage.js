@@ -1,11 +1,11 @@
 import React from "react";
 import styled from "styled-components";
 import ProfileLogo from "../assets/ProfileLogo";
-import Image from 'next/image';
+import Image from "next/image";
 import styles from "./ImageStack.module.css";
 import PlusIcon from "../assets/PlusIcon";
 import EyeIcon from "../assets/EyeIcon";
-import CollectIcon from "../assets/collectIcon";
+import CollectIcon from "../assets/CollectIcon";
 
 const ImagePost = styled.div`
   display: flex;
@@ -89,15 +89,15 @@ const Center = styled.div`
   left: 50%;
   transform: translateX(-50%);
   text-align: center;
-  color: #6F1AFF;
-  font-family: 'Satoshi Variable';
+  color: #6f1aff;
+  font-family: "Satoshi Variable";
   font-style: normal;
   font-weight: 500;
   font-size: 16px;
   line-height: 100%;
   text-align: center;
   letter-spacing: -0.03em;
-  color: #6F1AFF;
+  color: #6f1aff;
   gap: 18px;
 `;
 
@@ -138,13 +138,30 @@ export const PostImage = ({ imageDetails }) => {
             <Right>
               <button className="flex justify-center items-center gap-[6px] z-20">
                 <PlusIcon />
-                <div className={`not-italic font-medium text-[16px]  ${styles.FollowBtn}`}>Follow</div>
+                <div
+                  className={`not-italic font-medium text-[16px]  ${styles.FollowBtn}`}
+                >
+                  Follow
+                </div>
               </button>
             </Right>
           </Details>
           <Center>
-            <a hef="/" className={`flex items-center p-[10px] w-[208px] h-[40px] justify-center  ${styles.viewOnLensBtn}`}> <EyeIcon /> <span className="ml-[10px]">View on lens</span></a>
-            <a href="" className={`flex items-center p-[10px] w-[208px] h-[40px] justify-center  ${styles.viewOnLensBtn}`}> <CollectIcon /> <span className="ml-[10px]">Collect this post</span></a>
+            <a
+              hef="/"
+              className={`flex items-center p-[10px] w-[208px] h-[40px] justify-center  ${styles.viewOnLensBtn}`}
+            >
+              {" "}
+              <EyeIcon /> <span className="ml-[10px]">View on lens</span>
+            </a>
+            <a
+              href=""
+              className={`flex items-center p-[10px] w-[208px] h-[40px] justify-center  ${styles.viewOnLensBtn}`}
+            >
+              {" "}
+              <CollectIcon />{" "}
+              <span className="ml-[10px]">Collect this post</span>
+            </a>
           </Center>
         </Backdrop>
       )}
