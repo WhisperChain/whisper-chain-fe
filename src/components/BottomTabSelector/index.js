@@ -7,7 +7,7 @@ import styles from "./BottomTabSelector.module.css";
 export default function BottomTabSelector() {
   const { currentTab, onTabChange } = useBottomTab();
   const handleClick = () => {
-    const plgURL = "https://plgworks.com/?ref=WhisperChain";
+    const plgURL = "https://plgworks.com/";
     window.open(plgURL, "_blank");
   };
   const router = useRouter();

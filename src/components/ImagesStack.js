@@ -34,29 +34,25 @@ const ImagesStack = ({ imageDetails: imageDetailsArray, pub }) => {
         <div
           onMouseEnter={() => setHovered(true)}
           onMouseLeave={() => setHovered(false)}
-          onClick={() => {
-            setPublication(pub);
-            router.push("/chain");
-          }}
-          className={`w-[512px] h-[512px] absolute z-[10] backdrop-blur rounded-[48px] cursor-pointer ${styles.backdrop}`}
+          className={`w-[512px] h-[512px] absolute z-[10] rounded-[48px]`}
         >
-          <div className="flex relative p-[40px]">
-            <div className="flex w-[360px] cursor-pointer">
+          <div className={`flex relative p-[40px] rounded-tr-[48px] rounded-tl-[48px]  backdrop-blur-[2px] ${styles.backdrop} `}>
+            <div className={`flex w-[360px] cursor-pointer`}>
               <ProfileLogo profileImageUrl={imageDetails?.profileImageUrl} />
               <div className="ml-[5px] flex flex-col justify-center items-start">
                 <div
-                  className={`not-italic leading-[100%] text-[#000000] font-bold text-[14px] ${styles.name}`}
+                  className={`not-italic leading-[100%] text-[#FFFFFF] font-bold text-[14px] ${styles.name}`}
                 >
                   {imageDetails?.name || "Lewis"}
                 </div>
                 <div
-                  className={`not-italic font-normal text-[14px] leading-[100%] ${styles.Handle}`}
+                  className={`not-italic font-normal text-[14px] leading-[100%] text-[#FFFFFF] ${styles.Handle}`}
                 >
                   {"@" + imageDetails?.profileHandle || "Lewis.xyz"}
                 </div>
               </div>
             </div>
-            {/* <Right>{imageDetails?.createdAt || "2:32 pm"}</Right> */}
+            {/* <div className="">{imageDetails?.createdAt || "2:32 pm"}</div> */}
             {!imageDetails?.isFollowedByMe ? (
               <button
                 className="flex justify-center items-center gap-[6px] z-20"
@@ -71,26 +67,31 @@ const ImagesStack = ({ imageDetails: imageDetailsArray, pub }) => {
               >
                 <PlusIcon />
                 <div
-                  className={`not-italic font-medium text-[16px]  ${styles.FollowBtn}`}
+                  className={`not-italic font-medium text-[16px] text-[#FFFFFF] ${styles.FollowBtn}`}
                 >
                   Follow
                 </div>
               </button>
             ) : (
               <div
-                className={`not-italic font-medium text-[16px]  ${styles.FollowBtn}`}
+                className={`not-italic font-medium text-[16px] text-[#FFFFFF] ${styles.FollowBtn}`}
               >
                 Following
               </div>
             )}
           </div>
-          <div
-            className={`flex justify-center items-center absolute top-[50%] left-[50%] -translate-x-[50%] text-center text-[#6F1AFF] not-italic font-medium text-[16px] leading-[100%] gap-[8px] ${styles.center}`}
-          >
-            <EyeIcon />
-            View Chain
+          <div className={`flex justify-center items-center absolute top-[85%] left-[50%] text-center gap-[8px] w-[432px] h-[40px] rounded-[4px] backdrop-blur-[60px] cursor-pointer ${styles.bottomBox}`}
+              onClick={() => {
+                setPublication(pub);
+                router.push("/chain");
+              }}
+            >
+              <div className={`flex justify-center items-center absolute text-center text-[#000000] not-italic font-medium text-[16px] leading-[100%] gap-[8px] ${styles.bottomBoxText}`}>
+              <EyeIcon />
+              <div>View Chain </div>
+              </div>
           </div>
-        </div>
+          </div>
       )}
       {Object.keys(typedData)?.length > 0 ? (
         <SignTypedData

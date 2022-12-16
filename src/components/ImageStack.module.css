@@ -2,11 +2,10 @@
     font-family: 'Satoshi Variable';
         line-height: 160%;
         font-feature-settings: 'salt' on;
-        color: rgba(0, 0, 0, 0.6);
 }
 
 .backdrop{
-    background: rgba(255, 255, 255, 0.6);
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.56) 0%, rgba(0, 0, 0, 0) 100%);
 }
 
 .name{
@@ -15,7 +14,13 @@
     font-feature-settings: 'tnum' on, 'onum' on, 'salt' on, 'ss01' on, 'ss02' on, 'ss03' on, 'ss04' on, 'ss05' on;
 }
 
-.center{
+.bottomBox{
+    transform: translateX(-50%);
+    background: rgba(255, 255, 255, 0.56);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.bottomBoxText{
     font-family: 'Satoshi Variable';
     letter-spacing: -0.03em;
 }
@@ -24,7 +29,6 @@
     letter-spacing: -0.03em;
     font-family: 'Satoshi Variable';
     font-feature-settings: 'tnum' on, 'onum' on, 'ordn' on, 'salt' on, 'ss01' on, 'ss02' on, 'ss03' on, 'ss04' on, 'ss05' on;
-    color: rgba(0, 0, 0, 0.6);
 }
 .viewOnLensBtn{
     background: rgba(255, 255, 255, 0.2);  
@@ -32,3 +36,4 @@
     border-radius: 4px;
     color: #6F1AFF;
 }
+
