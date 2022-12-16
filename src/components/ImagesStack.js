@@ -6,6 +6,8 @@ import Image from "next/image";
 import styles from "./ImageStack.module.css";
 import PlusIcon from "../assets/PlusIcon";
 import EyeIcon from "../assets/EyeIcon";
+import SignTypedData from "./ConnectButton/SignTypedData";
+import { refreshAuthentication, requestFollow } from "../utils/lensFunction";
 import { useRouter } from "next/router";
 
 const StackedImages = styled.div`
@@ -98,6 +100,8 @@ const ImagesStack = ({ imageDetails: imageDetailsArray, pub }) => {
   const [hovered, setHovered] = React.useState(false);
   const { setPublication } = usePublicationContext();
   const imageDetails = imageDetailsArray[0];
+  const [typedData, setTypedData] = React.useState({});
+  const followRequestId = React.useRef({});
   const router = useRouter();
 
   return (
@@ -123,7 +127,11 @@ const ImagesStack = ({ imageDetails: imageDetailsArray, pub }) => {
           }}
         >
           <Details>
-            <Left>
+            <Left
+              onClick={() => {
+                window.open(imageDetails.lensterProfileUrl, "_blank");
+              }}
+            >
               <ProfileLogo profileImageUrl={imageDetails?.profileImageUrl} />
               <User>
                 <Name>{imageDetails?.name || "Lewis"}</Name>
@@ -133,14 +141,33 @@ const ImagesStack = ({ imageDetails: imageDetailsArray, pub }) => {
               </User>
             </Left>
             {/* <Right>{imageDetails?.createdAt || "2:32 pm"}</Right> */}
-            <button className="flex justify-center items-center gap-[6px] z-20">
-              <PlusIcon />
+
+            {!imageDetails?.isFollowedByMe ? (
+              <button
+                className="flex justify-center items-center gap-[6px] z-20"
+                onClick={async () => {
+                  console.log("call Follow Function");
+                  await refreshAuthentication();
+                  const res = await requestFollow(imageDetails?.profileId);
+                  followRequestId.current = res.data?.createFollowTypedData?.id;
+                  setTypedData(res.data?.createFollowTypedData?.typedData);
+                  console.log({ res });
+                }}
+              >
+                <PlusIcon />
+                <div
+                  className={`not-italic font-medium text-[16px]  ${styles.FollowBtn}`}
+                >
+                  Follow
+                </div>
+              </button>
+            ) : (
               <div
                 className={`not-italic font-medium text-[16px]  ${styles.FollowBtn}`}
               >
-                Follow
+                Following
               </div>
-            </button>
+            )}
           </Details>
           <Center>
             <EyeIcon />
@@ -148,6 +175,13 @@ const ImagesStack = ({ imageDetails: imageDetailsArray, pub }) => {
           </Center>
         </Backdrop>
       )}
+      {Object.keys(typedData)?.length > 0 ? (
+        <SignTypedData
+          typedData={typedData}
+          id={followRequestId.current}
+          onSuccess={() => {}}
+        />
+      ) : null}
       <Image
         width={452}
         height={512}
