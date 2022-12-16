@@ -26,3 +26,9 @@
     font-feature-settings: 'tnum' on, 'onum' on, 'ordn' on, 'salt' on, 'ss01' on, 'ss02' on, 'ss03' on, 'ss04' on, 'ss05' on;
     color: rgba(0, 0, 0, 0.6);
 }
+.viewOnLensBtn{
+    background: rgba(255, 255, 255, 0.2);  
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+    color: #6F1AFF;
+}
