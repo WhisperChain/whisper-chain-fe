@@ -38,7 +38,7 @@ const ImagesStack = ({ imageDetails: imageDetailsArray, pub }) => {
             setPublication(pub);
             router.push("/chain");
           }}
-          className={`w-[512px] h-[512px] absolute z-[10] backdrop-blur rounded-[48px] cursor-pointer ${styles.Backdrop}`}
+          className={`w-[512px] h-[512px] absolute z-[10] backdrop-blur rounded-[48px] cursor-pointer ${styles.backdrop}`}
         >
           <div className="flex relative p-[40px]">
             <div className="flex w-[360px] cursor-pointer">
