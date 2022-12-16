@@ -263,18 +263,17 @@ const Chain = () => {
       </div>
       <div className="flex flex-col items-center justify-center overflow-scroll" ref={buttonRef}>
         <div
-          className={`w-[512px] h-[251px] flex flex-col items-center rounded-[48px] ${style.messageBox}`}
-
+          className={`w-[512px] h-[222px] flex flex-col items-center rounded-[32px] box-border ${style.messageBox}`}
         >
-          <div className="flex flex-col w-[409px] mt-[40px]">
-            <div className="not-italic text-[#e7d9ff] text-[16px] leading-[150%] font-normal">
+          <div className=" w-full pt-[38px] px-[40px] pb-[24px]">
+            <div className={`not-italic text-[16px] leading-[160%] font-medium ${style.messageText}`}>
               This was the last image added to the thread, try to describe
               this image in your own words as best you can, and add your
               generation to this thread.
             </div>
           </div>
 
-          <AddWhisperBtn pageIndex={1} publication={publication} />
+          <AddWhisperBtn pageIndex={1} publication={publication} height={40} width={432} text={"Add to Chain"} />
         </div>
         {chainData &&
           chainData.map((comment, index) => {
