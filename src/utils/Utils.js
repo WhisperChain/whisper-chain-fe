@@ -13,16 +13,16 @@ export const resetLocalStorage = () => {
   window.localStorage.removeItem("profile");
 };
 
-export const getS3UrlfromText = async (prompt, filter = "") => {
+export const getImagesFromPrompt = async (prompt, filter = "") => {
   const resp = await fetch(
-    `https://whisperchain.xyz/api/whisper/suggestions?prompt=${prompt}&filter=${filter}`,
+    `https://whisperchain.quick-poc.com/api/images?prompt=${prompt}&art_style=${filter}`,
 
     {
       method: "GET",
     }
   );
   const responseJSON = await resp.json();
-  return responseJSON?.data?.s3_urls;
+  return responseJSON?.data;
 };
 
 export const getIpfsUrl = async (url) => {
@@ -36,6 +36,22 @@ export const getIpfsUrl = async (url) => {
   const contentId = responseJSON.data.cids.metadata;
   const ipfsUrl = `ipfs://${contentId}`;
   return ipfsUrl;
+};
+
+export const postWhisperResponse = async (url, txHash) => {
+  const resp = await fetch(
+    `https://whisperchain.quick-poc.com/api/lens/whispers`,
+    {
+      method: "POST",
+      body: JSON.stringify({
+        s3_url: url,
+        transaction_hash: txHash,
+        whisper_ipfs_object_id: 1,
+        image_ipfs_object_id: 1,
+        chain_id: 1,
+      }),
+    }
+  );
 };
 
 export function convertIntoIpfsUrl(url) {
@@ -53,12 +69,13 @@ export async function getIpfsUrlandUploadPublication(url, pubId, isInTime) {
   const ipfsUrl = await getIpfsUrl(url);
   await refreshAuthentication();
 
-  await commentViaDispatcher(
+  const res = await commentViaDispatcher(
     window.localStorage.getItem("profileId"),
     pubId,
     ipfsUrl,
     isInTime
   );
+  return res?.data?.createCommentViaDispatcher?.txHash;
 }
 
 export const broadcastData = async (id, data) => {

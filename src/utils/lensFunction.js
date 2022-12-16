@@ -193,7 +193,7 @@ export async function commentViaDispatcher(
   contentURI,
   isInTime = true
 ) {
-  const resp = await apolloClient.mutate({
+  return await apolloClient.mutate({
     mutation: gql(CREATE_COMMENT_VIA_DISPATCHER),
     variables: {
       request: {
@@ -219,7 +219,7 @@ export async function commentViaDispatcher(
     },
   });
 
-  txIndexed(resp?.data?.createPostViaDispatcher?.txHash);
+  // txIndexed(resp?.data?.createPostViaDispatcher?.txHash);
 }
 
 export const refreshAuthentication = async () => {
