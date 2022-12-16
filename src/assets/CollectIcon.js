@@ -7,16 +7,16 @@ const CollectIcon = () => {
       <path fill-rule="evenodd" clip-rule="evenodd" d="M5.29961 4.4502C4.22265 4.4502 3.34961 5.32324 3.34961 6.4002V10.052C3.46034 10.0183 3.57786 10.0002 3.69961 10.0002H4.84961V6.4002C4.84961 6.15167 5.05108 5.9502 5.29961 5.9502H15.6996C15.9481 5.9502 16.1496 6.15167 16.1496 6.4002V10.0002H17.2996C17.4214 10.0002 17.5389 10.0183 17.6496 10.052V6.4002C17.6496 5.32324 16.7766 4.4502 15.6996 4.4502H5.29961Z" fill="url(#paint2_radial_921_281)" />
       <defs>
         <radialGradient id="paint0_radial_921_281" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(10.4992 4.5905) rotate(-90) scale(3.42861 10.2857)">
-          <stop stop-color="#6F1AFF" />
-          <stop offset="1" stop-color="#C6A4FF" />
+          <stop stop-color="#000000" />
+          <stop offset="1" stop-color="#000000" />
         </radialGradient>
         <radialGradient id="paint1_radial_921_281" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(10.5 16.4762) rotate(-90) scale(8.57143 17.1429)">
-          <stop stop-color="#6F1AFF" />
-          <stop offset="1" stop-color="#C6A4FF" />
+          <stop stop-color="#000000" />
+          <stop offset="1" stop-color="#000000" />
         </radialGradient>
         <radialGradient id="paint2_radial_921_281" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(10.4996 8.98499) rotate(-90) scale(6.00194 15.3214)">
-          <stop stop-color="#6F1AFF" />
-          <stop offset="1" stop-color="#C6A4FF" />
+          <stop stop-color="#000000" />
+          <stop offset="1" stop-color="#000000" />
         </radialGradient>
       </defs>
     </svg>
