@@ -7,12 +7,12 @@ import styled from "styled-components";
 import LensIcon from "../../assets/LensIcon";
 
 const Signin = styled.div`
-    background: #ABFE2C;
-    border: 1px solid rgba(0, 0, 0, 0.2);
-    color: #00501E;
+  background: #abfe2c;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  color: #00501e;
 `;
 
-const CustomConnectButton = () => {
+const CustomConnectButton = ({ onSignInComplete }) => {
   return (
     <ConnectButton.Custom>
       {({
@@ -53,9 +53,11 @@ const CustomConnectButton = () => {
                       openConnectModal();
                     }}
                   >
-                  <Signin className={`flex justify-center box-border items-center w-[234px] h-[40px] backdrop-blur rounded-[4px] gap-[8px]`}>
-                    <LensIcon/>
-                    Sign in with Lens
+                    <Signin
+                      className={`flex justify-center box-border items-center w-[234px] h-[40px] backdrop-blur rounded-[4px] gap-[8px]`}
+                    >
+                      <LensIcon />
+                      Sign in with Lens
                     </Signin>
                   </div>
                 );
@@ -68,7 +70,7 @@ const CustomConnectButton = () => {
                   </button>
                 );
               }
-              return <SignAuthentication />;
+              return <SignAuthentication onSignInComplete={onSignInComplete} />;
             })()}
           </div>
         );

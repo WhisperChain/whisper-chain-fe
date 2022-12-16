@@ -48,7 +48,7 @@ const Header = () => {
         <div
           className={`flex flex-col justify-start items-start bg-[#FFFFFF] rounded-[16px] backdrop-blur-3xl gap-[16px] p-[40px] ${styles.ModalContainer}`}
         >
-          <CustomConnectButton />
+          <CustomConnectButton onSignInComplete={handleClose} />
           <div
             className={`flex justify-start flex-col gap-[12px] not-italic text-[12px] font-medium ${styles.LensInfo}`}
           >
