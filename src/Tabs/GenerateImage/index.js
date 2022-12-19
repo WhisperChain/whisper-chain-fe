@@ -1,14 +1,12 @@
 import React from "react";
-import SpinningLoader from "../../components/SpinningLoader";
 import { usePublicationContext } from "../../context/PublicationContext";
 import { getCommentFeed, getPublication } from "../../utils/lensFunction";
 import {
   convertIntoIpfsUrl,
   getIpfsUrlandUploadPublication,
-  getS3UrlfromText,
+  getImagesFromPrompt,
+  postWhisperResponse,
 } from "../../utils/Utils";
-import { useBottomTab } from "../../context/BottomTabContext";
-import { TabItems } from "../../components/Main/TabItems";
 import { FILTER_OPTIONS } from "./filterDropdownOptions";
 
 import styles from "./generateImage.module.css";
@@ -54,27 +52,35 @@ function Generate() {
     }
   }, []);
 
-  const onImageClickHandler = async () => {
+  const onImageClickHandler = async (url) => {
     setIsloading(true);
-    await getIpfsUrlandUploadPublication(url[0], pubsId, true);
+    const txHash = await getIpfsUrlandUploadPublication(url, pubsId, true);
+    console.log({ txHash });
+    await postWhisperResponse(url, txHash);
     setIsloading(false);
     router.push("/chain");
   };
 
   const generateImageClickHandler = async () => {
     if (urls.length < 5) {
-      setUrls([1, ...urls])
+      setUrls([1, ...urls]);
       setIsloading(true);
-      const images = await getS3UrlfromText(
-        promptText,
-        selectedFilter
-      );
+      const response = await getImagesFromPrompt(promptText, selectedFilter);
+      const suggestionIds = response.suggestions_ids;
+      const suggestions = response.suggestions;
+      const images = [];
+      {
+        suggestionIds.map((id) => {
+          const suggestion = suggestions[id];
+          images.push(suggestion?.image_url);
+        });
+      }
       const newUrls = [images, ...urls];
 
       setUrls(newUrls);
       setIsloading(false);
     }
-  }
+  };
 
   return (
     <div className="w-full h-[90vh]">

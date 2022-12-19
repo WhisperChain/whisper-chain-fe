@@ -13,16 +13,16 @@ export const resetLocalStorage = () => {
   window.localStorage.removeItem("profile");
 };
 
-export const getS3UrlfromText = async (prompt, filter = "") => {
+export const getImagesFromPrompt = async (prompt, filter = "") => {
   const resp = await fetch(
-    `https://whisperchain.xyz/api/whisper/suggestions?prompt=${prompt}&filter=${filter}`,
+    `https://whisperchain.quick-poc.com/api/images?prompt=${prompt}&art_style=${filter}`,
 
     {
       method: "GET",
     }
   );
   const responseJSON = await resp.json();
-  return responseJSON?.data?.s3_urls;
+  return responseJSON?.data;
 };
 
 export const getIpfsUrl = async (url) => {
@@ -38,6 +38,36 @@ export const getIpfsUrl = async (url) => {
   return ipfsUrl;
 };
 
+export const createIpfsObjects = async (url) => {
+  const resp = await fetch(
+    "https://whisperchain.quick-poc.com/api/lens/ipfs-objects",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        s3_url: url,
+      }),
+    }
+  );
+  const responseJSON = await resp.json();
+  return responseJSON.data;
+};
+
+export const postWhisperResponse = async (url, txHash) => {
+  await fetch("https://whisperchain.quick-poc.com/api/lens/whispers", {
+    method: "POST",
+    body: JSON.stringify({
+      s3_url: url,
+      transaction_hash: txHash,
+      whisper_ipfs_object_id: 1,
+      image_ipfs_object_id: 1,
+      chain_id: 1,
+    }),
+  });
+};
+
 export function convertIntoIpfsUrl(url) {
   if (url.toString().startsWith("ipfs://")) {
     const cid = url.split("ipfs://")[1];
@@ -50,15 +80,27 @@ export function convertIntoIpfsUrl(url) {
 }
 
 export async function getIpfsUrlandUploadPublication(url, pubId, isInTime) {
-  const ipfsUrl = await getIpfsUrl(url);
+  const metadataResponse = await createIpfsObjects(url);
+  const ipfsObjectIds = metadataResponse?.ipfs_object_ids;
+  const ipfsObjects = metadataResponse?.ipfs_object;
+  let ipfsUrl = "";
+  {
+    ipfsObjectIds.map((id) => {
+      const ipfsObject = ipfsObjects[id];
+      if (ipfsObject.entity_kind === "WHISPER") {
+        ipfsUrl = `ipfs://${ipfsObject.cid}`;
+      }
+    });
+  }
   await refreshAuthentication();
 
-  await commentViaDispatcher(
+  const res = await commentViaDispatcher(
     window.localStorage.getItem("profileId"),
     pubId,
     ipfsUrl,
     isInTime
   );
+  return res?.data?.createCommentViaDispatcher?.txHash;
 }
 
 export const broadcastData = async (id, data) => {
