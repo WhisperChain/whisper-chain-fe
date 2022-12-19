@@ -1,6 +1,4 @@
 .MessageBox {
-    width: 512px;
-    height: 512px;
     background: linear-gradient(180deg, rgba(255, 255, 255, 0.66) 0%, rgba(255, 255, 255, 0.4) 100%);
     border: 1px solid rgba(0, 0, 0, 0.2);
     border-radius: 32px;
@@ -10,7 +8,7 @@
 }
 
 .Message {
-    width: 409px;
+    width: 100%;
     display: flex;
     flex-direction: column;
     margin-top: 40px;

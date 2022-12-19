@@ -43,7 +43,7 @@ const Home = () => {
     <SpinningLoader height="80vh" width="80%" />
   ) : (
     <div className="w-full">
-      <div className="flex h-[780px] relative w-fit gap-[40px] m-auto">
+      <div className="flex h-[780px] relative w-fit gap-[40px] m-auto tablet:h-[650px] tablet:gap-0">
         <div className="flex w-full	flex-col items-center justify-center">
           <div className="w-[512px] h-full mt-[50%]">
             <div className="absolute top-[10%] left-[0%]">
@@ -96,7 +96,7 @@ const Home = () => {
           </div>
         </div>
         <div className="w-full flex items-center justify-center	right-[0px] z-[2]">
-          <div className="absolute left-[calc(50%-296px)] top-[12%]">
+          <div className="absolute left-[calc(50%-296px)] top-[12%] tablet:top-[13%]">
             <Link />
           </div>
           <HomeMessage publication={publicationData[currentSlideIndex]} />

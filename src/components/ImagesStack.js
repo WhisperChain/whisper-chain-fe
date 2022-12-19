@@ -21,16 +21,17 @@ const ImagesStack = ({ imageDetails: imageDetailsArray, pub }) => {
   return (
     <div className="flex flex-col items-center relative">
       {imageDetails?.imageUrl && (
-        <Image
-          src={imageDetails.imageUrl}
-          onMouseEnter={() => setHovered(true)}
-          onMouseLeave={() => setHovered(false)}
-          alt="Stack Image"
-          width={512}
-          height={512}
-          priority
-          className="relative flex z-[3] rounded-[48px]"
-        />
+        <div className="tablet:w-[400px] tablet:h-[400px] w-[512px] h-[512px] relative">
+          <Image
+            src={imageDetails.imageUrl}
+            onMouseEnter={() => setHovered(true)}
+            onMouseLeave={() => setHovered(false)}
+            alt="Stack Image"
+            fill
+            priority
+            className="relative flex z-[3] rounded-[48px]"
+          />
+        </div>
       )}
       {hovered && (
         <div
@@ -102,29 +103,34 @@ const ImagesStack = ({ imageDetails: imageDetailsArray, pub }) => {
           onSuccess={() => { }}
         />
       ) : null}
-      <Image
-        width={452}
-        height={512}
-        className="absolute bottom-[-26px] rounded-[48px] flex z-[2]"
-        alt="Stack Image 2"
-        src={
-          imageDetailsArray[1]?.imageUrl
-            ? imageDetailsArray[1].imageUrl
-            : "https://i.picsum.photos/id/193/512/512.jpg?hmac=ay70CF2_XM0GJBcUQzMN6UNHDn0-kgSIu8KcENreNgM"
-        }
-      />
-
-      <Image
-        width={404}
-        height={512}
-        className="absolute bottom-[-44px] rounded-[48px] flex z-[1]"
-        alt="Stack Image 3"
-        src={
-          imageDetailsArray[2]?.imageUrl
-            ? imageDetailsArray[2].imageUrl
-            : "https://i.picsum.photos/id/524/512/512.jpg?hmac=2VlA0x6Y7osphrvDzR52TVkYjcc493rqcizd8HEXphY"
-        }
-      />
+      <div className="absolute bottom-[-26px] z-[2]">
+        <div className="tablet:w-[350px] tablet:h-[400px] w-[452px] h-[512px] relative">
+          <Image
+            alt="Stack Image 2"
+            className="rounded-[48px]"
+            fill
+            src={
+              imageDetailsArray[1]?.imageUrl
+                ? imageDetailsArray[1].imageUrl
+                : "https://i.picsum.photos/id/193/512/512.jpg?hmac=ay70CF2_XM0GJBcUQzMN6UNHDn0-kgSIu8KcENreNgM"
+            }
+          />
+        </div>
+      </div>
+      <div className="absolute bottom-[-44px] z-[1]">
+        <div className="tablet:w-[300px] tablet:h-[400px] w-[404px] h-[512px] relative">
+          <Image
+            alt="Stack Image 3"
+            className="rounded-[48px]"
+            fill
+            src={
+              imageDetailsArray[2]?.imageUrl
+                ? imageDetailsArray[2].imageUrl
+                : "https://i.picsum.photos/id/524/512/512.jpg?hmac=2VlA0x6Y7osphrvDzR52TVkYjcc493rqcizd8HEXphY"
+            }
+          />
+        </div>
+      </div>
     </div>
   );
 };
