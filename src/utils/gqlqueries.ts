@@ -65,8 +65,7 @@ export const GET_PUBLICATIONS = `query Publications($request: PublicationsQueryR
       items {
         __typename
         ... on Post {
-          ...PostFields,
-          hasCollectedByMe,
+          ...PostFields
         }
         ... on Comment {
           ...CommentFields
@@ -432,3 +431,20 @@ mutation ($request: FollowRequest!){
     }
   }
 `;
+
+export const APPROVED_MODULE_ALLOWANCE = `query ApprovedModuleAllowanceAmount($request : ApprovedModuleAllowanceAmountRequest!) {
+  approvedModuleAllowanceAmount(request: $request) {
+    currency
+    module
+    contractAddress
+    allowance
+  }
+}`;
+
+export const GENERATE_MODULE_CURRENCY_APPROVAL = `query GenerateModuleCurrencyApprovalData($request: GenerateModuleCurrencyApprovalDataRequest!) {
+  generateModuleCurrencyApprovalData(request: $request) {
+    to
+    from
+    data
+  }
+}`;

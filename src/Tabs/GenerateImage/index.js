@@ -14,8 +14,10 @@ import MagicStickIcon from "../../assets/MagicStickIcon";
 import WhisperImage from "../../components/WhisperImage";
 import GeneratedImageBox from "../../components/GeneratedImageBox";
 import { useRouter } from "next/router";
+import { useAccount } from "wagmi";
 
 function Generate() {
+  const { address } = useAccount();
   const { publication } = usePublicationContext();
   const router = useRouter();
   const [promptText, setPromptText] = React.useState("");
@@ -54,7 +56,7 @@ function Generate() {
 
   const onImageClickHandler = async (url) => {
     setIsloading(true);
-    const txHash = await getIpfsUrlandUploadPublication(url, pubsId, true);
+    const txHash = await getIpfsUrlandUploadPublication(url, pubsId, address);
     console.log({ txHash });
     await postWhisperResponse(url, txHash);
     setIsloading(false);

@@ -6,10 +6,12 @@ import {
   InMemoryCache,
 } from "@apollo/client";
 import {
+  APPROVED_MODULE_ALLOWANCE,
   AUTHENTICATION,
   BROADCAST,
   CREATE_COLLECT,
   CREATE_COMMENT_VIA_DISPATCHER,
+  GENERATE_MODULE_CURRENCY_APPROVAL,
   GET_CHALLENGE,
   GET_PROFILE,
   GET_PUBLICATIONS,
@@ -191,7 +193,7 @@ export async function commentViaDispatcher(
   profileId,
   publicationId,
   contentURI,
-  isInTime = true
+  address
 ) {
   return await apolloClient.mutate({
     mutation: gql(CREATE_COMMENT_VIA_DISPATCHER),
@@ -200,21 +202,17 @@ export async function commentViaDispatcher(
         profileId,
         publicationId,
         contentURI,
-        collectModule: isInTime
-          ? {
-              timedFeeCollectModule: {
-                amount: {
-                  currency: "0x9c3C9283D3e44854697Cd22D3Faa240Cfb032889",
-                  value: "0.01",
-                },
-                recipient: "0xcb85EE8a3166Fcd77cC5A0ee9d6730012AE1F38c",
-                referralFee: 0,
-                followerOnly: false,
-              },
-            }
-          : {
-              revertCollectModule: true,
+        collectModule: {
+          feeCollectModule: {
+            amount: {
+              currency: "0x9c3C9283D3e44854697Cd22D3Faa240Cfb032889",
+              value: "0.01",
             },
+            recipient: address,
+            referralFee: 0,
+            followerOnly: false,
+          },
+        },
       },
     },
   });
@@ -260,7 +258,7 @@ export const verifyAuthentication = async () => {
 };
 
 export const collectPost = async (publicationId) => {
-  return await apolloClient.mutate({
+  const res = await apolloClient.mutate({
     mutation: gql(CREATE_COLLECT),
     variables: {
       request: {
@@ -268,6 +266,7 @@ export const collectPost = async (publicationId) => {
       },
     },
   });
+  return res;
 };
 
 export const broadcastRequest = async (request) => {
@@ -295,4 +294,91 @@ export const requestFollow = async (profileId, followModule = null) => {
       },
     },
   });
+};
+
+export const getApprovedModuleAllowance = async (module, signer) => {
+  const requestVariable = module?.type
+    ? {
+        currencies: [module.amount.asset.address],
+        collectModules: [module.type],
+      }
+    : {
+        currencies: ["0x9c3C9283D3e44854697Cd22D3Faa240Cfb032889"],
+        collectModules: ["FeeCollectModule"],
+      };
+  const res = await apolloClient.query({
+    query: gql(APPROVED_MODULE_ALLOWANCE),
+    variables: {
+      request: requestVariable,
+    },
+  });
+  const collectModules = res?.data?.approvedModuleAllowanceAmount;
+  let allowanceValue = 0;
+  collectModules?.map((module) => {
+    parseInt(module.allowance, 16);
+    allowanceValue = parseInt(module.allowance, 16) / Math.pow(10, 18);
+  });
+  if (allowanceValue < 5) {
+    await collectPostTx({
+      currency:
+        module?.amount?.asset?.address ??
+        "0x9c3C9283D3e44854697Cd22D3Faa240Cfb032889",
+      value: "100",
+      moduleType: module?.type ?? "TimedFeeCollectModule",
+      isCollect: true,
+      signer,
+    });
+  } else {
+    return;
+  }
+};
+
+export const generateModuleCurrencyApproval = async ({
+  currency,
+  value,
+  moduleType,
+  isCollect = true,
+}) => {
+  const requestModule = isCollect
+    ? {
+        collectModule: moduleType || "FeeCollectModule",
+      }
+    : {
+        followModule: moduleType || "FeeFollowModule",
+      };
+  const res = await apolloClient.query({
+    query: gql(GENERATE_MODULE_CURRENCY_APPROVAL),
+    variables: {
+      request: {
+        currency: currency || "0x9c3C9283D3e44854697Cd22D3Faa240Cfb032889",
+        value: value || "10",
+        ...requestModule,
+      },
+    },
+  });
+  return res;
+};
+
+export const collectPostTx = async ({
+  currency,
+  value,
+  moduleType,
+  isCollect = true,
+  signer,
+}) => {
+  refreshAuthentication();
+  const resp = await generateModuleCurrencyApproval({
+    currency,
+    value,
+    moduleType,
+    isCollect,
+  });
+  const generateModuleCurrencyApprovalData =
+    resp.data.generateModuleCurrencyApprovalData;
+  const tx1 = await signer.sendTransaction({
+    to: generateModuleCurrencyApprovalData.to,
+    from: generateModuleCurrencyApprovalData.from,
+    data: generateModuleCurrencyApprovalData.data,
+  });
+  return tx1;
 };

@@ -37,7 +37,9 @@ const ImagesStack = ({ imageDetails: imageDetailsArray, pub }) => {
           onMouseLeave={() => setHovered(false)}
           className={`w-[512px] h-[512px] absolute z-[10] rounded-[48px]`}
         >
-          <div className={`flex relative p-[40px] rounded-tr-[48px] rounded-tl-[48px]  backdrop-blur-[2px] ${styles.backdrop} `}>
+          <div
+            className={`flex relative p-[40px] rounded-tr-[48px] rounded-tl-[48px]  backdrop-blur-[2px] ${styles.backdrop} `}
+          >
             <div className={`flex w-[360px] cursor-pointer`}>
               <ProfileLogo profileImageUrl={imageDetails?.profileImageUrl} />
               <div className="ml-[5px] flex flex-col justify-center items-start">
@@ -81,18 +83,21 @@ const ImagesStack = ({ imageDetails: imageDetailsArray, pub }) => {
               </div>
             )}
           </div>
-          <div className={`flex justify-center items-center absolute top-[85%] left-[50%] text-center gap-[8px] w-[432px] h-[40px] rounded-[4px] backdrop-blur-[60px] cursor-pointer ${styles.bottomBox}`}
-              onClick={() => {
-                setPublication(pub);
-                router.push("/chain");
-              }}
+          <div
+            className={`flex justify-center items-center absolute top-[85%] left-[50%] text-center gap-[8px] w-[432px] h-[40px] rounded-[4px] backdrop-blur-[60px] cursor-pointer ${styles.bottomBox}`}
+            onClick={() => {
+              setPublication(pub);
+              router.push("/chain");
+            }}
+          >
+            <div
+              className={`flex justify-center items-center absolute text-center text-[#000000] not-italic font-medium text-[16px] leading-[100%] gap-[8px] ${styles.bottomBoxText}`}
             >
-              <div className={`flex justify-center items-center absolute text-center text-[#000000] not-italic font-medium text-[16px] leading-[100%] gap-[8px] ${styles.bottomBoxText}`}>
-                <EyeIcon />
-                <div>View Chain </div>
-              </div>
+              <EyeIcon />
+              <div>View Chain </div>
+            </div>
           </div>
-          </div>
+        </div>
       )}
       {Object.keys(typedData)?.length > 0 ? (
         <SignTypedData

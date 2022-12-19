@@ -79,7 +79,7 @@ export function convertIntoIpfsUrl(url) {
   }
 }
 
-export async function getIpfsUrlandUploadPublication(url, pubId, isInTime) {
+export async function getIpfsUrlandUploadPublication(url, pubId, address) {
   const metadataResponse = await createIpfsObjects(url);
   const ipfsObjectIds = metadataResponse?.ipfs_object_ids;
   const ipfsObjects = metadataResponse?.ipfs_object;
@@ -98,7 +98,7 @@ export async function getIpfsUrlandUploadPublication(url, pubId, isInTime) {
     window.localStorage.getItem("profileId"),
     pubId,
     ipfsUrl,
-    isInTime
+    address
   );
   return res?.data?.createCommentViaDispatcher?.txHash;
 }
