@@ -58,7 +58,7 @@ function Generate() {
     console.log({ txHash });
     await postWhisperResponse(url, txHash);
     setIsloading(false);
-    router.push("/chain");
+    router.push("/chain?isGenerated=true", "/chain");
   };
 
   const generateImageClickHandler = async () => {

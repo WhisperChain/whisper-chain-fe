@@ -3,6 +3,7 @@ import ChainLogo from "../assets/ChainLogo";
 import { PostImage } from "../components/PostImage";
 import { getCommentFeed, getPublication } from "../utils/lensFunction";
 import AddWhisperBtn from "../components/AddWhisperBtn";
+import ShareBtn from "../components/ShareBtn";
 import { convertIntoIpfsUrl, timer } from "../utils/Utils";
 import moment from "moment";
 import SpinningLoader from "../components/SpinningLoader";
@@ -31,6 +32,26 @@ const Chain = () => {
   //     return setInfoConatiner(false);
   //   }
   // }
+  const messageBoxData = {
+    onChain: {
+      text: 'This was the last image added to the thread, try to describe this image in your own words as best you can, and add your generation to this thread. ',
+    },
+    OnGenerate: {
+      h1: 'Your generation has been successfully added to the chain',
+      text: 'To keep it interesting, please wait for another user to add to chain before you can add a whisper again.',
+    }
+  }
+
+  const routerPath = router.query;
+  const [isGenerated, setIsGenerated] = React.useState();
+
+  React.useEffect(() => {
+    if (routerPath?.isGenerated == 'true') {
+      setIsGenerated(true);
+    } else {
+      setIsGenerated(false);
+    }
+  }, [routerPath]);
 
   const [pubId, setPubId] = React.useState();
   const [hovered, setHovered] = React.useState(false);
@@ -250,14 +271,20 @@ const Chain = () => {
           className={`w-[512px] h-[222px] flex flex-col items-center rounded-[32px] box-border ${style.messageBox}`}
         >
           <div className=" w-full pt-[38px] px-[40px] pb-[24px]">
+            <h1 className={`not-italic text-[16px] leading-[160%] font-bold ${style.messageText}`}>
+            {isGenerated ? messageBoxData.OnGenerate.h1 : ''}
+            </h1>
             <div className={`not-italic text-[16px] leading-[160%] font-medium ${style.messageText}`}>
-              This was the last image added to the thread, try to describe
-              this image in your own words as best you can, and add your
-              generation to this thread.
+              {isGenerated ? messageBoxData.OnGenerate.text : messageBoxData.onChain.text}
             </div>
           </div>
-
-          <AddWhisperBtn pageIndex={1} publication={publication} height={40} width={432} text={"Add to Chain"} />
+          <div>
+            {
+              isGenerated ? <AddWhisperBtn pageIndex={1} publication={publication} height={40} width={432} text="Share" /> :
+              <ShareBtn pageIndex={1} publication={publication} height={40} width={432} text="Add to Chain" />
+            }
+          
+          </div>
         </div>
         {chainData &&
           chainData.map((comment, index) => {
