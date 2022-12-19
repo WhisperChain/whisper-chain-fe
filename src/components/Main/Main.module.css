@@ -1,5 +1,5 @@
 .Page {
-  /* height: 820px; */
+  height: calc(100vh - 60px);
   margin: 30px;
   display: flex;
   flex-direction: column;

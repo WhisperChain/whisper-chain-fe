@@ -11,12 +11,14 @@
 
   padding: 12px;
   gap: 24px;
+  height: 754px;
 
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.4752) 0%, rgba(255, 255, 255, 0.288) 100%);
   border: 1px solid rgba(0, 0, 0, 0.2);
   border-radius: 12px;
 
   box-sizing: border-box;
+  position: relative;
 }
 
 .mainText {
@@ -28,19 +30,30 @@
   color: #000000;
 }
 
+.galleryMainText {
+  font-style: normal;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 140%;
+
+  color: #1C0444;
+}
+
 .subText {
   font-style: normal;
   font-weight: 500;
   font-size: 14px;
   line-height: 140%;
+  font-feature-settings: 'salt' on;
 
-  color: rgba(0, 0, 0, 0.8);
+  color: rgba(29, 5, 69, 0.6);
 }
 
-.textareaInput {
-  background: rgba(255, 255, 255, 0.88);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 4px;
+.promptInput {
+  background: rgba(255, 255, 255, 0.96);
+  box-shadow: 0px 0px 4px rgba(111, 26, 255, 0.24), 0px 0px 8px rgba(229, 214, 255, 0.8);
+  backdrop-filter: blur(80px);
+  border-radius: 8px;
 
   width: 336px;
   height: 96px;
@@ -50,8 +63,9 @@
   font-weight: 500;
   line-height: 140%;
 
-  color: rgba(0, 0, 0, 0.8);
+  color: #1D0545;
   padding: 8px 12px;
+  resize: none;
 }
 
 .selectBoxInput {
@@ -61,11 +75,11 @@
   width: 336px;
   height: 40px;
 
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 4px;
-
-  background: rgba(255, 255, 255, 0.88);
-  backdrop-filter: blur(60px);
+  background: rgba(255, 255, 255, 0.96);
+  color: rgba(29, 5, 69, 0.72);
+  box-shadow: 0px 0px 4px rgba(111, 26, 255, 0.24), 0px 0px 8px rgba(229, 214, 255, 0.8);
+  backdrop-filter: blur(80px);
+  border-radius: 8px;
 }
 
 .generateButton {
@@ -75,9 +89,9 @@
   width: 336px;
   height: 40px;
 
-  background: #FFFFFF;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 4px;
+  background: radial-gradient(107.14% 107.14% at 50% 80.95%, #6F1AFF 0%, #C6A4FF 100%);
+  box-shadow: 0px 8px 32px rgba(111, 26, 255, 0.32), inset 0px -4px 8px rgba(185, 143, 255, 0.6), inset 0px -8px 16px #4700C0;
+  border-radius: 40px;
 
   text-align: center;
   font-style: normal;
@@ -86,19 +100,27 @@
   line-height: 160%;
 }
 
+.generateButton:hover {
+  background: linear-gradient(0deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.2)), radial-gradient(107.14% 107.14% at 50% 80.95%, #6F1AFF 0%, #C6A4FF 100%);
+}
+
 .generateButtonText {
-  background: radial-gradient(107.14% 107.14% at 50% 80.95%, #6F1AFF 0%, #C6A4FF 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 160%;
+
+  font-feature-settings: 'salt' on;
+  color: #FFFFFF;
 }
 
 .tryCounts {
-  background: radial-gradient(107.14% 107.14% at 50% 80.95%, #6F1AFF 0%, #C6A4FF 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  opacity: 0.6;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 160%;
+
+  color: #FFFFFF;
 }
 
 .imageGalleryContainer {
@@ -117,20 +139,25 @@
 
   box-sizing: border-box;
   overflow: scroll;
+
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
 }
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.imageGalleryContainer::-webkit-scrollbar {
+  display: none;
+}
+
 
 .imageTryOutputBox {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
-  padding: 8px 0px;
-  margin-bottom: 32px;
-
+  margin-bottom: 16px;
   width: 100%;
-
   border-radius: 8px;
-
-  background: rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(60px);
 }
