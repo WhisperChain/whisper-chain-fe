@@ -15,8 +15,7 @@ export const resetLocalStorage = () => {
 
 export const getImagesFromPrompt = async (prompt, filter = "") => {
   const resp = await fetch(
-    `https://whisperchain.quick-poc.com/api/images?prompt=${prompt}&art_style=${filter}`,
-
+    `${process.env.NEXT_PUBLIC_API_BASE_URL}/images?prompt=${prompt}&art_style=${filter}`,
     {
       method: "GET",
     }
@@ -40,7 +39,7 @@ export const getIpfsUrl = async (url) => {
 
 export const createIpfsObjects = async (url) => {
   const resp = await fetch(
-    "https://whisperchain.quick-poc.com/api/lens/ipfs-objects",
+    `${process.env.NEXT_PUBLIC_API_BASE_URL}/lens/ipfs-objects`,
     {
       method: "POST",
       headers: {
@@ -56,7 +55,7 @@ export const createIpfsObjects = async (url) => {
 };
 
 export const postWhisperResponse = async (url, txHash) => {
-  await fetch("https://whisperchain.quick-poc.com/api/lens/whispers", {
+  await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/lens/whispers`, {
     method: "POST",
     body: JSON.stringify({
       s3_url: url,
