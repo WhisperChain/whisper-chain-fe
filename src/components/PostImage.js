@@ -1,5 +1,4 @@
 import React from "react";
-import styled from "styled-components";
 import ProfileLogo from "../assets/ProfileLogo";
 import Image from "next/image";
 import styles from "./ImageStack.module.css";
@@ -7,105 +6,12 @@ import PlusIcon from "../assets/PlusIcon";
 import EyeIcon from "../assets/EyeIcon";
 import CollectIcon from "../assets/CollectIcon";
 
-const ImagePost = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  position: relative;
-  overflow: hidden;
-`;
-
-const Backdrop = styled.div`
-  width: 512px;
-  height: 512px;
-  position: absolute;
-  top: 0;
-  left: 0;
-  // transform: translate(50%, 50%);
-  background: rgba(255, 255, 255, 0.6);
-  z-index: 10;
-  backdrop-filter: blur(4px);
-  border-radius: 48px;
-`;
-
-const Details = styled.div`
-  display: flex;
-  position: relative;
-  padding: 40px;
-`;
-
-const Left = styled.div`
-  display: flex;
-  width: 360px;
-  cursor: pointer;
-`;
-
-const Name = styled.div`
-  font-style: normal;
-  font-weight: 800;
-  font-size: 16px;
-  line-height: 100%;
-  /* identical to box height, or 16px */
-
-  letter-spacing: -0.01em;
-  font-feature-settings: "tnum" on, "onum" on, "salt" on, "ss01" on, "ss02" on,
-    "ss03" on, "ss04" on, "ss05" on;
-
-  color: #ffffff;
-`;
-
-const Handle = styled.div`
-  font-style: normal;
-  font-weight: 400;
-  font-size: 16px;
-  line-height: 100%;
-  /* identical to box height, or 16px */
-
-  letter-spacing: -0.03em;
-  font-feature-settings: "tnum" on, "onum" on, "ordn" on, "salt" on, "ss01" on,
-    "ss02" on, "ss03" on, "ss04" on, "ss05" on;
-
-  color: #ffffff;
-`;
-
-const Right = styled.div`
-  display: flex;
-  color: #ffffff;
-`;
-
-const User = styled.div`
-  margin-left: 5px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-`;
-
-const Center = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: absolute;
-  top: 85%;
-  left: 50%;
-  transform: translateX(-50%);
-  text-align: center;
-  color: #6f1aff;
-  font-family: "Satoshi Variable";
-  font-style: normal;
-  font-weight: 500;
-  font-size: 16px;
-  line-height: 100%;
-  text-align: center;
-  letter-spacing: -0.03em;
-  color: #6f1aff;
-  gap: 18px;
-`;
 
 export const PostImage = ({ imageDetails }) => {
   const [hovered, setHovered] = React.useState(false);
 
   return (
-    <ImagePost>
+    <div className="flex flex-col items-center relative overflow-hidden">
       <Image
         src={imageDetails.imageUrl}
         onMouseEnter={() => setHovered(true)}
@@ -116,55 +22,76 @@ export const PostImage = ({ imageDetails }) => {
         className="relative flex z-[3] rounded-[48px]"
       />
       {hovered && (
-        <Backdrop
+        <div
           onMouseEnter={() => setHovered(true)}
           onMouseLeave={() => setHovered(false)}
-          onClick={() => {
-            window.open(imageDetails.lensterPostUrl, "_blank");
-          }}
+          className={`w-[512px] h-[512px] absolute z-[10] rounded-[48px]`}
         >
-          <Details>
-            <Left
-              onClick={() => {
-                window.open(imageDetails.lensterProfileUrl, "_blank");
-              }}
-            >
-              <ProfileLogo profileImageUrl={imageDetails.profileImageUrl} />
-              <User>
-                <Name>{imageDetails.name || "Lewis"}</Name>
-                <Handle>{imageDetails.profileHandle || "Lewis.xyz"}</Handle>
-              </User>
-            </Left>
-            <Right>
-              <button className="flex justify-center items-center gap-[6px] z-20">
+          <div className={`flex relative p-[40px] rounded-tr-[48px] rounded-tl-[48px]  backdrop-blur-[2px] ${styles.backdrop} `}>
+            <div className={`flex w-[360px] cursor-pointer`}>
+              <ProfileLogo profileImageUrl={imageDetails?.profileImageUrl} />
+              <div className="ml-[5px] flex flex-col justify-center items-start">
+                <div
+                  className={`not-italic leading-[100%] text-[#FFFFFF] font-bold text-[14px] ${styles.name}`}
+                >
+                  {imageDetails?.name || "Lewis"}
+                </div>
+                <div
+                  className={`not-italic font-normal text-[14px] leading-[100%] text-[#FFFFFF] ${styles.Handle}`}
+                >
+                  {"@" + imageDetails?.profileHandle || "Lewis.xyz"}
+                </div>
+              </div>
+            </div>
+            {/* <div className="">{imageDetails?.createdAt || "2:32 pm"}</div> */}
+            {!imageDetails?.isFollowedByMe ? (
+              <button
+                className="flex justify-center items-center gap-[6px] z-20"
+                onClick={async () => {
+                  console.log("call Follow Function");
+                  await refreshAuthentication();
+                  const res = await requestFollow(imageDetails?.profileId);
+                  followRequestId.current = res.data?.createFollowTypedData?.id;
+                  setTypedData(res.data?.createFollowTypedData?.typedData);
+                  console.log({ res });
+                }}
+              >
                 <PlusIcon />
                 <div
-                  className={`not-italic font-medium text-[16px]  ${styles.FollowBtn}`}
+                  className={`not-italic font-medium text-[16px] text-[#FFFFFF] ${styles.FollowBtn}`}
                 >
                   Follow
                 </div>
               </button>
-            </Right>
-          </Details>
-          <Center>
-            <a
-              hef="/"
-              className={`flex items-center p-[10px] w-[208px] h-[40px] justify-center  ${styles.viewOnLensBtn}`}
+            ) : (
+              <div
+                className={`not-italic font-medium text-[16px] text-[#FFFFFF] ${styles.FollowBtn}`}
+              >
+                Following
+              </div>
+            )}
+          </div>
+          <div className={`flex justify-center items-center absolute top-[85%] left-[50%] text-center gap-[8px] w-[432px] -translate-x-[50%]`}>
+              <button
+              onClick={() => {
+              window.open(imageDetails.lensterPostUrl, "_blank");
+              }}
+              className={`flex items-center p-[10px] w-[208px] h-[40px] justify-center rounded-[4px] backdrop-blur-[60px] ${styles.viewOnLensBtn}`}
             >
               {" "}
               <EyeIcon /> <span className="ml-[10px]">View on lens</span>
-            </a>
+            </button>
             <a
               href=""
-              className={`flex items-center p-[10px] w-[208px] h-[40px] justify-center  ${styles.viewOnLensBtn}`}
+              className={`flex items-center p-[10px] w-[208px] h-[40px] justify-center rounded-[4px] backdrop-blur-[60px] ${styles.viewOnLensBtn}`}
             >
               {" "}
               <CollectIcon />{" "}
               <span className="ml-[10px]">Collect this post</span>
             </a>
-          </Center>
-        </Backdrop>
+          </div>
+          </div>
       )}
-    </ImagePost>
+    </div>
   );
 };

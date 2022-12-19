@@ -7,7 +7,7 @@ import styles from "./BottomTabSelector.module.css";
 export default function BottomTabSelector() {
   const { currentTab, onTabChange } = useBottomTab();
   const handleClick = () => {
-    const plgURL = "https://plgworks.com/?ref=WhisperChain";
+    const plgURL = "https://plgworks.com/";
     window.open(plgURL, "_blank");
   };
   const router = useRouter();
@@ -17,12 +17,11 @@ export default function BottomTabSelector() {
         className={`flex relative not-italic font-medium text-[16px] ${styles.infoTab}`}
       >
         <div className="flex w-full relative justify-start items-center gap-[8.5px] left-[32px]">
-          <InfoLogo />
-          <button className={`hover:text-[#000000]`}>How it works</button>
+          <button className={`flex justify-center gap-[8.5px] items-center hover:text-[#000000]`}> <InfoLogo /> How it works</button>
         </div>
         <div className="flex w-full relative justify-end right-[32px] gap-1">
           <div className="hover:text-[#000000]">
-            Made with 🧡 by <button onClick={handleClick}>PLG</button>
+            <button onClick={handleClick}>Made with 🧡 by PLG</button>
           </div>
         </div>
       </div>
