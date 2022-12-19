@@ -83,7 +83,7 @@ function Generate() {
   };
 
   return (
-    <div className="w-full h-[90vh]">
+    <div className="w-full mt-[20px]">
       <div className="flex gap-[16px] justify-center items-center">
         {/* Sidebar */}
         <div className={styles.sidebarContainer}>
