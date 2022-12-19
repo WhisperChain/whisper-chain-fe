@@ -25,7 +25,7 @@ const SEL = "custom-section";
 const SECTION_SEL = `.${SEL}`;
 
 const Home = () => {
-  const [publicationData, setPublicationData] = React.useState<any>([]);
+  const [publicationData, setPublicationData] = React.useState([]);
   const [isLoading, setIsloading] = React.useState(false);
   const [currentSlideIndex, setCurrentSlideIndex] = React.useState(0);
 
@@ -46,6 +46,13 @@ const Home = () => {
       <div className="flex h-[780px] relative w-fit gap-[40px] m-auto">
         <div className="flex w-full	flex-col items-center justify-center">
           <div className="w-[512px] h-full mt-[50%]">
+            <div className="absolute top-[10%] left-[0%]">
+              <div
+                className={`h-[22px] text-[16px] not-italic font-medium leading-[140%] ${styles.Date}`}
+              >
+                {moment(publicationData[currentSlideIndex]?.createdAt).format("Do MMMM YYYY")}
+              </div>
+            </div>
             <Swiper
               freeMode
               followFinger
@@ -71,26 +78,12 @@ const Home = () => {
               {publicationData &&
                 publicationData.map(
                   (
-                    pub: {
-                      pubId: any;
-                      comments: { imageUrl: any }[];
-                      createdAt: any;
-                      timeDifference: any;
-                      metadata: any;
-                    },
-                    index: any
+                    pub,
+                    index
                   ) => (
                     <SwiperSlide key={pub?.pubId + index}>
                       <div className={`${SEL} absolute top-0`}>
                         <div className="slide w-full flex justify-start relative">
-                          <div className="absolute top-[-50px] left-[0%]">
-                            <div
-                              className={`h-[22px] text-[16px] not-italic font-medium leading-[140%] ${styles.Date}`}
-                            >
-                              {moment(pub?.createdAt).format("Do MMMM YYYY")}
-                            </div>
-                          </div>
-
                           {pub?.comments[0] ? (
                             <ImagesStack imageDetails={pub?.comments} pub={pub} />
                           ) : null}

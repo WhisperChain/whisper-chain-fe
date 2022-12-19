@@ -19,7 +19,7 @@ const ImagesStack = ({ imageDetails: imageDetailsArray, pub }) => {
   const [followed, setFollowed] = React.useState();
 
   return (
-    <div className="flex flex-col items-center relative overflow-hidden">
+    <div className="flex flex-col items-center relative">
       {imageDetails?.imageUrl && (
         <Image
           src={imageDetails.imageUrl}
@@ -104,7 +104,7 @@ const ImagesStack = ({ imageDetails: imageDetailsArray, pub }) => {
       <Image
         width={452}
         height={512}
-        className="absolute bottom-[22px] rounded-[48px] flex z-[2]"
+        className="absolute bottom-[-26px] rounded-[48px] flex z-[2]"
         alt="Stack Image 2"
         src={
           imageDetailsArray[1]?.imageUrl
@@ -116,7 +116,7 @@ const ImagesStack = ({ imageDetails: imageDetailsArray, pub }) => {
       <Image
         width={404}
         height={512}
-        className="absolute bottom-[0px] rounded-[48px] flex z-[1]"
+        className="absolute bottom-[-44px] rounded-[48px] flex z-[1]"
         alt="Stack Image 3"
         src={
           imageDetailsArray[2]?.imageUrl
