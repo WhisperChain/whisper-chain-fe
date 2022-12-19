@@ -22,16 +22,7 @@ const Chain = () => {
   const router = useRouter();
   const [firstCreatedAt, setFirstCreatedAt] = React.useState();
   const [infoContainer, setInfoConatiner] = React.useState(true);
-  // console.log(firstCreatedAt);
   const [hours, minutes] = timer("2022-12-14");
-  // const handleInfoHover = (hoverstate) => {
-  //   if(hoverstate){
-  //     return setInfoConatiner(true);
-  //   }
-  //   else{
-  //     return setInfoConatiner(false);
-  //   }
-  // }
   const messageBoxData = {
     onChain: {
       text: 'This was the last image added to the thread, try to describe this image in your own words as best you can, and add your generation to this thread. ',
@@ -114,26 +105,14 @@ const Chain = () => {
   let viewLensUrl = "https://testnet.lenster.xyz/posts";
 
   const buttonRef = React.useRef();
-  React.useEffect(() => {
-    let dContainer = document.getElementById("demmoId");
-    console.log("dContainer",dContainer)
-    const onScroll = () => {
-      console.log("------event", dContainer.scrollTop)
-      if (dContainer) {
-        let rect = dContainer.getBoundingClientRect();
-        console.log(rect.top);
-        if (rect.top < 188.34375) {
-          handleScrollDark();
-        } else {
-          handleScrollLight();
-        }
-      }
-    };
-    dContainer.addEventListener("scroll", onScroll, true);
-    return () => {
-      dContainer.removeEventListener("scroll", onScroll, true);
+  let dContainer = buttonRef.current;
+  const onScroll = () => {
+    if (dContainer.scrollTop > 0) {
+      increaseOpacity();
+    } else {
+      decreaseOpacity();
     }
-  }, []);
+  };
 
   const onViewLensHover = () => {
     let viewlensContainer = document.getElementById('viewlensContainer');
@@ -149,7 +128,7 @@ const Chain = () => {
     }
   }
 
-  const handleScrollDark = () => {
+  const increaseOpacity = () => {
     let lastImageButton = document.getElementById("lastImage");
     let bottomButton = document.getElementById("gopToTop");
     if (lastImageButton || gopToTopButton) {
@@ -157,7 +136,7 @@ const Chain = () => {
       bottomButton.style.opacity = "1"
     }
   };
-  const handleScrollLight = () => {
+  const decreaseOpacity = () => {
     let lastImageButton = document.getElementById("lastImage");
     let bottomButton = document.getElementById("gopToTop");
     if (lastImageButton || gopToTopButton) {
@@ -165,9 +144,7 @@ const Chain = () => {
       bottomButton.style.opacity = "0"
     }
   };
-
-
-
+  
   return isLoading ? (
     <SpinningLoader height="80vh" width="100%" />
   ) : (
@@ -227,11 +204,11 @@ const Chain = () => {
           </span>
         </div>
       </div>
-      <div className="flex justify-center sticky top-[70px] z-[1000]">
+      <div className="flex justify-center sticky top-[150px] z-[1000]">
         <a
           onClick={() => {
             console.log("clicked");
-            window.scrollTo(0, 10000);
+            dContainer.scrollTo(0, 10000);
           }}
           id="gopToTop"
           className={`rounded-[20px] flex z-[10000] items-center justify-center ${style.bottomButton}`}
@@ -244,7 +221,7 @@ const Chain = () => {
         <a
           onClick={() => {
             console.log("clicked");
-            window.scrollTo(0, 0);
+            dContainer.scrollTo(0, 0);
           }}
           id="lastImage"
           className={`rounded-[20px] ml-[20px] flex z-[10000] items-center justify-center ${style.lastImageButton}`}
@@ -269,8 +246,10 @@ const Chain = () => {
         </a>
       </div>
       <div
-      id="demmoId"
+        id="demmoId"
+        onScroll={onScroll}
         className={`overflow-scroll ${style.chainContainer}`}
+        ref={buttonRef}
       >
         <div
           className={`w-[512px] h-[222px] flex flex-col items-center rounded-[32px] box-border ${style.messageBox}`}
