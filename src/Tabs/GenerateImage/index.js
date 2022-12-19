@@ -14,6 +14,7 @@ import MagicStickIcon from "../../assets/MagicStickIcon";
 import WhisperImage from "../../components/WhisperImage";
 import GeneratedImageBox from "../../components/GeneratedImageBox";
 import { useRouter } from "next/router";
+import EmptyStateLogo from "../../assets/EmptyStateLogo";
 
 function Generate() {
   const { publication } = usePublicationContext();
@@ -25,6 +26,7 @@ function Generate() {
   const [selectedFilter, setSelectedFilter] = React.useState(
     FILTER_OPTIONS[0].value
   );
+   const [emptyState, setEmptyState] = React.useState(true);
 
   const [previousImageUrl, setPreviousImageUrl] = React.useState();
   React.useEffect(() => {
@@ -64,6 +66,7 @@ function Generate() {
   const generateImageClickHandler = async () => {
     if (urls.length < 5) {
       setUrls([1, ...urls]);
+      setEmptyState(false);
       setIsloading(true);
       const response = await getImagesFromPrompt(promptText, selectedFilter);
       const suggestionIds = response.suggestions_ids;
@@ -177,15 +180,27 @@ function Generate() {
                 <div className="flex items-center justify-center w-full gap-[12px]">
                   <GeneratedImageBox
                     imgSrcUrl={url[0]}
-                    clickHandler={onImageClickHandler}
+                    clickHandler={() => onImageClickHandler(url[0])}
                   />
                   <GeneratedImageBox
                     imgSrcUrl={url[1]}
-                    clickHandler={onImageClickHandler}
+                    clickHandler={() => onImageClickHandler(url[1])}
                   />
                 </div>
               </div>
             ))
+          }
+          {emptyState &&
+          <div className="overflow-hidden w-full">{
+              [...Array(2)].map((index) => (
+              <div className={styles.imageTryOutputBox} key={index}>
+                <div className="flex items-start justify-start gap-[12px] w-full">
+                  <div className={`flex items-center justify-center w-[402px] h-[402px] relative group ${styles.defaultState}`}><EmptyStateLogo/> </div>
+                  <div className={`flex items-center justify-center w-[402px] h-[402px] relative group ${styles.defaultState}`}><EmptyStateLogo/></div>
+                </div>
+              </div>
+            ))
+            }</div>
           }
         </div>
       </div>

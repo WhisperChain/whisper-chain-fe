@@ -39,6 +39,7 @@ export const getIpfsUrl = async (url) => {
 };
 
 export const createIpfsObjects = async (url) => {
+  const data ={s3_url: url,};
   const resp = await fetch(
     "https://whisperchain.quick-poc.com/api/lens/ipfs-objects",
     {
@@ -46,9 +47,9 @@ export const createIpfsObjects = async (url) => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        s3_url: url,
-      }),
+      body: JSON.stringify(
+        data,
+      ),
     }
   );
   const responseJSON = await resp.json();
