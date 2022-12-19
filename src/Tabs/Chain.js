@@ -115,20 +115,25 @@ const Chain = () => {
 
   const buttonRef = React.useRef();
   React.useEffect(() => {
+    let dContainer = document.getElementById("demmoId");
+    console.log("dContainer",dContainer)
     const onScroll = () => {
-      let dContainer = buttonRef.current;
+      console.log("------event", dContainer.scrollTop)
       if (dContainer) {
         let rect = dContainer.getBoundingClientRect();
         console.log(rect.top);
-        if (rect.top < 0) {
+        if (rect.top < 188.34375) {
           handleScrollDark();
         } else {
           handleScrollLight();
         }
       }
     };
-    window.addEventListener("scroll", onScroll);
-  }, [buttonRef]);
+    dContainer.addEventListener("scroll", onScroll, true);
+    return () => {
+      dContainer.removeEventListener("scroll", onScroll, true);
+    }
+  }, []);
 
   const onViewLensHover = () => {
     let viewlensContainer = document.getElementById('viewlensContainer');
@@ -264,15 +269,15 @@ const Chain = () => {
         </a>
       </div>
       <div
+      id="demmoId"
         className={`overflow-scroll ${style.chainContainer}`}
-        ref={buttonRef}
       >
         <div
           className={`w-[512px] h-[222px] flex flex-col items-center rounded-[32px] box-border ${style.messageBox}`}
         >
           <div className=" w-full pt-[38px] px-[40px] pb-[24px]">
             <h1 className={`not-italic text-[16px] leading-[160%] font-bold ${style.messageText}`}>
-            {isGenerated ? messageBoxData.OnGenerate.h1 : ''}
+              {isGenerated ? messageBoxData.OnGenerate.h1 : ''}
             </h1>
             <div className={`not-italic text-[16px] leading-[160%] font-medium ${style.messageText}`}>
               {isGenerated ? messageBoxData.OnGenerate.text : messageBoxData.onChain.text}
@@ -281,9 +286,9 @@ const Chain = () => {
           <div>
             {
               isGenerated ? <AddWhisperBtn pageIndex={1} publication={publication} height={40} width={432} text="Share" /> :
-              <ShareBtn pageIndex={1} publication={publication} height={40} width={432} text="Add to Chain" />
+                <ShareBtn pageIndex={1} publication={publication} height={40} width={432} text="Add to Chain" />
             }
-          
+
           </div>
         </div>
         {chainData &&
