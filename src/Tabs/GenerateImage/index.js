@@ -40,7 +40,7 @@ function Generate() {
       setPreviousImageUrl(
         convertIntoIpfsUrl(
           comment.metadata.media[0].original.url ??
-          pub.metadata.media[0].original.url
+            pub.metadata.media[0].original.url
         )
       );
     };
@@ -90,7 +90,9 @@ function Generate() {
           {/* Previos Whisper Image */}
           <div className="w-full">
             <div className="flex flex-col mb-[8px]">
-              <div className={styles.mainText}>Last whisper of {`December 13th`} chain</div>
+              <div className={styles.mainText}>
+                Last whisper of {`December 13th`} chain
+              </div>
               <div className={styles.subText}>
                 Try to describe this whisper as best you can.
               </div>
@@ -143,8 +145,15 @@ function Generate() {
             </div>
           </div>
           {/* Generate Image Button */}
-          <div className={`w-full absolute bottom-[16px] ${promptText === "" ? 'opacity-50 cursor-not-allowed	pointer-events-none' : ''}`}>
-            <div className="flex items-center cursor-pointer"
+          <div
+            className={`w-full absolute bottom-[16px] ${
+              promptText === ""
+                ? "opacity-50 cursor-not-allowed	pointer-events-none"
+                : ""
+            }`}
+          >
+            <div
+              className="flex items-center cursor-pointer"
               onClick={generateImageClickHandler}
             >
               <button className={styles.generateButton}>
@@ -153,9 +162,7 @@ function Generate() {
                     <span className={styles.generateButtonText}>
                       Generate whisper
                     </span>
-                    <span className={styles.tryCounts}>
-                      &#x2022;
-                    </span>
+                    <span className={styles.tryCounts}>&#x2022;</span>
                     <span className={styles.tryCounts}>
                       {5 - urls.length} tries left
                     </span>
@@ -171,22 +178,20 @@ function Generate() {
         {/* Image Gallery */}
         <div className={styles.imageGalleryContainer}>
           <div className={styles.galleryMainText}>Your generations</div>
-          {
-            urls.map((url, index) => (
-              <div className={styles.imageTryOutputBox} key={index}>
-                <div className="flex items-center justify-center w-full gap-[12px]">
-                  <GeneratedImageBox
-                    imgSrcUrl={url[0]}
-                    clickHandler={onImageClickHandler}
-                  />
-                  <GeneratedImageBox
-                    imgSrcUrl={url[1]}
-                    clickHandler={onImageClickHandler}
-                  />
-                </div>
+          {urls.map((url, index) => (
+            <div className={styles.imageTryOutputBox} key={index}>
+              <div className="flex items-center justify-center w-full gap-[12px]">
+                <GeneratedImageBox
+                  imgSrcUrl={url[0]}
+                  clickHandler={() => onImageClickHandler(url[0])}
+                />
+                <GeneratedImageBox
+                  imgSrcUrl={url[1]}
+                  clickHandler={() => onImageClickHandler(url[1])}
+                />
               </div>
-            ))
-          }
+            </div>
+          ))}
         </div>
       </div>
     </div>

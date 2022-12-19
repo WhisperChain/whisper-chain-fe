@@ -17,8 +17,7 @@ const AddWhisperBtn = ({ pageIndex, publication, height, width, text }) => {
       }}
     >
       <div className="not-italic -tracking-[0.03em] font-extrabold text-[16px] leading-[100%] text-center text-[#FFFFFF]">
-        {" "}
-        {text}{" "}
+        {text}
       </div>
     </div>
   );
