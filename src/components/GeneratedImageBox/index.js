@@ -22,7 +22,7 @@ export default function GeneratedImageBox({
     content: {
       background: "#FFFFFF",
       height: "fit-content",
-      width: 314,
+      width: 384,
       margin: "auto",
       backdropFilter: "blur(60px)",
       borderRadius: "16px",
@@ -56,7 +56,7 @@ export default function GeneratedImageBox({
           className={`flex flex-col justify-start items-start bg-[#FFFFFF] rounded-[16px] backdrop-blur-3xl gap-[16px] p-[12px] ${styles.ModalContainer}`}
         >
           <div className='text-[20px]'>Adding a whisper to the chain</div>
-          <div className='flex flex-col gap-[24px] text-start not-italic text-[16px] leading-[140%] -tracking-[0.02em] text-[#000000] font-medium'>
+          <div className='flex flex-col gap-[24px] py-[10px] text-start not-italic text-[16px] leading-[140%] -tracking-[0.02em] text-[#000000] font-medium'>
             <div className='flex flex-col gap-[11px]'>
               <MessageLogo/>
               <span className={`flex  ${styles.MessageText}`}> When you add a whisper to the chain, a comment is created on our lenster thread</span>

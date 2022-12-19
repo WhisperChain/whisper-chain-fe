@@ -68,7 +68,7 @@ const HomeMessage = ({ publication }) => {
          })}
       </div>
       <div className="flex justify-center mt-[50px]">
-        <AddWhisperBtn pageIndex={1} publication={publication} height={40} width={200} text={"Add a whisper"}/>
+        <AddWhisperBtn pageIndex={1} publication={publication} height={40} width={156} text={"Add a whisper"}/>
       </div>
     </div>
   );
