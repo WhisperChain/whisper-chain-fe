@@ -183,60 +183,6 @@ const Chain = () => {
           <div className="not-italic font-medium text-[16px] leading-[140%] tracking-[-0.03em] text-[#000000] ">
             {moment(firstCreatedAt).format("Do MMMM YYYY")}
           </div>
-          {/*
-  <div className="flex justify-center items-center h-[16px] not-italic font-normal text-[16px] leading-[100%] tracking-wide text-[#dddddd]">
-            {hours + minutes < 0 ? (
-              "Ended"
-            ) : (
-              <div className="flex justify-center items-center">
-                <div
-                  className={`flex justify-center items-center w-[40px] h-[20px] bg-[#6F1AFF] rounded-[4.92188px] backdrop-blur-sm ${style.timerText} text-[11px] mr-[5px]`}
-                >
-                  {hours} h
-                </div>
-                :
-                <div
-                  className={`flex justify-center items-center w-[40px] h-[20px] bg-[#6F1AFF] rounded-[4.92188px] backdrop-blur-sm ${style.timerText} text-[11px] mx-[5px]`}
-                >
-                  {minutes} m
-                </div>
-              </div>
-            )}
-            <div id="custom-inline-styles">
-              <InfoLogo />
-            </div>
-            <Tooltip
-              anchorId="custom-inline-styles"
-              events={["hover"]}
-              style={{
-                display: "flex",
-                position: "relative",
-                backgroundColor: "rgba(19, 9, 36, 0.5)",
-                color: "#222",
-                alignItems: "flex-start",
-                backdropFilter: "blur(12px)",
-                width: "343px",
-                height: "120px",
-                zIndex: 10,
-                gap: "16px",
-                padding: "12px",
-                borderRadius: "24px",
-                top: "43px",
-                left: "-19px",
-              }}
-              // className="flex items-start z-10 p-[12px] gap-[16px] relative w-fit h-[120px] rounded-[24px] backdrop-blur-sm left-[-16px] top-[41px]"
-              content={
-                <div className="flex items-start z-10 p-[12px] gap-[16px] relative decoration-white ">
-                  <InfoLogo />
-                  <p>
-                    Proceeds from all collects, within 24 hours from the
-                    begining, will be distributed equally to all the
-                    participants of this chain.
-                  </p>
-                </div>
-              }
-            />
-          </div> */}
         </div>
         <div className="relative">
           <span onMouseEnter={() => onViewLensHover()} onMouseLeave={() => onViewLensHoverOff()} id="viewlensContainer" className={`absolute flex ${style.viewOnLensContainer}`}>
