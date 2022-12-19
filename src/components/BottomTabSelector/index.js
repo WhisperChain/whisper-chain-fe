@@ -12,7 +12,7 @@ export default function BottomTabSelector() {
   };
   const router = useRouter();
   return (
-    <>
+    <div className="flex ">
       <div className={`flex relative not-italic font-medium text-[16px] ${styles.infoTab}`}>
         <div className="flex w-full relative justify-start items-center gap-[8.5px] left-[32px]">
           <button className={`flex justify-center gap-[8.5px] items-center hover:text-[#000000]`}> <InfoLogo /> How it works</button>
@@ -46,6 +46,6 @@ export default function BottomTabSelector() {
           );
         })}
       </div>
-    </>
+    </div>
   );
 }
