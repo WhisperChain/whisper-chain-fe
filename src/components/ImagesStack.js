@@ -28,6 +28,7 @@ const ImagesStack = ({ imageDetails: imageDetailsArray, pub }) => {
           alt="Stack Image"
           width={512}
           height={512}
+          priority
           className="relative flex z-[3] rounded-[48px]"
         />
       )}
