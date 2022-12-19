@@ -19,7 +19,7 @@ const ImagesStack = ({ imageDetails: imageDetailsArray, pub }) => {
   const [followed, setFollowed] = React.useState();
 
   return (
-    <div className="flex flex-col items-center relative overflow-hidden h-[572px]">
+    <div className="flex flex-col items-center relative overflow-hidden">
       {imageDetails?.imageUrl && (
         <Image
           src={imageDetails.imageUrl}
@@ -82,23 +82,23 @@ const ImagesStack = ({ imageDetails: imageDetailsArray, pub }) => {
             )}
           </div>
           <div className={`flex justify-center items-center absolute top-[85%] left-[50%] text-center gap-[8px] w-[432px] h-[40px] rounded-[4px] backdrop-blur-[60px] cursor-pointer ${styles.bottomBox}`}
-              onClick={() => {
-                setPublication(pub);
-                router.push("/chain");
-              }}
-            >
-              <div className={`flex justify-center items-center absolute text-center text-[#000000] not-italic font-medium text-[16px] leading-[100%] gap-[8px] ${styles.bottomBoxText}`}>
-                <EyeIcon />
-                <div>View Chain </div>
-              </div>
+            onClick={() => {
+              setPublication(pub);
+              router.push("/chain");
+            }}
+          >
+            <div className={`flex justify-center items-center absolute text-center text-[#000000] not-italic font-medium text-[16px] leading-[100%] gap-[8px] ${styles.bottomBoxText}`}>
+              <EyeIcon />
+              <div>View Chain </div>
+            </div>
           </div>
-          </div>
+        </div>
       )}
       {Object.keys(typedData)?.length > 0 ? (
         <SignTypedData
           typedData={typedData}
           id={followRequestId.current}
-          onSuccess={() => {}}
+          onSuccess={() => { }}
         />
       ) : null}
       <Image
