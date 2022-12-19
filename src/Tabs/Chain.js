@@ -243,7 +243,7 @@ const Chain = () => {
         </a>
       </div>
       <div
-        className="flex flex-col items-center justify-center overflow-scroll"
+        className={`overflow-scroll ${style.chainContainer}`}
         ref={buttonRef}
       >
         <div

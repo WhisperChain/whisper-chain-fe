@@ -3,7 +3,15 @@
    
    backdrop-filter: blur(48px);
 }
-
+.chainContainer{
+   height: 600px;
+   overflow: scroll;
+   position: relative;
+}
+.chainContainer::-webkit-scrollbar { /* WebKit */
+   width: 0;
+   height: 0;
+}
 .messageText{
    font-family: 'Satoshi Variable';
    font-feature-settings: 'salt' on;
