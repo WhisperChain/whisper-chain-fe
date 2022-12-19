@@ -1,193 +1,104 @@
 import * as React from "react";
 const WalletLogo = (props) => (
   <svg
-    width={84}
-    height={83}
-    viewBox="0 0 84 83"
+    width={24}
+    height={24}
+    viewBox="0 0 24 24"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
     {...props}
   >
-    <g opacity={0.8} filter="url(#filter0_d_988_4385)">
+    <g opacity={0.8}>
       <path
-        d="M35 41.5C33.9 41.5 33 40.6 33 39.5V26.5C33 27.5 34 29.5 35 29.5H49V41.5H35Z"
-        fill="url(#paint0_radial_988_4385)"
+        d="M5 20.5C3.9 20.5 3 19.6 3 18.5V5.5C3 6.5 4 8.5 5 8.5H19V20.5H5Z"
+        fill="url(#paint0_radial_1263_3766)"
       />
       <path
         fillRule="evenodd"
         clipRule="evenodd"
-        d="M35.0373 28.5C35.0189 28.4907 34.9802 28.4678 34.9206 28.4162C34.79 28.3031 34.6348 28.1144 34.4825 27.8605C34.1607 27.3241 34 26.7541 34 26.5H32V39.5C32 41.1523 33.3477 42.5 35 42.5H49C49.5523 42.5 50 42.0523 50 41.5V29.5C50 28.9477 49.5523 28.5 49 28.5H35.0373ZM34 30.2104V39.5C34 40.0477 34.4523 40.5 35 40.5H48V30.5H35C34.6156 30.5 34.2789 30.3761 34 30.2104Z"
-        fill="url(#paint1_radial_988_4385)"
+        d="M5.03725 7.5C5.01893 7.49075 4.98016 7.46784 4.92056 7.41619C4.79003 7.30307 4.63484 7.11441 4.48249 6.8605C4.16066 6.32411 4 5.75411 4 5.5H2V18.5C2 20.1523 3.34772 21.5 5 21.5H19C19.5523 21.5 20 21.0523 20 20.5V8.5C20 7.94772 19.5523 7.5 19 7.5H5.03725ZM4 9.21043V18.5C4 19.0477 4.45228 19.5 5 19.5H18V9.5H5C4.61565 9.5 4.27889 9.37606 4 9.21043Z"
+        fill="url(#paint1_radial_1263_3766)"
       />
       <path
-        d="M34.6071 24.5C32.9643 24.5 32 25.2168 32 26.5C32 27.7832 33 28.5 34.6071 28.5H47.0001V24.5H34.6071Z"
-        fill="url(#paint2_radial_988_4385)"
+        d="M4.60714 3.5C2.96429 3.5 2 4.21677 2 5.5C2 6.78323 3 7.5 4.60714 7.5H17.0001V3.5H4.60714Z"
+        fill="url(#paint2_radial_1263_3766)"
       />
       <path
-        d="M34.6071 24.5C32.9643 24.5 32 25.2168 32 26.5C32 27.7832 33 28.5 34.6071 28.5H47.0001V24.5H34.6071Z"
-        fill="url(#paint3_linear_988_4385)"
+        d="M4.60714 3.5C2.96429 3.5 2 4.21677 2 5.5C2 6.78323 3 7.5 4.60714 7.5H17.0001V3.5H4.60714Z"
+        fill="url(#paint3_linear_1263_3766)"
         fillOpacity={0.56}
         style={{
           mixBlendMode: "overlay",
         }}
       />
-      <g filter="url(#filter1_dd_988_4385)">
-        <path
-          d="M48 33.5C47.4696 33.5 46.9609 33.7107 46.5858 34.0858C46.2107 34.4609 46 34.9696 46 35.5C46 36.6 46.9 37.5 48 37.5H51C51.5523 37.5 52 37.0523 52 36.5V34.5C52 33.9477 51.5523 33.5 51 33.5H48Z"
-          fill="url(#paint4_radial_988_4385)"
-        />
-        <path
-          d="M48 33.5C47.4696 33.5 46.9609 33.7107 46.5858 34.0858C46.2107 34.4609 46 34.9696 46 35.5C46 36.6 46.9 37.5 48 37.5H51C51.5523 37.5 52 37.0523 52 36.5V34.5C52 33.9477 51.5523 33.5 51 33.5H48Z"
-          fill="white"
-          fillOpacity={0.32}
-        />
-      </g>
+      <path
+        d="M18 12.5C17.4696 12.5 16.9609 12.7107 16.5858 13.0858C16.2107 13.4609 16 13.9696 16 14.5C16 15.6 16.9 16.5 18 16.5H21C21.5523 16.5 22 16.0523 22 15.5V13.5C22 12.9477 21.5523 12.5 21 12.5H18Z"
+        fill="url(#paint4_radial_1263_3766)"
+      />
+      <path
+        d="M18 12.5C17.4696 12.5 16.9609 12.7107 16.5858 13.0858C16.2107 13.4609 16 13.9696 16 14.5C16 15.6 16.9 16.5 18 16.5H21C21.5523 16.5 22 16.0523 22 15.5V13.5C22 12.9477 21.5523 12.5 21 12.5H18Z"
+        fill="white"
+        fillOpacity={0.32}
+      />
     </g>
     <defs>
-      <filter
-        id="filter0_d_988_4385"
-        x={-2}
-        y={-3}
-        width={88}
-        height={88}
-        filterUnits="userSpaceOnUse"
-        colorInterpolationFilters="sRGB"
-      >
-        <feFlood floodOpacity={0} result="BackgroundImageFix" />
-        <feColorMatrix
-          in="SourceAlpha"
-          type="matrix"
-          values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
-          result="hardAlpha"
-        />
-        <feOffset dy={8} />
-        <feGaussianBlur stdDeviation={16} />
-        <feComposite in2="hardAlpha" operator="out" />
-        <feColorMatrix
-          type="matrix"
-          values="0 0 0 0 0.435294 0 0 0 0 0.101961 0 0 0 0 1 0 0 0 0.32 0"
-        />
-        <feBlend
-          mode="normal"
-          in2="BackgroundImageFix"
-          result="effect1_dropShadow_988_4385"
-        />
-        <feBlend
-          mode="normal"
-          in="SourceGraphic"
-          in2="effect1_dropShadow_988_4385"
-          result="shape"
-        />
-      </filter>
-      <filter
-        id="filter1_dd_988_4385"
-        x={42}
-        y={31.5}
-        width={14}
-        height={12}
-        filterUnits="userSpaceOnUse"
-        colorInterpolationFilters="sRGB"
-      >
-        <feFlood floodOpacity={0} result="BackgroundImageFix" />
-        <feColorMatrix
-          in="SourceAlpha"
-          type="matrix"
-          values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
-          result="hardAlpha"
-        />
-        <feOffset dy={1} />
-        <feGaussianBlur stdDeviation={0.5} />
-        <feComposite in2="hardAlpha" operator="out" />
-        <feColorMatrix
-          type="matrix"
-          values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.16 0"
-        />
-        <feBlend
-          mode="normal"
-          in2="BackgroundImageFix"
-          result="effect1_dropShadow_988_4385"
-        />
-        <feColorMatrix
-          in="SourceAlpha"
-          type="matrix"
-          values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
-          result="hardAlpha"
-        />
-        <feOffset dy={2} />
-        <feGaussianBlur stdDeviation={2} />
-        <feComposite in2="hardAlpha" operator="out" />
-        <feColorMatrix
-          type="matrix"
-          values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.2 0"
-        />
-        <feBlend
-          mode="normal"
-          in2="effect1_dropShadow_988_4385"
-          result="effect2_dropShadow_988_4385"
-        />
-        <feBlend
-          mode="normal"
-          in="SourceGraphic"
-          in2="effect2_dropShadow_988_4385"
-          result="shape"
-        />
-      </filter>
       <radialGradient
-        id="paint0_radial_988_4385"
+        id="paint0_radial_1263_3766"
         cx={0}
         cy={0}
         r={1}
         gradientUnits="userSpaceOnUse"
-        gradientTransform="translate(41 38.6429) rotate(-90) scale(16.0714 17.1429)"
+        gradientTransform="translate(11 17.6429) rotate(-90) scale(16.0714 17.1429)"
       >
         <stop stopColor="#6F1AFF" />
         <stop offset={1} stopColor="#C6A4FF" />
       </radialGradient>
       <radialGradient
-        id="paint1_radial_988_4385"
+        id="paint1_radial_1263_3766"
         cx={0}
         cy={0}
         r={1}
         gradientUnits="userSpaceOnUse"
-        gradientTransform="translate(41 39.4524) rotate(-90) scale(17.1429 19.2857)"
+        gradientTransform="translate(11 18.4524) rotate(-90) scale(17.1429 19.2857)"
       >
         <stop stopColor="#6F1AFF" />
         <stop offset={1} stopColor="#C6A4FF" />
       </radialGradient>
       <radialGradient
-        id="paint2_radial_988_4385"
+        id="paint2_radial_1263_3766"
         cx={0}
         cy={0}
         r={1}
         gradientUnits="userSpaceOnUse"
-        gradientTransform="translate(39.5 27.7381) rotate(-90) scale(4.28571 16.0714)"
+        gradientTransform="translate(9.5 6.7381) rotate(-90) scale(4.28571 16.0714)"
       >
         <stop stopColor="#6F1AFF" />
         <stop offset={1} stopColor="#C6A4FF" />
       </radialGradient>
       <linearGradient
-        id="paint3_linear_988_4385"
-        x1={39.5}
-        y1={24.5}
-        x2={38.5}
-        y2={28.5}
+        id="paint3_linear_1263_3766"
+        x1={9.5}
+        y1={3.5}
+        x2={8.5}
+        y2={7.5}
         gradientUnits="userSpaceOnUse"
       >
         <stop stopOpacity={0} />
         <stop offset={1} />
       </linearGradient>
       <radialGradient
-        id="paint4_radial_988_4385"
+        id="paint4_radial_1263_3766"
         cx={0}
         cy={0}
         r={1}
         gradientUnits="userSpaceOnUse"
-        gradientTransform="translate(49 36.7381) rotate(-90) scale(4.28571 6.42857)"
+        gradientTransform="translate(19 15.7381) rotate(-90) scale(4.28571 6.42857)"
       >
         <stop stopColor="#6F1AFF" />
         <stop offset={1} stopColor="#C6A4FF" />
       </radialGradient>
     </defs>
   </svg>
+
 );
 export default WalletLogo;
