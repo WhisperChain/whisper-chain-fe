@@ -30,7 +30,7 @@ function Generate() {
     FILTER_OPTIONS[0].value
   );
   const [emptyState, setEmptyState] = React.useState(true);
-  var regex = /[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/;
+  var regex = /[`!@#$%^&*()_+\-=\[\]{};':"\\|.<>\/?~]/;
 
   const [previousImageUrl, setPreviousImageUrl] = React.useState();
   React.useEffect(() => {
@@ -69,7 +69,7 @@ function Generate() {
 
   const generateImageClickHandler = async () => {
     if(regex.test(promptText)){
-      alert("containes Special charater");
+      alert("Prompt can not contain special characters");
     }
     else{
        if (urls.length < 5) {

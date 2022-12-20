@@ -118,8 +118,8 @@ const array = [1,2,3,4,5,6,7];
           </div>
         }
       </div>
-      <div className="flex justify-center mt-[50px] tablet:mt-[20px]">
-        <AddWhisperBtn pageIndex={1} publication={publication} height={40} width={200} text={"Add a whisper"} />
+      <div className="flex justify-center mt-[50px] tablet:mt-[20px] w-full">
+        <AddWhisperBtn pageIndex={1} publication={publication} width={156} height={40} text={"Add a whisper"}/>
       </div>
     </div>
   );
