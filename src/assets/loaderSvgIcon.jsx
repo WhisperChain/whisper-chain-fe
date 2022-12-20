@@ -1,7 +1,7 @@
 const LoaderSvgIcon = () => {
   return (
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <g clip-path="url(#clip0_988_3722)">
+      <g clipPath="url(#clip0_988_3722)">
         <path d="M6.12109 3.91016L8.47223 7.14622" stroke="black" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
         <path d="M15.5254 16.8535L17.8765 20.0896" stroke="black" strokeOpacity="0.5" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
         <path d="M2.12305 10.4355L6.076 11.0616" stroke="black" strokeOpacity="0.125" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
