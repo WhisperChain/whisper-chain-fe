@@ -83,7 +83,7 @@ function Generate() {
   };
 
   return (
-    <div className="w-full h-[90vh]">
+    <div className="w-full mt-[20px]">
       <div className="flex gap-[16px] justify-center items-center">
         {/* Sidebar */}
         <div className={styles.sidebarContainer}>
@@ -97,7 +97,7 @@ function Generate() {
                 Try to describe this whisper as best you can.
               </div>
             </div>
-            <div className="w-[256px] h-[256px]">
+            <div className="w-[256px] h-[256px] relative">
               <WhisperImage
                 imgSrcUrl={previousImageUrl}
                 width={256}
