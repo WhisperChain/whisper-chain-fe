@@ -38,6 +38,7 @@ export const getIpfsUrl = async (url) => {
 };
 
 export const createIpfsObjects = async (url) => {
+  const data ={s3_url: url,};
   const resp = await fetch(
     `${process.env.NEXT_PUBLIC_API_BASE_URL}/lens/ipfs-objects`,
     {
@@ -45,9 +46,9 @@ export const createIpfsObjects = async (url) => {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        s3_url: url,
-      }),
+      body: JSON.stringify(
+        data,
+      ),
     }
   );
   const responseJSON = await resp.json();
