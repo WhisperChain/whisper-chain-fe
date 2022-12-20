@@ -6,7 +6,7 @@
     position: sticky;
     height: 56px;
     left: calc(50% - 478px/2);
-    bottom: 48px;
+    bottom: 26px;
     z-index: 100;
 }
 .container {
