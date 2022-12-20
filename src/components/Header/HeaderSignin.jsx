@@ -7,7 +7,7 @@ import Modal from "react-modal";
 import SignOutLogo from "../../assets/SignOutLogo";
 import Router from "next/router";
 
-const HearderSignin = ({handleOpen}) => {
+const HeaderSignin = ({handleOpen}) => {
 
   const [open, setOpen] = React.useState(false);
   const handleModalClose = () => {
@@ -113,4 +113,4 @@ const HearderSignin = ({handleOpen}) => {
   );
 };
 
-export default HearderSignin;
+export default HeaderSignin;

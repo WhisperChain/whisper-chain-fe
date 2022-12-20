@@ -13,6 +13,8 @@ import {
 } from "../utils/lensFunction";
 import { useSigner } from "wagmi";
 import SignTypedData from "./ConnectButton/SignTypedData";
+import SignInModal from "./SignInModal";
+import { Constants } from "../utils/Constants";
 
 export const PostImage = ({ imageDetails }) => {
   const [hovered, setHovered] = React.useState(false);
@@ -20,6 +22,43 @@ export const PostImage = ({ imageDetails }) => {
   const { data: signer } = useSigner();
   const [typedData, setTypedData] = React.useState({});
   const transactionId = React.useRef({});
+  const [isOpen, setIsOpen] = React.useState(false);
+  const transactionType = React.useRef();
+
+  const onFollowPress = async () => {
+    if (
+      window.localStorage.getItem(Constants.LOCAL_STORAGE_REFRESH_TOKEN_KEY)
+    ) {
+      await refreshAuthentication();
+      if (imageDetails?.followModule) {
+        await getApprovedModuleAllowance(imageDetails?.followModule, signer);
+      }
+      const res = await requestFollow(
+        imageDetails?.profileId,
+        imageDetails?.followModule ?? null
+      );
+      transactionId.current = res.data?.createFollowTypedData?.id;
+      setTypedData(res.data?.createFollowTypedData?.typedData);
+    } else {
+      transactionType.current = "follow";
+
+      setIsOpen(true);
+    }
+  };
+  const onCollectPress = async () => {
+    if (
+      window.localStorage.getItem(Constants.LOCAL_STORAGE_REFRESH_TOKEN_KEY)
+    ) {
+      await refreshAuthentication();
+      await getApprovedModuleAllowance(imageDetails?.collectModule, signer);
+      const res = await collectPost(imageDetails?.publicationId);
+      transactionId.current = res.data?.createCollectTypedData?.id;
+      setTypedData(res.data?.createCollectTypedData?.typedData);
+    } else {
+      transactionType.current = "collect";
+      setIsOpen(true);
+    }
+  };
 
   return (
     <div className="flex flex-col items-center relative overflow-hidden">
@@ -60,26 +99,11 @@ export const PostImage = ({ imageDetails }) => {
             {!imageDetails?.isFollowedByMe ? (
               <button
                 className="flex justify-center items-center gap-[6px] z-20"
-                onClick={async () => {
-                  console.log(
-                    "call Follow Function",
-                    imageDetails?.followModule
-                  );
-                  await refreshAuthentication();
-                  if (imageDetails?.followModule) {
-                    await getApprovedModuleAllowance(
-                      imageDetails?.followModule,
-                      signer
-                    );
-                  }
-                  const res = await requestFollow(
-                    imageDetails?.profileId,
-                    imageDetails?.followModule ?? null
-                  );
-                  transactionId.current = res.data?.createFollowTypedData?.id;
-                  setTypedData(res.data?.createFollowTypedData?.typedData);
-                  console.log({ res });
-                }}
+                onClick={
+                  transactionType.current == "follow"
+                    ? onFollowPress
+                    : onCollectPress
+                }
               >
                 <PlusIcon />
                 <div
@@ -115,16 +139,7 @@ export const PostImage = ({ imageDetails }) => {
               </button>
             ) : (
               <button
-                onClick={async () => {
-                  await refreshAuthentication();
-                  await getApprovedModuleAllowance(
-                    imageDetails?.collectModule,
-                    signer
-                  );
-                  const res = await collectPost(imageDetails?.publicationId);
-                  transactionId.current = res.data?.createCollectTypedData?.id;
-                  setTypedData(res.data?.createCollectTypedData?.typedData);
-                }}
+                onClick={onCollectPress}
                 className={`flex items-center p-[10px] w-[208px] h-[40px] justify-center rounded-[4px] backdrop-blur-[60px] ${styles.viewOnLensBtn}`}
               >
                 <CollectIcon />
@@ -134,6 +149,13 @@ export const PostImage = ({ imageDetails }) => {
           </div>
         </div>
       )}
+      <SignInModal
+        onRequestClose={() => {
+          setIsOpen(false);
+        }}
+        isOpen={isOpen}
+        onSignInComplete={onFollowPress}
+      />
       {Object.keys(typedData)?.length > 0 ? (
         <SignTypedData
           typedData={typedData}

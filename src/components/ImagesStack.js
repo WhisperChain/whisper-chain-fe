@@ -6,17 +6,45 @@ import styles from "./ImageStack.module.css";
 import PlusIcon from "../assets/PlusIcon";
 import EyeIcon from "../assets/EyeIcon";
 import SignTypedData from "./ConnectButton/SignTypedData";
-import { refreshAuthentication, requestFollow } from "../utils/lensFunction";
+import {
+  getApprovedModuleAllowance,
+  refreshAuthentication,
+  requestFollow,
+} from "../utils/lensFunction";
 import { useRouter } from "next/router";
+import { useSigner } from "wagmi";
+import { Constants } from "../utils/Constants";
+import SignInModal from "./SignInModal";
 
 const ImagesStack = ({ imageDetails: imageDetailsArray, pub }) => {
   const [hovered, setHovered] = React.useState(false);
   const { setPublication } = usePublicationContext();
+  const { data: signer } = useSigner();
   const imageDetails = imageDetailsArray[0];
   const [typedData, setTypedData] = React.useState({});
   const followRequestId = React.useRef({});
   const router = useRouter();
   const [followed, setFollowed] = React.useState();
+  const [isOpen, setIsOpen] = React.useState(false);
+
+  const onFollowPress = async () => {
+    if (
+      window.localStorage.getItem(Constants.LOCAL_STORAGE_REFRESH_TOKEN_KEY)
+    ) {
+      await refreshAuthentication();
+      if (imageDetails?.followModule) {
+        await getApprovedModuleAllowance(imageDetails?.followModule, signer);
+      }
+      const res = await requestFollow(
+        imageDetails?.profileId,
+        imageDetails?.followModule ?? null
+      );
+      followRequestId.current = res.data?.createFollowTypedData?.id;
+      setTypedData(res.data?.createFollowTypedData?.typedData);
+    } else {
+      setIsOpen(true);
+    }
+  };
 
   return (
     <div className="flex flex-col items-center relative">
@@ -61,14 +89,7 @@ const ImagesStack = ({ imageDetails: imageDetailsArray, pub }) => {
             {!imageDetails?.isFollowedByMe ? (
               <button
                 className="flex justify-center items-center gap-[6px] z-20"
-                onClick={async () => {
-                  console.log("call Follow Function");
-                  await refreshAuthentication();
-                  const res = await requestFollow(imageDetails?.profileId);
-                  followRequestId.current = res.data?.createFollowTypedData?.id;
-                  setTypedData(res.data?.createFollowTypedData?.typedData);
-                  console.log({ res });
-                }}
+                onClick={onFollowPress}
               >
                 <PlusIcon />
                 <div
@@ -84,6 +105,13 @@ const ImagesStack = ({ imageDetails: imageDetailsArray, pub }) => {
                 Following
               </div>
             )}
+            <SignInModal
+              onRequestClose={() => {
+                setIsOpen(false);
+              }}
+              isOpen={isOpen}
+              onSignInComplete={onFollowPress}
+            />
           </div>
           <div
             className={`flex justify-center items-center absolute top-[85%] left-[50%] text-center gap-[8px] tablet:w-[340px] w-[432px] h-[40px] rounded-[4px] backdrop-blur-[60px] cursor-pointer ${styles.bottomBox}`}
