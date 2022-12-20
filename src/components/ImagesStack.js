@@ -21,11 +21,12 @@ const ImagesStack = ({ imageDetails: imageDetailsArray, pub }) => {
   return (
     <div className="flex flex-col items-center relative">
       {imageDetails?.imageUrl && (
-        <div className="tablet:w-[400px] tablet:h-[400px] w-[512px] h-[512px] relative">
+        <div className="tablet:w-[400px] tablet:h-[400px] w-[512px] h-[512px] relative"
+          onMouseEnter={() => setHovered(true)}
+          onMouseLeave={() => setHovered(false)}
+          >
           <Image
             src={imageDetails.imageUrl}
-            onMouseEnter={() => setHovered(true)}
-            onMouseLeave={() => setHovered(false)}
             alt="Stack Image"
             fill
             priority
