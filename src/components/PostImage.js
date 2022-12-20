@@ -7,8 +7,6 @@ import EyeIcon from "../assets/EyeIcon";
 import CollectIcon from "../assets/CollectIcon";
 import {
   collectPost,
-  collectPostTx,
-  generateModuleCurrencyApproval,
   getApprovedModuleAllowance,
   refreshAuthentication,
   requestFollow,
@@ -63,9 +61,21 @@ export const PostImage = ({ imageDetails }) => {
               <button
                 className="flex justify-center items-center gap-[6px] z-20"
                 onClick={async () => {
-                  console.log("call Follow Function");
+                  console.log(
+                    "call Follow Function",
+                    imageDetails?.followModule
+                  );
                   await refreshAuthentication();
-                  const res = await requestFollow(imageDetails?.profileId);
+                  if (imageDetails?.followModule) {
+                    await getApprovedModuleAllowance(
+                      imageDetails?.followModule,
+                      signer
+                    );
+                  }
+                  const res = await requestFollow(
+                    imageDetails?.profileId,
+                    imageDetails?.followModule ?? null
+                  );
                   transactionId.current = res.data?.createFollowTypedData?.id;
                   setTypedData(res.data?.createFollowTypedData?.typedData);
                   console.log({ res });

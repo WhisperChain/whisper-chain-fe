@@ -97,6 +97,21 @@ export const GET_PUBLICATIONS = `query Publications($request: PublicationsQueryR
     handle
     ownedBy
     isFollowedByMe
+    followModule {
+      ... on FeeFollowModuleSettings {
+        type
+        amount {
+          asset {
+            symbol
+            name
+            decimals
+            address
+          }
+          value
+        }
+        recipient
+      }
+    }
     picture {
       ... on MediaSet {
         original {
