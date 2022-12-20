@@ -4,10 +4,23 @@ import styles from "./HomeMessage.module.css";
 import ImageLinkTop from "../assets/ImageLinkTop";
 import ImageLinkBottom from "../assets/ImageLinkBottom";
 import WhisperImage from "./WhisperImage";
+import ImageLinkSmall from "../assets/ImageLinkSmall";
 
 const HomeMessage = ({ publication }) => {
-  const array1 = [1, 2, 3];
-  const array2 = [4, 5, 6, 7];
+const array = [1,2,3,4,5,6,7];
+  //tablet view
+  const [isTablet, setIsTablet] = React.useState();
+  const handleResize = () => {
+  if (window.innerWidth < 1200) {
+      setIsTablet(true)
+  } else {
+      setIsTablet(false)
+  }
+}
+  React.useEffect(() => {
+    window.addEventListener("resize", handleResize)
+  })
+
   return (
     <div className={`tablet:w-[400px] tablet:h-[400px] w-[512px] h-[512px] ${styles.MessageBox}`}>
       <div
@@ -23,9 +36,9 @@ const HomeMessage = ({ publication }) => {
           </div>
         </div>
       </div>
-      <div className="flex relative justify-evenly mt-[50px] z-10 tablet:mt-[5px] tablet:scale-90">
+      <div className="flex relative justify-evenly mt-[50px] z-10 tablet:mt-[24px] tablet:scale-90">
         <div
-          className={`flex justify-center items-center w-[80px] h-[80px] rounded-[8px] ${styles.ImageDiv} z-10`}
+          className={`flex justify-center items-center w-[80px] h-[80px] tablet:w-[64px] tablet:h-[64px] rounded-[8px] ${styles.ImageDiv} z-10`}
         >
           <div
             className={`w-[53px] h-[34px] text-[#6F1AFF] ${styles.ImageDivText}`}
@@ -33,9 +46,9 @@ const HomeMessage = ({ publication }) => {
             A.I. starts a thread
           </div>
         </div>
-        {array1.map((index) => {
+        {array.slice(0,3).map((index) => {
           return (
-            <div className="h-[80px] w-[80px] relative" key={index}>
+            <div className="h-[80px] w-[80px] tablet:w-[64px] tablet:h-[64px] relative block tablet:hidden " key={index}>
               <WhisperImage
                 width={80}
                 height={80}
@@ -46,15 +59,36 @@ const HomeMessage = ({ publication }) => {
             </div>
           )
         })}
-        <div className="absolute top-2/4 left-[40px] z-0">
+        {array.slice(0,2).map((index) => {
+          return (
+            <div className="h-[80px] w-[80px] tablet:w-[64px] tablet:h-[64px] relative hidden tablet:block " key={index}>
+              <WhisperImage
+                width={80}
+                height={80}
+                classes="z-10"
+                alt={`image${index}`}
+                imgSrcUrl={`${process.env.NEXT_PUBLIC_AWS_CDN_URL}/whisperHomePage/Rectangle${index}.png`}
+              />
+            </div>
+          )
+        })}
+
+        {isTablet && 
+        <div className="absolute top-[53%] left-[81px] z-0">
+          <ImageLinkSmall/>
+        </div>
+        }
+        {!isTablet &&
+          <div className="absolute top-2/4 left-[40px] z-0">
           <ImageLinkTop />
         </div>
+        }
       </div>
 
-      <div className="flex relative justify-evenly mt-[50px] z-10 tablet:scale-90 tablet:mt-[5px]">
-        {array2.map((index) => {
+      <div className="flex relative justify-evenly mt-[50px] z-10 tablet:scale-90 tablet:mt-[32px]">
+        {array.slice(3,8).map((index) => {
           return (
-            <div className="h-[80px] w-[80px] relative" key={index}>
+            <div className="h-[80px] w-[80px] tablet:w-[64px] tablet:h-[64px] relative block tablet:hidden" key={index}>
               <WhisperImage
                 width={80}
                 height={80}
@@ -65,9 +99,24 @@ const HomeMessage = ({ publication }) => {
             </div>
           )
         })}
-        <div className="absolute top-[30%] left-[75px] z-0">
-          <ImageLinkBottom />
-        </div>
+        {array.slice(3,6).map((index) => {
+          return (
+            <div className="h-[80px] w-[80px] tablet:w-[64px] tablet:h-[64px] relative hidden tablet:block" key={index}>
+              <WhisperImage
+                width={80}
+                height={80}
+                classes="z-10"
+                alt={`image${index}`}
+                imgSrcUrl={`${process.env.NEXT_PUBLIC_AWS_CDN_URL}/whisperHomePage/Rectangle${index}.png`}
+              />
+            </div>
+          )
+        })}
+        {!isTablet &&
+          <div className="absolute top-[30%] left-[75px] z-0">
+            <ImageLinkBottom/>
+          </div>
+        }
       </div>
       <div className="flex justify-center mt-[50px] tablet:mt-[20px]">
         <AddWhisperBtn pageIndex={1} publication={publication} height={40} width={200} text={"Add a whisper"} />
