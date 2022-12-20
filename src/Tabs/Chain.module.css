@@ -4,7 +4,7 @@
    backdrop-filter: blur(48px);
 }
 .chainContainer{
-   height: 600px;
+   height: calc(100vh - 220px);
    overflow: scroll;
    position: relative;
    scroll-behavior: smooth;

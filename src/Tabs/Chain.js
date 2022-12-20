@@ -154,7 +154,7 @@ const Chain = () => {
     <SpinningLoader height="80vh" width="100%" />
   ) : (
     <div>
-      <div className="flex justify-between w-full sticky top-[30px] z-[10000]">
+      <div className="flex justify-between relative top-[20px]">
         <div
           onClick={() => {
             router.push("/");
