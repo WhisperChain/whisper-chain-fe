@@ -43,4 +43,10 @@
 .viewOnLensBtn:hover {
     background: rgba(255, 255, 255, 0.2);
 }
+.collectedBtn{
+    background: rgba(255, 255, 255, 0.56);
+    opacity: 0.5;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #000000;
+}
 

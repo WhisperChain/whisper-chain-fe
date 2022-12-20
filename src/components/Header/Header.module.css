@@ -61,3 +61,12 @@
     font-feature-settings: 'salt' on;
     color: rgba(0, 0, 0, 0.8);
 }
+
+.LogOutText{
+    font-family: 'Satoshi Variable';
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 160%;
+    font-feature-settings: 'salt' on;
+    color: rgba(0, 0, 0, 0.8);
+}

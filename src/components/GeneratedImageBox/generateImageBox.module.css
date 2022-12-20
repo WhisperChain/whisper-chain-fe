@@ -38,3 +38,19 @@
   font-family: 'Satoshi';
   font-feature-settings: 'pnum' on, 'onum' on;
 }
+.ModalContainer{
+  font-family: 'Satoshi Variable';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 160%;
+  text-align: center;
+  font-feature-settings: 'salt' on;
+  color: #000000;
+}
+.LensInfo{
+  font-family: 'Satoshi Variable';
+  line-height: 160%;
+  font-feature-settings: 'salt' on;
+  color: rgba(0, 0, 0, 0.8);
+}

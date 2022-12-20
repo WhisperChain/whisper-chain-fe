@@ -224,28 +224,23 @@ export async function commentViaDispatcher(
 }
 
 export const refreshAuthentication = async () => {
-  if (window.localStorage.getItem(Constants.LOCAL_STORAGE_REFRESH_TOKEN_KEY)) {
-    const res = await apolloClient.mutate({
-      mutation: gql(REFRESH_AUTHENTICATION),
-      variables: {
-        refreshToken: window.localStorage.getItem(
-          Constants.LOCAL_STORAGE_REFRESH_TOKEN_KEY
-        ),
-      },
-    });
-    // console.log({ res });
-    const { accessToken, refreshToken } = res.data?.refresh;
-    window.localStorage.setItem(
-      Constants.LOCAL_STORAGE_ACCESS_TOKEN_KEY,
-      accessToken
-    );
-    window.localStorage.setItem(
-      Constants.LOCAL_STORAGE_REFRESH_TOKEN_KEY,
-      refreshToken
-    );
-  } else {
-    ToastMessage({ message: "Connect to Wallet", showCloseBtn: true });
-  }
+  const res = await apolloClient.mutate({
+    mutation: gql(REFRESH_AUTHENTICATION),
+    variables: {
+      refreshToken: window.localStorage.getItem(
+        Constants.LOCAL_STORAGE_REFRESH_TOKEN_KEY
+      ),
+    },
+  });
+  const { accessToken, refreshToken } = res.data?.refresh;
+  window.localStorage.setItem(
+    Constants.LOCAL_STORAGE_ACCESS_TOKEN_KEY,
+    accessToken
+  );
+  window.localStorage.setItem(
+    Constants.LOCAL_STORAGE_REFRESH_TOKEN_KEY,
+    refreshToken
+  );
 };
 
 export const verifyAuthentication = async () => {
@@ -351,8 +346,8 @@ export const getApprovedModuleAllowance = async (module, signer) => {
         module?.amount?.asset?.address ??
         "0x9c3C9283D3e44854697Cd22D3Faa240Cfb032889",
       value: "100",
-      moduleType: module?.type ?? "TimedFeeCollectModule",
-      isCollect: !module?.type.includes("Follow"),
+      moduleType: module?.type ?? "FeeCollectModule",
+      isCollect: !module?.type?.includes("Follow"),
       signer,
     });
   } else {
