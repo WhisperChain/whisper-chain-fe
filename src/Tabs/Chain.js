@@ -3,6 +3,7 @@ import ChainLogo from "../assets/ChainLogo";
 import { PostImage } from "../components/PostImage";
 import { getCommentFeed, getPublication } from "../utils/lensFunction";
 import AddWhisperBtn from "../components/AddWhisperBtn";
+import ShareBtn from "../components/ShareBtn";
 import { convertIntoIpfsUrl, timer } from "../utils/Utils";
 import moment from "moment";
 import SpinningLoader from "../components/SpinningLoader";
@@ -21,16 +22,27 @@ const Chain = () => {
   const router = useRouter();
   const [firstCreatedAt, setFirstCreatedAt] = React.useState();
   const [infoContainer, setInfoConatiner] = React.useState(true);
-  // console.log(firstCreatedAt);
   const [hours, minutes] = timer("2022-12-14");
-  // const handleInfoHover = (hoverstate) => {
-  //   if(hoverstate){
-  //     return setInfoConatiner(true);
-  //   }
-  //   else{
-  //     return setInfoConatiner(false);
-  //   }
-  // }
+  const messageBoxData = {
+    onChain: {
+      text: 'This was the last image added to the thread, try to describe this image in your own words as best you can, and add your generation to this thread. ',
+    },
+    OnGenerate: {
+      h1: 'Your generation has been successfully added to the chain',
+      text: 'To keep it interesting, please wait for another user to add to chain before you can add a whisper again.',
+    }
+  }
+
+  const routerPath = router.query;
+  const [isGenerated, setIsGenerated] = React.useState();
+
+  React.useEffect(() => {
+    if (routerPath?.isGenerated == 'true') {
+      setIsGenerated(true);
+    } else {
+      setIsGenerated(false);
+    }
+  }, [routerPath]);
 
   const [pubId, setPubId] = React.useState();
   const [hovered, setHovered] = React.useState(false);
@@ -93,21 +105,14 @@ const Chain = () => {
   let viewLensUrl = "https://testnet.lenster.xyz/posts";
 
   const buttonRef = React.useRef();
-  React.useEffect(() => {
-    const onScroll = () => {
-      let dContainer = buttonRef.current;
-      if (dContainer) {
-        let rect = dContainer.getBoundingClientRect();
-        console.log(rect.top);
-        if (rect.top < 0) {
-          handleScrollDark();
-        } else {
-          handleScrollLight();
-        }
-      }
-    };
-    window.addEventListener("scroll", onScroll);
-  }, [buttonRef]);
+  let dContainer = buttonRef.current;
+  const onScroll = () => {
+    if (dContainer.scrollTop > 0) {
+      increaseOpacity();
+    } else {
+      decreaseOpacity();
+    }
+  };
 
   const onViewLensHover = () => {
     let viewlensContainer = document.getElementById('viewlensContainer');
@@ -123,7 +128,7 @@ const Chain = () => {
     }
   }
 
-  const handleScrollDark = () => {
+  const increaseOpacity = () => {
     let lastImageButton = document.getElementById("lastImage");
     let bottomButton = document.getElementById("gopToTop");
     if (lastImageButton || gopToTopButton) {
@@ -131,7 +136,7 @@ const Chain = () => {
       bottomButton.style.opacity = "1"
     }
   };
-  const handleScrollLight = () => {
+  const decreaseOpacity = () => {
     let lastImageButton = document.getElementById("lastImage");
     let bottomButton = document.getElementById("gopToTop");
     if (lastImageButton || gopToTopButton) {
@@ -139,9 +144,7 @@ const Chain = () => {
       bottomButton.style.opacity = "0"
     }
   };
-
-
-
+  
   return isLoading ? (
     <SpinningLoader height="80vh" width="100%" />
   ) : (
@@ -183,60 +186,6 @@ const Chain = () => {
           <div className="not-italic font-medium text-[16px] leading-[140%] tracking-[-0.03em] text-[#000000] ">
             {moment(firstCreatedAt).format("Do MMMM YYYY")}
           </div>
-          {/*
-  <div className="flex justify-center items-center h-[16px] not-italic font-normal text-[16px] leading-[100%] tracking-wide text-[#dddddd]">
-            {hours + minutes < 0 ? (
-              "Ended"
-            ) : (
-              <div className="flex justify-center items-center">
-                <div
-                  className={`flex justify-center items-center w-[40px] h-[20px] bg-[#6F1AFF] rounded-[4.92188px] backdrop-blur-sm ${style.timerText} text-[11px] mr-[5px]`}
-                >
-                  {hours} h
-                </div>
-                :
-                <div
-                  className={`flex justify-center items-center w-[40px] h-[20px] bg-[#6F1AFF] rounded-[4.92188px] backdrop-blur-sm ${style.timerText} text-[11px] mx-[5px]`}
-                >
-                  {minutes} m
-                </div>
-              </div>
-            )}
-            <div id="custom-inline-styles">
-              <InfoLogo />
-            </div>
-            <Tooltip
-              anchorId="custom-inline-styles"
-              events={["hover"]}
-              style={{
-                display: "flex",
-                position: "relative",
-                backgroundColor: "rgba(19, 9, 36, 0.5)",
-                color: "#222",
-                alignItems: "flex-start",
-                backdropFilter: "blur(12px)",
-                width: "343px",
-                height: "120px",
-                zIndex: 10,
-                gap: "16px",
-                padding: "12px",
-                borderRadius: "24px",
-                top: "43px",
-                left: "-19px",
-              }}
-              // className="flex items-start z-10 p-[12px] gap-[16px] relative w-fit h-[120px] rounded-[24px] backdrop-blur-sm left-[-16px] top-[41px]"
-              content={
-                <div className="flex items-start z-10 p-[12px] gap-[16px] relative decoration-white ">
-                  <InfoLogo />
-                  <p>
-                    Proceeds from all collects, within 24 hours from the
-                    begining, will be distributed equally to all the
-                    participants of this chain.
-                  </p>
-                </div>
-              }
-            />
-          </div> */}
         </div>
         <div className="relative">
           <span onMouseEnter={() => onViewLensHover()} onMouseLeave={() => onViewLensHoverOff()} id="viewlensContainer" className={`absolute flex ${style.viewOnLensContainer}`}>
@@ -255,11 +204,11 @@ const Chain = () => {
           </span>
         </div>
       </div>
-      <div className="flex justify-center sticky top-[70px] z-[1000]">
+      <div className="flex justify-center sticky top-[150px] z-[1000]">
         <a
           onClick={() => {
             console.log("clicked");
-            window.scrollTo(0, 10000);
+            dContainer.scrollTo(0, 100000);
           }}
           id="gopToTop"
           className={`rounded-[20px] flex z-[10000] items-center justify-center ${style.bottomButton}`}
@@ -272,7 +221,7 @@ const Chain = () => {
         <a
           onClick={() => {
             console.log("clicked");
-            window.scrollTo(0, 0);
+            dContainer.scrollTo(0, 0);
           }}
           id="lastImage"
           className={`rounded-[20px] ml-[20px] flex z-[10000] items-center justify-center ${style.lastImageButton}`}
@@ -297,21 +246,29 @@ const Chain = () => {
         </a>
       </div>
       <div
-        className="flex flex-col items-center justify-center overflow-scroll"
+        id="demmoId"
+        onScroll={onScroll}
+        className={`overflow-scroll ${style.chainContainer}`}
         ref={buttonRef}
       >
         <div
           className={`w-[512px] h-[222px] flex flex-col items-center rounded-[32px] box-border ${style.messageBox}`}
         >
           <div className=" w-full pt-[38px] px-[40px] pb-[24px]">
+            <h1 className={`not-italic text-[16px] leading-[160%] font-bold ${style.messageText}`}>
+              {isGenerated ? messageBoxData.OnGenerate.h1 : ''}
+            </h1>
             <div className={`not-italic text-[16px] leading-[160%] font-medium ${style.messageText}`}>
-              This was the last image added to the thread, try to describe
-              this image in your own words as best you can, and add your
-              generation to this thread.
+              {isGenerated ? messageBoxData.OnGenerate.text : messageBoxData.onChain.text}
             </div>
           </div>
+          <div>
+            {
+              isGenerated ? <AddWhisperBtn pageIndex={1} publication={publication} height={40} width={432} text="Share" /> :
+                <ShareBtn pageIndex={1} publication={publication} height={40} width={432} text="Add to Chain" />
+            }
 
-          <AddWhisperBtn pageIndex={1} publication={publication} height={40} width={432} text={"Add to Chain"} />
+          </div>
         </div>
         {chainData &&
           chainData.map((comment, index) => {
