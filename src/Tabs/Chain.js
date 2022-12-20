@@ -22,19 +22,19 @@ const Chain = () => {
   const [hours, minutes] = timer("2022-12-14");
   const messageBoxData = {
     onChain: {
-      text: 'This was the last image added to the thread, try to describe this image in your own words as best you can, and add your generation to this thread. ',
+      text: "This was the last image added to the thread, try to describe this image in your own words as best you can, and add your generation to this thread. ",
     },
     OnGenerate: {
-      h1: 'Your generation has been successfully added to the chain',
-      text: 'To keep it interesting, please wait for another user to add to chain before you can add a whisper again.',
-    }
-  }
+      h1: "Your generation has been successfully added to the chain",
+      text: "To keep it interesting, please wait for another user to add to chain before you can add a whisper again.",
+    },
+  };
 
   const routerPath = router.query;
   const [isGenerated, setIsGenerated] = React.useState();
 
   React.useEffect(() => {
-    if (routerPath?.isGenerated == 'true') {
+    if (routerPath?.isGenerated == "true") {
       setIsGenerated(true);
     } else {
       setIsGenerated(false);
@@ -149,7 +149,6 @@ const Chain = () => {
       bottomButton.style.opacity = "0";
     }
   };
-
 
   return isLoading ? (
     <SpinningLoader height="80vh" width="100%" />
@@ -287,18 +286,37 @@ const Chain = () => {
           className={`w-[512px] h-[222px] flex flex-col items-center rounded-[32px] box-border ${style.messageBox}`}
         >
           <div className=" w-full pt-[38px] px-[40px] pb-[24px]">
-            <h1 className={`not-italic text-[16px] leading-[160%] font-bold ${style.messageText}`}>
-              {isGenerated ? messageBoxData.OnGenerate.h1 : ''}
+            <h1
+              className={`not-italic text-[16px] leading-[160%] font-bold ${style.messageText}`}
+            >
+              {isGenerated ? messageBoxData.OnGenerate.h1 : ""}
             </h1>
-            <div className={`not-italic text-[16px] leading-[160%] font-medium ${style.messageText}`}>
-              {isGenerated ? messageBoxData.OnGenerate.text : messageBoxData.onChain.text}
+            <div
+              className={`not-italic text-[16px] leading-[160%] font-medium ${style.messageText}`}
+            >
+              {isGenerated
+                ? messageBoxData.OnGenerate.text
+                : messageBoxData.onChain.text}
             </div>
           </div>
           <div>
-            {
-              isGenerated ? <AddWhisperBtn pageIndex={1} publication={publication} height={40} width={432} text="Share" /> :
-                <ShareBtn pageIndex={1} publication={publication} height={40} width={432} text="Add to Chain" />
-            }
+            {isGenerated ? (
+              <ShareBtn
+                pageIndex={1}
+                publication={publication}
+                height={40}
+                width={432}
+                text="Share"
+              />
+            ) : (
+              <AddWhisperBtn
+                pageIndex={1}
+                publication={publication}
+                height={40}
+                width={432}
+                text="Add to Chain"
+              />
+            )}
           </div>
         </div>
         {chainData &&
