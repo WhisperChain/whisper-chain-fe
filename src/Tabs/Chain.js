@@ -11,9 +11,6 @@ import style from "./Chain.module.css";
 import { usePublicationContext } from "../context/PublicationContext";
 import { useRouter } from "next/router";
 import ViewLensIcon from "../assets/ViewLensIcon";
-// import InfoLogo from "../assets/InfoLogo";
-// import { Tooltip } from "react-tooltip";
-// import "react-tooltip/dist/react-tooltip.css";
 
 const Chain = () => {
   const [chainData, setChainData] = React.useState();
@@ -75,6 +72,10 @@ const Chain = () => {
           lensterPostUrl: `https://testnet.lenster.xyz/posts/${comment.id}`,
           profileId: comment.profile.id,
           isFollowedByMe: comment.profile.isFollowedByMe,
+          followModule: comment.profile.followModule,
+          collectModule: comment.collectModule,
+          hasCollectedByMe: comment.hasCollectedByMe,
+          publicationId: comment.id,
         };
         commentArray.push(commentObject);
       }
@@ -92,6 +93,10 @@ const Chain = () => {
         lensterPostUrl: `https://testnet.lenster.xyz/posts/${pubItem.id}`,
         profileId: pubItem.profile.id,
         isFollowedByMe: pubItem.profile.isFollowedByMe,
+        followModule: pubItem.profile.followModule,
+        collectModule: pubItem.collectModule,
+        hasCollectedByMe: pubItem.hasCollectedByMe,
+        publicationId: pubItem.id,
       });
 
       setFirstCreatedAt(pubItem.createdAt);
@@ -115,25 +120,25 @@ const Chain = () => {
   };
 
   const onViewLensHover = () => {
-    let viewlensContainer = document.getElementById('viewlensContainer');
+    let viewlensContainer = document.getElementById("viewlensContainer");
     if (viewlensContainer) {
-      viewlensContainer.style.left = '-70px';
+      viewlensContainer.style.left = "-70px";
     }
-  }
+  };
 
   const onViewLensHoverOff = () => {
-    let viewlensContainer = document.getElementById('viewlensContainer');
+    let viewlensContainer = document.getElementById("viewlensContainer");
     if (viewlensContainer) {
-      viewlensContainer.style.left = '0';
+      viewlensContainer.style.left = "0";
     }
-  }
+  };
 
   const increaseOpacity = () => {
     let lastImageButton = document.getElementById("lastImage");
     let bottomButton = document.getElementById("gopToTop");
     if (lastImageButton || gopToTopButton) {
       lastImageButton.style.opacity = "1";
-      bottomButton.style.opacity = "1"
+      bottomButton.style.opacity = "1";
     }
   };
   const decreaseOpacity = () => {
@@ -141,10 +146,11 @@ const Chain = () => {
     let bottomButton = document.getElementById("gopToTop");
     if (lastImageButton || gopToTopButton) {
       lastImageButton.style.opacity = "0";
-      bottomButton.style.opacity = "0"
+      bottomButton.style.opacity = "0";
     }
   };
-  
+
+
   return isLoading ? (
     <SpinningLoader height="80vh" width="100%" />
   ) : (
@@ -152,7 +158,7 @@ const Chain = () => {
       <div className="flex justify-between w-full sticky top-[30px] z-[10000]">
         <div
           onClick={() => {
-            router.push('/');
+            router.push("/");
           }}
           className="flex flex-row items-start not-italic font-medium text-[16px] leading-[140%] text-center text-[#0000003C] mb-[10px] cursor-pointer"
         >
@@ -188,18 +194,31 @@ const Chain = () => {
           </div>
         </div>
         <div className="relative">
-          <span onMouseEnter={() => onViewLensHover()} onMouseLeave={() => onViewLensHoverOff()} id="viewlensContainer" className={`absolute flex ${style.viewOnLensContainer}`}>
-            <a href={`${viewLensUrl}/${pubId}`} className="flex" target="_blank">
-              <span className="viewOnLens"
+          <span
+            onMouseEnter={() => onViewLensHover()}
+            onMouseLeave={() => onViewLensHoverOff()}
+            id="viewlensContainer"
+            className={`absolute flex ${style.viewOnLensContainer}`}
+          >
+            <a
+              href={`${viewLensUrl}/${pubId}`}
+              className="flex"
+              target="_blank"
+            >
+              <span
+                className="viewOnLens"
                 onMouseEnter={() => setHovered(true)}
-                onMouseLeave={() => setHovered(false)}>
+                onMouseLeave={() => setHovered(false)}
+              >
                 <ViewLensIcon />
               </span>
               <span
-                className={`ml-[10px] w-[95px] text-[#a36dff] text-[#00501E] ${style.viewOnLens}`}
+                className={`ml-[10px] w-[95px] text-[#00501E] ${style.viewOnLens}`}
                 onMouseEnter={() => setHovered(true)}
                 onMouseLeave={() => setHovered(false)}
-              >View on lens</span>
+              >
+                View on lens
+              </span>
             </a>
           </span>
         </div>
@@ -213,8 +232,21 @@ const Chain = () => {
           id="gopToTop"
           className={`rounded-[20px] flex z-[10000] items-center justify-center ${style.bottomButton}`}
         >
-          <svg width="21" height="20" viewBox="0 0 21 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M16.75 7.5L10.5 13.75L4.25 7.5" stroke="black" stroke-opacity="0.6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+          <svg
+            width="21"
+            height="20"
+            viewBox="0 0 21 20"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M16.75 7.5L10.5 13.75L4.25 7.5"
+              stroke="black"
+              stroke-opacity="0.6"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
           </svg>
           <span className="ml-[10px]">Go to bottom</span>
         </a>
@@ -267,7 +299,6 @@ const Chain = () => {
               isGenerated ? <AddWhisperBtn pageIndex={1} publication={publication} height={40} width={432} text="Share" /> :
                 <ShareBtn pageIndex={1} publication={publication} height={40} width={432} text="Add to Chain" />
             }
-
           </div>
         </div>
         {chainData &&

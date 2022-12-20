@@ -15,8 +15,10 @@ import WhisperImage from "../../components/WhisperImage";
 import GeneratedImageBox from "../../components/GeneratedImageBox";
 import { useRouter } from "next/router";
 import EmptyStateLogo from "../../assets/EmptyStateLogo";
+import { useAccount } from "wagmi";
 
 function Generate() {
+  const { address } = useAccount();
   const { publication } = usePublicationContext();
   const router = useRouter();
   const [promptText, setPromptText] = React.useState("");
@@ -56,7 +58,7 @@ function Generate() {
 
   const onImageClickHandler = async (url) => {
     setIsloading(true);
-    const txHash = await getIpfsUrlandUploadPublication(url, pubsId, true);
+    const txHash = await getIpfsUrlandUploadPublication(url, pubsId, address);
     console.log({ txHash });
     await postWhisperResponse(url, txHash);
     setIsloading(false);
@@ -150,8 +152,8 @@ function Generate() {
           {/* Generate Image Button */}
           <div
             className={`w-full absolute bottom-[16px] ${promptText === ""
-                ? "opacity-50 cursor-not-allowed	pointer-events-none"
-                : ""
+              ? "opacity-50 cursor-not-allowed	pointer-events-none"
+              : ""
               }`}
           >
             <div
