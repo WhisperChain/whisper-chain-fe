@@ -12,7 +12,7 @@ export default function WhisperImage({
   onLoadingCompleteHandler
 }) {
   const shimmer = (w, h) => `
-    <svg width="512" height="512" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <svg width="${w}" height="${h}" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
       <defs>
         <linearGradient id="g">
           <stop stop-color="#ead9d966" offset="10%"/>
@@ -20,8 +20,8 @@ export default function WhisperImage({
           <stop stop-color="#ead9d966" offset="70%"/>
         </linearGradient>
       </defs>
-      <rect width="512" height="512" fill="#ead9d966"/>
-      <rect id="r" width="512" height="512" fill="url(#g)"/>
+      <rect width="${w}" height="${h}" fill="#ead9d966"/>
+      <rect id="r" width="${w}" height="${h}" fill="url(#g)"/>
     </svg>
   `;
 
