@@ -5,6 +5,10 @@ import {
   commentViaDispatcher,
   refreshAuthentication,
 } from "./lensFunction";
+import axios from "axios";
+
+// axios default settings
+axios.defaults.baseURL = process.env.NEXT_PUBLIC_API_BASE_URL
 
 export const resetLocalStorage = () => {
   window.localStorage.removeItem(Constants.LOCAL_STORAGE_ACCESS_TOKEN_KEY);
@@ -13,15 +17,13 @@ export const resetLocalStorage = () => {
   window.localStorage.removeItem("profile");
 };
 
+
 export const getImagesFromPrompt = async (prompt, filter = "") => {
-  const resp = await fetch(
-    `${process.env.NEXT_PUBLIC_API_BASE_URL}/images?prompt=${prompt}&art_style=${filter}`,
-    {
-      method: "GET",
-    }
+  const resp = await axios.get(
+    `/images?prompt=${prompt}&art_style=${filter}`,
   );
-  const responseJSON = await resp.json();
-  return responseJSON?.data;
+  const responseData = resp?.data;
+  return responseData.data;
 };
 
 export const getIpfsUrl = async (url) => {
@@ -38,34 +40,33 @@ export const getIpfsUrl = async (url) => {
 };
 
 export const createIpfsObjects = async (url) => {
-  const data = { s3_url: url, };
-  const resp = await fetch(
-    `${process.env.NEXT_PUBLIC_API_BASE_URL}/lens/ipfs-objects`,
+  const resp = await axios.post(
+    `/lens/ipfs-objects`,
     {
-      method: "POST",
+      s3_url: url
+    },
+    {
       headers: {
         "Content-Type": "application/json",
-      },
-      body: JSON.stringify(
-        data,
-      ),
+      }
     }
   );
-  const responseJSON = await resp.json();
-  return responseJSON.data;
+
+  const responseData = resp?.data;
+  return responseData.data;
 };
 
 export const postWhisperResponse = async (url, txHash) => {
-  await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/lens/whispers`, {
-    method: "POST",
-    body: JSON.stringify({
+  await axios.post(
+    `/lens/whispers`,
+    {
       s3_url: url,
       transaction_hash: txHash,
       whisper_ipfs_object_id: 1,
       image_ipfs_object_id: 1,
       chain_id: 1,
-    }),
-  });
+    }
+  );
 };
 
 export function convertIntoIpfsUrl(url) {
