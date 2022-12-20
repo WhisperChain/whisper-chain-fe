@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useAccount, useSignMessage } from "wagmi";
-import Image from "next/image";
 import { Constants } from "../../utils/Constants";
 import {
   getAuthentication,
@@ -9,8 +8,6 @@ import {
   refreshAuthentication,
   setDispatcher,
 } from "../../utils/lensFunction";
-import { getProfileImage } from "../../utils/Utils";
-import SignTypedData from "./SignTypedData";
 
 function SignAuthentication({ onSignInComplete }) {
   const { address } = useAccount();

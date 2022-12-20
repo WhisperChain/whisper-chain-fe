@@ -7,7 +7,7 @@ export default function Main() {
   const { currentTab } = useBottomTab();
   const { Component } = currentTab;
   return (
-    <div className={styles.Page}>
+    <div className={styles.Page} id="home-section">
       <Header />
       <Component />
       <BottomTabSelector />

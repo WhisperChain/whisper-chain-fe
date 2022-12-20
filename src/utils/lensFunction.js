@@ -6,10 +6,12 @@ import {
   InMemoryCache,
 } from "@apollo/client";
 import {
+  APPROVED_MODULE_ALLOWANCE,
   AUTHENTICATION,
   BROADCAST,
   CREATE_COLLECT,
   CREATE_COMMENT_VIA_DISPATCHER,
+  GENERATE_MODULE_CURRENCY_APPROVAL,
   GET_CHALLENGE,
   GET_PROFILE,
   GET_PUBLICATIONS,
@@ -132,7 +134,9 @@ export const getLastCommentsOfPosts = async (profileId) => {
           lensterPostUrl: `https://testnet.lenster.xyz/posts/${comment.id}`,
           profileId: comment.profile.id,
           isFollowedByMe: comment.profile.isFollowedByMe,
+          followModule: comment.profile.followModule,
         };
+
         commentsArray.push(commentData);
       });
     } else {
@@ -148,6 +152,7 @@ export const getLastCommentsOfPosts = async (profileId) => {
           : `https://cdn.stamp.fyi/avatar/eth:${item.profile.ownedBy}?s=250`,
         profileId: item.profile.id,
         isFollowedByMe: item.profile.isFollowedByMe,
+        followModule: item.profile.followModule,
       });
     }
 
@@ -191,7 +196,7 @@ export async function commentViaDispatcher(
   profileId,
   publicationId,
   contentURI,
-  isInTime = true
+  address
 ) {
   return await apolloClient.mutate({
     mutation: gql(CREATE_COMMENT_VIA_DISPATCHER),
@@ -200,21 +205,17 @@ export async function commentViaDispatcher(
         profileId,
         publicationId,
         contentURI,
-        collectModule: isInTime
-          ? {
-              timedFeeCollectModule: {
-                amount: {
-                  currency: "0x9c3C9283D3e44854697Cd22D3Faa240Cfb032889",
-                  value: "0.01",
-                },
-                recipient: "0xcb85EE8a3166Fcd77cC5A0ee9d6730012AE1F38c",
-                referralFee: 0,
-                followerOnly: false,
-              },
-            }
-          : {
-              revertCollectModule: true,
+        collectModule: {
+          feeCollectModule: {
+            amount: {
+              currency: "0x9c3C9283D3e44854697Cd22D3Faa240Cfb032889",
+              value: "0.01",
             },
+            recipient: address,
+            referralFee: 0,
+            followerOnly: false,
+          },
+        },
       },
     },
   });
@@ -223,28 +224,23 @@ export async function commentViaDispatcher(
 }
 
 export const refreshAuthentication = async () => {
-  if (window.localStorage.getItem(Constants.LOCAL_STORAGE_REFRESH_TOKEN_KEY)) {
-    const res = await apolloClient.mutate({
-      mutation: gql(REFRESH_AUTHENTICATION),
-      variables: {
-        refreshToken: window.localStorage.getItem(
-          Constants.LOCAL_STORAGE_REFRESH_TOKEN_KEY
-        ),
-      },
-    });
-    // console.log({ res });
-    const { accessToken, refreshToken } = res.data?.refresh;
-    window.localStorage.setItem(
-      Constants.LOCAL_STORAGE_ACCESS_TOKEN_KEY,
-      accessToken
-    );
-    window.localStorage.setItem(
-      Constants.LOCAL_STORAGE_REFRESH_TOKEN_KEY,
-      refreshToken
-    );
-  } else {
-    ToastMessage({ message: "Connect to Wallet", showCloseBtn: true });
-  }
+  const res = await apolloClient.mutate({
+    mutation: gql(REFRESH_AUTHENTICATION),
+    variables: {
+      refreshToken: window.localStorage.getItem(
+        Constants.LOCAL_STORAGE_REFRESH_TOKEN_KEY
+      ),
+    },
+  });
+  const { accessToken, refreshToken } = res.data?.refresh;
+  window.localStorage.setItem(
+    Constants.LOCAL_STORAGE_ACCESS_TOKEN_KEY,
+    accessToken
+  );
+  window.localStorage.setItem(
+    Constants.LOCAL_STORAGE_REFRESH_TOKEN_KEY,
+    refreshToken
+  );
 };
 
 export const verifyAuthentication = async () => {
@@ -260,7 +256,7 @@ export const verifyAuthentication = async () => {
 };
 
 export const collectPost = async (publicationId) => {
-  return await apolloClient.mutate({
+  const res = await apolloClient.mutate({
     mutation: gql(CREATE_COLLECT),
     variables: {
       request: {
@@ -268,6 +264,7 @@ export const collectPost = async (publicationId) => {
       },
     },
   });
+  return res;
 };
 
 export const broadcastRequest = async (request) => {
@@ -281,7 +278,18 @@ export const broadcastRequest = async (request) => {
   return result?.data?.broadcast;
 };
 
-export const requestFollow = async (profileId, followModule = null) => {
+export const requestFollow = async (profileId, followModule) => {
+  let module = null;
+  if (followModule) {
+    module = {
+      feeFollowModule: {
+        amount: {
+          currency: followModule?.amount?.asset?.address,
+          value: followModule?.amount?.value,
+        },
+      },
+    };
+  }
   return apolloClient.mutate({
     mutation: gql(REQUEST_FOLLOW_QUERY),
     variables: {
@@ -289,10 +297,110 @@ export const requestFollow = async (profileId, followModule = null) => {
         follow: [
           {
             profile: profileId,
-            followModule,
+            followModule: module,
           },
         ],
       },
     },
   });
+};
+
+export const getApprovedModuleAllowance = async (module, signer) => {
+  let requestVariable;
+  if (module?.type?.includes("Follow")) {
+    requestVariable = module?.type
+      ? {
+          currencies: [module.amount.asset.address],
+          followModules: [module.type],
+        }
+      : {
+          currencies: ["0x9c3C9283D3e44854697Cd22D3Faa240Cfb032889"],
+          followModules: ["FeeFollowModule"],
+        };
+  } else {
+    requestVariable = module?.type
+      ? {
+          currencies: [module.amount.asset.address],
+          collectModules: [module.type],
+        }
+      : {
+          currencies: ["0x9c3C9283D3e44854697Cd22D3Faa240Cfb032889"],
+          collectModules: ["FeeCollectModule"],
+        };
+  }
+  const res = await apolloClient.query({
+    query: gql(APPROVED_MODULE_ALLOWANCE),
+    variables: {
+      request: requestVariable,
+    },
+  });
+  const collectModules = res?.data?.approvedModuleAllowanceAmount;
+  let allowanceValue = 0;
+  collectModules?.map((module) => {
+    parseInt(module.allowance, 16);
+    allowanceValue = parseInt(module.allowance, 16) / Math.pow(10, 18);
+  });
+  if (allowanceValue < 5) {
+    return await collectPostTx({
+      currency:
+        module?.amount?.asset?.address ??
+        "0x9c3C9283D3e44854697Cd22D3Faa240Cfb032889",
+      value: "100",
+      moduleType: module?.type ?? "FeeCollectModule",
+      isCollect: !module?.type?.includes("Follow"),
+      signer,
+    });
+  } else {
+    return;
+  }
+};
+
+export const generateModuleCurrencyApproval = async ({
+  currency,
+  value,
+  moduleType,
+  isCollect = true,
+}) => {
+  const requestModule = isCollect
+    ? {
+        collectModule: moduleType || "FeeCollectModule",
+      }
+    : {
+        followModule: moduleType || "FeeFollowModule",
+      };
+  const res = await apolloClient.query({
+    query: gql(GENERATE_MODULE_CURRENCY_APPROVAL),
+    variables: {
+      request: {
+        currency: currency || "0x9c3C9283D3e44854697Cd22D3Faa240Cfb032889",
+        value: value || "10",
+        ...requestModule,
+      },
+    },
+  });
+  return res;
+};
+
+export const collectPostTx = async ({
+  currency,
+  value,
+  moduleType,
+  isCollect = true,
+  signer,
+}) => {
+  refreshAuthentication();
+  const resp = await generateModuleCurrencyApproval({
+    currency,
+    value,
+    moduleType,
+    isCollect,
+  });
+  const generateModuleCurrencyApprovalData =
+    resp.data.generateModuleCurrencyApprovalData;
+  const tx1 = await signer.sendTransaction({
+    to: generateModuleCurrencyApprovalData.to,
+    from: generateModuleCurrencyApprovalData.from,
+    data: generateModuleCurrencyApprovalData.data,
+  });
+  return tx1;
 };
