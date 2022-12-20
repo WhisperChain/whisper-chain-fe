@@ -38,7 +38,7 @@ export const getIpfsUrl = async (url) => {
 };
 
 export const createIpfsObjects = async (url) => {
-  const data ={s3_url: url,};
+  const data = { s3_url: url, };
   const resp = await fetch(
     `${process.env.NEXT_PUBLIC_API_BASE_URL}/lens/ipfs-objects`,
     {
@@ -82,7 +82,7 @@ export function convertIntoIpfsUrl(url) {
 export async function getIpfsUrlandUploadPublication(url, pubId, address) {
   const metadataResponse = await createIpfsObjects(url);
   const ipfsObjectIds = metadataResponse?.ipfs_object_ids;
-  const ipfsObjects = metadataResponse?.ipfs_object;
+  const ipfsObjects = metadataResponse?.ipfs_objects;
   let ipfsUrl = "";
   {
     ipfsObjectIds.map((id) => {
