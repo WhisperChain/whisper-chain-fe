@@ -185,7 +185,7 @@ const Chain = () => {
               stroke-linejoin="round"
             />
           </svg>
-          <span className="ml-[12px]">Back</span>
+          <span className="ml-[12px] hover:text-[#000000]">Back</span>
         </div>
         <div className="flex flex-col items-center sticky decoration-white">
           <div className="not-italic font-medium text-[16px] leading-[140%] tracking-[-0.03em] text-[#000000] ">
