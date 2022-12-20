@@ -1,0 +1,10 @@
+.followBtn {
+  font-family: 'Satoshi Variable';
+  line-height: 160%;
+  font-feature-settings: 'salt' on;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  color: #FFFFFF;
+  cursor: pointer;
+}

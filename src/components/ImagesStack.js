@@ -3,35 +3,15 @@ import ProfileLogo from "../assets/ProfileLogo";
 import { usePublicationContext } from "../context/PublicationContext";
 import Image from "next/image";
 import styles from "./ImageStack.module.css";
-import PlusIcon from "../assets/PlusIcon";
 import EyeIcon from "../assets/EyeIcon";
-import SignTypedData from "./ConnectButton/SignTypedData";
-import { refreshAuthentication, requestFollow } from "../utils/lensFunction";
 import { useRouter } from "next/router";
-import LoaderSvgIcon from "../assets/loaderSvgIcon";
+import FollowButton from "./FollowButton";
 
 const ImagesStack = ({ imageDetails: imageDetailsArray, pub }) => {
   const [hovered, setHovered] = React.useState(false);
   const { setPublication } = usePublicationContext();
   const imageDetails = imageDetailsArray[0];
-  const [typedData, setTypedData] = React.useState({});
-  const followRequestId = React.useRef({});
   const router = useRouter();
-  const [followed, setFollowed] = React.useState(false);
-  const [followLoadingState, setFollowLoadingState] = React.useState(false);
-
-  const onFollowClickHandler = async () => {
-    setFollowLoadingState(true)
-    await refreshAuthentication();
-    const res = await requestFollow(imageDetails?.profileId);
-    followRequestId.current = res.data?.createFollowTypedData?.id;
-    setTypedData(res.data?.createFollowTypedData?.typedData);
-  }
-
-  const onSignTypedDataSuccess = () => {
-    setFollowed(true);
-    setFollowLoadingState(false);
-  }
 
   return (
     <div className="flex flex-col items-center relative">
@@ -73,27 +53,11 @@ const ImagesStack = ({ imageDetails: imageDetailsArray, pub }) => {
               </div>
             </div>
             {/* <div className="">{imageDetails?.createdAt || "2:32 pm"}</div> */}
-            {imageDetails?.isFollowedByMe || followed ? (
-              <div className={`not-italic font-medium text-[16px] text-[#FFFFFF] ${styles.FollowBtn}`}>
-                Following
-              </div>
-            ) : (
-              followLoadingState ? (
-                <div className="flex justify-center items-center w-[100px] z-20">
-                  <LoaderSvgIcon color="#FFFFFF" />
-                </div>
-              ) : (
-                <button
-                  className="flex justify-center items-center gap-[6px] z-20"
-                  onClick={onFollowClickHandler}
-                >
-                  <PlusIcon />
-                  <div className={`not-italic font-medium text-[16px] text-[#FFFFFF] hover:text-[]  ${styles.FollowBtn}`}>
-                    Follow
-                  </div>
-                </button>
-              )
-            )}
+
+            <FollowButton
+              data={imageDetails}
+            />
+
           </div>
           <div
             className={`flex justify-center items-center absolute top-[85%] left-[50%] text-center gap-[8px] w-[432px] h-[40px] rounded-[4px] backdrop-blur-[60px] cursor-pointer ${styles.bottomBox}`}
@@ -111,14 +75,6 @@ const ImagesStack = ({ imageDetails: imageDetailsArray, pub }) => {
           </div>
         </div>
       )}
-      {Object.keys(typedData)?.length > 0 ? (
-        <SignTypedData
-          typedData={typedData}
-          id={followRequestId.current}
-          onSuccess={onSignTypedDataSuccess}
-          pollIndexing={true}
-        />
-      ) : null}
       <div className="absolute bottom-[-26px] z-[2]">
         <div className="tablet:w-[350px] tablet:h-[400px] w-[452px] h-[512px] relative">
           <Image
