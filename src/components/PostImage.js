@@ -13,6 +13,7 @@ import {
 } from "../utils/lensFunction";
 import { useSigner } from "wagmi";
 import SignTypedData from "./ConnectButton/SignTypedData";
+import LoaderSvgIcon from "../assets/loaderSvgIcon";
 
 export const PostImage = ({ imageDetails }) => {
   const [hovered, setHovered] = React.useState(false);
@@ -20,6 +21,29 @@ export const PostImage = ({ imageDetails }) => {
   const { data: signer } = useSigner();
   const [typedData, setTypedData] = React.useState({});
   const transactionId = React.useRef({});
+  const [followed, setFollowed] = React.useState(false);
+  const [followLoadingState, setFollowLoadingState] = React.useState(false);
+
+  const onFollowClickHandler = async () => {
+    await refreshAuthentication();
+    if (imageDetails?.followModule) {
+      await getApprovedModuleAllowance(
+        imageDetails?.followModule,
+        signer
+      );
+    }
+    const res = await requestFollow(
+      imageDetails?.profileId,
+      imageDetails?.followModule ?? null
+    );
+    transactionId.current = res.data?.createFollowTypedData?.id;
+    setTypedData(res.data?.createFollowTypedData?.typedData);
+  }
+
+  const onSignTypedDataSuccess = () => {
+    setFollowed(true);
+    setFollowLoadingState(false);
+  }
 
   return (
     <div className="flex flex-col items-center relative overflow-hidden">
@@ -57,43 +81,30 @@ export const PostImage = ({ imageDetails }) => {
               </div>
             </div>
             {/* <div className="">{imageDetails?.createdAt || "2:32 pm"}</div> */}
-            {!imageDetails?.isFollowedByMe ? (
-              <button
-                className="flex justify-center items-center gap-[6px] z-20"
-                onClick={async () => {
-                  console.log(
-                    "call Follow Function",
-                    imageDetails?.followModule
-                  );
-                  await refreshAuthentication();
-                  if (imageDetails?.followModule) {
-                    await getApprovedModuleAllowance(
-                      imageDetails?.followModule,
-                      signer
-                    );
-                  }
-                  const res = await requestFollow(
-                    imageDetails?.profileId,
-                    imageDetails?.followModule ?? null
-                  );
-                  transactionId.current = res.data?.createFollowTypedData?.id;
-                  setTypedData(res.data?.createFollowTypedData?.typedData);
-                  console.log({ res });
-                }}
-              >
-                <PlusIcon />
-                <div
-                  className={`not-italic font-medium text-[16px] text-[#FFFFFF] ${styles.FollowBtn}`}
-                >
-                  Follow
-                </div>
-              </button>
-            ) : (
+            {imageDetails?.isFollowedByMe || followed ? (
               <div
                 className={`not-italic font-medium text-[16px] text-[#FFFFFF] ${styles.FollowBtn}`}
               >
                 Following
               </div>
+            ) : (
+              followLoadingState ? (
+                <div className="flex justify-center items-center w-[100px] z-20">
+                  <LoaderSvgIcon color="#FFFFFF" />
+                </div>
+              ) : (
+                <button
+                  className="flex justify-center items-center gap-[6px] z-20"
+                  onClick={onFollowClickHandler}
+                >
+                  <PlusIcon />
+                  <div
+                    className={`not-italic font-medium text-[16px] text-[#FFFFFF] ${styles.FollowBtn}`}
+                  >
+                    Follow
+                  </div>
+                </button>
+              )
             )}
           </div>
           <div
@@ -138,7 +149,8 @@ export const PostImage = ({ imageDetails }) => {
         <SignTypedData
           typedData={typedData}
           id={transactionId.current}
-          onSuccess={() => {}}
+          onSuccess={onSignTypedDataSuccess}
+          pollIndexing={true}
         />
       ) : null}
     </div>

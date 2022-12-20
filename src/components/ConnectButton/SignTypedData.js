@@ -3,7 +3,7 @@ import { useSignTypedData } from "wagmi";
 import { getProfile, txIndexed } from "../../utils/lensFunction";
 import { broadcastData } from "../../utils/Utils";
 
-function SignTypedData({ id, typedData, onSuccess }) {
+function SignTypedData({ id, typedData, onSuccess, pollIndexing = false }) {
   delete typedData.domain.__typename;
   delete typedData.types.__typename;
   delete typedData.value.__typename;
@@ -26,22 +26,26 @@ function SignTypedData({ id, typedData, onSuccess }) {
     }
   }, [data]);
 
+  let timeout = 0;
+
+  const hasTxIndexed = async (res) => {
+    const indexedRes = await txIndexed(res?.txHash);
+
+    return indexedRes.data?.hasTxHashBeenIndexed.indexed;
+  };
+
   const _BroadcastData = async () => {
     const res = await broadcastData(id, data);
-    console.log({ res });
-    // let timeout = setTimeout(() => {
-    //   hasTxIndexed();
-    // }, 5000);
-    // const hasTxIndexed = async () => {
-    //   const indexedRes = await txIndexed(res?.txHash);
 
-    //   if (indexedRes.data?.hasTxHashBeenIndexed.indexed) {
-    //     onSuccess?.();
-    //     clearTimeout(timeout);
-    //   } else {
-    //     timeout = setTimeout(hasTxIndexed, 5000);
-    //   }
-    // };
+    if (pollIndexing) {
+      timeout = setInterval(() => {
+        const isIndexed = hasTxIndexed(res);
+        if (!!isIndexed) {
+          clearInterval(timeout)
+        }
+      }, 5000);
+    }
+
     onSuccess?.();
   };
 
