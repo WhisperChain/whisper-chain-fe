@@ -112,7 +112,7 @@ const Chain = () => {
   const buttonRef = React.useRef();
   let dContainer = buttonRef.current;
   const onScroll = () => {
-    if (dContainer.scrollTop > 0) {
+    if (buttonRef.current?.scrollTop > 0) {
       increaseOpacity();
     } else {
       decreaseOpacity();

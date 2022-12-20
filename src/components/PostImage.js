@@ -2,49 +2,26 @@ import React from "react";
 import ProfileLogo from "../assets/ProfileLogo";
 import Image from "next/image";
 import styles from "./ImageStack.module.css";
-import PlusIcon from "../assets/PlusIcon";
 import EyeIcon from "../assets/EyeIcon";
 import CollectIcon from "../assets/CollectIcon";
 import {
   collectPost,
   getApprovedModuleAllowance,
   refreshAuthentication,
-  requestFollow,
 } from "../utils/lensFunction";
 import { useSigner } from "wagmi";
 import SignTypedData from "./ConnectButton/SignTypedData";
+import FollowButton from "./FollowButton";
 import SignInModal from "./SignInModal";
 import { Constants } from "../utils/Constants";
 
 export const PostImage = ({ imageDetails }) => {
   const [hovered, setHovered] = React.useState(false);
-  // console.log({ imageDetails });
   const { data: signer } = useSigner();
   const [typedData, setTypedData] = React.useState({});
   const transactionId = React.useRef({});
   const [isOpen, setIsOpen] = React.useState(false);
-  const transactionType = React.useRef();
 
-  const onFollowPress = async () => {
-    if (
-      window.localStorage.getItem(Constants.LOCAL_STORAGE_REFRESH_TOKEN_KEY)
-    ) {
-      await refreshAuthentication();
-      if (imageDetails?.followModule) {
-        await getApprovedModuleAllowance(imageDetails?.followModule, signer);
-      }
-      const res = await requestFollow(
-        imageDetails?.profileId,
-        imageDetails?.followModule ?? null
-      );
-      transactionId.current = res.data?.createFollowTypedData?.id;
-      setTypedData(res.data?.createFollowTypedData?.typedData);
-    } else {
-      transactionType.current = "follow";
-
-      setIsOpen(true);
-    }
-  };
   const onCollectPress = async () => {
     if (
       window.localStorage.getItem(Constants.LOCAL_STORAGE_REFRESH_TOKEN_KEY)
@@ -55,7 +32,6 @@ export const PostImage = ({ imageDetails }) => {
       transactionId.current = res.data?.createCollectTypedData?.id;
       setTypedData(res.data?.createCollectTypedData?.typedData);
     } else {
-      transactionType.current = "collect";
       setIsOpen(true);
     }
   };
@@ -96,29 +72,8 @@ export const PostImage = ({ imageDetails }) => {
               </div>
             </div>
             {/* <div className="">{imageDetails?.createdAt || "2:32 pm"}</div> */}
-            {!imageDetails?.isFollowedByMe ? (
-              <button
-                className="flex justify-center items-center gap-[6px] z-20"
-                onClick={
-                  transactionType.current == "follow"
-                    ? onFollowPress
-                    : onCollectPress
-                }
-              >
-                <PlusIcon />
-                <div
-                  className={`not-italic font-medium text-[16px] text-[#FFFFFF] ${styles.FollowBtn}`}
-                >
-                  Follow
-                </div>
-              </button>
-            ) : (
-              <div
-                className={`not-italic font-medium text-[16px] text-[#FFFFFF] ${styles.FollowBtn}`}
-              >
-                Following
-              </div>
-            )}
+
+            <FollowButton data={imageDetails} />
           </div>
           <div
             className={`flex justify-center items-center absolute top-[85%] left-[50%] text-center gap-[8px] w-[432px] -translate-x-[50%]`}
@@ -154,7 +109,7 @@ export const PostImage = ({ imageDetails }) => {
           setIsOpen(false);
         }}
         isOpen={isOpen}
-        onSignInComplete={onFollowPress}
+        onSignInComplete={onCollectPress}
       />
       {Object.keys(typedData)?.length > 0 ? (
         <SignTypedData

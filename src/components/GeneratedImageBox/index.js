@@ -42,7 +42,7 @@ export default function GeneratedImageBox({ imgSrcUrl, clickHandler }) {
 
   return (
     <div
-      className="tablet:w-[380px] tablet:h-[380px] w-[404px] h-[404px] relative"
+      className="tablet:w-[320px] tablet:h-[320px] w-[404px] h-[404px] relative"
       onMouseEnter={() => setIsHover(true)}
       onMouseLeave={() => setIsHover(false)}
     >
@@ -54,7 +54,7 @@ export default function GeneratedImageBox({ imgSrcUrl, clickHandler }) {
         onLoadingCompleteHandler={() => setIsImageloaded(true)}
         classes="absolute rounded-[16px] border-solid border-[1px] border-[#ffffff33]"
       />
-      {isImageLoaded && (
+      {isImageLoaded && imgSrcUrl && (
         <div
           className="absolute bottom-0 w-[calc(100%-32px)] left-[16px] flex cursor-pointer"
           onClick={handleOpen}
