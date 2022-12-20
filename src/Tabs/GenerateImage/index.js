@@ -30,7 +30,7 @@ function Generate() {
     FILTER_OPTIONS[0].value
   );
   const [emptyState, setEmptyState] = React.useState(true);
-  var regex = /[`!@#$%^&*()_+\-=\[\]{};':"\\|.<>\/?~]/;
+  var regex = /[`!@#$%^&*()_+\-=\[\]{};':"\\|<>\/?~]/;
 
   const [previousImageUrl, setPreviousImageUrl] = React.useState();
   React.useEffect(() => {
