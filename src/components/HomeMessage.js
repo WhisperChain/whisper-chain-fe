@@ -69,7 +69,7 @@ const HomeMessage = ({ publication }) => {
           <ImageLinkBottom />
         </div>
       </div>
-      <div className="flex justify-center mt-[50px] tablet:mt-[20px]">
+      <div className="flex justify-center mt-[50px] tablet:mt-[20px] w-full">
         <AddWhisperBtn pageIndex={1} publication={publication} height={40} width={200} text={"Add a whisper"} />
       </div>
     </div>
