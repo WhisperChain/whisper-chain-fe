@@ -37,7 +37,7 @@ const ImagesStack = ({ imageDetails: imageDetailsArray, pub }) => {
         <div
           onMouseEnter={() => setHovered(true)}
           onMouseLeave={() => setHovered(false)}
-          className={`w-[512px] h-[512px] absolute z-[10] rounded-[48px]`}
+          className={`tablet:w-[400px] tablet:h-[400px] w-[512px] h-[512px] absolute z-[10] rounded-[48px] `}
         >
           <div
             className={`flex relative p-[40px] rounded-tr-[48px] rounded-tl-[48px]  backdrop-blur-[2px] ${styles.backdrop} `}
@@ -86,7 +86,7 @@ const ImagesStack = ({ imageDetails: imageDetailsArray, pub }) => {
             )}
           </div>
           <div
-            className={`flex justify-center items-center absolute top-[85%] left-[50%] text-center gap-[8px] w-[432px] h-[40px] rounded-[4px] backdrop-blur-[60px] cursor-pointer ${styles.bottomBox}`}
+            className={`flex justify-center items-center absolute top-[85%] left-[50%] text-center gap-[8px] tablet:w-[340px] w-[432px] h-[40px] rounded-[4px] backdrop-blur-[60px] cursor-pointer ${styles.bottomBox}`}
             onClick={() => {
               setPublication(pub);
               router.push("/chain");
@@ -105,7 +105,7 @@ const ImagesStack = ({ imageDetails: imageDetailsArray, pub }) => {
         <SignTypedData
           typedData={typedData}
           id={followRequestId.current}
-          onSuccess={() => { }}
+          onSuccess={() => {}}
         />
       ) : null}
       <div className="absolute bottom-[-26px] z-[2]">
