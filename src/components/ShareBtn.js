@@ -11,10 +11,8 @@ const ShareBtn = ({ pageIndex, publication, height, width, text }) => {
   return (
     <a
       className={`w-[${width}px] h-[${height}px] rounded-[40px] flex items-center justify-center z-10 cursor-pointer ${styles.Buttonbg}`}
-      onClick={() => {
-        setPublication(publication);
-        onTabChange(TabItems[pageIndex]);
-      }}
+      href="https://whisperchain.quick-poc.com/chain"
+      target="_blank"
     >
       <div className="not-italic -tracking-[0.03em] font-extrabold text-[16px] leading-[100%] text-center text-[#FFFFFF]">
         {text}
