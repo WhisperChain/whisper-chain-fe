@@ -133,7 +133,7 @@ export const PostImage = ({ imageDetails }) => {
             </button>
             {imageDetails?.hasCollectedByMe ? (
               <button
-                className={`flex items-center p-[10px] w-[208px] h-[40px] justify-center rounded-[4px] backdrop-blur-[60px] ${styles.viewOnLensBtn}`}
+                className={`flex items-center p-[10px] w-[208px] h-[40px] justify-center rounded-[4px] backdrop-blur-[60px] ${styles.collectedBtn}`}
               >
                 Collected
               </button>
