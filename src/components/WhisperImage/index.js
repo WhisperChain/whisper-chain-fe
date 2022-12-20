@@ -15,9 +15,9 @@ export default function WhisperImage({
     <svg width="${w}" height="${h}" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
       <defs>
         <linearGradient id="g">
-          <stop stop-color="#ead9d966" offset="10%"/>
-          <stop stop-color="#ead9d966" offset="50%"/>
-          <stop stop-color="#ead9d966" offset="70%"/>
+          <stop stopColor="#ead9d966" offset="10%"/>
+          <stop stopColor="#ead9d966" offset="50%"/>
+          <stop stopColor="#ead9d966" offset="70%"/>
         </linearGradient>
       </defs>
       <rect width="${w}" height="${h}" fill="#ead9d966"/>

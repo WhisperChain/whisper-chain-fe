@@ -22,6 +22,7 @@ function Generate() {
   const { publication } = usePublicationContext();
   const router = useRouter();
   const [promptText, setPromptText] = React.useState("");
+  const [promtEmpty,setPromtEmpty] = React.useState(false);
   const [urls, setUrls] = React.useState([]);
   const [pubsId, setPubsId] = React.useState();
   const [isLoading, setIsloading] = React.useState(false);
@@ -29,6 +30,7 @@ function Generate() {
     FILTER_OPTIONS[0].value
   );
   const [emptyState, setEmptyState] = React.useState(true);
+  var regex = /[`!@#$%^&*()_+\-=\[\]{};':"\\|<>\/?~]/;
 
   const [previousImageUrl, setPreviousImageUrl] = React.useState();
   React.useEffect(() => {
@@ -66,7 +68,11 @@ function Generate() {
   };
 
   const generateImageClickHandler = async () => {
-    if (urls.length < 5) {
+    if(regex.test(promptText)){
+      alert("Prompt can not contain special characters");
+    }
+    else{
+       if (urls.length < 5) {
       setUrls([1, ...urls]);
       setEmptyState(false);
       setIsloading(true);
@@ -84,6 +90,7 @@ function Generate() {
 
       setUrls(newUrls);
       setIsloading(false);
+    }
     }
   };
 
@@ -119,11 +126,20 @@ function Generate() {
               <div className={styles.mainText}>Enter prompt</div>
               <textarea
                 className={`${styles.promptInput} text-sm shadow-sm placeholder-[#1d0545b8]
-                  focus:outline-none focus:border-[#6f1aff3d] focus:ring-1 focus:ring-[#6f1aff3d]
+                  focus:outline-none focus:border-[#6f1aff3d] focus:ring-1 
+                  ${promtEmpty ? "focus:ring-[red]" : "focus:ring-[#6f1aff3d]"}
                 `}
                 placeholder="Enter your prompt here to generate your very own whisper"
                 value={promptText}
-                onChange={(e) => setPromptText(e.target.value)}
+                onChange={(e) => {
+                  setPromptText(e.target.value)
+                  if (!e.target.value.replace(/\s/g, '').length) {
+                    setPromtEmpty(true)
+                    }
+                  else{
+                    setPromtEmpty(false)
+                  }
+                }}
               ></textarea>
             </div>
           </div>
@@ -151,7 +167,7 @@ function Generate() {
           </div>
           {/* Generate Image Button */}
           <div
-            className={`w-full absolute bottom-[16px] ${promptText === ""
+            className={`w-full absolute bottom-[16px] ${promptText === "" || promtEmpty
               ? "opacity-50 cursor-not-allowed	pointer-events-none"
               : ""
               }`}

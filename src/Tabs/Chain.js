@@ -171,18 +171,18 @@ const Chain = () => {
             <path
               d="M16.875 10H3.125"
               stroke="black"
-              stroke-opacity="0.6"
-              stroke-width="1.5"
-              stroke-linecap="round"
-              stroke-linejoin="round"
+              strokeOpacity="0.6"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
             />
             <path
               d="M8.75 4.375L3.125 10L8.75 15.625"
               stroke="black"
-              stroke-opacity="0.6"
-              stroke-width="1.5"
-              stroke-linecap="round"
-              stroke-linejoin="round"
+              strokeOpacity="0.6"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
             />
           </svg>
           <span className="ml-[12px] hover:text-[#000000]">Back</span>
@@ -241,10 +241,10 @@ const Chain = () => {
             <path
               d="M16.75 7.5L10.5 13.75L4.25 7.5"
               stroke="black"
-              stroke-opacity="0.6"
-              stroke-width="1.5"
-              stroke-linecap="round"
-              stroke-linejoin="round"
+              strokeOpacity="0.6"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
             />
           </svg>
           <span className="ml-[10px]">Go to bottom</span>
@@ -267,10 +267,10 @@ const Chain = () => {
             <path
               d="M16.25 13.75L10 7.5L3.75 13.75"
               stroke="black"
-              stroke-opacity="0.6"
-              stroke-width="1.5"
-              stroke-linecap="round"
-              stroke-linejoin="round"
+              strokeOpacity="0.6"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
             />
           </svg>
           <span className="ml-[10px]">Back to top</span>
