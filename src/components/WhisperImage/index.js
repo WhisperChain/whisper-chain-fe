@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import React from 'react';
 import ImageLoader from './ImageLoader';
+import styles from "./WhisperImage.module.css";
 
 export default function WhisperImage({
   imgSrcUrl,
@@ -40,6 +41,13 @@ export default function WhisperImage({
           >
             <ImageLoader height={height} width={width} />
           </div >
+         
+        //  error state when image is not loaded
+            // <div className={`overflow-hidden w-full flex items-center justify-center rounded-[8px] ${styles.Errorstate}`}>
+            //   <div className={`flex items-center justify-center w-[402px] h-[402px] relative group text-[#FF0000] not-italic font-medium text-[14px] leading-[160%]`}>An error occurred. Please try again</div>
+            // </div>
+
+
         ) : (<Image
           src={imgSrcUrl}
           priority={priority}

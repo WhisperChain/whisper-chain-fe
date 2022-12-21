@@ -110,7 +110,7 @@ function Generate() {
                 Try to describe this whisper as best you can.
               </div>
             </div>
-            <div className="w-[256px] h-[256px] relative">
+            <div className="w-[256px] h-[256px] relative flex justify-center items-center">
               <WhisperImage
                 imgSrcUrl={previousImageUrl}
                 width={256}
@@ -119,6 +119,13 @@ function Generate() {
                 alt="Whisper Image"
                 classes="rounded-[8px]"
               />
+
+              {/* Disabled state when User cannot post(if last post by same user) */}
+              {/* <div className={`flex justify-center items-center w-[200px] h-[82px] relative bg-[#FFFFFF] rounded-[8px] text-center ${styles.errorStateBox}`}>
+                <span className="not-italic text-[14px] font-medium m-[8px]">Previous whisper was added by you. Please come back later to add a whisper again</span>
+              </div> */}
+
+
             </div>
           </div>
           {/* Generate Image form (prompt and filter option) */}

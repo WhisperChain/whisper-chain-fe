@@ -166,3 +166,9 @@
   background: linear-gradient(0deg, #FFFFFF, #FFFFFF);
   border-radius: 16px;
 }
+
+.errorStateBox{
+  box-shadow: 0px 8px 8px -8px rgba(0, 0, 0, 0.2), 0px 16px 24px rgba(0, 0, 0, 0.16);
+  font-family: 'Satoshi Variable';
+  color: rgba(0, 0, 0, 0.8);
+}
