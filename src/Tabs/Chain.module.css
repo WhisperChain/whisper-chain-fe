@@ -5,7 +5,7 @@
 }
 
 .chainContainer {
-   height: calc(100vh - 250px);
+   height: calc(100vh - 190px);
    overflow: scroll;
    position: relative;
    scroll-behavior: smooth;
@@ -71,7 +71,7 @@
 
 .viewOnLensContainer {
    transition: left 0.5s;
-   left: 0;
+   /* left: 0; */
 }
 
 .viewOnLensContainer:hover .viewOnLens {

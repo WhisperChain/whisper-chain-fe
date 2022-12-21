@@ -112,7 +112,7 @@ const Chain = () => {
   const buttonRef = React.useRef();
   let dContainer = buttonRef.current;
   const onScroll = () => {
-    if (buttonRef.current?.scrollTop > 0) {
+    if (buttonRef.current?.scrollTop > 200) {
       increaseOpacity();
     } else {
       decreaseOpacity();
@@ -129,7 +129,7 @@ const Chain = () => {
   const onViewLensHoverOff = () => {
     let viewlensContainer = document.getElementById("viewlensContainer");
     if (viewlensContainer) {
-      viewlensContainer.style.left = "0";
+      viewlensContainer.style.left = "0px";
     }
   };
 
@@ -153,13 +153,13 @@ const Chain = () => {
   return isLoading ? (
     <SpinningLoader height="80vh" width="100%" />
   ) : (
-    <div className="w-fit m-auto">
-      <div className="flex justify-between relative">
+    <div className="w-fit m-auto h-[calc(100vh-160px)]">
+      <div className="flex justify-between items-center h-[50px]">
         <div
           onClick={() => {
             router.push("/");
           }}
-          className="flex flex-row items-start not-italic font-medium text-[16px] leading-[140%] text-center text-[#0000003C] mb-[10px] cursor-pointer"
+          className="flex flex-row items-start not-italic font-medium text-[16px] leading-[140%] text-center text-[#0000003C] cursor-pointer"
         >
           <svg
             width="20"
@@ -187,12 +187,12 @@ const Chain = () => {
           </svg>
           <span className="ml-[12px] hover:text-[#000000]">Back</span>
         </div>
-        <div className="flex flex-col items-center sticky decoration-white">
+        <div className="flex flex-col items-center sticky ml-[-32px] decoration-white">
           <div className="not-italic font-medium text-[16px] leading-[140%] tracking-[-0.03em] text-[#000000] ">
             {moment(firstCreatedAt).format("Do MMMM YYYY")}
           </div>
         </div>
-        <div className="relative">
+        <div className="relative h-[20px]">
           <span
             onMouseEnter={() => onViewLensHover()}
             onMouseLeave={() => onViewLensHoverOff()}
@@ -205,7 +205,7 @@ const Chain = () => {
               target="_blank"
             >
               <span
-                className="viewOnLens"
+                className="relative ml-[-20px]"
                 onMouseEnter={() => setHovered(true)}
                 onMouseLeave={() => setHovered(false)}
               >
