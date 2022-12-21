@@ -153,8 +153,8 @@ const Chain = () => {
   return isLoading ? (
     <SpinningLoader height="80vh" width="100%" />
   ) : (
-    <div>
-      <div className="flex justify-between relative top-[20px]">
+    <div className="w-fit m-auto">
+      <div className="flex justify-between relative">
         <div
           onClick={() => {
             router.push("/");
