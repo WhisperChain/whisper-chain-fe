@@ -22,7 +22,7 @@ function Generate() {
   const { publication } = usePublicationContext();
   const router = useRouter();
   const [promptText, setPromptText] = React.useState("");
-  const [promtEmpty,setPromtEmpty] = React.useState(false);
+  const [promtEmpty, setPromtEmpty] = React.useState(false);
   const [specialCharacter, setSpecialCharacter] = React.useState();
   const [urls, setUrls] = React.useState([]);
   const [pubsId, setPubsId] = React.useState();
@@ -69,34 +69,57 @@ function Generate() {
   };
 
   const generateImageClickHandler = async () => {
-    if(regex.test(promptText)){
+    if (regex.test(promptText)) {
       setSpecialCharacter(true)
     }
-    else{
-       if (urls.length < 5) {
-      setUrls([1, ...urls]);
-      setEmptyState(false);
-      setIsloading(true);
-      const response = await getImagesFromPrompt(promptText, selectedFilter);
-      const suggestionIds = response.suggestions_ids;
-      const suggestions = response.suggestions;
-      const images = [];
-      {
-        suggestionIds.map((id) => {
-          const suggestion = suggestions[id];
-          images.push(suggestion?.image_url);
-        });
-      }
-      const newUrls = [images, ...urls];
+    else {
+      if (urls.length < 5) {
+        setUrls([1, ...urls]);
+        setEmptyState(false);
+        setIsloading(true);
+        const response = await getImagesFromPrompt(promptText, selectedFilter);
+        const suggestionIds = response.suggestions_ids;
+        const suggestions = response.suggestions;
+        const images = [];
+        {
+          suggestionIds.map((id) => {
+            const suggestion = suggestions[id];
+            images.push(suggestion?.image_url);
+          });
+        }
+        const newUrls = [images, ...urls];
 
-      setUrls(newUrls);
-      setIsloading(false);
-    }
+        setUrls(newUrls);
+        setIsloading(false);
+      }
     }
   };
 
+  const generateImageContainerRef = React.useRef(null);
+  const [btnPosition, setBtnPosition] = React.useState("absolute");
+
+  const onScroll = () => {
+    if (generateImageContainerRef.current?.scrollTop > 0) {
+      setBtnPosition("absolute");
+    } else {
+      setBtnPosition("static");
+    }
+  };
+
+  React.useEffect(() => {
+    const { innerHeight: height } = window;
+
+    if (height <= 900) {
+      setBtnPosition("static");
+    }
+  }, []);
+
   return (
-    <div className="w-full mt-[20px]">
+    <div
+      className={styles.mainContainer}
+      onScroll={onScroll}
+      ref={generateImageContainerRef}
+    >
       <div className="flex gap-[16px] justify-center items-center">
         {/* Sidebar */}
         <div className={styles.sidebarContainer}>
@@ -137,13 +160,13 @@ function Generate() {
                   setSpecialCharacter(false)
                   if (!e.target.value.replace(/\s/g, '').length) {
                     setPromtEmpty(true)
-                    }
-                  else{
+                  }
+                  else {
                     setPromtEmpty(false)
                   }
                 }}
               ></textarea>
-              {specialCharacter && 
+              {specialCharacter &&
                 <span className="text-[red] text-[16px]">Prompt can not contain special characters</span>
               }
             </div>
@@ -172,10 +195,11 @@ function Generate() {
           </div>
           {/* Generate Image Button */}
           <div
-            className={`w-full absolute bottom-[16px] ${promptText === "" || promtEmpty
+            className={`w-full bottom-[16px] ${promptText === "" || promtEmpty
               ? "opacity-50 cursor-not-allowed	pointer-events-none"
               : ""
-              }`}
+              } ${btnPosition}`
+            }
           >
             <div
               className="flex items-center cursor-pointer"
