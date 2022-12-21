@@ -54,8 +54,11 @@ export default function WhisperImage({
           className={`${classes} object-contain`}
           alt={alt}
           fill
-          placeholder="blur"
-          blurDataURL={`data:image/svg+xml;base64,${toBase64(shimmer(width, height))}`}
+          sizes="(max-width: 768px) 100vw,
+              (max-width: 1200px) 50vw,
+              33vw"
+          // placeholder="blur"
+          // blurDataURL={`data:image/svg+xml;base64,${toBase64(shimmer(width, height))}`}
           onLoadingComplete={onLoadingCompleteHandler}
         />)
       }
