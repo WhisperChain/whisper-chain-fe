@@ -9,7 +9,7 @@ export default function Main() {
   return (
     <div className={styles.Page} id="home-section">
       <Header />
-      <Component />
+      <div className="overflow-hidden"><Component /></div>
       <BottomTabSelector />
     </div>
   );
