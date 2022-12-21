@@ -179,8 +179,12 @@
   border-radius: 16px;
 }
 
-.errorStateBox{
+.errorStateBox {
   box-shadow: 0px 8px 8px -8px rgba(0, 0, 0, 0.2), 0px 16px 24px rgba(0, 0, 0, 0.16);
   font-family: 'Satoshi Variable';
   color: rgba(0, 0, 0, 0.8);
+
+  position: absolute;
+  top: calc(50% - 41px);
+  left: calc(36% - 100px);
 }

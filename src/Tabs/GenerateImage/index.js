@@ -114,6 +114,8 @@ function Generate() {
     }
   }, []);
 
+  const [disableGeneration, setDisableGeneration] = React.useState(false);
+
   return (
     <div
       className={styles.mainContainer}
@@ -133,26 +135,27 @@ function Generate() {
                 Try to describe this whisper as best you can.
               </div>
             </div>
-            <div className="w-[256px] h-[256px] relative flex justify-center items-center">
-              <WhisperImage
-                imgSrcUrl={previousImageUrl}
-                width={256}
-                height={256}
-                priority={true}
-                alt="Whisper Image"
-                classes="rounded-[8px]"
-              />
-
+            <div className="relative">
+              <div className={`w-[256px] h-[256px] relative flex justify-center items-center ${disableGeneration ? 'opacity-25' : ''}`}>
+                <WhisperImage
+                  imgSrcUrl={previousImageUrl}
+                  width={256}
+                  height={256}
+                  priority={true}
+                  alt="Whisper Image"
+                  classes="rounded-[8px]"
+                />
+              </div>
               {/* Disabled state when User cannot post(if last post by same user) */}
-              {/* <div className={`flex justify-center items-center w-[200px] h-[82px] relative bg-[#FFFFFF] rounded-[8px] text-center ${styles.errorStateBox}`}>
-                <span className="not-italic text-[14px] font-medium m-[8px]">Previous whisper was added by you. Please come back later to add a whisper again</span>
-              </div> */}
-
-
+              {disableGeneration &&
+                <div className={`flex justify-center items-center w-[200px] h-[82px] relative bg-[#FFFFFF] rounded-[8px] text-center ${styles.errorStateBox}`}>
+                  <span className="not-italic text-[14px] font-medium m-[8px]">Previous whisper was added by you. Please come back later to add a whisper again</span>
+                </div>
+              }
             </div>
           </div>
           {/* Generate Image form (prompt and filter option) */}
-          <div className="w-full">
+          <div className={`w-full  ${disableGeneration ? 'opacity-25' : ''}`}>
             <div className="flex flex-col items-start p-0 gap-[8px] w-auto">
               <div className={styles.mainText}>Enter prompt</div>
               <textarea
@@ -179,7 +182,7 @@ function Generate() {
             </div>
           </div>
           {/* Select filter option */}
-          <div className="w-full">
+          <div className={`w-full  ${disableGeneration ? 'opacity-25' : ''}`}>
             <div className="box-border">
               <div className={styles.mainText}>Filter</div>
               <div className={`${styles.subText} mb-[8px]`}>
@@ -205,7 +208,8 @@ function Generate() {
             className={`w-full bottom-[16px] ${promptText === "" || promtEmpty
               ? "opacity-50 cursor-not-allowed	pointer-events-none"
               : ""
-              } ${btnPosition}`
+              } ${btnPosition}
+              ${disableGeneration ? 'opacity-25' : ''}`
             }
           >
             <div
@@ -230,6 +234,21 @@ function Generate() {
               </button>
             </div>
           </div>
+          {/* Disabled state when User cannot post(if last post by same user) */}
+          {/* {
+            disableGeneration && <>
+            
+              <div className="absolute top-[10%] ">
+                <div className="relative">
+                  <div className="absolute top-[50%] left-[calc(50%-100px)]">
+                    <div className={`flex justify-center items-center w-[200px] h-[82px] relative bg-[#FFFFFF] rounded-[8px] text-center ${styles.errorStateBox}`}>
+                      <span className="not-italic text-[14px] font-medium m-[8px]">Previous whisper was added by you. Please come back later to add a whisper again</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </>
+          } */}
         </div>
         {/* Image Gallery */}
         <div className={styles.imageGalleryContainer}>
