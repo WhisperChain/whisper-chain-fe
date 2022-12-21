@@ -23,6 +23,7 @@ function Generate() {
   const router = useRouter();
   const [promptText, setPromptText] = React.useState("");
   const [promtEmpty,setPromtEmpty] = React.useState(false);
+  const [specialCharacter, setSpecialCharacter] = React.useState();
   const [urls, setUrls] = React.useState([]);
   const [pubsId, setPubsId] = React.useState();
   const [isLoading, setIsloading] = React.useState(false);
@@ -69,7 +70,7 @@ function Generate() {
 
   const generateImageClickHandler = async () => {
     if(regex.test(promptText)){
-      alert("Prompt can not contain special characters");
+      setSpecialCharacter(true)
     }
     else{
        if (urls.length < 5) {
@@ -133,6 +134,7 @@ function Generate() {
                 value={promptText}
                 onChange={(e) => {
                   setPromptText(e.target.value)
+                  setSpecialCharacter(false)
                   if (!e.target.value.replace(/\s/g, '').length) {
                     setPromtEmpty(true)
                     }
@@ -141,6 +143,9 @@ function Generate() {
                   }
                 }}
               ></textarea>
+              {specialCharacter && 
+                <span className="text-[red] text-[16px]">Prompt can not contain special characters</span>
+              }
             </div>
           </div>
           {/* Select filter option */}

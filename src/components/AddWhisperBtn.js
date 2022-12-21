@@ -21,7 +21,7 @@ const AddWhisperBtn = ({ pageIndex, publication, height, width, text }) => {
         onTabChange(TabItems[pageIndex]);
       }}
     >
-      <div className="not-italic -tracking-[0.03em] font-extrabold text-[16px] leading-[100%] text-center text-[#FFFFFF]">
+      <div className={`not-italic font-bold text-[16px] leading-[160%] text-center text-[#FFFFFF] ${styles.ButtonText}`}>
         {text}
       </div>
     </div>
