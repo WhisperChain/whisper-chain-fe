@@ -174,7 +174,7 @@ function Generate() {
                 }}
               ></textarea>
               {specialCharacter &&
-                <span className="text-[red] text-[16px]">Prompt can not contain special characters</span>
+                <span className="text-[#cf3838] text-[12px]">Prompt can not contain special characters</span>
               }
             </div>
           </div>
