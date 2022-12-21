@@ -19,7 +19,7 @@ const ImagesStack = ({ imageDetails: imageDetailsArray, pub }) => {
         <div className="tablet:w-[400px] tablet:h-[400px] w-[512px] h-[512px] relative"
           onMouseEnter={() => setHovered(true)}
           onMouseLeave={() => setHovered(false)}
-          >
+        >
           <Image
             src={imageDetails.imageUrl}
             alt="Stack Image"
