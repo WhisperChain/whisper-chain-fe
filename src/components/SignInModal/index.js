@@ -9,7 +9,7 @@ const SignInModal = ({ onRequestClose, isOpen, onSignInComplete }) => {
     content: {
       background: "#FFFFFF",
       height: "fit-content",
-      width: 384,
+      width: "354px",
       margin: "auto",
       backdropFilter: "blur(60px)",
       borderRadius: "16px",
@@ -40,6 +40,17 @@ const SignInModal = ({ onRequestClose, isOpen, onSignInComplete }) => {
           <div className="flex gap-[8px] justify-start items-center">
             <CheckedCircle />
             Like and collect other whispers
+          </div>
+          <div className="flex justify-start items-center text-[13px] leading-[160%] font-medium text-[#00000099]">
+            New to Lens?
+            <span
+              className="underline text-[#00501E]"
+              onClick={() => {
+                window.open("https://claim.lens.xyz/", "_blank");
+              }}
+            >
+              Create an account
+            </span>
           </div>
         </div>
         {/* <button className={`flex justify-center box-border items-center w-[234px] h-[40px] backdrop-blur rounded-[4px] ${styles.TwitterContainer}`}>Sign in with Twitter</button>
