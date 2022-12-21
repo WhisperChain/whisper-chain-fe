@@ -233,10 +233,12 @@ function Generate() {
                 <div className="flex items-center justify-center w-full gap-[12px]">
                   <GeneratedImageBox
                     imgSrcUrl={url[0]}
+                    key={index}
                     clickHandler={() => onImageClickHandler(url[0])}
                   />
                   <GeneratedImageBox
                     imgSrcUrl={url[1]}
+                    key={index}
                     clickHandler={() => onImageClickHandler(url[1])}
                   />
                 </div>
@@ -248,8 +250,8 @@ function Generate() {
               [...Array(2)].map((index) => (
                 <div className={styles.imageTryOutputBox} key={index}>
                   <div className="flex items-start justify-start gap-[12px] w-full">
-                    <div className={`flex items-center justify-center w-[402px] h-[402px] relative group ${styles.defaultState}`}><EmptyStateLogo /> </div>
-                    <div className={`flex items-center justify-center w-[402px] h-[402px] relative group ${styles.defaultState}`}><EmptyStateLogo /></div>
+                    <div key={index} className={`flex items-center justify-center w-[402px] h-[402px] relative group ${styles.defaultState}`}><EmptyStateLogo /> </div>
+                    <div key={index} className={`flex items-center justify-center w-[402px] h-[402px] relative group ${styles.defaultState}`}><EmptyStateLogo /></div>
                   </div>
                 </div>
               ))
