@@ -234,21 +234,6 @@ function Generate() {
               </button>
             </div>
           </div>
-          {/* Disabled state when User cannot post(if last post by same user) */}
-          {/* {
-            disableGeneration && <>
-            
-              <div className="absolute top-[10%] ">
-                <div className="relative">
-                  <div className="absolute top-[50%] left-[calc(50%-100px)]">
-                    <div className={`flex justify-center items-center w-[200px] h-[82px] relative bg-[#FFFFFF] rounded-[8px] text-center ${styles.errorStateBox}`}>
-                      <span className="not-italic text-[14px] font-medium m-[8px]">Previous whisper was added by you. Please come back later to add a whisper again</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </>
-          } */}
         </div>
         {/* Image Gallery */}
         <div className={styles.imageGalleryContainer}>
@@ -276,8 +261,13 @@ function Generate() {
               [...Array(2)].map((index) => (
                 <div className={styles.imageTryOutputBox} key={index}>
                   <div className="flex items-start justify-start gap-[12px] w-full">
-                    <div key={index} className={`flex items-center justify-center w-[402px] h-[402px] relative group ${styles.defaultState}`}><EmptyStateLogo /> </div>
-                    <div key={index} className={`flex items-center justify-center w-[402px] h-[402px] relative group ${styles.defaultState}`}><EmptyStateLogo /></div>
+                    {
+                      [...Array(2)].map((index) => (
+                        <div key={index} className={`flex items-center justify-center w-[402px] h-[402px] relative group ${styles.defaultState}`}>
+                          <EmptyStateLogo />
+                        </div>
+                      ))
+                    }
                   </div>
                 </div>
               ))
