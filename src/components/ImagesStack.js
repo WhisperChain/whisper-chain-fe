@@ -5,7 +5,7 @@ import Image from "next/image";
 import styles from "./ImageStack.module.css";
 import EyeIcon from "../assets/EyeIcon";
 import { useRouter } from "next/router";
-import FollowButton from "./FollowButton";
+// import FollowButton from "./FollowButton";
 
 const ImagesStack = ({ imageDetails: imageDetailsArray, pub }) => {
   const [hovered, setHovered] = React.useState(false);
@@ -58,7 +58,7 @@ const ImagesStack = ({ imageDetails: imageDetailsArray, pub }) => {
             </div>
             {/* <div className="">{imageDetails?.createdAt || "2:32 pm"}</div> */}
 
-            <FollowButton data={imageDetails} />
+            {/* <FollowButton data={imageDetails} /> */}
           </div>
           <div
             className={`flex justify-center items-center absolute top-[85%] left-[50%] text-center gap-[8px] tablet:w-[340px] w-[432px] h-[40px] rounded-[4px] backdrop-blur-[60px] cursor-pointer ${styles.bottomBox}`}
