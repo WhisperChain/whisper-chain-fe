@@ -153,13 +153,13 @@ const Chain = () => {
   return isLoading ? (
     <SpinningLoader height="80vh" width="100%" />
   ) : (
-    <div className="w-fit m-auto">
-      <div className="flex justify-between relative">
+    <div className="w-fit m-auto h-[calc(100vh-160px)]">
+      <div className="flex justify-between items-center h-[50px]">
         <div
           onClick={() => {
             router.push("/");
           }}
-          className="flex flex-row items-start not-italic font-medium text-[16px] leading-[140%] text-center text-[#0000003C] mb-[10px] cursor-pointer"
+          className="flex flex-row items-start not-italic font-medium text-[16px] leading-[140%] text-center text-[#0000003C] cursor-pointer"
         >
           <svg
             width="20"
@@ -192,7 +192,7 @@ const Chain = () => {
             {moment(firstCreatedAt).format("Do MMMM YYYY")}
           </div>
         </div>
-        <div className="relative">
+        <div className="relative h-[20px]">
           <span
             onMouseEnter={() => onViewLensHover()}
             onMouseLeave={() => onViewLensHoverOff()}
