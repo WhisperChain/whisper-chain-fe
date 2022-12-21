@@ -1,13 +1,8 @@
 import React from "react";
-import { useBottomTab } from "../context/BottomTabContext";
-import { usePublicationContext } from "../context/PublicationContext";
-import { TabItems } from "./Main/TabItems";
 import styles from "./AddWhisperBtn.module.css";
 
-const ShareBtn = ({ pageIndex, publication, height, width, text }) => {
-  const { setPublication } = usePublicationContext();
+const ShareBtn = ({ pageIndex, height, width, text }) => {
   pageIndex = 1;
-  const { onTabChange } = useBottomTab();
   return (
     <a
       className={`w-[${width}px] h-[${height}px] rounded-[40px] flex items-center justify-center z-10 cursor-pointer ${styles.Buttonbg}`}

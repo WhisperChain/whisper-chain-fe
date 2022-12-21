@@ -1,25 +1,25 @@
 import React from "react";
 import ChainLogo from "../assets/ChainLogo";
 import { PostImage } from "../components/PostImage";
-import { getCommentFeed, getPublication } from "../utils/lensFunction";
+import { getPublication } from "../utils/lensFunction";
 import AddWhisperBtn from "../components/AddWhisperBtn";
 import ShareBtn from "../components/ShareBtn";
-import { convertIntoIpfsUrl, timer } from "../utils/Utils";
+import { timer } from "../utils/Utils";
 import moment from "moment";
 import SpinningLoader from "../components/SpinningLoader";
 import style from "./Chain.module.css";
-import { usePublicationContext } from "../context/PublicationContext";
 import { useRouter } from "next/router";
 import ViewLensIcon from "../assets/ViewLensIcon";
+import { getChainPageData, getChainWhispersData } from "../utils/ViewData";
 
-const Chain = () => {
+const Chain = ({ chainId }) => {
   const [chainData, setChainData] = React.useState();
   const [isLoading, setIsloading] = React.useState(false);
-  const { publication } = usePublicationContext();
   const router = useRouter();
   const [firstCreatedAt, setFirstCreatedAt] = React.useState();
   const [infoContainer, setInfoConatiner] = React.useState(true);
   const [hours, minutes] = timer("2022-12-14");
+  const [publication, setPublication] = React.useState();
   const messageBoxData = {
     onChain: {
       text: "This was the last image added to the thread, try to describe this image in your own words as best you can, and add your generation to this thread. ",
@@ -41,65 +41,16 @@ const Chain = () => {
     }
   }, [routerPath]);
 
-  const [pubId, setPubId] = React.useState();
   const [hovered, setHovered] = React.useState(false);
 
   React.useEffect(() => {
     const fetchData = async () => {
       setIsloading(true);
-      const pubItem =
-        Object.keys(publication).length > 0
-          ? publication
-          : (await getPublication("0x59cf", 1)).data.publications.items[0];
-      const pubId = publication?.pubId || pubItem.id;
-      setPubId(pubId);
-      const commentsData = (await getCommentFeed(pubId, 20)).data.publications
-        .items;
-      const commentArray = [];
-      for (let index = 0; index < commentsData.length; index++) {
-        const comment = commentsData[index];
-        const commentObject = {
-          imageUrl: comment.metadata.media[0]?.original?.url
-            ? convertIntoIpfsUrl(comment.metadata.media[0]?.original?.url)
-            : null,
-          profileHandle: comment.profile.handle,
-          name: comment.profile.name,
-          createdAt: moment(comment.createdAt).format("h:mm a") || "",
-          profileImageUrl: comment.profile.picture
-            ? convertIntoIpfsUrl(comment.profile.picture?.original?.url)
-            : `https://cdn.stamp.fyi/avatar/eth:${comment.profile.ownedBy}?s=250`,
-          lensterProfileUrl: `https://testnet.lenster.xyz/u/${comment.profile.handle}`,
-          lensterPostUrl: `https://testnet.lenster.xyz/posts/${comment.id}`,
-          profileId: comment.profile.id,
-          isFollowedByMe: comment.profile.isFollowedByMe,
-          followModule: comment.profile.followModule,
-          collectModule: comment.collectModule,
-          hasCollectedByMe: comment.hasCollectedByMe,
-          publicationId: comment.id,
-        };
-        commentArray.push(commentObject);
-      }
-      commentArray.push({
-        imageUrl: pubItem.metadata.media[0]?.original?.url
-          ? convertIntoIpfsUrl(pubItem.metadata.media[0]?.original?.url)
-          : null,
-        profileHandle: pubItem.profile.handle,
-        name: pubItem.profile.name,
-        createdAt: moment(pubItem?.createdAt)?.format("h:mm a") || "00:00 am",
-        profileImageUrl: pubItem.profile.picture
-          ? convertIntoIpfsUrl(pubItem.profile.picture?.original?.url)
-          : `https://cdn.stamp.fyi/avatar/eth:${pubItem.profile.ownedBy}?s=250`,
-        lensterProfileUrl: `https://testnet.lenster.xyz/u/${pubItem.profile.handle}`,
-        lensterPostUrl: `https://testnet.lenster.xyz/posts/${pubItem.id}`,
-        profileId: pubItem.profile.id,
-        isFollowedByMe: pubItem.profile.isFollowedByMe,
-        followModule: pubItem.profile.followModule,
-        collectModule: pubItem.collectModule,
-        hasCollectedByMe: pubItem.hasCollectedByMe,
-        publicationId: pubItem.id,
-      });
+      const { pubItem, commentArray } = await getChainWhispersData(chainId);
+      // const {commentArray, pubItem} = await getChainPageData();
 
       setFirstCreatedAt(pubItem.createdAt);
+      setPublication(pubItem);
       setChainData(commentArray);
       setIsloading(false);
     };
@@ -200,7 +151,7 @@ const Chain = () => {
             className={`absolute flex ${style.viewOnLensContainer}`}
           >
             <a
-              href={`${viewLensUrl}/${pubId}`}
+              href={`${viewLensUrl}/${publication?.id}`}
               className="flex"
               target="_blank"
             >
@@ -301,13 +252,7 @@ const Chain = () => {
           </div>
           <div>
             {isGenerated ? (
-              <ShareBtn
-                pageIndex={1}
-                publication={publication}
-                height={40}
-                width={432}
-                text="Share"
-              />
+              <ShareBtn pageIndex={1} height={40} width={432} text="Share" />
             ) : (
               <AddWhisperBtn
                 pageIndex={1}

@@ -3,7 +3,7 @@ import React from "react";
 import HomeMessage from "../components/HomeMessage";
 import ImagesStack from "../components/ImagesStack";
 import Link from "../assets/Link";
-import { getLastCommentsOfPosts } from "../utils/lensFunction";
+import { getChainData, getLastCommentsOfPosts } from "../utils/ViewData";
 import SpinningLoader from "../components/SpinningLoader";
 import moment from "moment";
 import { getTimerClock } from "../utils/Utils";
@@ -14,8 +14,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 // Import Swiper styles
 import "swiper/css";
 import "swiper/css/effect-creative";
-import "swiper/css/effect-creative"
-
+import "swiper/css/effect-creative";
 
 // import required modules
 import { Mousewheel, EffectCreative } from "swiper";
@@ -32,7 +31,8 @@ const Home = () => {
   React.useEffect(() => {
     async function fetchData() {
       setIsloading(true);
-      const data = await getLastCommentsOfPosts("0x59cf");
+      const data = await getChainData();
+      // const data = await getLastCommentsOfPosts("0x59cf");
       setPublicationData(data);
       setIsloading(false);
     }
@@ -50,7 +50,9 @@ const Home = () => {
               <div
                 className={`h-[22px] text-[16px] not-italic font-medium leading-[140%] ${styles.Date}`}
               >
-                {moment(publicationData[currentSlideIndex]?.createdAt).format("Do MMMM YYYY")}
+                {moment(publicationData[currentSlideIndex]?.createdAt).format(
+                  "Do MMMM YYYY"
+                )}
               </div>
             </div>
             <Swiper
@@ -73,25 +75,22 @@ const Home = () => {
                 },
               }}
               modules={[Mousewheel, EffectCreative]}
-              onSlideChange={(swiper) => setCurrentSlideIndex(swiper.activeIndex)}
+              onSlideChange={(swiper) =>
+                setCurrentSlideIndex(swiper.activeIndex)
+              }
             >
               {publicationData &&
-                publicationData.map(
-                  (
-                    pub,
-                    index
-                  ) => (
-                    <SwiperSlide key={pub?.pubId + index}>
-                      <div className={`${SEL} absolute top-0`}>
-                        <div className="slide w-full flex justify-start relative">
-                          {pub?.comments[0] ? (
-                            <ImagesStack imageDetails={pub?.comments} pub={pub} />
-                          ) : null}
-                        </div>
+                publicationData.map((pub, index) => (
+                  <SwiperSlide key={pub?.pubId + index}>
+                    <div className={`${SEL} absolute top-0`}>
+                      <div className="slide w-full flex justify-start relative">
+                        {pub?.comments[0] ? (
+                          <ImagesStack imageDetails={pub?.comments} pub={pub} />
+                        ) : null}
                       </div>
-                    </SwiperSlide>
-                  )
-                )}
+                    </div>
+                  </SwiperSlide>
+                ))}
             </Swiper>
           </div>
         </div>

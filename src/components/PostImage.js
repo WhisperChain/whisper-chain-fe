@@ -71,9 +71,13 @@ export const PostImage = ({ imageDetails }) => {
                 </div>
               </div>
             </div>
-            {/* <div className="">{imageDetails?.createdAt || "2:32 pm"}</div> */}
+            <div
+              className={`not-italic leading-[100%] text-[#FFFFFF] font-bold text-[17px] ${styles.name}`}
+            >
+              {imageDetails?.createdAt || "2:32 pm"}
+            </div>
 
-            <FollowButton data={imageDetails} />
+            {/* <FollowButton data={imageDetails} /> */}
           </div>
           <div
             className={`flex justify-center items-center absolute top-[85%] left-[50%] text-center gap-[8px] w-[432px] -translate-x-[50%]`}

@@ -16,10 +16,11 @@ const ImagesStack = ({ imageDetails: imageDetailsArray, pub }) => {
   return (
     <div className="flex flex-col items-center relative">
       {imageDetails?.imageUrl && (
-        <div className="tablet:w-[400px] tablet:h-[400px] w-[512px] h-[512px] relative"
+        <div
+          className="tablet:w-[400px] tablet:h-[400px] w-[512px] h-[512px] relative"
           onMouseEnter={() => setHovered(true)}
           onMouseLeave={() => setHovered(false)}
-          >
+        >
           <Image
             src={imageDetails.imageUrl}
             alt="Stack Image"
@@ -53,15 +54,19 @@ const ImagesStack = ({ imageDetails: imageDetailsArray, pub }) => {
                 </div>
               </div>
             </div>
-            {/* <div className="">{imageDetails?.createdAt || "2:32 pm"}</div> */}
+            <div
+              className={`not-italic text-[16px] leading-[100%] text-[#FFFFFF] font-medium ${styles.createdAt}`}
+            >
+              {imageDetails?.createdAt || "2:32 pm"}
+            </div>
 
-            <FollowButton data={imageDetails} />
+            {/* <FollowButton data={imageDetails} /> */}
           </div>
           <div
             className={`flex justify-center items-center absolute top-[85%] left-[50%] text-center gap-[8px] tablet:w-[340px] w-[432px] h-[40px] rounded-[4px] backdrop-blur-[60px] cursor-pointer ${styles.bottomBox}`}
             onClick={() => {
               setPublication(pub);
-              router.push("/chain");
+              router.push(`/chain/${pub?.chainId}`);
             }}
           >
             <div

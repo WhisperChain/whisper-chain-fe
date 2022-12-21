@@ -22,7 +22,7 @@ function Generate() {
   const { publication } = usePublicationContext();
   const router = useRouter();
   const [promptText, setPromptText] = React.useState("");
-  const [promtEmpty,setPromtEmpty] = React.useState(false);
+  const [promtEmpty, setPromtEmpty] = React.useState(false);
   const [urls, setUrls] = React.useState([]);
   const [pubsId, setPubsId] = React.useState();
   const [isLoading, setIsloading] = React.useState(false);
@@ -46,7 +46,7 @@ function Generate() {
       setPreviousImageUrl(
         convertIntoIpfsUrl(
           comment.metadata.media[0].original.url ??
-          pub.metadata.media[0].original.url
+            pub.metadata.media[0].original.url
         )
       );
     };
@@ -68,29 +68,28 @@ function Generate() {
   };
 
   const generateImageClickHandler = async () => {
-    if(regex.test(promptText)){
+    if (regex.test(promptText)) {
       alert("Prompt can not contain special characters");
-    }
-    else{
-       if (urls.length < 5) {
-      setUrls([1, ...urls]);
-      setEmptyState(false);
-      setIsloading(true);
-      const response = await getImagesFromPrompt(promptText, selectedFilter);
-      const suggestionIds = response.suggestions_ids;
-      const suggestions = response.suggestions;
-      const images = [];
-      {
-        suggestionIds.map((id) => {
-          const suggestion = suggestions[id];
-          images.push(suggestion?.image_url);
-        });
-      }
-      const newUrls = [images, ...urls];
+    } else {
+      if (urls.length < 5) {
+        setUrls([1, ...urls]);
+        setEmptyState(false);
+        setIsloading(true);
+        const response = await getImagesFromPrompt(promptText, selectedFilter);
+        const suggestionIds = response.suggestions_ids;
+        const suggestions = response.suggestions;
+        const images = [];
+        {
+          suggestionIds.map((id) => {
+            const suggestion = suggestions[id];
+            images.push(suggestion?.image_url);
+          });
+        }
+        const newUrls = [images, ...urls];
 
-      setUrls(newUrls);
-      setIsloading(false);
-    }
+        setUrls(newUrls);
+        setIsloading(false);
+      }
     }
   };
 
@@ -125,19 +124,20 @@ function Generate() {
             <div className="flex flex-col items-start p-0 gap-[8px] w-auto">
               <div className={styles.mainText}>Enter prompt</div>
               <textarea
-                className={`${styles.promptInput} text-sm shadow-sm placeholder-[#1d0545b8]
+                className={`${
+                  styles.promptInput
+                } text-sm shadow-sm placeholder-[#1d0545b8]
                   focus:outline-none focus:border-[#6f1aff3d] focus:ring-1 
                   ${promtEmpty ? "focus:ring-[red]" : "focus:ring-[#6f1aff3d]"}
                 `}
                 placeholder="Enter your prompt here to generate your very own whisper"
                 value={promptText}
                 onChange={(e) => {
-                  setPromptText(e.target.value)
-                  if (!e.target.value.replace(/\s/g, '').length) {
-                    setPromtEmpty(true)
-                    }
-                  else{
-                    setPromtEmpty(false)
+                  setPromptText(e.target.value);
+                  if (!e.target.value.replace(/\s/g, "").length) {
+                    setPromtEmpty(true);
+                  } else {
+                    setPromtEmpty(false);
                   }
                 }}
               ></textarea>
@@ -167,10 +167,11 @@ function Generate() {
           </div>
           {/* Generate Image Button */}
           <div
-            className={`w-full absolute bottom-[16px] ${promptText === "" || promtEmpty
-              ? "opacity-50 cursor-not-allowed	pointer-events-none"
-              : ""
-              }`}
+            className={`w-full absolute bottom-[16px] ${
+              promptText === "" || promtEmpty
+                ? "opacity-50 cursor-not-allowed	pointer-events-none"
+                : ""
+            }`}
           >
             <div
               className="flex items-center cursor-pointer"
@@ -198,34 +199,40 @@ function Generate() {
         {/* Image Gallery */}
         <div className={styles.imageGalleryContainer}>
           <div className={styles.galleryMainText}>Your generations</div>
-          {
-            urls.map((url, index) => (
-              <div className={styles.imageTryOutputBox} key={index}>
-                <div className="flex items-center justify-center w-full gap-[12px]">
-                  <GeneratedImageBox
-                    imgSrcUrl={url[0]}
-                    clickHandler={() => onImageClickHandler(url[0])}
-                  />
-                  <GeneratedImageBox
-                    imgSrcUrl={url[1]}
-                    clickHandler={() => onImageClickHandler(url[1])}
-                  />
-                </div>
+          {urls.map((url, index) => (
+            <div className={styles.imageTryOutputBox} key={index}>
+              <div className="flex items-center justify-center w-full gap-[12px]">
+                <GeneratedImageBox
+                  imgSrcUrl={url[0]}
+                  clickHandler={() => onImageClickHandler(url[0])}
+                />
+                <GeneratedImageBox
+                  imgSrcUrl={url[1]}
+                  clickHandler={() => onImageClickHandler(url[1])}
+                />
               </div>
-            ))
-          }
-          {emptyState &&
-            <div className="overflow-hidden w-full">{
-              [...Array(2)].map((index) => (
+            </div>
+          ))}
+          {emptyState && (
+            <div className="overflow-hidden w-full">
+              {[...Array(2)].map((index) => (
                 <div className={styles.imageTryOutputBox} key={index}>
                   <div className="flex items-start justify-start gap-[12px] w-full">
-                    <div className={`flex items-center justify-center w-[402px] h-[402px] relative group ${styles.defaultState}`}><EmptyStateLogo /> </div>
-                    <div className={`flex items-center justify-center w-[402px] h-[402px] relative group ${styles.defaultState}`}><EmptyStateLogo /></div>
+                    <div
+                      className={`flex items-center justify-center w-[402px] h-[402px] relative group ${styles.defaultState}`}
+                    >
+                      <EmptyStateLogo />
+                    </div>
+                    <div
+                      className={`flex items-center justify-center w-[402px] h-[402px] relative group ${styles.defaultState}`}
+                    >
+                      <EmptyStateLogo />
+                    </div>
                   </div>
                 </div>
-              ))
-            }</div>
-          }
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </div>
