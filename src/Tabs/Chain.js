@@ -222,66 +222,67 @@ const Chain = () => {
           </span>
         </div>
       </div>
-      <div className="flex justify-center sticky top-[150px] z-[1000]">
-        <a
-          onClick={() => {
-            console.log("clicked");
-            dContainer.scrollTo(0, 100000);
-          }}
-          id="gopToTop"
-          className={`rounded-[20px] flex z-[10000] items-center justify-center ${style.bottomButton}`}
-        >
-          <svg
-            width="21"
-            height="20"
-            viewBox="0 0 21 20"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M16.75 7.5L10.5 13.75L4.25 7.5"
-              stroke="black"
-              strokeOpacity="0.6"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-          <span className="ml-[10px]">Go to bottom</span>
-        </a>
-        <a
-          onClick={() => {
-            console.log("clicked");
-            dContainer.scrollTo(0, 0);
-          }}
-          id="lastImage"
-          className={`rounded-[20px] ml-[20px] flex z-[10000] items-center justify-center ${style.lastImageButton}`}
-        >
-          <svg
-            width="20"
-            height="20"
-            viewBox="0 0 20 20"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M16.25 13.75L10 7.5L3.75 13.75"
-              stroke="black"
-              strokeOpacity="0.6"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-          <span className="ml-[10px]">Back to top</span>
-        </a>
-      </div>
+
       <div
         id="demmoId"
         onScroll={onScroll}
         className={`overflow-scroll ${style.chainContainer}`}
         ref={buttonRef}
       >
+        <div className="flex justify-center sticky top-[5px] z-[1000]">
+          <a
+            onClick={() => {
+              console.log("clicked");
+              dContainer.scrollTo(0, 100000);
+            }}
+            id="gopToTop"
+            className={`rounded-[20px] flex z-[10000] items-center justify-center ${style.bottomButton}`}
+          >
+            <svg
+              width="21"
+              height="20"
+              viewBox="0 0 21 20"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M16.75 7.5L10.5 13.75L4.25 7.5"
+                stroke="black"
+                strokeOpacity="0.6"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+            <span className="ml-[10px]">Go to bottom</span>
+          </a>
+          <a
+            onClick={() => {
+              console.log("clicked");
+              dContainer.scrollTo(0, 0);
+            }}
+            id="lastImage"
+            className={`rounded-[20px] ml-[20px] flex z-[10000] items-center justify-center ${style.lastImageButton}`}
+          >
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 20 20"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M16.25 13.75L10 7.5L3.75 13.75"
+                stroke="black"
+                strokeOpacity="0.6"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+            <span className="ml-[10px]">Back to top</span>
+          </a>
+        </div>
         <div
           className={`w-[512px] h-[222px] flex flex-col items-center rounded-[32px] box-border ${style.messageBox}`}
         >
