@@ -11,24 +11,24 @@ export default function WhisperImage({
   classes,
   onLoadingCompleteHandler
 }) {
-  const shimmer = (w, h) => `
-    <svg width="${w}" height="${h}" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-      <defs>
-        <linearGradient id="g">
-          <stop stopColor="#ead9d966" offset="10%"/>
-          <stop stopColor="#ead9d966" offset="50%"/>
-          <stop stopColor="#ead9d966" offset="70%"/>
-        </linearGradient>
-      </defs>
-      <rect width="${w}" height="${h}" fill="#ead9d966"/>
-      <rect id="r" width="${w}" height="${h}" fill="url(#g)"/>
-    </svg>
-  `;
+  // const shimmer = (w, h) => `
+  //   <svg width="${w}" height="${h}" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  //     <defs>
+  //       <linearGradient id="g">
+  //         <stop stopColor="#ead9d966" offset="10%"/>
+  //         <stop stopColor="#ead9d966" offset="50%"/>
+  //         <stop stopColor="#ead9d966" offset="70%"/>
+  //       </linearGradient>
+  //     </defs>
+  //     <rect width="${w}" height="${h}" fill="#ead9d966"/>
+  //     <rect id="r" width="${w}" height="${h}" fill="url(#g)"/>
+  //   </svg>
+  // `;
 
-  const toBase64 = (str) =>
-    typeof window === 'undefined'
-      ? Buffer.from(str).toString('base64')
-      : window.btoa(str)
+  // const toBase64 = (str) =>
+  //   typeof window === 'undefined'
+  //     ? Buffer.from(str).toString('base64')
+  //     : window.btoa(str)
 
   return (
     <>
@@ -46,8 +46,8 @@ export default function WhisperImage({
           className={`${classes} object-contain`}
           alt={alt}
           fill
-          placeholder="blur"
-          blurDataURL={`data:image/svg+xml;base64,${toBase64(shimmer(width, height))}`}
+          // placeholder="blur"
+          // blurDataURL={`data:image/svg+xml;base64,${toBase64(shimmer(width, height))}`}
           onLoadingComplete={onLoadingCompleteHandler}
         />)
       }
