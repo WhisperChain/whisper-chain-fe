@@ -1,5 +1,6 @@
 import { useBottomTab } from "../../context/BottomTabContext";
 import BottomTabSelector from "../BottomTabSelector";
+import BottomInfo from "../BottomTabSelector/BottomInfo";
 import Header from "../Header";
 import styles from "./Main.module.css";
 
@@ -11,6 +12,7 @@ export default function Main() {
       <Header />
       <Component />
       <BottomTabSelector />
+      <BottomInfo/>
     </div>
   );
 }
