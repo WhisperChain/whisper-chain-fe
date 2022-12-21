@@ -12,6 +12,8 @@ export default function WhisperImage({
   classes,
   onLoadingCompleteHandler
 }) {
+  const [imgLoadingError, setImgLoadingError] = React.useState(false);
+
   const shimmer = (w, h) => `
     <svg width="${w}" height="${h}" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
       <defs>
@@ -41,26 +43,30 @@ export default function WhisperImage({
           >
             <ImageLoader height={height} width={width} />
           </div >
-         
-        //  error state when image is not loaded
-            // <div className={`overflow-hidden w-full flex items-center justify-center rounded-[8px] ${styles.Errorstate}`}>
-            //   <div className={`flex items-center justify-center w-[402px] h-[402px] relative group text-[#FF0000] not-italic font-medium text-[14px] leading-[160%]`}>An error occurred. Please try again</div>
-            // </div>
-
-
-        ) : (<Image
-          src={imgSrcUrl}
-          priority={priority}
-          className={`${classes} object-contain`}
-          alt={alt}
-          fill
-          sizes="(max-width: 768px) 100vw,
-              (max-width: 1200px) 50vw,
-              33vw"
-          // placeholder="blur"
-          // blurDataURL={`data:image/svg+xml;base64,${toBase64(shimmer(width, height))}`}
-          onLoadingComplete={onLoadingCompleteHandler}
-        />)
+        ) : (
+          <>
+            {
+              imgLoadingError ? (
+                <div className={`overflow-hidden w-full flex items-center justify-center rounded-[8px] ${styles.Errorstate}`} >
+                  <div className={`flex items-center justify-center w-[402px] h-[402px] relative group text-[#FF0000] not-italic font-medium text-[14px] leading-[160%]`}>An error occurred. Please try again</div>
+                </div>
+              ) : (
+                <Image
+                  src={imgSrcUrl}
+                  priority={priority}
+                  className={`${classes} object-contain`}
+                  alt={alt}
+                  fill
+                  sizes="(max-width: 768px) 100vw,
+                      (max-width: 1200px) 50vw,
+                      33vw"
+                  onLoadingComplete={onLoadingCompleteHandler}
+                  onError={() => setImgLoadingError(true)}
+                />
+              )
+            }
+          </>
+        )
       }
     </>
   )
