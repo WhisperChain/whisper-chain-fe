@@ -5,9 +5,11 @@ import styles from "./ChainPage.module.css";
 
 export default function ChainPage() {
   return (
-    <div className={styles.Page}>
+    <div className={styles.pageWrapper}>
       <Header />
-      <Chain />
+      <div className={styles.componentWrapper}>
+        <Chain />
+      </div>
       <BottomTabSelector />
     </div>
   );

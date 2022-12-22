@@ -11,7 +11,7 @@ import SignInModal from "../SignInModal";
 export default function GeneratedImageBox({ imgSrcUrl, clickHandler }) {
   const [isHover, setIsHover] = React.useState(false);
   const [isImageLoaded, setIsImageloaded] = React.useState(false);
-
+  const [addToChainClicked , setAddToChainClicked] = React.useState(false);
   const [open, setOpen] = React.useState(false);
   const [signInOpen, setSignInOpen] = React.useState(false);
   const handleClose = () => {
@@ -113,9 +113,15 @@ export default function GeneratedImageBox({ imgSrcUrl, clickHandler }) {
           </div>
           <div
             className="flex gap-[8px] w-full justify-start items-center"
-            onClick={clickHandler}
+            onClick={() => {
+              setAddToChainClicked(true)
+              clickHandler()
+            }}
           >
-            <div className={styles.addToChainButton}>
+            <div className={`${styles.addToChainButton} ${addToChainClicked
+              ? "opacity-50 cursor-not-allowed	pointer-events-none"
+              : ""
+              }`}>
               <div className={styles.addToChainBtnText}>+ Add to chain</div>
             </div>
           </div>

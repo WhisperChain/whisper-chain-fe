@@ -5,7 +5,7 @@ import Image from "next/image";
 import styles from "./ImageStack.module.css";
 import EyeIcon from "../assets/EyeIcon";
 import { useRouter } from "next/router";
-import FollowButton from "./FollowButton";
+// import FollowButton from "./FollowButton";
 
 const ImagesStack = ({ imageDetails: imageDetailsArray, pub }) => {
   const [hovered, setHovered] = React.useState(false);
@@ -19,13 +19,16 @@ const ImagesStack = ({ imageDetails: imageDetailsArray, pub }) => {
         <div className="tablet:w-[400px] tablet:h-[400px] w-[512px] h-[512px] relative"
           onMouseEnter={() => setHovered(true)}
           onMouseLeave={() => setHovered(false)}
-          >
+        >
           <Image
             src={imageDetails.imageUrl}
             alt="Stack Image"
             fill
             priority
             className="relative flex z-[3] rounded-[48px]"
+            sizes="(max-width: 768px) 100vw,
+              (max-width: 1200px) 50vw,
+              33vw"
           />
         </div>
       )}
@@ -55,7 +58,7 @@ const ImagesStack = ({ imageDetails: imageDetailsArray, pub }) => {
             </div>
             {/* <div className="">{imageDetails?.createdAt || "2:32 pm"}</div> */}
 
-            <FollowButton data={imageDetails} />
+            {/* <FollowButton data={imageDetails} /> */}
           </div>
           <div
             className={`flex justify-center items-center absolute top-[85%] left-[50%] text-center gap-[8px] tablet:w-[340px] w-[432px] h-[40px] rounded-[4px] backdrop-blur-[60px] cursor-pointer ${styles.bottomBox}`}
@@ -84,6 +87,9 @@ const ImagesStack = ({ imageDetails: imageDetailsArray, pub }) => {
                 ? imageDetailsArray[1].imageUrl
                 : "https://i.picsum.photos/id/193/512/512.jpg?hmac=ay70CF2_XM0GJBcUQzMN6UNHDn0-kgSIu8KcENreNgM"
             }
+            sizes="(max-width: 768px) 100vw,
+              (max-width: 1200px) 50vw,
+              33vw"
           />
         </div>
       </div>
@@ -98,6 +104,9 @@ const ImagesStack = ({ imageDetails: imageDetailsArray, pub }) => {
                 ? imageDetailsArray[2].imageUrl
                 : "https://i.picsum.photos/id/524/512/512.jpg?hmac=2VlA0x6Y7osphrvDzR52TVkYjcc493rqcizd8HEXphY"
             }
+            sizes="(max-width: 768px) 100vw,
+              (max-width: 1200px) 50vw,
+              33vw"
           />
         </div>
       </div>

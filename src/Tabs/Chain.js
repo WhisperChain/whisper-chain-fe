@@ -112,7 +112,7 @@ const Chain = () => {
   const buttonRef = React.useRef();
   let dContainer = buttonRef.current;
   const onScroll = () => {
-    if (buttonRef.current?.scrollTop > 0) {
+    if (buttonRef.current?.scrollTop > 200) {
       increaseOpacity();
     } else {
       decreaseOpacity();
@@ -129,7 +129,7 @@ const Chain = () => {
   const onViewLensHoverOff = () => {
     let viewlensContainer = document.getElementById("viewlensContainer");
     if (viewlensContainer) {
-      viewlensContainer.style.left = "0";
+      viewlensContainer.style.left = "0px";
     }
   };
 
@@ -153,13 +153,13 @@ const Chain = () => {
   return isLoading ? (
     <SpinningLoader height="80vh" width="100%" />
   ) : (
-    <div>
-      <div className="flex justify-between relative top-[20px]">
+    <div className="w-fit m-auto h-[calc(100vh-160px)]">
+      <div className="flex justify-between items-center h-[50px]">
         <div
           onClick={() => {
             router.push("/");
           }}
-          className="flex flex-row items-start not-italic font-medium text-[16px] leading-[140%] text-center text-[#0000003C] mb-[10px] cursor-pointer"
+          className="flex flex-row items-start not-italic font-medium text-[16px] leading-[140%] text-center text-[#0000003C] cursor-pointer"
         >
           <svg
             width="20"
@@ -187,12 +187,12 @@ const Chain = () => {
           </svg>
           <span className="ml-[12px] hover:text-[#000000]">Back</span>
         </div>
-        <div className="flex flex-col items-center sticky decoration-white">
+        <div className="flex flex-col items-center sticky ml-[-32px] decoration-white">
           <div className="not-italic font-medium text-[16px] leading-[140%] tracking-[-0.03em] text-[#000000] ">
             {moment(firstCreatedAt).format("Do MMMM YYYY")}
           </div>
         </div>
-        <div className="relative">
+        <div className="relative h-[20px]">
           <span
             onMouseEnter={() => onViewLensHover()}
             onMouseLeave={() => onViewLensHoverOff()}
@@ -205,7 +205,7 @@ const Chain = () => {
               target="_blank"
             >
               <span
-                className="viewOnLens"
+                className="relative ml-[-20px]"
                 onMouseEnter={() => setHovered(true)}
                 onMouseLeave={() => setHovered(false)}
               >
@@ -222,66 +222,67 @@ const Chain = () => {
           </span>
         </div>
       </div>
-      <div className="flex justify-center sticky top-[150px] z-[1000]">
-        <a
-          onClick={() => {
-            console.log("clicked");
-            dContainer.scrollTo(0, 100000);
-          }}
-          id="gopToTop"
-          className={`rounded-[20px] flex z-[10000] items-center justify-center ${style.bottomButton}`}
-        >
-          <svg
-            width="21"
-            height="20"
-            viewBox="0 0 21 20"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M16.75 7.5L10.5 13.75L4.25 7.5"
-              stroke="black"
-              strokeOpacity="0.6"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-          <span className="ml-[10px]">Go to bottom</span>
-        </a>
-        <a
-          onClick={() => {
-            console.log("clicked");
-            dContainer.scrollTo(0, 0);
-          }}
-          id="lastImage"
-          className={`rounded-[20px] ml-[20px] flex z-[10000] items-center justify-center ${style.lastImageButton}`}
-        >
-          <svg
-            width="20"
-            height="20"
-            viewBox="0 0 20 20"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M16.25 13.75L10 7.5L3.75 13.75"
-              stroke="black"
-              strokeOpacity="0.6"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-          <span className="ml-[10px]">Back to top</span>
-        </a>
-      </div>
+
       <div
         id="demmoId"
         onScroll={onScroll}
         className={`overflow-scroll ${style.chainContainer}`}
         ref={buttonRef}
       >
+        <div className="flex justify-center sticky top-[5px] z-[1000]">
+          <a
+            onClick={() => {
+              console.log("clicked");
+              dContainer.scrollTo(0, 100000);
+            }}
+            id="gopToTop"
+            className={`rounded-[20px] flex z-[10000] items-center justify-center ${style.bottomButton}`}
+          >
+            <svg
+              width="21"
+              height="20"
+              viewBox="0 0 21 20"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M16.75 7.5L10.5 13.75L4.25 7.5"
+                stroke="black"
+                strokeOpacity="0.6"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+            <span className="ml-[10px]">Go to bottom</span>
+          </a>
+          <a
+            onClick={() => {
+              console.log("clicked");
+              dContainer.scrollTo(0, 0);
+            }}
+            id="lastImage"
+            className={`rounded-[20px] ml-[20px] flex z-[10000] items-center justify-center ${style.lastImageButton}`}
+          >
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 20 20"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M16.25 13.75L10 7.5L3.75 13.75"
+                stroke="black"
+                strokeOpacity="0.6"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+            <span className="ml-[10px]">Back to top</span>
+          </a>
+        </div>
         <div
           className={`w-[512px] h-[222px] flex flex-col items-center rounded-[32px] box-border ${style.messageBox}`}
         >

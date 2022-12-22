@@ -17,8 +17,8 @@ export default function BottomTabSelector() {
   const router = useRouter();
   return (
     <div  className={`flex w-full justify-between items-center ${styles.mainContainer}`}>
-        <div onClick={handleNotionClick} className={`flex relative not-italic font-medium text-[16px] ${styles.infoTab}`}>
-          <button className={`flex justify-center gap-[8.5px] items-center hover:text-[#000000]`}> <InfoLogo /> How it works</button>
+        <div className={`flex relative not-italic font-medium text-[16px] ${styles.infoTab}`}>
+          <button onClick={handleNotionClick} className={`flex justify-center gap-[8.5px] items-center hover:text-[#000000]`}> <InfoLogo /> How it works</button>
         </div>
 
           <div className={styles.container}>

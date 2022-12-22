@@ -11,7 +11,7 @@ import {
 } from "../utils/lensFunction";
 import { useSigner } from "wagmi";
 import SignTypedData from "./ConnectButton/SignTypedData";
-import FollowButton from "./FollowButton";
+// import FollowButton from "./FollowButton";
 import SignInModal from "./SignInModal";
 import { Constants } from "../utils/Constants";
 
@@ -73,7 +73,7 @@ export const PostImage = ({ imageDetails }) => {
             </div>
             {/* <div className="">{imageDetails?.createdAt || "2:32 pm"}</div> */}
 
-            <FollowButton data={imageDetails} />
+            {/* <FollowButton data={imageDetails} /> */}
           </div>
           <div
             className={`flex justify-center items-center absolute top-[85%] left-[50%] text-center gap-[8px] w-[432px] -translate-x-[50%]`}
@@ -115,7 +115,7 @@ export const PostImage = ({ imageDetails }) => {
         <SignTypedData
           typedData={typedData}
           id={transactionId.current}
-          onSuccess={() => {}}
+          onSuccess={() => { }}
         />
       ) : null}
     </div>
