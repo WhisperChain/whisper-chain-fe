@@ -9,7 +9,7 @@ const SignInModal = ({ onRequestClose, isOpen, onSignInComplete }) => {
     content: {
       background: "#FFFFFF",
       height: "fit-content",
-      width: 384,
+      width: "fit-content",
       margin: "auto",
       backdropFilter: "blur(60px)",
       borderRadius: "16px",

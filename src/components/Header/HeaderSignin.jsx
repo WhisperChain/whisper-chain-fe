@@ -30,6 +30,7 @@ const HeaderSignin = ({ handleOpen }) => {
       top: "88px",
       border: "1px solid rgba(0, 0, 0, 0.2)",
       boxShadow: "0px 8px 8px -8px rgba(0, 0, 0, 0.2), 0px 16px 24px rgba(0, 0, 0, 0.16)",
+      cursor: "pointer",
     },
     overlay: {
       background: "rgba(0, 0, 0, 0.4)",
@@ -74,7 +75,7 @@ const HeaderSignin = ({ handleOpen }) => {
               }
 
               return window?.localStorage.getItem("profileId") ? (
-                <div className="flex justify-center items-center gap-[8px] z-[111]">
+                <div className="flex justify-center items-center gap-[8px] z-[111] cursor-pointer">
                   <div className={` box-border flex justify-center items-center  py-[4px] px-[16px] w-auto h-[36px] bg-[#FFFFFF] rounded-[40px] not-italic font-bold text-[#6F1AFF] ${styles.HeaderSignInbtn}`} onClick={handleModalOpen}>
                     {JSON.parse(window.localStorage.getItem("profile"))?.handle}
                   </div>
