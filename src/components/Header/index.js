@@ -29,7 +29,7 @@ const Header = () => {
   return (
     <div
       className={
-        "px-[50px] flex-row flex justify-between relative top-[15px] items-center  w-full"
+        "px-[50px] flex-row flex justify-between items-center  w-full"
       }
       id="Header"
     >
