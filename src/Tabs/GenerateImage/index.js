@@ -162,6 +162,7 @@ function Generate() {
                 className={`${styles.promptInput} text-sm shadow-sm placeholder-[#1d0545b8]
                   focus:outline-none focus:border-[#6f1aff3d] focus:ring-1 
                   ${promtEmpty ? "focus:ring-[red]" : "focus:ring-[#6f1aff3d]"}
+                  ${disableGeneration ? "cursor-not-allowed	pointer-events-none" : ""}
                 `}
                 placeholder="Enter your prompt here to generate your very own whisper"
                 value={promptText}
@@ -189,7 +190,7 @@ function Generate() {
                 Select a style to create more refined whispers
               </div>
               <select
-                className={styles.selectBoxInput}
+                className={`${styles.selectBoxInput} ${disableGeneration ? "cursor-not-allowed	pointer-events-none" : ""}`}
                 value={selectedFilter}
                 onChange={(e) => {
                   setSelectedFilter(e.target.value);
@@ -209,7 +210,7 @@ function Generate() {
               ? "opacity-50 cursor-not-allowed	pointer-events-none"
               : ""
               } ${btnPosition}
-              ${disableGeneration ? 'opacity-25' : ''}`
+              ${disableGeneration ? 'opacity-25 cursor-not-allowed pointer-events-none' : ''}`
             }
           >
             <div
