@@ -5,7 +5,7 @@ import Image from "next/image";
 import styles from "./ImageStack.module.css";
 import EyeIcon from "../assets/EyeIcon";
 import { useRouter } from "next/router";
-import FollowButton from "./FollowButton";
+// import FollowButton from "./FollowButton";
 
 const ImagesStack = ({ imageDetails: imageDetailsArray, pub }) => {
   const [hovered, setHovered] = React.useState(false);
@@ -27,6 +27,9 @@ const ImagesStack = ({ imageDetails: imageDetailsArray, pub }) => {
             fill
             priority
             className="relative flex z-[3] rounded-[48px]"
+            sizes="(max-width: 768px) 100vw,
+              (max-width: 1200px) 50vw,
+              33vw"
           />
         </div>
       )}
@@ -89,6 +92,9 @@ const ImagesStack = ({ imageDetails: imageDetailsArray, pub }) => {
                 ? imageDetailsArray[1].imageUrl
                 : "https://i.picsum.photos/id/193/512/512.jpg?hmac=ay70CF2_XM0GJBcUQzMN6UNHDn0-kgSIu8KcENreNgM"
             }
+            sizes="(max-width: 768px) 100vw,
+              (max-width: 1200px) 50vw,
+              33vw"
           />
         </div>
       </div>
@@ -103,6 +109,9 @@ const ImagesStack = ({ imageDetails: imageDetailsArray, pub }) => {
                 ? imageDetailsArray[2].imageUrl
                 : "https://i.picsum.photos/id/524/512/512.jpg?hmac=2VlA0x6Y7osphrvDzR52TVkYjcc493rqcizd8HEXphY"
             }
+            sizes="(max-width: 768px) 100vw,
+              (max-width: 1200px) 50vw,
+              33vw"
           />
         </div>
       </div>

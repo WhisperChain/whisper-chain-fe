@@ -147,7 +147,8 @@ export async function commentViaDispatcher(
         collectModule: {
           feeCollectModule: {
             amount: {
-              currency: "0x9c3C9283D3e44854697Cd22D3Faa240Cfb032889",
+              currency: Constants.WMATIC_CURRENCY_ADDRESS,
+              //Todo: Update the value to 1.
               value: "0.01",
             },
             recipient: address,
@@ -245,28 +246,22 @@ export const requestFollow = async (profileId, followModule) => {
 };
 
 export const getApprovedModuleAllowance = async (module, signer) => {
-  let requestVariable;
-  if (module?.type?.includes("Follow")) {
-    requestVariable = module?.type
-      ? {
-          currencies: [module.amount.asset.address],
-          followModules: [module.type],
-        }
-      : {
-          currencies: ["0x9c3C9283D3e44854697Cd22D3Faa240Cfb032889"],
-          followModules: ["FeeFollowModule"],
-        };
-  } else {
-    requestVariable = module?.type
-      ? {
-          currencies: [module.amount.asset.address],
-          collectModules: [module.type],
-        }
-      : {
-          currencies: ["0x9c3C9283D3e44854697Cd22D3Faa240Cfb032889"],
-          collectModules: ["FeeCollectModule"],
-        };
-  }
+  // if (module?.type?.includes("Follow")) {
+  //   requestVariable = module?.type
+  //     ? {
+  //         currencies: [module.amount.asset.address],
+  //         followModules: [module.type],
+  //       }
+  //     : {
+  //         currencies: [Constants.WMATIC_CURRENCY_ADDRESS],
+  //         followModules: ["FeeFollowModule"],
+  //       };
+  // } else {
+  const requestVariable = {
+    currencies: [Constants.WMATIC_CURRENCY_ADDRESS],
+    collectModules: [Constants.FEE_COLLECT_MODULE],
+  };
+  // }
   const res = await apolloClient.query({
     query: gql(APPROVED_MODULE_ALLOWANCE),
     variables: {
@@ -281,12 +276,10 @@ export const getApprovedModuleAllowance = async (module, signer) => {
   });
   if (allowanceValue < 5) {
     return await collectPostTx({
-      currency:
-        module?.amount?.asset?.address ??
-        "0x9c3C9283D3e44854697Cd22D3Faa240Cfb032889",
+      currency: Constants.WMATIC_CURRENCY_ADDRESS,
       value: "100",
-      moduleType: module?.type ?? "FeeCollectModule",
-      isCollect: !module?.type?.includes("Follow"),
+      moduleType: Constants.FEE_COLLECT_MODULE,
+      isCollect: true,
       signer,
     });
   } else {
@@ -302,7 +295,7 @@ export const generateModuleCurrencyApproval = async ({
 }) => {
   const requestModule = isCollect
     ? {
-        collectModule: moduleType || "FeeCollectModule",
+        collectModule: moduleType || Constants.FEE_COLLECT_MODULE,
       }
     : {
         followModule: moduleType || "FeeFollowModule",
@@ -311,8 +304,8 @@ export const generateModuleCurrencyApproval = async ({
     query: gql(GENERATE_MODULE_CURRENCY_APPROVAL),
     variables: {
       request: {
-        currency: currency || "0x9c3C9283D3e44854697Cd22D3Faa240Cfb032889",
-        value: value || "10",
+        currency: currency || Constants.WMATIC_CURRENCY_ADDRESS,
+        value: value || "100",
         ...requestModule,
       },
     },

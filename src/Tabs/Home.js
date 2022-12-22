@@ -40,7 +40,7 @@ const Home = () => {
   }, []);
 
   return isLoading ? (
-    <SpinningLoader height="80vh" width="80%" />
+    <SpinningLoader height="80vh" width="100%" />
   ) : (
     <div className="w-full">
       <div className="flex h-[780px] relative w-fit gap-[40px] m-auto tablet:h-[650px] tablet:gap-0">
@@ -64,6 +64,9 @@ const Home = () => {
               mousewheel={{
                 eventsTarget: "#home-section",
                 releaseOnEdges: true,
+                sensitivity: 0.5,
+                thresholdDelta: 10,
+                thresholdTime: 1000
               }}
               effect={"creative"}
               creativeEffect={{

@@ -12,7 +12,7 @@ const AddWhisperBtn = ({ pageIndex, publication, height, width, text }) => {
   const { onTabChange } = useBottomTab();
   return (
     <div
-      className={`w-[${width}px] h-[${height}px] rounded-[40px] flex items-center justify-center z-10 cursor-pointer ${styles.Buttonbg}`}
+      className={`w-[${width}px] min-w-[156px] h-[${height}px] rounded-[40px] flex items-center justify-center z-10 cursor-pointer ${styles.Buttonbg}`}
       onClick={() => {
         setPublication(publication);
         if (router.route !== "/") {
@@ -21,7 +21,7 @@ const AddWhisperBtn = ({ pageIndex, publication, height, width, text }) => {
         onTabChange(TabItems[pageIndex]);
       }}
     >
-      <div className="not-italic -tracking-[0.03em] font-extrabold text-[16px] leading-[100%] text-center text-[#FFFFFF]">
+      <div className={`not-italic font-bold text-[16px] leading-[160%] text-center text-[#FFFFFF] ${styles.ButtonText}`}>
         {text}
       </div>
     </div>

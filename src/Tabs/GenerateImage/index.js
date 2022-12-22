@@ -23,6 +23,7 @@ function Generate() {
   const router = useRouter();
   const [promptText, setPromptText] = React.useState("");
   const [promtEmpty, setPromtEmpty] = React.useState(false);
+  const [specialCharacter, setSpecialCharacter] = React.useState();
   const [urls, setUrls] = React.useState([]);
   const [pubsId, setPubsId] = React.useState();
   const [isLoading, setIsloading] = React.useState(false);
@@ -46,7 +47,7 @@ function Generate() {
       setPreviousImageUrl(
         convertIntoIpfsUrl(
           comment.metadata.media[0].original.url ??
-            pub.metadata.media[0].original.url
+          pub.metadata.media[0].original.url
         )
       );
     };
@@ -69,8 +70,9 @@ function Generate() {
 
   const generateImageClickHandler = async () => {
     if (regex.test(promptText)) {
-      alert("Prompt can not contain special characters");
-    } else {
+      setSpecialCharacter(true)
+    }
+    else {
       if (urls.length < 5) {
         setUrls([1, ...urls]);
         setEmptyState(false);
@@ -93,8 +95,33 @@ function Generate() {
     }
   };
 
+  const generateImageContainerRef = React.useRef(null);
+  const [btnPosition, setBtnPosition] = React.useState("absolute");
+
+  const onScroll = () => {
+    if (generateImageContainerRef.current?.scrollTop > 0) {
+      setBtnPosition("absolute");
+    } else {
+      setBtnPosition("static");
+    }
+  };
+
+  React.useEffect(() => {
+    const { innerHeight: height } = window;
+
+    if (height <= 900) {
+      setBtnPosition("static");
+    }
+  }, []);
+
+  const [disableGeneration, setDisableGeneration] = React.useState(false);
+
   return (
-    <div className="w-full mt-[20px]">
+    <div
+      className={styles.mainContainer}
+      onScroll={onScroll}
+      ref={generateImageContainerRef}
+    >
       <div className="flex gap-[16px] justify-center items-center">
         {/* Sidebar */}
         <div className={styles.sidebarContainer}>
@@ -108,50 +135,63 @@ function Generate() {
                 Try to describe this whisper as best you can.
               </div>
             </div>
-            <div className="w-[256px] h-[256px] relative">
-              <WhisperImage
-                imgSrcUrl={previousImageUrl}
-                width={256}
-                height={256}
-                priority={true}
-                alt="Whisper Image"
-                classes="rounded-[8px]"
-              />
+            <div className="relative">
+              <div className={`w-[256px] h-[256px] relative flex justify-center items-center ${disableGeneration ? 'opacity-25' : ''}`}>
+                <WhisperImage
+                  imgSrcUrl={previousImageUrl}
+                  width={256}
+                  height={256}
+                  priority={true}
+                  alt="Whisper Image"
+                  classes="rounded-[8px]"
+                />
+              </div>
+              {/* Disabled state when User cannot post(if last post by same user) */}
+              {disableGeneration &&
+                <div className={`flex justify-center items-center w-[200px] h-[82px] relative bg-[#FFFFFF] rounded-[8px] text-center ${styles.errorStateBox}`}>
+                  <span className="not-italic text-[14px] font-medium m-[8px]">Previous whisper was added by you. Please come back later to add a whisper again</span>
+                </div>
+              }
             </div>
           </div>
           {/* Generate Image form (prompt and filter option) */}
-          <div className="w-full">
+          <div className={`w-full  ${disableGeneration ? 'opacity-25' : ''}`}>
             <div className="flex flex-col items-start p-0 gap-[8px] w-auto">
               <div className={styles.mainText}>Enter prompt</div>
               <textarea
-                className={`${
-                  styles.promptInput
-                } text-sm shadow-sm placeholder-[#1d0545b8]
+                className={`${styles.promptInput
+                  } text-sm shadow-sm placeholder-[#1d0545b8]
                   focus:outline-none focus:border-[#6f1aff3d] focus:ring-1 
                   ${promtEmpty ? "focus:ring-[red]" : "focus:ring-[#6f1aff3d]"}
+                  ${disableGeneration ? "cursor-not-allowed	pointer-events-none" : ""}
                 `}
                 placeholder="Enter your prompt here to generate your very own whisper"
                 value={promptText}
                 onChange={(e) => {
-                  setPromptText(e.target.value);
-                  if (!e.target.value.replace(/\s/g, "").length) {
-                    setPromtEmpty(true);
-                  } else {
-                    setPromtEmpty(false);
+                  setPromptText(e.target.value)
+                  setSpecialCharacter(false)
+                  if (!e.target.value.replace(/\s/g, '').length) {
+                    setPromtEmpty(true)
+                  }
+                  else {
+                    setPromtEmpty(false)
                   }
                 }}
               ></textarea>
+              {specialCharacter &&
+                <span className="text-[#cf3838] text-[12px]">Prompt can not contain special characters</span>
+              }
             </div>
           </div>
           {/* Select filter option */}
-          <div className="w-full">
+          <div className={`w-full  ${disableGeneration ? 'opacity-25' : ''}`}>
             <div className="box-border">
               <div className={styles.mainText}>Filter</div>
               <div className={`${styles.subText} mb-[8px]`}>
                 Select a style to create more refined whispers
               </div>
               <select
-                className={styles.selectBoxInput}
+                className={`${styles.selectBoxInput} ${disableGeneration ? "cursor-not-allowed	pointer-events-none" : ""}`}
                 value={selectedFilter}
                 onChange={(e) => {
                   setSelectedFilter(e.target.value);
@@ -167,11 +207,12 @@ function Generate() {
           </div>
           {/* Generate Image Button */}
           <div
-            className={`w-full absolute bottom-[16px] ${
-              promptText === "" || promtEmpty
-                ? "opacity-50 cursor-not-allowed	pointer-events-none"
-                : ""
-            }`}
+            className={`w-full bottom-[16px] ${promptText === "" || promtEmpty
+              ? "opacity-50 cursor-not-allowed	pointer-events-none"
+              : ""
+              } ${btnPosition}
+              ${disableGeneration ? 'opacity-25 cursor-not-allowed pointer-events-none' : ''}`
+            }
           >
             <div
               className="flex items-center cursor-pointer"
@@ -199,43 +240,46 @@ function Generate() {
         {/* Image Gallery */}
         <div className={styles.imageGalleryContainer}>
           <div className={styles.galleryMainText}>Your generations</div>
-          {urls.map((url, index) => (
-            <div className={styles.imageTryOutputBox} key={index}>
-              <div className="flex items-center justify-center w-full gap-[12px]">
-                <GeneratedImageBox
-                  imgSrcUrl={url[0]}
-                  clickHandler={() => onImageClickHandler(url[0])}
-                />
-                <GeneratedImageBox
-                  imgSrcUrl={url[1]}
-                  clickHandler={() => onImageClickHandler(url[1])}
-                />
+          {
+            urls.map((url, index) => (
+              <div className={styles.imageTryOutputBox} key={index}>
+                <div className="flex items-center justify-center w-full gap-[12px]">
+                  <GeneratedImageBox
+                    imgSrcUrl={url[0]}
+                    key={index}
+                    clickHandler={() => onImageClickHandler(url[0])}
+                  />
+                  <GeneratedImageBox
+                    imgSrcUrl={url[1]}
+                    key={index}
+                    clickHandler={() => onImageClickHandler(url[1])}
+                  />
+                </div>
               </div>
             </div>
           ))}
-          {emptyState && (
-            <div className="overflow-hidden w-full">
-              {[...Array(2)].map((index) => (
-                <div className={styles.imageTryOutputBox} key={index}>
-                  <div className="flex items-start justify-start gap-[12px] w-full">
-                    <div
-                      className={`flex items-center justify-center w-[402px] h-[402px] relative group ${styles.defaultState}`}
-                    >
-                      <EmptyStateLogo />
-                    </div>
-                    <div
-                      className={`flex items-center justify-center w-[402px] h-[402px] relative group ${styles.defaultState}`}
-                    >
-                      <EmptyStateLogo />
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-      </div>
-    </div>
+        {emptyState && (
+          <div className="overflow-hidden w-full">
+            {[...Array(2)].map((index) => (
+              <div className={styles.imageTryOutputBox} key={index}>
+                <div className="flex items-start justify-start gap-[12px] w-full">
+                  {
+                    [...Array(2)].map((index) => (
+                      <div key={index} className={`flex items-center justify-center w-[402px] h-[402px] relative group ${styles.defaultState}`}>
+                        <EmptyStateLogo />
+                      </div>
+                    ))
+                  }
+                </div >
+              </div >
+            ))
+            }
+          </div >
+        )
+        }
+      </div >
+    </div >
+    </div >
   );
 }
 
