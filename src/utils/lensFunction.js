@@ -20,6 +20,7 @@ import {
   SET_DISPATCHER,
   TRANSACTION_INDEXED,
   VERIFY_AUTHENTICATION,
+  CREATE_PROFILE,
 } from "./gqlqueries";
 import moment from "moment";
 import { convertIntoIpfsUrl } from "./Utils";
@@ -396,4 +397,17 @@ export const collectPostTx = async ({
     data: generateModuleCurrencyApprovalData.data,
   });
   return tx1;
+};
+
+
+export const createProfile = async (
+  handleProfileName,
+) => {
+  const res = await apolloClient.mutate({
+    mutation: gql(CREATE_PROFILE),
+    variables:{
+      handle : handleProfileName,
+    }
+  });
+  return res;
 };

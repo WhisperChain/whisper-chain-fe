@@ -1,6 +1,7 @@
 import React from "react";
 import Modal from "react-modal";
 import CreateAccLogo from "../../assets/createAccLogo";
+import { createProfile } from "../../utils/lensFunction";
 import ProfileCreatedSucces from "./ProfileCreatedSucces";
 import styles from "./SignInModal.module.css";
 
@@ -33,13 +34,22 @@ const CreateAccount = ({ onRequestClose, isOpen }) => {
         },
     };
 
-    const handleCreateAcc = () => {
+    const handleCreateAcc = async() => {
+        const res = await createProfile(userNameText);
+        if(res.data.createProfile?.reason === "HANDLE_TAKEN")
+        {
         setUserNameTaken(true);
+        }
+        else{
+        onRequestClose(false);   
         handleOpen();
         setTimeout(() => {
             handleClose(true);
           }, 3000);
+        }
     }
+
+    
 
     return (
         <div>
@@ -74,7 +84,6 @@ const CreateAccount = ({ onRequestClose, isOpen }) => {
                         <div>
                             <a
                                 onClick={() => {
-                                    onRequestClose(false);   
                                     handleCreateAcc();
                                 }} 
                                 className={`mt-[15px] flex justify-center p-[10px] text-white ${styles.createAccBtn}`}>

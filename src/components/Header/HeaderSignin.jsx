@@ -6,6 +6,7 @@ import { getProfileImage, resetLocalStorage } from "../../utils/Utils";
 import Modal from "react-modal";
 import SignOutLogo from "../../assets/SignOutLogo";
 import Router from "next/router";
+import CreateAccount from "../SignInModal/CreateAccount";
 
 const HeaderSignin = ({ handleOpen }) => {
 
@@ -87,7 +88,7 @@ const HeaderSignin = ({ handleOpen }) => {
                     height={36}
                     onClick={handleModalOpen}
                   />
-                  <Modal onRequestClose={handleModalClose} isOpen={open} style={customStyles} ariaHideApp={false}>
+                  {/* <Modal onRequestClose={handleModalClose} isOpen={open} style={customStyles} ariaHideApp={false}>
                     <div className="flex flex-row items-center py-[15px] pl-[20px] color-red" onClick={
                       () => {
                         Router.reload();
@@ -99,7 +100,11 @@ const HeaderSignin = ({ handleOpen }) => {
                       <SignOutLogo />
                       <div className={`pl-[10px] ${styles.LogOutText}`}>Logout</div>
                     </div>
-                  </Modal>
+                  </Modal> */}
+                  <CreateAccount
+                      onRequestClose={handleModalClose}
+                        isOpen={open} 
+      />
                 </div>
               ) :
 

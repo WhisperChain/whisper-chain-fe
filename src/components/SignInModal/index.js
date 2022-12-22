@@ -72,7 +72,8 @@ const SignInModal = ({ onRequestClose, isOpen, onSignInComplete }) => {
       </Modal>
       <CreateAccount
         onRequestClose={handleClose}
-        isOpen={open} />
+        isOpen={open} 
+      />
     </div>
   );
 };

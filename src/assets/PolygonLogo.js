@@ -1,5 +1,3 @@
-
-
 import * as React from "react";
 const PolygonLogo = (props) => (
   <svg
@@ -12,7 +10,7 @@ const PolygonLogo = (props) => (
     {...props}
   >
     <rect width={26} height={26} rx={13} fill="white" />
-   
+    <rect x={5} y={5} width={16} height={16} fill="url(#pattern0)" />
     <defs>
       <pattern
         id="pattern0"
