@@ -256,30 +256,29 @@ function Generate() {
                   />
                 </div>
               </div>
+            ))}
+          {emptyState && (
+            <div className="overflow-hidden w-full">
+              {[...Array(2)].map((index) => (
+                <div className={styles.imageTryOutputBox} key={index}>
+                  <div className="flex items-start justify-start gap-[12px] w-full">
+                    {
+                      [...Array(2)].map((index) => (
+                        <div key={index} className={`flex items-center justify-center w-[402px] h-[402px] relative group ${styles.defaultState}`}>
+                          <EmptyStateLogo />
+                        </div>
+                      ))
+                    }
+                  </div>
+                </div>
+              ))
+              }
             </div>
-          ))}
-        {emptyState && (
-          <div className="overflow-hidden w-full">
-            {[...Array(2)].map((index) => (
-              <div className={styles.imageTryOutputBox} key={index}>
-                <div className="flex items-start justify-start gap-[12px] w-full">
-                  {
-                    [...Array(2)].map((index) => (
-                      <div key={index} className={`flex items-center justify-center w-[402px] h-[402px] relative group ${styles.defaultState}`}>
-                        <EmptyStateLogo />
-                      </div>
-                    ))
-                  }
-                </div >
-              </div >
-            ))
-            }
-          </div >
-        )
-        }
-      </div >
-    </div >
-    </div >
+          )
+          }
+        </div>
+      </div>
+    </div>
   );
 }
 
