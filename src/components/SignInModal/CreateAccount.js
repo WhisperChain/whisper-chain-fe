@@ -12,6 +12,7 @@ import {
 const CreateAccount = ({ onRequestClose, isOpen }) => {
     const [userNameTaken, setUserNameTaken] = React.useState(false);
     const [userNameEmpty, setUserNameEmpty] = React.useState(false);
+    const [errorText , setErrorText] = React.useState("");
     const [userNameText, setUserNameText] = React.useState('');
     const dispatcher = React.useRef(null);
     const { address } = useAccount();
@@ -51,8 +52,8 @@ const CreateAccount = ({ onRequestClose, isOpen }) => {
         handleOpen();
         const profileRes = await getProfile(address);
         const profile = profileRes.data.profiles.items[0];
-      // console.log("profile-----"+profile.id);
-        dispatcher.current = profile.dispatcher;
+      console.log("profile-----"+profile);
+        // dispatcher.current = profile.dispatcher;
         window.localStorage.setItem("profileId", profile.id);
         window.localStorage.setItem("profile", JSON.stringify(profile));
     //   onSignInComplete?.();
@@ -77,7 +78,9 @@ const CreateAccount = ({ onRequestClose, isOpen }) => {
                             onChange={(e) => {
                                 setUserNameText(e.target.value)
                                 setUserNameEmpty(false)
+                                setUserNameTaken(false)
                                 if (!e.target.value.replace(/\s/g, '').length) {
+                                    setErrorText("Username can not be empty")
                                     setUserNameEmpty(true)
                                 }
                                 else {
@@ -91,15 +94,14 @@ const CreateAccount = ({ onRequestClose, isOpen }) => {
                             </p>
                         }
                         {userNameEmpty &&
-                            <p className={`p-[5px] text-[#cf3838] ${styles.emptyText}`}>Username can not be empty
-                            </p>
+                            <p className={`p-[5px] text-[#cf3838] ${styles.emptyText}`}>{errorText}</p>
                         }
                         <div>
                             <a
                                 onClick={() => {
                                     handleCreateAcc();
                                 }} 
-                                className={`mt-[15px] flex justify-center p-[10px] text-white ${styles.createAccBtn}`}>
+                                className={`mt-[15px] flex justify-center p-[10px] text-white cursor-pointer ${styles.createAccBtn}`}>
                                 <span><CreateAccLogo /></span>
                                 <span className="ml-[10px]">Create account</span>
                             </a>
