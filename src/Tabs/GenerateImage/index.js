@@ -33,6 +33,8 @@ function Generate() {
     FILTER_OPTIONS[0].value
   );
   const [emptyState, setEmptyState] = React.useState(true);
+  const [disableGeneration, setDisableGeneration] = React.useState(false);
+
   var regex = /[`!@#$%^&*()_+\-=\[\]{};':"\\|<>\/?~]/;
 
   const [previousImageUrl, setPreviousImageUrl] = React.useState();
@@ -45,6 +47,13 @@ function Generate() {
       const comment = await (
         await getCommentFeed(pubId, 1)
       ).data.publications.items[0];
+      if (comment) {
+        const porfileIdForGeneratedPost = comment.profile.id;
+        const loggedInUserProfileId = localStorage.getItem("profileId");
+        if (porfileIdForGeneratedPost === loggedInUserProfileId) {
+          setDisableGeneration(true);
+        }
+      }
       setPubsId(pubId);
       setPreviousImageUrl(
         convertIntoIpfsUrl(
@@ -115,8 +124,6 @@ function Generate() {
       setBtnPosition("static");
     }
   }, []);
-
-  const [disableGeneration, setDisableGeneration] = React.useState(false);
 
   return (
     <div
@@ -211,7 +218,7 @@ function Generate() {
           </div>
           {/* Generate Image Button */}
           <div
-            className={`w-full bottom-[16px] ${promptText === "" || promtEmpty || limit == 0 
+            className={`w-full bottom-[16px] ${promptText === "" || promtEmpty || limit == 0
               ? "opacity-50 cursor-not-allowed	pointer-events-none"
               : ""
               } ${btnPosition}
