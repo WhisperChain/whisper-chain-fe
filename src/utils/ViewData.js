@@ -60,9 +60,9 @@ export const getLastCommentsOfPosts = async (profileId) => {
   return dataObject;
 };
 
-export const getChainData = async () => {
+export const getChainData = async (paginationParams) => {
   const dataObject = [];
-  const data = await getChains();
+  const data = await getChains(paginationParams);
   const chainIds = data?.chain_ids;
   chainIds.map((chainId) => {
     const chain = data?.chains[chainId];
@@ -156,11 +156,13 @@ export const getChainPageData = async () => {
   return { commentArray, pubItem };
 };
 
-export const getChainWhispersData = async (chainId) => {
-  const data = await getChainWhispers(chainId);
+export const getChainWhispersData = async (chainId, paginationParams) => {
+  const data = await getChainWhispers(chainId, paginationParams);
   const whisperIds = data?.whisper_ids;
+  const hasMore = whisperIds?.length >= paginationParams.limit;
   const commentArray = [];
   let pubItem = {};
+  pubItem.hasMore = hasMore;
   whisperIds?.map((whisperId) => {
     const whisper = data?.whispers[whisperId];
     if (Object.keys(pubItem).length === 0) {
@@ -186,6 +188,7 @@ export const getChainWhispersData = async (chainId) => {
       profileHandle: user?.platform_username,
       name: user?.platform_display_name,
       createdAt: moment(whisper?.uts).format("h:mm a"),
+      id: whisperId,
       profileImageUrl: profileImage
         ? profileImage?.url
         : "https://cdn.stamp.fyi/avatar/eth:1234?s=250",
@@ -196,5 +199,5 @@ export const getChainWhispersData = async (chainId) => {
     commentArray.push(whisperData);
   });
   pubItem.comments = commentArray;
-  return { pubItem, commentArray };
+  return { pubItem, hasMore, commentArray };
 };

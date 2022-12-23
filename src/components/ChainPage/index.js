@@ -8,7 +8,7 @@ export default function ChainPage({ chainId }) {
     <div className={styles.pageWrapper}>
       <Header />
       <div className={styles.componentWrapper}>
-        <Chain chainId={chainId} />
+        <Chain />
       </div>
       <BottomTabSelector />
     </div>

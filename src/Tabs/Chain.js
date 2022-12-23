@@ -11,29 +11,40 @@ import style from "./Chain.module.css";
 import { useRouter } from "next/router";
 import ViewLensIcon from "../assets/ViewLensIcon";
 import { getChainPageData, getChainWhispersData } from "../utils/ViewData";
+import InfiniteScroll from "react-infinite-scroll-component";
 
-const Chain = ({ chainId }) => {
-  const [chainData, setChainData] = React.useState();
-  const [isLoading, setIsloading] = React.useState(false);
+const PAGE_LIMIT = 2;
+
+const messageBoxData = {
+  onChain: {
+    text: "This was the last image added to the thread, try to describe this image in your own words as best you can, and add your generation to this thread. ",
+  },
+  OnGenerate: {
+    h1: "Your generation has been successfully added to the chain",
+    text: "To keep it interesting, please wait for another user to add to chain before you can add a whisper again.",
+  },
+};
+
+const Chain = () => {
+  const [chainData, setChainData] = React.useState([]);
+  const [isLoading, setIsloading] = React.useState(true);
   const router = useRouter();
   const [firstCreatedAt, setFirstCreatedAt] = React.useState();
-  const [infoContainer, setInfoConatiner] = React.useState(true);
-  const [hours, minutes] = timer("2022-12-14");
   const [publication, setPublication] = React.useState();
-  const messageBoxData = {
-    onChain: {
-      text: "This was the last image added to the thread, try to describe this image in your own words as best you can, and add your generation to this thread. ",
-    },
-    OnGenerate: {
-      h1: "Your generation has been successfully added to the chain",
-      text: "To keep it interesting, please wait for another user to add to chain before you can add a whisper again.",
-    },
-  };
 
   const routerPath = router.query;
   const [isGenerated, setIsGenerated] = React.useState();
+  const [chainId, setChainId] = React.useState();
+  const [hasMore, setHasMore] = React.useState(false);
+  const [hovered, setHovered] = React.useState(false);
+  const paginationParams = React.useRef({
+    page: 1,
+    limit: PAGE_LIMIT
+  })
 
   React.useEffect(() => {
+    setChainId(routerPath.chainId);
+
     if (routerPath?.isGenerated == "true") {
       setIsGenerated(true);
     } else {
@@ -41,22 +52,22 @@ const Chain = ({ chainId }) => {
     }
   }, [routerPath]);
 
-  const [hovered, setHovered] = React.useState(false);
+  const fetchData = async (chainId, paginationParams) => {
+    const { pubItem, commentArray, hasMore } = await getChainWhispersData(chainId, paginationParams);
+    // const {commentArray, pubItem} = await getChainPageData();
+    setFirstCreatedAt(pubItem.createdAt);
+    setHasMore(hasMore)
+    setPublication(pubItem);
+    setChainData(commentArray);
+  };
 
   React.useEffect(() => {
-    const fetchData = async () => {
-      setIsloading(true);
-      const { pubItem, commentArray } = await getChainWhispersData(chainId);
-      // const {commentArray, pubItem} = await getChainPageData();
-
-      setFirstCreatedAt(pubItem.createdAt);
-      setPublication(pubItem);
-      setChainData(commentArray);
+    if (chainId) {
+      fetchData(chainId, paginationParams.current);
       setIsloading(false);
-    };
-    fetchData();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [chainId]);
 
   let viewLensUrl = "https://testnet.lenster.xyz/posts";
 
@@ -100,6 +111,14 @@ const Chain = ({ chainId }) => {
       bottomButton.style.opacity = "0";
     }
   };
+
+  const fetchNextData = () => {
+    const nextPageParams = {
+      page: paginationParams.current.page + 1,
+      limit: paginationParams.current.limit + PAGE_LIMIT
+    }
+    fetchData(chainId, nextPageParams)
+  }
 
   return isLoading ? (
     <SpinningLoader height="80vh" width="100%" />
@@ -177,105 +196,114 @@ const Chain = ({ chainId }) => {
       <div
         id="demmoId"
         onScroll={onScroll}
-        className={`overflow-scroll ${style.chainContainer}`}
+        className={style.chainContainer}
         ref={buttonRef}
       >
-        <div className="flex justify-center sticky top-[5px] z-[1000]">
-          <a
-            onClick={() => {
-              console.log("clicked");
-              dContainer.scrollTo(0, 100000);
-            }}
-            id="gopToTop"
-            className={`rounded-[20px] flex z-[10000] items-center justify-center ${style.bottomButton}`}
-          >
-            <svg
-              width="21"
-              height="20"
-              viewBox="0 0 21 20"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M16.75 7.5L10.5 13.75L4.25 7.5"
-                stroke="black"
-                strokeOpacity="0.6"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-            <span className="ml-[10px]">Go to bottom</span>
-          </a>
-          <a
-            onClick={() => {
-              console.log("clicked");
-              dContainer.scrollTo(0, 0);
-            }}
-            id="lastImage"
-            className={`rounded-[20px] ml-[20px] flex z-[10000] items-center justify-center ${style.lastImageButton}`}
-          >
-            <svg
-              width="20"
-              height="20"
-              viewBox="0 0 20 20"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M16.25 13.75L10 7.5L3.75 13.75"
-                stroke="black"
-                strokeOpacity="0.6"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-            <span className="ml-[10px]">Back to top</span>
-          </a>
-        </div>
-        <div
-          className={`w-[512px] h-[222px] flex flex-col items-center rounded-[32px] box-border ${style.messageBox}`}
+        <InfiniteScroll
+          dataLength={chainData?.length}
+          next={fetchNextData}
+          hasMore={hasMore}
+          loader={<SpinningLoader height="100px" width="100%" />}
+          height={"calc(100vh - 190px)"}
+          endMessage={<div></div>}
         >
-          <div className=" w-full pt-[38px] px-[40px] pb-[24px]">
-            <h1
-              className={`not-italic text-[16px] leading-[160%] font-bold ${style.messageText}`}
+          <div className="flex justify-center sticky top-[5px] z-[1000]">
+            <a
+              onClick={() => {
+                console.log("clicked");
+                dContainer.scrollTo(0, 100000);
+              }}
+              id="gopToTop"
+              className={`rounded-[20px] flex z-[10000] items-center justify-center ${style.bottomButton}`}
             >
-              {isGenerated ? messageBoxData.OnGenerate.h1 : ""}
-            </h1>
-            <div
-              className={`not-italic text-[16px] leading-[160%] font-medium ${style.messageText}`}
+              <svg
+                width="21"
+                height="20"
+                viewBox="0 0 21 20"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M16.75 7.5L10.5 13.75L4.25 7.5"
+                  stroke="black"
+                  strokeOpacity="0.6"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+              <span className="ml-[10px]">Go to bottom</span>
+            </a>
+            <a
+              onClick={() => {
+                console.log("clicked");
+                dContainer.scrollTo(0, 0);
+              }}
+              id="lastImage"
+              className={`rounded-[20px] ml-[20px] flex z-[10000] items-center justify-center ${style.lastImageButton}`}
             >
-              {isGenerated
-                ? messageBoxData.OnGenerate.text
-                : messageBoxData.onChain.text}
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 20 20"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M16.25 13.75L10 7.5L3.75 13.75"
+                  stroke="black"
+                  strokeOpacity="0.6"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+              <span className="ml-[10px]">Back to top</span>
+            </a>
+          </div>
+          <div
+            className={`w-[512px] h-[222px] flex flex-col items-center rounded-[32px] box-border ${style.messageBox}`}
+          >
+            <div className=" w-full pt-[38px] px-[40px] pb-[24px]">
+              <h1
+                className={`not-italic text-[16px] leading-[160%] font-bold ${style.messageText}`}
+              >
+                {isGenerated ? messageBoxData.OnGenerate.h1 : ""}
+              </h1>
+              <div
+                className={`not-italic text-[16px] leading-[160%] font-medium ${style.messageText}`}
+              >
+                {isGenerated
+                  ? messageBoxData.OnGenerate.text
+                  : messageBoxData.onChain.text}
+              </div>
+            </div>
+            <div>
+              {isGenerated ? (
+                <ShareBtn pageIndex={1} height={40} width={432} text="Share" />
+              ) : (
+                <AddWhisperBtn
+                  pageIndex={1}
+                  publication={publication}
+                  height={40}
+                  width={432}
+                  text="Add to Chain"
+                />
+              )}
             </div>
           </div>
-          <div>
-            {isGenerated ? (
-              <ShareBtn pageIndex={1} height={40} width={432} text="Share" />
-            ) : (
-              <AddWhisperBtn
-                pageIndex={1}
-                publication={publication}
-                height={40}
-                width={432}
-                text="Add to Chain"
-              />
-            )}
-          </div>
-        </div>
-        {chainData &&
-          chainData.map((comment, index) => {
-            return comment.imageUrl ? (
-              <div key={index}>
-                <div className="flex w-full items-center justify-center">
-                  <ChainLogo />
+          {chainData &&
+            chainData.map((comment) => {
+              return comment.imageUrl ? (
+                <div key={comment.id}>
+                  <div className="flex w-full items-center justify-center">
+                    <ChainLogo />
+                  </div>
+                  <PostImage imageDetails={comment} />
                 </div>
-                <PostImage imageDetails={comment} />
-              </div>
-            ) : null;
-          })}
+              ) : null;
+            })}
+        </InfiniteScroll>
       </div>
     </div>
   );

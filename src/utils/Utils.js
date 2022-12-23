@@ -50,13 +50,13 @@ export const postWhisperResponse = async (url, txHash) => {
   });
 };
 
-export const getChains = async (page = 1, limit = 10) => {
+export const getChains = async ({ page = 1, limit = 10 }) => {
   const resp = await axios.get(`/lens/chains?page=${page}&limit=${limit}`);
   const responseData = resp?.data;
   return responseData.data;
 };
 
-export const getChainWhispers = async (chainId, page = 1, limit = 10) => {
+export const getChainWhispers = async (chainId, { page = 1, limit = 10 }) => {
   const resp = await axios.get(`/lens/${chainId}?page=${page}&limit=${limit}`);
   const responseData = resp?.data;
   return responseData.data;
