@@ -1,14 +1,20 @@
 import React from "react";
 import Modal from "react-modal";
 import CreateAccLogo from "../../assets/createAccLogo";
+import { useAccount } from "wagmi";
 import { createProfile } from "../../utils/lensFunction";
 import ProfileCreatedSucces from "./ProfileCreatedSucces";
 import styles from "./SignInModal.module.css";
+import {
+  getProfile,
+} from "../../utils/lensFunction";
 
 const CreateAccount = ({ onRequestClose, isOpen }) => {
     const [userNameTaken, setUserNameTaken] = React.useState(false);
     const [userNameEmpty, setUserNameEmpty] = React.useState(false);
     const [userNameText, setUserNameText] = React.useState('');
+    const dispatcher = React.useRef(null);
+    const { address } = useAccount();
 
     const [open, setOpen] = React.useState(false);
     const handleClose = () => {
@@ -43,6 +49,13 @@ const CreateAccount = ({ onRequestClose, isOpen }) => {
         else{
         onRequestClose(false);   
         handleOpen();
+        const profileRes = await getProfile(address);
+        const profile = profileRes.data.profiles.items[0];
+      // console.log("profile-----"+profile.id);
+        dispatcher.current = profile.dispatcher;
+        window.localStorage.setItem("profileId", profile.id);
+        window.localStorage.setItem("profile", JSON.stringify(profile));
+    //   onSignInComplete?.();
         setTimeout(() => {
             handleClose(true);
           }, 3000);

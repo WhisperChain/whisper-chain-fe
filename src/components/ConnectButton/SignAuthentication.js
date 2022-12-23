@@ -8,8 +8,10 @@ import {
   refreshAuthentication,
   setDispatcher,
 } from "../../utils/lensFunction";
+import CreateAccount from "../SignInModal/CreateAccount";
 
-function SignAuthentication({ onSignInComplete }) {
+
+function SignAuthentication({ onSignInComplete, createAccount }) {
   const { address } = useAccount();
   const typedDataRef = React.useRef({});
   const [typedData, setTypedData] = useState(typedDataRef.current);
@@ -17,6 +19,15 @@ function SignAuthentication({ onSignInComplete }) {
   const { signMessageAsync } = useSignMessage();
   const dispatcher = React.useRef(null);
   const isModalOpen = React.useRef(false);
+
+  const [profileNotCreated, setProfileNotCreated] = React.useState(false);
+  const [open, setOpen] = React.useState(false);
+  const handleClose = () => {
+    setOpen(false);
+  };
+  const handleOpen = () => {
+    setOpen(true);
+  };
 
   const getChallenge = async () => {
     const resp = await getChallengeText(address);
@@ -37,10 +48,17 @@ function SignAuthentication({ onSignInComplete }) {
       );
       const profileRes = await getProfile(address);
       const profile = profileRes.data.profiles.items[0];
+      // console.log("profile-----"+profile.id);
+      if(profile){
       dispatcher.current = profile.dispatcher;
       window.localStorage.setItem("profileId", profile.id);
       window.localStorage.setItem("profile", JSON.stringify(profile));
       onSignInComplete?.();
+      }
+      else{
+        setProfileNotCreated(true);
+        handleOpen();
+      }
     } catch (error) {
       console.log({ error });
       onSignInComplete?.();
@@ -87,7 +105,18 @@ function SignAuthentication({ onSignInComplete }) {
   }, []);
 
   return (
-    <div>Signing...</div>
+    <>
+      {createAccount ? 
+      "" :
+      <div>Signing...</div>
+      }
+      {profileNotCreated && 
+        <CreateAccount
+            onRequestClose={handleClose}
+            isOpen={open} 
+        />
+      }
+    </>
     // <div>
     //   {window.localStorage.getItem("profileId") ? (
     //     <Image

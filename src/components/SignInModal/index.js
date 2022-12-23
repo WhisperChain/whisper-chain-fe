@@ -5,15 +5,8 @@ import CustomConnectButton from "../ConnectButton";
 import CheckedCircle from "../../assets/CheckedCircle";
 import CreateAccount from "./CreateAccount";
 
+
 const SignInModal = ({ onRequestClose, isOpen, onSignInComplete }) => {
-  const [open, setOpen] = React.useState(false);
-  const handleClose = () => {
-    setOpen(false);
-  };
-  const handleOpen = () => {
-    setOpen(true);
-  };
-  // const [createAccount, setCreateAccount] = React.useState(false);
 
   const customStyles = {
     content: {
@@ -54,26 +47,13 @@ const SignInModal = ({ onRequestClose, isOpen, onSignInComplete }) => {
             </div>
             <div className="flex justify-start items-center text-[13px] leading-[160%] font-medium text-[#00000099]">
               New to Lens?
-              <span
-                className="underline text-[#00501E] cursor-pointer ml-[5px]"
-                onClick={() => {
-                  console.log("open modal");
-                  onRequestClose(false);
-                  handleOpen();
-                }}
-              >
-                Create an account
-              </span>
+              <CustomConnectButton onSignInComplete={onSignInComplete} btnText={"Create an account"}/>
             </div>
           </div>
           {/* <button className={`flex justify-center box-border items-center w-[234px] h-[40px] backdrop-blur rounded-[4px] ${styles.TwitterContainer}`}>Sign in with Twitter</button>
         <button className={`flex justify-center box-border items-center w-[234px] h-[40px] backdrop-blur rounded-[4px] ${styles.FarcasterContainer}`}>Sign in with farcaster</button> */}
         </div>
       </Modal>
-      <CreateAccount
-        onRequestClose={handleClose}
-        isOpen={open} 
-      />
     </div>
   );
 };

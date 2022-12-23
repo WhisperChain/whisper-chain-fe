@@ -5,7 +5,9 @@ import { resetLocalStorage } from "../../utils/Utils";
 import SignAuthentication from "./SignAuthentication";
 import LensIcon from "../../assets/LensIcon";
 
-const CustomConnectButton = ({ onSignInComplete }) => {
+const CustomConnectButton = ({ onSignInComplete, btnText }) => {
+
+  const connectref = React.useRef(false);
   return (
     <ConnectButton.Custom>
       {({
@@ -39,11 +41,27 @@ const CustomConnectButton = ({ onSignInComplete }) => {
           >
             {(() => {
               if (!connected) {
-                return (
+                if(btnText==="Create an account"){
+                  return(
+                    <span
+                      className="underline text-[#00501E] cursor-pointer ml-[5px]"
+                      onClick={() => {
+                        resetLocalStorage();
+                        openConnectModal();
+                        connectref.current= true;
+                      }}
+                    >
+                      Create an account
+                    </span>
+                  )
+                }
+                else{
+                  return (
                   <div
                     onClick={() => {
                       resetLocalStorage();
                       openConnectModal();
+                      connectref.current = true;
                     }}
                   >
                     <div
@@ -54,6 +72,7 @@ const CustomConnectButton = ({ onSignInComplete }) => {
                     </div>
                   </div>
                 );
+                }
               }
 
               if (chain.unsupported) {
@@ -63,8 +82,9 @@ const CustomConnectButton = ({ onSignInComplete }) => {
                   </button>
                 );
               }
-              return <SignAuthentication onSignInComplete={onSignInComplete} />;
-            })()}
+              return connectref.current && <SignAuthentication onSignInComplete={onSignInComplete} createAccount={btnText==="Create an account"? true : false}/>
+             }
+            )()}
           </div>
         );
       }}

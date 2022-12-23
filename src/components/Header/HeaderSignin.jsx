@@ -88,7 +88,7 @@ const HeaderSignin = ({ handleOpen }) => {
                     height={36}
                     onClick={handleModalOpen}
                   />
-                  {/* <Modal onRequestClose={handleModalClose} isOpen={open} style={customStyles} ariaHideApp={false}>
+                  <Modal onRequestClose={handleModalClose} isOpen={open} style={customStyles} ariaHideApp={false}>
                     <div className="flex flex-row items-center py-[15px] pl-[20px] color-red" onClick={
                       () => {
                         Router.reload();
@@ -100,17 +100,16 @@ const HeaderSignin = ({ handleOpen }) => {
                       <SignOutLogo />
                       <div className={`pl-[10px] ${styles.LogOutText}`}>Logout</div>
                     </div>
-                  </Modal> */}
-                  <CreateAccount
-                      onRequestClose={handleModalClose}
-                        isOpen={open} 
-      />
+                  </Modal>
                 </div>
               ) :
-
-                <button onClick={handleOpen} className={` w-[92px] h-[36px] bg-[#FFFFFF] rounded-[40px] not-italic font-bold text-[#6F1AFF] ${styles.HeaderSignInbtn}`}>
-                  Sign In
-                </button>
+                    <CreateAccount
+                      onRequestClose={handleModalClose}
+                      isOpen={open} 
+                    />
+                // <button onClick={handleOpen} className={` w-[92px] h-[36px] bg-[#FFFFFF] rounded-[40px] not-italic font-bold text-[#6F1AFF] ${styles.HeaderSignInbtn}`}>
+                //   Sign In
+                // </button>
             })()}
           </div>
         );
