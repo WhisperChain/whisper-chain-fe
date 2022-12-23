@@ -58,7 +58,7 @@ const Chain = () => {
     setFirstCreatedAt(pubItem.createdAt);
     setHasMore(hasMore)
     setPublication(pubItem);
-    setChainData(commentArray);
+    setChainData([...chainData, ...commentArray]);
   };
 
   React.useEffect(() => {
@@ -115,7 +115,7 @@ const Chain = () => {
   const fetchNextData = () => {
     const nextPageParams = {
       page: paginationParams.current.page + 1,
-      limit: paginationParams.current.limit + PAGE_LIMIT
+      limit: PAGE_LIMIT
     }
     fetchData(chainId, nextPageParams)
   }
