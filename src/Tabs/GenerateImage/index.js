@@ -161,7 +161,7 @@ function Generate() {
             <div className="flex flex-col items-start p-0 gap-[8px] w-auto">
               <div className={styles.mainText}>Enter prompt</div>
               <textarea
-                className={`${styles.promptInput} text-sm shadow-sm placeholder-[#1d0545b8]
+                className={`${styles.promptInput} text-sm shadow-sm 
                   focus:outline-none focus:border-[#6f1aff3d] focus:ring-1 
                   ${promtEmpty ? "focus:ring-[red]" : "focus:ring-[#6f1aff3d]"}
                   ${disableGeneration ? "cursor-not-allowed	pointer-events-none" : ""}
