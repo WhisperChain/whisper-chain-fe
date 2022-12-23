@@ -16,6 +16,7 @@ import GeneratedImageBox from "../../components/GeneratedImageBox";
 import { useRouter } from "next/router";
 import EmptyStateLogo from "../../assets/EmptyStateLogo";
 import { useAccount } from "wagmi";
+import ChevronIcon from "../../assets/ChevronIcon";
 
 function Generate() {
   const { address } = useAccount();
@@ -25,6 +26,7 @@ function Generate() {
   const [promtEmpty, setPromtEmpty] = React.useState(false);
   const [specialCharacter, setSpecialCharacter] = React.useState();
   const [urls, setUrls] = React.useState([]);
+  const limit = 5 - urls.length;
   const [pubsId, setPubsId] = React.useState();
   const [isLoading, setIsloading] = React.useState(false);
   const [selectedFilter, setSelectedFilter] = React.useState(
@@ -189,24 +191,27 @@ function Generate() {
               <div className={`${styles.subText} mb-[8px]`}>
                 Select a style to create more refined whispers
               </div>
-              <select
-                className={`${styles.selectBoxInput} ${disableGeneration ? "cursor-not-allowed	pointer-events-none" : ""}`}
-                value={selectedFilter}
-                onChange={(e) => {
-                  setSelectedFilter(e.target.value);
-                }}
-              >
-                {FILTER_OPTIONS.map((option, index) => (
-                  <option key={index} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </select>
+              <div className="flex justify-center items-center">
+                <select
+                  className={`${styles.selectBoxInput} ${disableGeneration ? "cursor-not-allowed	pointer-events-none" : ""}`}
+                  value={selectedFilter}
+                  onChange={(e) => {
+                    setSelectedFilter(e.target.value);
+                  }}
+                >
+                  {FILTER_OPTIONS.map((option, index) => (
+                    <option key={index} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
+                </select>
+                <div className="relative right-[25px] pointer-events-none"><ChevronIcon /></div>
+              </div>
             </div>
           </div>
           {/* Generate Image Button */}
           <div
-            className={`w-full bottom-[16px] ${promptText === "" || promtEmpty
+            className={`w-full bottom-[16px] ${promptText === "" || promtEmpty || limit == 0 
               ? "opacity-50 cursor-not-allowed	pointer-events-none"
               : ""
               } ${btnPosition}
@@ -225,7 +230,7 @@ function Generate() {
                     </span>
                     <span className={styles.tryCounts}>&#x2022;</span>
                     <span className={styles.tryCounts}>
-                      {5 - urls.length} tries left
+                      {limit} tries left
                     </span>
                   </div>
                   <div>
