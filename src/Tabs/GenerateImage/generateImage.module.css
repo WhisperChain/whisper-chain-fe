@@ -1,6 +1,6 @@
 .mainContainer {
   width: 100%;
-  margin-top: 20px;
+  margin-top: 30px;
   overflow: scroll;
   height: calc(100vh - 180px);
   -ms-overflow-style: none;

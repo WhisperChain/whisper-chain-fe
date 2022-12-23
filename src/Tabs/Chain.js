@@ -160,7 +160,7 @@ const Chain = () => {
           onClick={() => {
             router.push("/");
           }}
-          className={`flex flex-row items-start not-italic font-medium text-[16px] leading-[140%] text-center text-[${hoverBackBtn ? "#000000" : "#0000003C"}] cursor-pointer`}
+          className={`flex flex-row items-center justify-center not-italic font-medium text-[16px] leading-[140%] text-center text-[${hoverBackBtn ? "#000000" : "#0000003C"}] cursor-pointer`}
           onMouseEnter={() => setHoverBackBtn(true)}
           onMouseLeave={() => setHoverBackBtn(false)}
         >
@@ -188,7 +188,7 @@ const Chain = () => {
               strokeLinejoin="round"
             />
           </svg>
-          <span className="ml-[12px]">Back</span>
+          <span className="ml-[6px]">Back</span>
         </div>
         <div className="flex flex-col items-center sticky ml-[-32px] decoration-white">
           <div className="not-italic font-medium text-[16px] leading-[140%] tracking-[-0.03em] text-[#000000] ">
