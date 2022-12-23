@@ -20,24 +20,52 @@ import "swiper/css/effect-creative";
 import { Mousewheel, EffectCreative } from "swiper";
 import styles from "./Home.module.css";
 
-const SEL = "custom-section";
-const SECTION_SEL = `.${SEL}`;
+// import Swiper core and required modules
+import SwiperCore, { Manipulation } from "swiper";
+
+// install Swiper modules
+SwiperCore.use([Manipulation]);
+
+const PAGE_LIMIT = 2;
 
 const Home = () => {
   const [publicationData, setPublicationData] = React.useState([]);
   const [isLoading, setIsloading] = React.useState(false);
   const [currentSlideIndex, setCurrentSlideIndex] = React.useState(0);
+  const paginationParams = React.useRef({
+    page: 1,
+    limit: PAGE_LIMIT
+  })
+  const isFirstLoad = React.useRef(true);
+  const [hasMore, setHasMore] = React.useState(false);
+
+  const fetchData = async (paginationParams) => {
+    setIsloading(true);
+    const data = await getChainData(paginationParams);
+    // const data = await getLastCommentsOfPosts("0x59cf");
+    const hasMoreFlag = data?.length >= PAGE_LIMIT;
+    setHasMore(hasMoreFlag);
+    setPublicationData([...publicationData, ...data]);
+    setIsloading(false);
+  }
 
   React.useEffect(() => {
-    async function fetchData() {
-      setIsloading(true);
-      const data = await getChainData();
-      // const data = await getLastCommentsOfPosts("0x59cf");
-      setPublicationData(data);
-      setIsloading(false);
-    }
-    fetchData();
+    fetchData(paginationParams.current);
   }, []);
+
+  const onReachEndHandler = async () => {
+    if (isFirstLoad.current) {
+      isFirstLoad.current = false;
+    } else {
+      if (hasMore) {
+        paginationParams.current = {
+          page: paginationParams.current.page + 1,
+          limit: PAGE_LIMIT
+        }
+        await fetchData(paginationParams.current);
+      }
+    }
+  }
 
   return isLoading ? (
     <SpinningLoader height="80vh" width="100%" />
@@ -81,11 +109,12 @@ const Home = () => {
               onSlideChange={(swiper) =>
                 setCurrentSlideIndex(swiper.activeIndex)
               }
+              onReachEnd={onReachEndHandler}
             >
               {publicationData &&
                 publicationData.map((pub, index) => (
                   <SwiperSlide key={pub?.pubId + index}>
-                    <div className={`${SEL} absolute top-0`}>
+                    <div className="absolute top-0">
                       <div className="slide w-full flex justify-start relative">
                         {pub?.comments[0] ? (
                           <ImagesStack imageDetails={pub?.comments} pub={pub} />
@@ -104,7 +133,7 @@ const Home = () => {
           <HomeMessage publication={publicationData[currentSlideIndex]} />
         </div>
       </div>
-    </div>
+    </div >
   );
 };
 
