@@ -20,6 +20,7 @@ import ChevronIcon from "../../assets/ChevronIcon";
 
 function Generate() {
   const { address } = useAccount();
+
   const { publication } = usePublicationContext();
   const router = useRouter();
   const [promptText, setPromptText] = React.useState("");
@@ -38,6 +39,7 @@ function Generate() {
   var regex = /[`!@#$%^&*()_+\-=\[\]{};':"\\|<>\/?~]/;
 
   const [previousImageUrl, setPreviousImageUrl] = React.useState();
+
   React.useEffect(() => {
     const fetchData = async () => {
       const pub = (await getPublication("0x59cf", 1)).data.publications
@@ -50,6 +52,7 @@ function Generate() {
       if (comment) {
         const porfileIdForGeneratedPost = comment.profile.id;
         const loggedInUserProfileId = localStorage.getItem("profileId");
+        debugger;
         if (porfileIdForGeneratedPost === loggedInUserProfileId) {
           setDisableGeneration(true);
         }
@@ -65,9 +68,9 @@ function Generate() {
     if (publication?.pubId) {
       setPubsId(publication?.pubId);
       setPreviousImageUrl(publication?.comments?.[0].imageUrl);
-    } else {
-      fetchData();
     }
+
+    fetchData();
   }, []);
 
   const onImageClickHandler = async (url) => {
