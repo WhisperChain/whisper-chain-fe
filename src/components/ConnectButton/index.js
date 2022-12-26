@@ -5,7 +5,7 @@ import { resetLocalStorage } from "../../utils/Utils";
 import SignAuthentication from "./SignAuthentication";
 import LensIcon from "../../assets/LensIcon";
 
-const CustomConnectButton = ({ onSignInComplete, btnText }) => {
+const CustomConnectButton = ({ onSignInComplete, setCreateProfileModal, btnText }) => {
 
   const connectref = React.useRef(false);
   return (
@@ -41,37 +41,37 @@ const CustomConnectButton = ({ onSignInComplete, btnText }) => {
           >
             {(() => {
               if (!connected) {
-                if(btnText==="Create an account"){
-                  return(
+                if (btnText === "Create an account") {
+                  return (
                     <span
                       className="underline text-[#00501E] cursor-pointer ml-[5px]"
                       onClick={() => {
                         resetLocalStorage();
                         openConnectModal();
-                        connectref.current= true;
+                        connectref.current = true;
                       }}
                     >
                       Create an account
                     </span>
                   )
                 }
-                else{
+                else {
                   return (
-                  <div
-                    onClick={() => {
-                      resetLocalStorage();
-                      openConnectModal();
-                      connectref.current = true;
-                    }}
-                  >
                     <div
-                      className={`flex justify-center box-border items-center w-[234px] h-[40px] bg-[#ABFE2C] text-[#00501E] backdrop-blur rounded-[4px] gap-[8px] cursor-pointer border-[1px] border-solid border-black/20`}
+                      onClick={() => {
+                        resetLocalStorage();
+                        openConnectModal();
+                        connectref.current = true;
+                      }}
                     >
-                      <LensIcon />
-                      Sign in with Lens
+                      <div
+                        className={`flex justify-center box-border items-center w-[234px] h-[40px] bg-[#ABFE2C] text-[#00501E] backdrop-blur rounded-[4px] gap-[8px] cursor-pointer border-[1px] border-solid border-black/20`}
+                      >
+                        <LensIcon />
+                        Sign in with Lens
+                      </div>
                     </div>
-                  </div>
-                );
+                  );
                 }
               }
 
@@ -82,8 +82,8 @@ const CustomConnectButton = ({ onSignInComplete, btnText }) => {
                   </button>
                 );
               }
-              return connectref.current && <SignAuthentication onSignInComplete={onSignInComplete} createAccount={btnText==="Create an account"? true : false}/>
-             }
+              return connectref.current && <SignAuthentication onSignInComplete={onSignInComplete} setCreateProfileModal={setCreateProfileModal} createAccount={btnText === "Create an account" ? true : false} />
+            }
             )()}
           </div>
         );

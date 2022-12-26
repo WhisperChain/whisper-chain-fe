@@ -82,6 +82,12 @@ export const getProfile = async (address) => {
   });
 };
 
+export const refetchActiveQueries = async () => {
+  await apolloClient.refetchQueries({
+    include: "active",
+  });
+}
+
 export const getPublication = async (profileId, limit = 10) => {
   return await apolloClient.query({
     query: gql(GET_PUBLICATIONS),
@@ -357,11 +363,11 @@ export const generateModuleCurrencyApproval = async ({
 }) => {
   const requestModule = isCollect
     ? {
-        collectModule: moduleType || Constants.FEE_COLLECT_MODULE,
-      }
+      collectModule: moduleType || Constants.FEE_COLLECT_MODULE,
+    }
     : {
-        followModule: moduleType || "FeeFollowModule",
-      };
+      followModule: moduleType || "FeeFollowModule",
+    };
   const res = await apolloClient.query({
     query: gql(GENERATE_MODULE_CURRENCY_APPROVAL),
     variables: {
@@ -405,8 +411,8 @@ export const createProfile = async (
 ) => {
   const res = await apolloClient.mutate({
     mutation: gql(CREATE_PROFILE),
-    variables:{
-      handle : handleProfileName,
+    variables: {
+      handle: handleProfileName,
     }
   });
   return res;

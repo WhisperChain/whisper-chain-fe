@@ -8,7 +8,7 @@
     z-index: 1000000;
 }
 
-.HandlerName{
+.HandlerName {
     font-family: 'Satoshi Variable';
     font-feature-settings: 'salt' on;
 }
@@ -17,7 +17,7 @@
     box-shadow: 0px 8px 32px rgba(29, 155, 240, 0.32), inset 0px -4px 8px rgba(255, 255, 255, 0.6), inset 0px -8px 16px rgba(29, 155, 240, 0.2);
 } */
 
-.HeaderSignInbtn{
+.HeaderSignInbtn {
     box-shadow: 0px 8px 32px rgba(111, 26, 255, 0.32), inset 0px -4px 8px rgba(255, 255, 255, 0.6), inset 0px -8px 16px rgba(71, 0, 192, 0.2);
     font-family: 'Satoshi Variable';
     font-size: 14px;
@@ -26,15 +26,15 @@
 }
 
 
-.ModalContainer{
-        font-family: 'Satoshi Variable';
-        font-style: normal;
-        font-weight: 700;
-        font-size: 16px;
-        line-height: 160%;
-        text-align: center;
-        font-feature-settings: 'salt' on;
-        color: #000000;
+.ModalContainer {
+    font-family: 'Satoshi Variable';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 160%;
+    text-align: center;
+    font-feature-settings: 'salt' on;
+    color: #000000;
 }
 
 /* .TwitterContainer{
@@ -46,7 +46,8 @@
 .LensContainer {
     background: #ABFE2C;
     border: 1px solid rgba(0, 0, 0, 0.2);
-    color: #00501E;;
+    color: #00501E;
+    ;
 }
 
 /* .FarcasterContainer {
@@ -55,18 +56,67 @@
     color: #6F1AFF;
 } */
 
-.LensInfo{
+.LensInfo {
     font-family: 'Satoshi Variable';
     line-height: 160%;
     font-feature-settings: 'salt' on;
     color: rgba(0, 0, 0, 0.8);
 }
 
-.LogOutText{
+.LogOutText {
     font-family: 'Satoshi Variable';
     font-size: 14px;
     font-weight: 700;
     line-height: 160%;
     font-feature-settings: 'salt' on;
     color: rgba(0, 0, 0, 0.8);
+}
+
+.ModalContainer {
+    font-family: 'Satoshi Variable';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 160%;
+    text-align: center;
+    font-feature-settings: 'salt' on;
+    color: #000000;
+}
+
+.LensInfo {
+    font-family: 'Satoshi Variable';
+    line-height: 160%;
+    font-feature-settings: 'salt' on;
+    color: rgba(0, 0, 0, 0.8);
+}
+
+.createInput {
+    background: rgba(255, 255, 255, 0.96);
+    box-shadow: 0px 0px 4px rgba(111, 26, 255, 0.24), 0px 0px 8px rgba(229, 214, 255, 0.8);
+    backdrop-filter: blur(80px);
+    border-radius: 8px;
+    width: 266px;
+    height: 48px;
+    outline: 0;
+}
+
+.createAccBtn {
+    background: radial-gradient(107.14% 107.14% at 50% 80.95%, #6F1AFF 0%, #C6A4FF 100%);
+    box-shadow: 0px 8px 32px rgba(111, 26, 255, 0.32), inset 0px -4px 8px rgba(185, 143, 255, 0.6), inset 0px -8px 16px #4700C0;
+    border-radius: 40px;
+}
+
+.errorMessage {
+    background: #FFCCCC;
+    border-radius: 8px;
+    color: rgba(0, 0, 0, 0.6);
+    font-weight: 500;
+    margin-top: 5px;
+    font-size: 12px;
+}
+
+.emptyText {
+    font-weight: 500;
+    margin-top: 5px;
+    font-size: 12px;
 }
