@@ -177,6 +177,7 @@ const Header = () => {
   if (typeof window !== "undefined") {
      isEnableDispatcher = JSON.parse(window.localStorage.getItem("profile"))?.dispatcher?.address;
   }
+
   const typedDataRef = React.useRef({});
   const [typedData, setTypedData] = useState(typedDataRef.current);
 
@@ -400,16 +401,15 @@ const Header = () => {
         isOpen={successModal}
       />
       { isEnableDispatcher ? null : (
-        <div>
           <Modal
             onRequestClose={signInModalCloseHandler}
-            isOpen={true}
+            isOpen={false}
             style={customModalStyles}
             shouldCloseOnOverlayClick={false}
             shouldCloseOnEsc={false}
           >
             <div
-              className={`flex flex-col justify-start items-start bg-[#FFFFFF] rounded-[16px] backdrop-blur-3xl gap-[16px] p-[40px]`}
+              className={`flex flex-col justify-start items-start bg-[#FFFFFF] rounded-[16px] backdrop-blur-3xl gap-[16px] p-[40px] ${styles.ModalContainer}`}
             >
               <div>
                 <div
@@ -420,7 +420,7 @@ const Header = () => {
                 </div>
               </div>
               <div
-                className={`flex justify-start flex-col gap-[12px] not-italic text-[12px] font-medium`}
+                className={`flex justify-start flex-col gap-[12px] not-italic text-[12px] font-medium ${styles.LensInfo}`}
               >
                 <div className="flex gap-[8px] justify-start items-center">
                   <CheckedCircle />
@@ -432,8 +432,7 @@ const Header = () => {
                 </div>
               </div>
             </div>
-          </Modal>
-          {Object.keys(typedData)?.length > 0 ? (
+            {Object.keys(typedData)?.length > 0 ? (
             <SignTypedData
               typedData={typedDataRef.current}
               id={enableDispatcherTxnId.current}
@@ -444,7 +443,7 @@ const Header = () => {
               }}
             />
           ) : null}
-        </div>
+          </Modal>
       )}
     </>
   );
