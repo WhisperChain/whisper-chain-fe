@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useAccount, useSignMessage } from "wagmi";
 import { Constants } from "../../utils/Constants";
+import Modal from "react-modal";
+import CheckedCircle from "../../assets/CheckedCircle";
 import {
   getAuthentication,
   getChallengeText,
@@ -17,7 +19,7 @@ function SignAuthentication({
 }) {
   const { address } = useAccount();
   const typedDataRef = React.useRef({});
-  // const [typedData, setTypedData] = useState(typedDataRef.current);
+  const [typedData, setTypedData] = useState(typedDataRef.current);
   // const enableDispatcherTxnId = React.useRef();
   const { signMessageAsync } = useSignMessage();
   const dispatcher = React.useRef(null);
@@ -90,19 +92,16 @@ function SignAuthentication({
   }
 
  
-  const enableDispatcher = async () => {
-    refreshAuthentication();
-    const res = await setDispatcher(window.localStorage.getItem("profileId"));
-    enableDispatcherTxnId.current = res.data?.createSetDispatcherTypedData?.id;
-    const dispatcherTypedData =
-      res.data?.createSetDispatcherTypedData?.typedData;
-    delete dispatcherTypedData.domain.__typename;
-    delete dispatcherTypedData.types.__typename;
-    delete dispatcherTypedData.value.__typename;
+  
+  const [openSignInModal, setOpenSignInModal] = React.useState(false);
 
-    typedDataRef.current = dispatcherTypedData;
-    setTypedData(typedDataRef.current);
-  };
+  const signInModalCloseHandler = React.useCallback(() => {
+    setOpenSignInModal(false);
+  });
+
+  // const signInModalOpenHandler = React.useCallback(() => {
+  //   setOpenSignInModal(true);
+  // });
 
 
   useEffect(() => {
@@ -120,55 +119,6 @@ function SignAuthentication({
     <>
       {!createAccount && <div>Signing...</div>}
       {/* Enable dispatcher modal */}
-
-      {JSON.parse(window.localStorage.getItem("profile"))?.dispatcher
-        ?.address ? null : (
-        <div>
-          <Modal
-            onRequestClose={signInModalCloseHandler}
-            isOpen={openSignInModal}
-            style={customModalStyles}
-            shouldCloseOnOverlayClick={false}
-            shouldCloseOnEsc={false}
-          >
-            <div
-              className={`flex flex-col justify-start items-start bg-[#FFFFFF] rounded-[16px] backdrop-blur-3xl gap-[16px] p-[40px] ${styles.ModalContainer}`}
-            >
-              <div>
-                <div
-                  className={`flex justify-center box-border items-center w-[234px] h-[40px] bg-[#ABFE2C] text-[#00501E] backdrop-blur rounded-[4px] gap-[8px] cursor-pointer border-[1px] border-solid border-black/20`}
-                  onClick={enableDispatcher}
-                >
-                  Enable Dispatcher
-                </div>
-              </div>
-              <div
-                className={`flex justify-start flex-col gap-[12px] not-italic text-[12px] font-medium ${styles.LensInfo}`}
-              >
-                <div className="flex gap-[8px] justify-start items-center">
-                  <CheckedCircle />
-                  Automatically sign transactions
-                </div>
-                <div className="flex gap-[8px] justify-start items-center">
-                  <CheckedCircle />
-                  Completely secure
-                </div>
-              </div>
-            </div>
-          </Modal>
-          {Object.keys(typedData)?.length > 0 ? (
-            <SignTypedData
-              typedData={typedDataRef.current}
-              id={enableDispatcherTxnId.current}
-              onSuccess={async () => {
-                const profileRes = await getProfile(address);
-                const profile = profileRes.data.profiles.items[0];
-                window.localStorage.setItem("profile", JSON.stringify(profile));
-              }}
-            />
-          ) : null}
-        </div>
-      )}
     </>
   );
 }
