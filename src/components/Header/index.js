@@ -16,6 +16,8 @@ import {
   getProfile,
   refetchActiveQueries,
   txIndexed,
+  setDispatcher,
+  refreshAuthentication,
 } from "../../utils/lensFunction";
 import { useAccount } from "wagmi";
 
@@ -170,6 +172,22 @@ const Header = () => {
       await pollIndexing(res.data.createProfile.txHash);
     }
   };
+
+  const enableDispatcherTxnId = React.useRef();
+  const enableDispatcher = async () => {
+    refreshAuthentication();
+    const res = await setDispatcher(window.localStorage.getItem("profileId"));
+    enableDispatcherTxnId.current = res.data?.createSetDispatcherTypedData?.id;
+    const dispatcherTypedData =
+      res.data?.createSetDispatcherTypedData?.typedData;
+    delete dispatcherTypedData.domain.__typename;
+    delete dispatcherTypedData.types.__typename;
+    delete dispatcherTypedData.value.__typename;
+
+    typedDataRef.current = dispatcherTypedData;
+    setTypedData(typedDataRef.current);
+  };
+
 
   return (
     <>
@@ -406,6 +424,24 @@ const Header = () => {
           </div>
         </div>
       </Modal>
+      {/* {JSON.parse(window.localStorage.getItem("profile"))?.dispatcher
+    //   ?.address ? null : (
+    //   <div>
+    //     <button style={{ color: "white" }} onClick={enableDispatcher}>
+    //       Enable Dispatcher
+    //     </button>
+    //     {Object.keys(typedData)?.length > 0 ? (
+    //       <SignTypedData
+    //         typedData={typedDataRef.current}
+    //         id={enableDispatcherTxnId.current}
+    //         onSuccess= {async ()=>{
+    //           const profileRes = await getProfile(address);
+    //           const profile = profileRes.data.profiles.items[0];
+    //           window.localStorage.setItem("profile", JSON.stringify(profile));}}
+    //       />
+    //     ) : null}
+    //   </div>
+    // )} */}
     </>
   );
 };

@@ -20,7 +20,7 @@ function SignAuthentication({ onSignInComplete, setCreateProfileModal, createAcc
   const { signMessageAsync } = useSignMessage();
   const dispatcher = React.useRef(null);
   const isModalOpen = React.useRef(false);
-
+  const enableDispatcherTxnId = React.useRef();
   const getChallenge = async () => {
     const resp = await getChallengeText(address);
     return resp.data.challenge.text;
