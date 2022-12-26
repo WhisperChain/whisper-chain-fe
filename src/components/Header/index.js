@@ -315,7 +315,9 @@ const Header = () => {
           <div>
             <a
               onClick={handleCreateAcc}
-              className={`mt-[15px] flex justify-center p-[10px] text-white cursor-pointer ${styles.createAccBtn}`}>
+              className={`mt-[15px] flex justify-center p-[10px] text-white cursor-pointer ${styles.createAccBtn} 
+                ${userNameEmpty || userNameTaken ? "opacity-50 cursor-not-allowed	pointer-events-none" : ""}
+              `}>
               <span><CreateAccLogo /></span>
               <span className="ml-[10px]">Create account</span>
             </a>
