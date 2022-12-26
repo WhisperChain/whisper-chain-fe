@@ -174,21 +174,6 @@ const Header = () => {
     }
   };
 
-  const enableDispatcherTxnId = React.useRef();
-  const enableDispatcher = async () => {
-    refreshAuthentication();
-    const res = await setDispatcher(window.localStorage.getItem("profileId"));
-    enableDispatcherTxnId.current = res.data?.createSetDispatcherTypedData?.id;
-    const dispatcherTypedData =
-      res.data?.createSetDispatcherTypedData?.typedData;
-    delete dispatcherTypedData.domain.__typename;
-    delete dispatcherTypedData.types.__typename;
-    delete dispatcherTypedData.value.__typename;
-
-    typedDataRef.current = dispatcherTypedData;
-    setTypedData(typedDataRef.current);
-  };
-
   return (
     <>
       <div
