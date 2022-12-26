@@ -189,7 +189,6 @@ const Header = () => {
     setTypedData(typedDataRef.current);
   };
 
-
   return (
     <>
       <div
@@ -369,12 +368,14 @@ const Header = () => {
             <div>
               <a
                 onClick={handleCreateAcc}
-                className={`mt-[15px] flex justify-center p-[10px] text-white cursor-pointer ${styles.createAccBtn
-                  } 
-                ${userNameEmpty || userNameTaken
+                className={`mt-[15px] flex justify-center p-[10px] text-white cursor-pointer ${
+                  styles.createAccBtn
+                } 
+                ${
+                  userNameEmpty || userNameTaken
                     ? "opacity-50 cursor-not-allowed	pointer-events-none"
                     : ""
-                  }
+                }
               `}
               >
                 <span>
@@ -390,57 +391,6 @@ const Header = () => {
         onRequestClose={successModalCloseHandler}
         isOpen={successModal}
       />
-
-      {/* Enable dispatcher modal */}
-
-      {JSON.parse(window.localStorage.getItem("profile"))?.dispatcher
-        ?.address ? null : (
-        <div>
-          <Modal
-            onRequestClose={signInModalCloseHandler}
-            isOpen={openSignInModal}
-            style={customModalStyles}
-            shouldCloseOnOverlayClick={false}
-            shouldCloseOnEsc={false}
-          >
-            <div
-              className={`flex flex-col justify-start items-start bg-[#FFFFFF] rounded-[16px] backdrop-blur-3xl gap-[16px] p-[40px] ${styles.ModalContainer}`}
-            >
-              <div>
-                <div
-                  className={`flex justify-center box-border items-center w-[234px] h-[40px] bg-[#ABFE2C] text-[#00501E] backdrop-blur rounded-[4px] gap-[8px] cursor-pointer border-[1px] border-solid border-black/20`}
-                  onClick={enableDispatcher}
-                >
-                  Enable Dispatcher
-                </div>
-              </div>
-              <div
-                className={`flex justify-start flex-col gap-[12px] not-italic text-[12px] font-medium ${styles.LensInfo}`}
-              >
-                <div className="flex gap-[8px] justify-start items-center">
-                  <CheckedCircle />
-                  Automatically sign transactions
-                </div>
-                <div className="flex gap-[8px] justify-start items-center">
-                  <CheckedCircle />
-                  Completely secure
-                </div>
-              </div>
-            </div>
-          </Modal>
-          {Object.keys(typedData)?.length > 0 ? (
-            <SignTypedData
-              typedData={typedDataRef.current}
-              id={enableDispatcherTxnId.current}
-              onSuccess={async () => {
-                const profileRes = await getProfile(address);
-                const profile = profileRes.data.profiles.items[0];
-                window.localStorage.setItem("profile", JSON.stringify(profile));
-              }}
-            />
-          ) : null}
-        </div>
-      )}
     </>
   );
 };
