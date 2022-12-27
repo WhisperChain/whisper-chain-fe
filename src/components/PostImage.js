@@ -31,11 +31,15 @@ export const PostImage = ({ imageDetails }) => {
     if (
       window.localStorage.getItem(Constants.LOCAL_STORAGE_REFRESH_TOKEN_KEY)
     ) {
-      await refreshAuthentication();
-      await getApprovedModuleAllowance(imageDetails?.collectModule, signer);
-      const res = await collectPost(imageDetails?.publicationId);
-      transactionId.current = res.data?.createCollectTypedData?.id;
-      setTypedData(res.data?.createCollectTypedData?.typedData);
+      try {
+        await refreshAuthentication();
+        await getApprovedModuleAllowance(imageDetails?.collectModule, signer);
+        const res = await collectPost(imageDetails?.publicationId);
+        transactionId.current = res.data?.createCollectTypedData?.id;
+        setTypedData(res.data?.createCollectTypedData?.typedData);
+      } catch (error) {
+        console.log("error---", error);
+      }
       setOnClickCollect(false);
     } else {
       setIsOpen(true);
@@ -84,32 +88,47 @@ export const PostImage = ({ imageDetails }) => {
           </div>
 
           {/* collector modal */}
-          {onClickCollect && 
-            <div className={`box-border flex flex-col p-[24px] gap-[14px] absolute rounded-[8px] backdrop-blur-[60px] ${styles.collectModal}`}>
+          {onClickCollect && (
+            <div
+              className={`box-border flex flex-col p-[24px] gap-[14px] absolute rounded-[8px] backdrop-blur-[60px] ${styles.collectModal}`}
+            >
               <div className="flex justify-center items-center">
                 <div className="flex gap-[8px] justify-center items-center">
-                  <CollectIcon/>
-                  <span className="w-[360px] text-[16px] leading-[160%] font-bold">Fee Collect</span>
+                  <CollectIcon />
+                  <span className="w-[360px] text-[16px] leading-[160%] font-bold">
+                    Fee Collect
+                  </span>
                 </div>
-                <div onClick={() => setOnClickCollect(false)} className="cursor-pointer"><Cross type={"large"} stroke="#000000" /></div>
+                <div
+                  onClick={() => setOnClickCollect(false)}
+                  className="cursor-pointer"
+                >
+                  <Cross type={"large"} stroke="#000000" />
+                </div>
               </div>
-              <div className={`font-medium text-[16px] leading-[160%] ${styles.collectInfo}`}>Proceeds from the Collect will go to
-                <span className="text-[#000000]"> @{imageDetails?.profileHandle}</span>
+              <div
+                className={`font-medium text-[16px] leading-[160%] ${styles.collectInfo}`}
+              >
+                Proceeds from the Collect will go to
+                <span className="text-[#000000]">
+                  {" "}
+                  @{imageDetails?.profileHandle}
+                </span>
               </div>
-              <div className={`flex box-border px-[12px] py-[7px] gap-[8px] rounded-[4px] text-[16px] font-bold leading-[160%] text-[#000000] ${styles.collectAmount}`}>
-                <PolygonLogo/>
-                1 WMATIC
+              <div
+                className={`flex box-border px-[12px] py-[7px] gap-[8px] rounded-[4px] text-[16px] font-bold leading-[160%] text-[#000000] ${styles.collectAmount}`}
+              >
+                <PolygonLogo />1 WMATIC
               </div>
-              <div className={`flex box-border px-[12px] py-[7px] gap-[8px] rounded-[4px] items-center ${styles.totalCollector}`}>
-                <CollectorLogo/>
-                2 Collectors
+              <div
+                className={`flex box-border px-[12px] py-[7px] gap-[8px] rounded-[4px] items-center ${styles.totalCollector}`}
+              >
+                <CollectorLogo />
+                {imageDetails?.totalNumberOfCollects} Collectors
               </div>
-              <CollectButton
-                onCollectPress={onCollectPress}
-                text={"Collect"}
-              />
+              <CollectButton onCollectPress={onCollectPress} text={"Collect"} />
             </div>
-          }
+          )}
           <div
             className={`flex justify-center items-center absolute top-[85%] left-[50%] text-center gap-[8px] w-[432px] -translate-x-[50%]`}
           >
@@ -150,7 +169,7 @@ export const PostImage = ({ imageDetails }) => {
         <SignTypedData
           typedData={typedData}
           id={transactionId.current}
-          onSuccess={() => { }}
+          onSuccess={() => {}}
         />
       ) : null}
     </div>
