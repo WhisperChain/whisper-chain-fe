@@ -20,6 +20,7 @@ const Chain = () => {
   const [firstCreatedAt, setFirstCreatedAt] = React.useState();
   const [infoContainer, setInfoConatiner] = React.useState(true);
   const [hours, minutes] = timer("2022-12-14");
+  const [hoverBackBtn , setHoverBackBtn] = React.useState(false);
   const messageBoxData = {
     onChain: {
       text: "This was the last image added to the thread, try to describe this image in your own words as best you can, and add your generation to this thread. ",
@@ -98,7 +99,7 @@ const Chain = () => {
         collectModule: pubItem.collectModule,
         hasCollectedByMe: pubItem.hasCollectedByMe,
         publicationId: pubItem.id,
-        totalNumberOfCollects: pubItem.stats.totalAmountOfCollects,
+        totalNumberOfCollects: pubItem.stats?.totalAmountOfCollects,
       });
 
       setFirstCreatedAt(pubItem.createdAt);
@@ -161,7 +162,9 @@ const Chain = () => {
           onClick={() => {
             router.push("/");
           }}
-          className="flex flex-row items-start not-italic font-medium text-[16px] leading-[140%] text-center text-[#0000003C] cursor-pointer"
+          className={`flex flex-row items-center justify-center not-italic font-medium text-[16px] leading-[140%] text-center text-[${hoverBackBtn ? "#000000" : "#0000003C"}] cursor-pointer`}
+          onMouseEnter={() => setHoverBackBtn(true)}
+          onMouseLeave={() => setHoverBackBtn(false)}
         >
           <svg
             width="20"
@@ -172,7 +175,7 @@ const Chain = () => {
           >
             <path
               d="M16.875 10H3.125"
-              stroke="black"
+              stroke= {hoverBackBtn ? "#000000" : "#0000003C"}
               strokeOpacity="0.6"
               strokeWidth="1.5"
               strokeLinecap="round"
@@ -180,14 +183,14 @@ const Chain = () => {
             />
             <path
               d="M8.75 4.375L3.125 10L8.75 15.625"
-              stroke="black"
+              stroke={hoverBackBtn ? "#000000" : "#0000003C"}
               strokeOpacity="0.6"
               strokeWidth="1.5"
               strokeLinecap="round"
               strokeLinejoin="round"
             />
           </svg>
-          <span className="ml-[12px] hover:text-[#000000]">Back</span>
+          <span className="ml-[6px]">Back</span>
         </div>
         <div className="flex flex-col items-center sticky ml-[-32px] decoration-white">
           <div className="not-italic font-medium text-[16px] leading-[140%] tracking-[-0.03em] text-[#000000] ">

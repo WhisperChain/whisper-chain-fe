@@ -20,11 +20,13 @@ import ChevronIcon from "../../assets/ChevronIcon";
 
 function Generate() {
   const { address } = useAccount();
+
   const { publication } = usePublicationContext();
   const router = useRouter();
   const [promptText, setPromptText] = React.useState("");
   const [promtEmpty, setPromtEmpty] = React.useState(false);
   const [specialCharacter, setSpecialCharacter] = React.useState();
+  const [textAreaEntered, setTextAreaEntered] = React.useState();
   const [urls, setUrls] = React.useState([]);
   const limit = 5 - urls.length;
   const [pubsId, setPubsId] = React.useState();
@@ -33,9 +35,12 @@ function Generate() {
     FILTER_OPTIONS[0].value
   );
   const [emptyState, setEmptyState] = React.useState(true);
+  const [disableGeneration, setDisableGeneration] = React.useState(false);
+
   var regex = /[`!@#$%^&*()_+\-=\[\]{};':"\\|<>\/?~]/;
 
   const [previousImageUrl, setPreviousImageUrl] = React.useState();
+
   React.useEffect(() => {
     const fetchData = async () => {
       const pub = (await getPublication("0x59cf", 1)).data.publications
@@ -45,20 +50,28 @@ function Generate() {
       const comment = await (
         await getCommentFeed(pubId, 1)
       ).data.publications.items[0];
+      if (comment) {
+        const porfileIdForGeneratedPost = comment.profile.id;
+        const loggedInUserProfileId = localStorage.getItem("profileId");
+        debugger;
+        if (porfileIdForGeneratedPost === loggedInUserProfileId) {
+          setDisableGeneration(true);
+        }
+      }
       setPubsId(pubId);
       setPreviousImageUrl(
         convertIntoIpfsUrl(
           comment.metadata.media[0].original.url ??
-          pub.metadata.media[0].original.url
+            pub.metadata.media[0].original.url
         )
       );
     };
     if (publication?.pubId) {
       setPubsId(publication?.pubId);
       setPreviousImageUrl(publication?.comments?.[0].imageUrl);
-    } else {
-      fetchData();
     }
+
+    fetchData();
   }, []);
 
   const onImageClickHandler = async (url) => {
@@ -72,9 +85,8 @@ function Generate() {
 
   const generateImageClickHandler = async () => {
     if (regex.test(promptText)) {
-      setSpecialCharacter(true)
-    }
-    else {
+      setSpecialCharacter(true);
+    } else {
       if (urls.length < 5) {
         setUrls([1, ...urls]);
         setEmptyState(false);
@@ -116,8 +128,6 @@ function Generate() {
     }
   }, []);
 
-  const [disableGeneration, setDisableGeneration] = React.useState(false);
-
   return (
     <div
       className={styles.mainContainer}
@@ -138,7 +148,11 @@ function Generate() {
               </div>
             </div>
             <div className="relative">
-              <div className={`w-[256px] h-[256px] relative flex justify-center items-center ${disableGeneration ? 'opacity-25' : ''}`}>
+              <div
+                className={`w-[256px] h-[256px] relative flex justify-center items-center ${
+                  disableGeneration ? "opacity-25" : ""
+                }`}
+              >
                 <WhisperImage
                   imgSrcUrl={previousImageUrl}
                   width={256}
@@ -149,43 +163,60 @@ function Generate() {
                 />
               </div>
               {/* Disabled state when User cannot post(if last post by same user) */}
-              {disableGeneration &&
-                <div className={`flex justify-center items-center w-[200px] h-[82px] relative bg-[#FFFFFF] rounded-[8px] text-center ${styles.errorStateBox}`}>
-                  <span className="not-italic text-[14px] font-medium m-[8px]">Previous whisper was added by you. Please come back later to add a whisper again</span>
+              {disableGeneration && (
+                <div
+                  className={`flex justify-center items-center w-[200px] h-[82px] relative bg-[#FFFFFF] rounded-[8px] text-center ${styles.errorStateBox}`}
+                >
+                  <span className="not-italic text-[14px] font-medium m-[8px]">
+                    Previous whisper was added by you. Please come back later to
+                    add a whisper again
+                  </span>
                 </div>
-              }
+              )}
             </div>
           </div>
           {/* Generate Image form (prompt and filter option) */}
-          <div className={`w-full  ${disableGeneration ? 'opacity-25' : ''}`}>
+          <div className={`w-full  ${disableGeneration ? "opacity-25" : ""}`}>
             <div className="flex flex-col items-start p-0 gap-[8px] w-auto">
               <div className={styles.mainText}>Enter prompt</div>
               <textarea
-                className={`${styles.promptInput} text-sm shadow-sm placeholder-[#1d0545b8]
+                onMouseEnter={() => setTextAreaEntered(true)}
+                onMouseLeave={() => setTextAreaEntered(false)}
+                className={`${styles.promptInput} text-sm shadow-sm 
                   focus:outline-none focus:border-[#6f1aff3d] focus:ring-1 
                   ${promtEmpty ? "focus:ring-[red]" : "focus:ring-[#6f1aff3d]"}
-                  ${disableGeneration ? "cursor-not-allowed	pointer-events-none" : ""}
+                  ${
+                    disableGeneration
+                      ? "cursor-not-allowed	pointer-events-none"
+                      : ""
+                  }
+                  ${
+                    textAreaEntered
+                      ? "placeholder:text-[#1d0545b8]"
+                      : "placeholder:text-[#1d05458f]"
+                  }
                 `}
                 placeholder="Enter your prompt here to generate your very own whisper"
                 value={promptText}
                 onChange={(e) => {
-                  setPromptText(e.target.value)
-                  setSpecialCharacter(false)
-                  if (!e.target.value.replace(/\s/g, '').length) {
-                    setPromtEmpty(true)
-                  }
-                  else {
-                    setPromtEmpty(false)
+                  setPromptText(e.target.value);
+                  setSpecialCharacter(false);
+                  if (!e.target.value.replace(/\s/g, "").length) {
+                    setPromtEmpty(true);
+                  } else {
+                    setPromtEmpty(false);
                   }
                 }}
               ></textarea>
-              {specialCharacter &&
-                <span className="text-[#cf3838] text-[12px]">Prompt can not contain special characters</span>
-              }
+              {specialCharacter && (
+                <span className="text-[#cf3838] text-[12px]">
+                  Prompt can not contain special characters
+                </span>
+              )}
             </div>
           </div>
           {/* Select filter option */}
-          <div className={`w-full  ${disableGeneration ? 'opacity-25' : ''}`}>
+          <div className={`w-full  ${disableGeneration ? "opacity-25" : ""}`}>
             <div className="box-border">
               <div className={styles.mainText}>Filter</div>
               <div className={`${styles.subText} mb-[8px]`}>
@@ -193,7 +224,9 @@ function Generate() {
               </div>
               <div className="flex justify-center items-center">
                 <select
+
                   className={`${styles.selectBoxInput} ${disableGeneration ? "cursor-not-allowed	pointer-events-none" : ""}`}
+
                   value={selectedFilter}
                   onChange={(e) => {
                     setSelectedFilter(e.target.value);
@@ -229,9 +262,11 @@ function Generate() {
                       Generate whisper
                     </span>
                     <span className={styles.tryCounts}>&#x2022;</span>
+
                     <span className={styles.tryCounts}>
                       {limit} tries left
                     </span>
+
                   </div>
                   <div>
                     <MagicStickIcon />
@@ -244,41 +279,40 @@ function Generate() {
         {/* Image Gallery */}
         <div className={styles.imageGalleryContainer}>
           <div className={styles.galleryMainText}>Your generations</div>
-          {
-            urls.map((url, index) => (
-              <div className={styles.imageTryOutputBox} key={index}>
-                <div className="flex items-center justify-center w-full gap-[12px]">
-                  <GeneratedImageBox
-                    imgSrcUrl={url[0]}
-                    key={index}
-                    clickHandler={() => onImageClickHandler(url[0])}
-                  />
-                  <GeneratedImageBox
-                    imgSrcUrl={url[1]}
-                    key={index}
-                    clickHandler={() => onImageClickHandler(url[1])}
-                  />
-                </div>
+          {urls.map((url, index) => (
+            <div className={styles.imageTryOutputBox} key={index}>
+              <div className="flex items-center justify-center w-full gap-[12px]">
+                <GeneratedImageBox
+                  imgSrcUrl={url[0]}
+                  key={index}
+                  clickHandler={() => onImageClickHandler(url[0])}
+                />
+                <GeneratedImageBox
+                  imgSrcUrl={url[1]}
+                  key={index}
+                  clickHandler={() => onImageClickHandler(url[1])}
+                />
               </div>
-            ))
-          }
-          {emptyState &&
-            <div className="overflow-hidden w-full">{
-              [...Array(2)].map((index) => (
+            </div>
+          ))}
+          {emptyState && (
+            <div className="overflow-hidden w-full">
+              {[...Array(2)].map((index) => (
                 <div className={styles.imageTryOutputBox} key={index}>
                   <div className="flex items-start justify-start gap-[12px] w-full">
-                    {
-                      [...Array(2)].map((index) => (
-                        <div key={index} className={`flex items-center justify-center w-[402px] h-[402px] relative group ${styles.defaultState}`}>
-                          <EmptyStateLogo />
-                        </div>
-                      ))
-                    }
+                    {[...Array(2)].map((index) => (
+                      <div
+                        key={index}
+                        className={`flex items-center justify-center w-[402px] h-[402px] relative group ${styles.defaultState}`}
+                      >
+                        <EmptyStateLogo />
+                      </div>
+                    ))}
                   </div>
                 </div>
-              ))
-            }</div>
-          }
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </div>

@@ -16,7 +16,8 @@ const ImagesStack = ({ imageDetails: imageDetailsArray, pub }) => {
   return (
     <div className="flex flex-col items-center relative">
       {imageDetails?.imageUrl && (
-        <div className="tablet:w-[400px] tablet:h-[400px] w-[512px] h-[512px] relative"
+        <div
+          className="tablet:w-[400px] tablet:h-[400px] w-[512px] h-[512px] relative"
           onMouseEnter={() => setHovered(true)}
           onMouseLeave={() => setHovered(false)}
         >
@@ -43,7 +44,7 @@ const ImagesStack = ({ imageDetails: imageDetailsArray, pub }) => {
           >
             <div className={`flex w-[360px] cursor-pointer`}>
               <ProfileLogo profileImageUrl={imageDetails?.profileImageUrl} />
-              <div className="ml-[5px] flex flex-col justify-center items-start">
+              <div className="ml-[5px] flex flex-col justify-center items-start gap-[4px]">
                 <div
                   className={`not-italic leading-[100%] text-[#FFFFFF] font-bold text-[14px] ${styles.name}`}
                 >

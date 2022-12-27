@@ -1,6 +1,6 @@
 .mainContainer {
   width: 100%;
-  margin-top: 20px;
+  margin-top: 30px;
   overflow: scroll;
   height: calc(100vh - 180px);
   -ms-overflow-style: none;
@@ -83,8 +83,13 @@
   padding: 8px 12px;
   resize: none;
 }
+
 :hover.promptInput{
   box-shadow: 0px 0px 4px rgba(111, 26, 255, 0.32), 0px 0px 8px rgba(229, 214, 255, 0.8);
+}
+
+.promptInput::placeholder {
+  color: rgba(29, 5, 69, 0.56);
 }
 
 .selectBoxInput {
