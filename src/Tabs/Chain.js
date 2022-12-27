@@ -77,6 +77,7 @@ const Chain = () => {
           collectModule: comment.collectModule,
           hasCollectedByMe: comment.hasCollectedByMe,
           publicationId: comment.id,
+          totalNumberOfCollects: comment.stats.totalAmountOfCollects,
         };
         commentArray.push(commentObject);
       }
@@ -98,6 +99,7 @@ const Chain = () => {
         collectModule: pubItem.collectModule,
         hasCollectedByMe: pubItem.hasCollectedByMe,
         publicationId: pubItem.id,
+        totalNumberOfCollects: pubItem.stats?.totalAmountOfCollects,
       });
 
       setFirstCreatedAt(pubItem.createdAt);

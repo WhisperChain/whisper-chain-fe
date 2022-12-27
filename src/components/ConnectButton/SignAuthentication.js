@@ -9,7 +9,7 @@ import {
   setDispatcher,
 } from "../../utils/lensFunction";
 
-function SignAuthentication({ onSignInComplete }) {
+function SignAuthentication({ onSignInComplete, setOpenDispatcherModal }) {
   const { address } = useAccount();
   const typedDataRef = React.useRef({});
   const [typedData, setTypedData] = useState(typedDataRef.current);
@@ -41,6 +41,7 @@ function SignAuthentication({ onSignInComplete }) {
       window.localStorage.setItem("profileId", profile.id);
       window.localStorage.setItem("profile", JSON.stringify(profile));
       onSignInComplete?.();
+      setOpenDispatcherModal(true);
     } catch (error) {
       console.log({ error });
       onSignInComplete?.();

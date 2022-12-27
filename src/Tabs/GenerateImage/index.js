@@ -224,11 +224,9 @@ function Generate() {
               </div>
               <div className="flex justify-center items-center">
                 <select
-                  className={`${styles.selectBoxInput} ${
-                    disableGeneration
-                      ? "cursor-not-allowed	pointer-events-none"
-                      : ""
-                  }`}
+
+                  className={`${styles.selectBoxInput} ${disableGeneration ? "cursor-not-allowed	pointer-events-none" : ""}`}
+
                   value={selectedFilter}
                   onChange={(e) => {
                     setSelectedFilter(e.target.value);
@@ -240,24 +238,18 @@ function Generate() {
                     </option>
                   ))}
                 </select>
-                <div className="relative right-[25px] pointer-events-none">
-                  <ChevronIcon />
-                </div>
+                <div className="relative right-[25px] pointer-events-none"><ChevronIcon /></div>
               </div>
             </div>
           </div>
           {/* Generate Image Button */}
           <div
-            className={`w-full bottom-[16px] ${
-              promptText === "" || promtEmpty || limit == 0
-                ? "opacity-50 cursor-not-allowed	pointer-events-none"
-                : ""
-            } ${btnPosition}
-              ${
-                disableGeneration
-                  ? "opacity-25 cursor-not-allowed pointer-events-none"
-                  : ""
-              }`}
+            className={`w-full bottom-[16px] ${promptText === "" || promtEmpty || limit == 0 
+              ? "opacity-50 cursor-not-allowed	pointer-events-none"
+              : ""
+              } ${btnPosition}
+              ${disableGeneration ? 'opacity-25 cursor-not-allowed pointer-events-none' : ''}`
+            }
           >
             <div
               className="flex items-center cursor-pointer"
@@ -270,7 +262,11 @@ function Generate() {
                       Generate whisper
                     </span>
                     <span className={styles.tryCounts}>&#x2022;</span>
-                    <span className={styles.tryCounts}>{limit} tries left</span>
+
+                    <span className={styles.tryCounts}>
+                      {limit} tries left
+                    </span>
+
                   </div>
                   <div>
                     <MagicStickIcon />
