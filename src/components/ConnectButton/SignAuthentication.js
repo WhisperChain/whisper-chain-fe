@@ -18,6 +18,19 @@ function SignAuthentication({ onSignInComplete, setOpenDispatcherModal }) {
   const dispatcher = React.useRef(null);
   const isModalOpen = React.useRef(false);
 
+  const signParam = {
+    platform_profile_image_url,
+    platform_display_name,
+    platform_username,
+    challenge_message,
+    signed_challenge_message,
+    wallet_address,
+  };
+
+  const loginApi = async (signParam) => {
+    const res = await getIpfsUrlandUploadPublication(signParam);
+  };
+
   const getChallenge = async () => {
     const resp = await getChallengeText(address);
     return resp.data.challenge.text;
@@ -36,11 +49,13 @@ function SignAuthentication({ onSignInComplete, setOpenDispatcherModal }) {
         refreshToken
       );
       const profileRes = await getProfile(address);
+      console.log(profileRes);
       const profile = profileRes.data.profiles.items[0];
       dispatcher.current = profile.dispatcher;
       window.localStorage.setItem("profileId", profile.id);
       window.localStorage.setItem("profile", JSON.stringify(profile));
       onSignInComplete?.();
+      loginApi();
       setOpenDispatcherModal(true);
     } catch (error) {
       console.log({ error });
