@@ -98,7 +98,7 @@ const Chain = () => {
         collectModule: pubItem.collectModule,
         hasCollectedByMe: pubItem.hasCollectedByMe,
         publicationId: pubItem.id,
-        totalNumberOfCollects: pubItem.stats.totalAmountOfCollects,
+        totalNumberOfCollects: pubItem.stats?.totalAmountOfCollects,
       });
 
       setFirstCreatedAt(pubItem.createdAt);
