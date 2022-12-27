@@ -18,6 +18,7 @@ import Cross from "../assets/Cross";
 import PolygonLogo from "../assets/PolygonLogo";
 import CollectorLogo from "../assets/CollectorLogo";
 import CollectButton from "./CollectButton";
+import AlertIcon from "../assets/AlertIcon";
 
 export const PostImage = ({ imageDetails }) => {
   const [hovered, setHovered] = React.useState(false);
@@ -26,6 +27,7 @@ export const PostImage = ({ imageDetails }) => {
   const transactionId = React.useRef({});
   const [isOpen, setIsOpen] = React.useState(false);
   const [onClickCollect, setOnClickCollect] = React.useState(false);
+  const [collectError, setCollectError] = React.useState(false);
 
   const onCollectPress = async () => {
     if (
@@ -38,7 +40,7 @@ export const PostImage = ({ imageDetails }) => {
         transactionId.current = res.data?.createCollectTypedData?.id;
         setTypedData(res.data?.createCollectTypedData?.typedData);
       } catch (error) {
-        console.log("error---", error);
+        setCollectError(true);
       }
       setOnClickCollect(false);
     } else {
@@ -129,6 +131,37 @@ export const PostImage = ({ imageDetails }) => {
               <CollectButton onCollectPress={onCollectPress} text={"Collect"} />
             </div>
           )}
+          {/* collector error modal */}
+          {collectError && (
+            <div
+              className={`p-[24px] gap-[14px] w-[464px] absolute rounded-[8px] backdrop-blur-[60px] ${styles.collectModal}`}
+            >
+              <div className="flex gap-[8px] items-center">
+                <AlertIcon />
+                <span className="w-[360px] text-[20px] leading-[160%] font-bold text-[#260707]">
+                  Couldn’t Collect post
+                </span>
+              </div>
+              <div
+                className={`font-medium text-[16px] leading-[160%] pb-[106px] text-[#390808]`}
+              >
+                The message signature was denied.
+              </div>
+              <div
+                className={`w-full min-w-[156px] h-[40px] rounded-[40px] flex items-center justify-center z-10 cursor-pointer gap-[8px] ${styles.Buttonbg}`}
+                onClick={() => {
+                  setCollectError(false);
+                }}
+              >
+                <div
+                  className={`not-italic font-bold text-[16px] leading-[160%] text-center text-[#FFFFFF] py-[7px]${styles.ButtonText}`}
+                >
+                  Ok. Got it.
+                </div>
+              </div>
+            </div>
+          )}
+
           <div
             className={`flex justify-center items-center absolute top-[85%] left-[50%] text-center gap-[8px] w-[432px] -translate-x-[50%]`}
           >
