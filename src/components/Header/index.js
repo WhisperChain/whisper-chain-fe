@@ -67,9 +67,11 @@ const Header = () => {
 
   const [openSignInModal, setOpenSignInModal] = React.useState(false);
   const [openSignOutModal, setOpenSignOutModal] = React.useState(false);
+  const [openDispatcherModal, setOpenDispatcherModal] = React.useState(false);
 
   const signInModalCloseHandler = React.useCallback(() => {
     setOpenSignInModal(false);
+    setOpenDispatcherModal(true);
   });
 
   const signInModalOpenHandler = React.useCallback(() => {
@@ -91,7 +93,7 @@ const Header = () => {
   const [usernameValidation, setUsernameValidation] = React.useState(false);
 
   const [createProfileModal, setCreateProfileModal] = React.useState(false);
-
+  
   const createProfileModalCloseHandler = React.useCallback(() => {
     setCreateProfileModal(false);
   });
@@ -190,6 +192,7 @@ const Header = () => {
   const [typedData, setTypedData] = useState(typedDataRef.current);
 
   const enableDispatcherTxnId = React.useRef();
+
   const enableDispatcher = async () => {
     refreshAuthentication();
     const res = await setDispatcher(window.localStorage.getItem("profileId"));
@@ -423,10 +426,8 @@ const Header = () => {
       {isEnableDispatcher ? null : (
         <Modal
           onRequestClose={signInModalCloseHandler}
-          isOpen={false}
+          isOpen={openDispatcherModal}
           style={customModalStyles}
-          shouldCloseOnOverlayClick={false}
-          shouldCloseOnEsc={false}
         >
           <div
             className={`flex flex-col justify-start items-start bg-[#FFFFFF] rounded-[16px] backdrop-blur-3xl gap-[16px] p-[40px] ${styles.ModalContainer}`}
@@ -460,6 +461,7 @@ const Header = () => {
                 const profileRes = await getProfile(address);
                 const profile = profileRes.data.profiles.items[0];
                 window.localStorage.setItem("profile", JSON.stringify(profile));
+                setOpenDispatcherModal(false);
               }}
             />
           ) : null}
