@@ -6,7 +6,6 @@ import { getProfileImage, resetLocalStorage } from "../../utils/Utils";
 import Modal from "react-modal";
 import SignOutLogo from "../../assets/SignOutLogo";
 import Router from "next/router";
-import CreateAccount from "../SignInModal/CreateAccount";
 
 const HeaderSignin = ({ handleOpen }) => {
 
@@ -103,13 +102,10 @@ const HeaderSignin = ({ handleOpen }) => {
                   </Modal>
                 </div>
               ) :
-                <CreateAccount
-                  onRequestClose={handleModalClose}
-                  isOpen={open}
-                />
-              // <button onClick={handleOpen} className={` w-[92px] h-[36px] bg-[#FFFFFF] rounded-[40px] not-italic font-bold text-[#6F1AFF] ${styles.HeaderSignInbtn}`}>
-              //   Sign In
-              // </button>
+
+                <button onClick={handleOpen} className={` w-[92px] h-[36px] bg-[#FFFFFF] rounded-[40px] not-italic font-bold text-[#6F1AFF] ${styles.HeaderSignInbtn}`}>
+                  Sign In
+                </button>
             })()}
           </div>
         );

@@ -5,9 +5,7 @@ import { resetLocalStorage } from "../../utils/Utils";
 import SignAuthentication from "./SignAuthentication";
 import LensIcon from "../../assets/LensIcon";
 
-const CustomConnectButton = ({ onSignInComplete, setCreateProfileModal, btnText }) => {
-
-  const connectref = React.useRef(false);
+const CustomConnectButton = ({ onSignInComplete, setOpenDispatcherModal }) => {
   return (
     <ConnectButton.Custom>
       {({
@@ -41,38 +39,21 @@ const CustomConnectButton = ({ onSignInComplete, setCreateProfileModal, btnText 
           >
             {(() => {
               if (!connected) {
-                if (btnText === "Create an account") {
-                  return (
-                    <span
-                      className="underline text-[#00501E] cursor-pointer ml-[5px]"
-                      onClick={() => {
-                        resetLocalStorage();
-                        openConnectModal();
-                        connectref.current = true;
-                      }}
-                    >
-                      Create an account
-                    </span>
-                  )
-                }
-                else {
-                  return (
+                return (
+                  <div
+                    onClick={() => {
+                      resetLocalStorage();
+                      openConnectModal();
+                    }}
+                  >
                     <div
-                      onClick={() => {
-                        resetLocalStorage();
-                        openConnectModal();
-                        connectref.current = true;
-                      }}
+                      className={`flex justify-center box-border items-center w-[234px] h-[40px] bg-[#ABFE2C] text-[#00501E] backdrop-blur rounded-[4px] gap-[8px] cursor-pointer border-[1px] border-solid border-black/20`}
                     >
-                      <div
-                        className={`flex justify-center box-border items-center w-[234px] h-[40px] bg-[#ABFE2C] text-[#00501E] backdrop-blur rounded-[4px] gap-[8px] cursor-pointer border-[1px] border-solid border-black/20`}
-                      >
-                        <LensIcon />
-                        Sign in with Lens
-                      </div>
+                      <LensIcon />
+                      Sign in with Lens
                     </div>
-                  );
-                }
+                  </div>
+                );
               }
 
               if (chain.unsupported) {
@@ -82,9 +63,13 @@ const CustomConnectButton = ({ onSignInComplete, setCreateProfileModal, btnText 
                   </button>
                 );
               }
-              return connectref.current && <SignAuthentication onSignInComplete={onSignInComplete} setCreateProfileModal={setCreateProfileModal} createAccount={btnText === "Create an account" ? true : false} />
-            }
-            )()}
+              return (
+                <SignAuthentication
+                  onSignInComplete={onSignInComplete}
+                  setOpenDispatcherModal={setOpenDispatcherModal}
+                />
+              );
+            })()}
           </div>
         );
       }}

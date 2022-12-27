@@ -1,48 +1,26 @@
 import React, { useEffect, useState } from "react";
 import { useAccount, useSignMessage } from "wagmi";
 import { Constants } from "../../utils/Constants";
-import Modal from "react-modal";
-import CheckedCircle from "../../assets/CheckedCircle";
 import {
   getAuthentication,
   getChallengeText,
   getProfile,
   refreshAuthentication,
   setDispatcher,
-  txIndexed,
 } from "../../utils/lensFunction";
 
-function SignAuthentication({
-  onSignInComplete,
-  setCreateProfileModal,
-  createAccount,
-}) {
+function SignAuthentication({ onSignInComplete, setOpenDispatcherModal }) {
   const { address } = useAccount();
   const typedDataRef = React.useRef({});
   const [typedData, setTypedData] = useState(typedDataRef.current);
-  // const enableDispatcherTxnId = React.useRef();
+  const enableDispatcherTxnId = React.useRef();
   const { signMessageAsync } = useSignMessage();
   const dispatcher = React.useRef(null);
   const isModalOpen = React.useRef(false);
-  const enableDispatcherTxnId = React.useRef();
+
   const getChallenge = async () => {
     const resp = await getChallengeText(address);
     return resp.data.challenge.text;
-  };
-
-  const customModalStyles = {
-    content: {
-      background: "#FFFFFF",
-      height: "fit-content",
-      width: "fit-content",
-      margin: "auto",
-      backdropFilter: "blur(60px)",
-      borderRadius: "16px",
-      padding: "0px",
-    },
-    overlay: {
-      background: "rgba(0, 0, 0, 0.6)",
-    },
   };
 
   const authenticate = async (signature) => {
@@ -59,18 +37,11 @@ function SignAuthentication({
       );
       const profileRes = await getProfile(address);
       const profile = profileRes.data.profiles.items[0];
-
+      dispatcher.current = profile.dispatcher;
+      window.localStorage.setItem("profileId", profile.id);
+      window.localStorage.setItem("profile", JSON.stringify(profile));
       onSignInComplete?.();
-
-      if (profile) {
-        dispatcher.current = profile.dispatcher;
-        window.localStorage.setItem("profileId", profile.id);
-        window.localStorage.setItem("profile", JSON.stringify(profile));
-        // remove later
-        setCreateProfileModal(true);
-      } else {
-        setCreateProfileModal(true);
-      }
+      setOpenDispatcherModal(true);
     } catch (error) {
       console.log({ error });
       onSignInComplete?.();
@@ -91,18 +62,19 @@ function SignAuthentication({
     }
   }
 
- 
-  
-  const [openSignInModal, setOpenSignInModal] = React.useState(false);
+  const enableDispatcher = async () => {
+    refreshAuthentication();
+    const res = await setDispatcher(window.localStorage.getItem("profileId"));
+    enableDispatcherTxnId.current = res.data?.createSetDispatcherTypedData?.id;
+    const dispatcherTypedData =
+      res.data?.createSetDispatcherTypedData?.typedData;
+    delete dispatcherTypedData.domain.__typename;
+    delete dispatcherTypedData.types.__typename;
+    delete dispatcherTypedData.value.__typename;
 
-  const signInModalCloseHandler = React.useCallback(() => {
-    setOpenSignInModal(false);
-  });
-
-  // const signInModalOpenHandler = React.useCallback(() => {
-  //   setOpenSignInModal(true);
-  // });
-
+    typedDataRef.current = dispatcherTypedData;
+    setTypedData(typedDataRef.current);
+  };
 
   useEffect(() => {
     if (
@@ -116,10 +88,37 @@ function SignAuthentication({
   }, []);
 
   return (
-    <>
-      {!createAccount && <div>Signing...</div>}
-      {/* Enable dispatcher modal */}
-    </>
+    <div>Signing...</div>
+    // <div>
+    //   {window.localStorage.getItem("profileId") ? (
+    //     <Image
+    //       src={window.localStorage.getItem("profileImageUrl") || "https://cdn.stamp.fyi/avatar/eth:0x3a72452af2ddc056330bbcb43898134c9adb51cf?s=250"}
+    //       alt="profile"
+    //       className="rounded-[18px]"
+    //       width={36}
+    //       height={36}
+    //     />
+    //   ) : null}
+    //  Enable Dispatcher Flow
+    // {JSON.parse(window.localStorage.getItem("profile"))?.dispatcher
+    //   ?.address ? null : (
+    //   <div>
+    //     <button style={{ color: "white" }} onClick={enableDispatcher}>
+    //       Enable Dispatcher
+    //     </button>
+    //     {Object.keys(typedData)?.length > 0 ? (
+    //       <SignTypedData
+    //         typedData={typedDataRef.current}
+    //         id={enableDispatcherTxnId.current}
+    //         onSuccess= {async ()=>{
+    //           const profileRes = await getProfile(address);
+    //           const profile = profileRes.data.profiles.items[0];
+    //           window.localStorage.setItem("profile", JSON.stringify(profile));}}
+    //       />
+    //     ) : null}
+    //   </div>
+    // )}
+    // </div>
   );
 }
 
