@@ -88,6 +88,7 @@ const Header = () => {
   const [userNameEmpty, setUserNameEmpty] = React.useState(false);
   const [errorText, setErrorText] = React.useState("");
   const [userNameText, setUserNameText] = React.useState("");
+  const [usernameValidation, setUsernameValidation] = React.useState(false);
 
   const [createProfileModal, setCreateProfileModal] = React.useState(false);
 
@@ -105,77 +106,84 @@ const Header = () => {
     setSuccessModal(true);
   });
 
-  const onInputChangeHandler = (e) => {
-    setUserNameText(e.target.value);
-    setUserNameEmpty(false);
-    setUserNameTaken(false);
-    if (!e.target.value.replace(/\s/g, "").length) {
-      setErrorText("Username can not be empty");
-      setUserNameEmpty(true);
-    } else {
-      setUserNameEmpty(false);
-    }
-  };
+  // const onInputChangeHandler = (e) => {
+  //   setUserNameText(e.target.value);
+  //   setUserNameEmpty(false);
+  //   setUserNameTaken(false);
+  //   setUsernameValidation(false);
+  //   if (!e.target.value.replace(/\s/g, "").length) {
+  //     setErrorText("Username can not be empty");
+  //     setUserNameEmpty(true);
+  //   } else {
+  //     setUserNameEmpty(false);
+  //   }
+  // };
 
-  let timeout = 0;
+  // let timeout = 0;
 
-  const hasTxIndexed = async (txHash) => {
-    const indexedRes = await txIndexed(txHash);
+  // const hasTxIndexed = async (txHash) => {
+  //   const indexedRes = await txIndexed(txHash);
 
-    return indexedRes.data?.hasTxHashBeenIndexed.indexed;
-  };
+  //   return indexedRes.data?.hasTxHashBeenIndexed.indexed;
+  // };
 
-  const pollIndexing = async (resTxHash) => {
-    if (!resTxHash) return;
+  // const pollIndexing = async (resTxHash) => {
+  //   if (!resTxHash) return;
 
-    setTimeout(async () => {
-      // let isIndexedFlag = hasTxIndexed(resTxHash);
-      const indexedRes = await txIndexed(resTxHash);
+  //   setTimeout(async () => {
+  //     // let isIndexedFlag = hasTxIndexed(resTxHash);
+  //     const indexedRes = await txIndexed(resTxHash);
 
-      const isIndexedFlag = indexedRes.data?.hasTxHashBeenIndexed.indexed;
+  //     const isIndexedFlag = indexedRes.data?.hasTxHashBeenIndexed.indexed;
 
-      if (isIndexedFlag) {
-        // debugger;
-        setTimeout(async () => {
-          await refetchActiveQueries();
-          const profileRes = await getProfile(address);
-          // debugger;
-          const profile = profileRes.data.profiles.items[0];
-          if (profile) {
-            console.log("profile-----" + profile);
-            dispatcher.current = profile.dispatcher;
-            window.localStorage.setItem("profileId", profile.id);
-            window.localStorage.setItem("profile", JSON.stringify(profile));
-          }
+  //     if (isIndexedFlag) {
+  //       // debugger;
+  //       setTimeout(async () => {
+  //         await refetchActiveQueries();
+  //         const profileRes = await getProfile(address);
+  //         // debugger;
+  //         const profile = profileRes.data.profiles.items[0];
+  //         if (profile) {
+  //           console.log("profile-----" + profile);
+  //           dispatcher.current = profile.dispatcher;
+  //           window.localStorage.setItem("profileId", profile.id);
+  //           window.localStorage.setItem("profile", JSON.stringify(profile));
+  //         }
 
-          successModalOpenHandler();
+  //         successModalOpenHandler();
 
-          setTimeout(() => {
-            successModalCloseHandler(true);
-          }, 3000);
-        }, 1000);
-      }
-    }, 5000);
+  //         setTimeout(() => {
+  //           successModalCloseHandler(true);
+  //         }, 3000);
+  //       }, 1000);
+  //     }
+  //   }, 5000);
 
-    setTimeout(async () => {
-      const profileRes = await getProfile(address);
-      console.log({ profileRes });
-    }, 1000);
-  };
+  //   setTimeout(async () => {
+  //     const profileRes = await getProfile(address);
+  //     console.log({ profileRes });
+  //   }, 1000);
+  // };
 
-  const handleCreateAcc = async () => {
-    const res = await createProfile(userNameText);
-    if (res) {
-      if (res.data.createProfile?.reason === "HANDLE_TAKEN") {
-        setUserNameTaken(true);
-      }
+  // const handleCreateAcc = async () => {
+  //   try {
+  //     const res = await createProfile(userNameText);
+  //     if (res) {
+  //       if (res.data.createProfile?.reason === "HANDLE_TAKEN") {
+  //         setUserNameTaken(true);
+  //       }
 
-      await pollIndexing(res.data.createProfile.txHash);
-    }
-  };
+  //       await pollIndexing(res.data.createProfile.txHash);
+  //     }
+  //   } catch (error) {
+  //     setUsernameValidation(true);
+  //   }
+  // };
+
   let isEnableDispatcher;
   if (typeof window !== "undefined") {
-     isEnableDispatcher = JSON.parse(window.localStorage.getItem("profile"))?.dispatcher?.address;
+    isEnableDispatcher = JSON.parse(window.localStorage.getItem("profile"))
+      ?.dispatcher?.address;
   }
 
   const typedDataRef = React.useRef({});
@@ -195,8 +203,6 @@ const Header = () => {
     typedDataRef.current = dispatcherTypedData;
     setTypedData(typedDataRef.current);
   };
-
-  
 
   return (
     <>
@@ -333,18 +339,21 @@ const Header = () => {
             </div>
             <div className="flex justify-start items-center text-[13px] leading-[160%] font-medium text-[#00000099]">
               New to Lens?
-              <CustomConnectButton
+              <a href="https://claim.lens.xyz/" target="_blank">
+                Create an account
+              </a>
+              {/* <CustomConnectButton
                 onSignInComplete={signInModalCloseHandler}
                 setCreateProfileModal={setCreateProfileModal}
                 btnText={"Create an account"}
-              />
+              /> */}
             </div>
           </div>
         </div>
       </Modal>
 
       {/* Create account on lens modal */}
-      <Modal
+      {/* <Modal
         onRequestClose={createProfileModalCloseHandler}
         isOpen={createProfileModal}
         style={customModalStyles}
@@ -374,6 +383,16 @@ const Header = () => {
                 {errorText}
               </p>
             )}
+            {usernameValidation && (
+              <>
+                <p className={`p-[5px] text-[#cf3838] ${styles.emptyText}`}>
+                  Handle must be minimum of 5 length and maximum of 31 length
+                </p>
+                <p className={`p-[5px] text-[#cf3838] ${styles.emptyText}`}>
+                  Handle only supports lower case characters, numbers, - and _
+                </p>
+              </>
+            )}
             <div>
               <a
                 onClick={handleCreateAcc}
@@ -381,7 +400,7 @@ const Header = () => {
                   styles.createAccBtn
                 } 
                 ${
-                  userNameEmpty || userNameTaken
+                  userNameEmpty || userNameTaken || usernameValidation
                     ? "opacity-50 cursor-not-allowed	pointer-events-none"
                     : ""
                 }
@@ -399,40 +418,41 @@ const Header = () => {
       <ProfileCreatedSucces
         onRequestClose={successModalCloseHandler}
         isOpen={successModal}
-      />
-      { isEnableDispatcher ? null : (
-          <Modal
-            onRequestClose={signInModalCloseHandler}
-            isOpen={false}
-            style={customModalStyles}
-            shouldCloseOnOverlayClick={false}
-            shouldCloseOnEsc={false}
+      /> */}
+
+      {isEnableDispatcher ? null : (
+        <Modal
+          onRequestClose={signInModalCloseHandler}
+          isOpen={false}
+          style={customModalStyles}
+          shouldCloseOnOverlayClick={false}
+          shouldCloseOnEsc={false}
+        >
+          <div
+            className={`flex flex-col justify-start items-start bg-[#FFFFFF] rounded-[16px] backdrop-blur-3xl gap-[16px] p-[40px] ${styles.ModalContainer}`}
           >
-            <div
-              className={`flex flex-col justify-start items-start bg-[#FFFFFF] rounded-[16px] backdrop-blur-3xl gap-[16px] p-[40px] ${styles.ModalContainer}`}
-            >
-              <div>
-                <div
-                  className={`flex justify-center box-border items-center w-[234px] h-[40px] bg-[#ABFE2C] text-[#00501E] backdrop-blur rounded-[4px] gap-[8px] cursor-pointer border-[1px] border-solid border-black/20`}
-                  onClick={enableDispatcher}
-                >
-                  Enable Dispatcher
-                </div>
-              </div>
+            <div>
               <div
-                className={`flex justify-start flex-col gap-[12px] not-italic text-[12px] font-medium ${styles.LensInfo}`}
+                className={`flex justify-center box-border items-center w-[234px] h-[40px] bg-[#ABFE2C] text-[#00501E] backdrop-blur rounded-[4px] gap-[8px] cursor-pointer border-[1px] border-solid border-black/20`}
+                onClick={enableDispatcher}
               >
-                <div className="flex gap-[8px] justify-start items-center">
-                  <CheckedCircle />
-                  Automatically sign transactions
-                </div>
-                <div className="flex gap-[8px] justify-start items-center">
-                  <CheckedCircle />
-                  Completely secure
-                </div>
+                Enable Dispatcher
               </div>
             </div>
-            {Object.keys(typedData)?.length > 0 ? (
+            <div
+              className={`flex justify-start flex-col gap-[12px] not-italic text-[12px] font-medium ${styles.LensInfo}`}
+            >
+              <div className="flex gap-[8px] justify-start items-center">
+                <CheckedCircle />
+                Automatically sign transactions
+              </div>
+              <div className="flex gap-[8px] justify-start items-center">
+                <CheckedCircle />
+                Completely secure
+              </div>
+            </div>
+          </div>
+          {Object.keys(typedData)?.length > 0 ? (
             <SignTypedData
               typedData={typedDataRef.current}
               id={enableDispatcherTxnId.current}
@@ -443,7 +463,7 @@ const Header = () => {
               }}
             />
           ) : null}
-          </Modal>
+        </Modal>
       )}
     </>
   );
