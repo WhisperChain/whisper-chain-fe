@@ -25,7 +25,7 @@ function SignAuthentication({ onSignInComplete, setOpenDispatcherModal }) {
     <div
       className={`${
         t.visible ? 'animate-enter' : 'animate-leave'
-      } max-w-md bg-white shadow-lg rounded-[16px] pointer-events-auto flex ring-1 ring-black ring-opacity-5`}
+      } max-w-md bg-white shadow-lg rounded-[16px] pointer-events-auto flex justify-center items-center ring-1 ring-black ring-opacity-5`}
     >
       <div className="flex-1 p-4">
         <div className="flex items-center">
