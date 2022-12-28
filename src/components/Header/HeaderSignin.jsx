@@ -93,10 +93,10 @@ const HeaderSignin = ({ handleOpen }) => {
                   <Modal onRequestClose={handleModalClose} isOpen={open} style={customStyles} ariaHideApp={false}>
                     <div className="flex flex-row items-center py-[15px] pl-[20px] color-red" onClick={
                       () => {
-                        Router.reload();
+                        callLogoutApi();
+                        // Router.reload();
                         handleModalClose();
                         resetLocalStorage();
-                        callLogoutApi();
                       }
                     }
                     >

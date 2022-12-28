@@ -18,7 +18,9 @@ export const resetLocalStorage = () => {
 };
 
 export const getImagesFromPrompt = async (prompt, filter = "") => {
-  const resp = await axios.get(`/images?prompt=${prompt}&art_style=${filter}`);
+  const resp = await axios.get(`/images?prompt=${prompt}&art_style=${filter}`, {
+    withCredentials: true,
+  });
   const responseData = resp?.data;
   return responseData.data;
 };
