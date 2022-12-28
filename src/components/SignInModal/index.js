@@ -10,10 +10,11 @@ import {
   refreshAuthentication,
 } from "../../utils/lensFunction";
 import { useAccount } from "wagmi";
-import toast, { Toaster } from 'react-hot-toast';
+import toast, { Toaster } from "react-hot-toast";
 
 const SignInModal = ({ onRequestClose, isOpen, onSignInComplete }) => {
   const [openDispatcherModal, setOpenDispatcherModal] = React.useState(false);
+  const [notifyToast, setNotifyTost] = React.useState(false);
   // const signInModalCloseHandler = React.useCallback(() => {
   //   setOpenSignInModal(false);
   //   setOpenDispatcherModal(true);
@@ -24,7 +25,7 @@ const SignInModal = ({ onRequestClose, isOpen, onSignInComplete }) => {
   // });
   const { address } = useAccount();
 
-  const notify = () => toast('You’re on the Lens Testnet');
+  const notify = () => toast("You’re on the Lens Testnet");
 
   const customModalStyles = {
     content: {
@@ -61,7 +62,6 @@ const SignInModal = ({ onRequestClose, isOpen, onSignInComplete }) => {
     isEnableDispatcher = JSON.parse(window.localStorage.getItem("profile"))
       ?.dispatcher?.address;
   }
-
   const typedDataRef = React.useRef({});
   const [typedData, setTypedData] = useState(typedDataRef.current);
 
@@ -94,7 +94,6 @@ const SignInModal = ({ onRequestClose, isOpen, onSignInComplete }) => {
           <CustomConnectButton
             onSignInComplete={onSignInComplete}
             setOpenDispatcherModal={setOpenDispatcherModal}
-            notify={notify}
           />
           <div
             className={`flex justify-start flex-col gap-[12px] not-italic text-[12px] font-medium ${styles.LensInfo}`}
@@ -174,10 +173,7 @@ const SignInModal = ({ onRequestClose, isOpen, onSignInComplete }) => {
         </Modal>
       )}
       <div>
-        <Toaster
-          position="top-center"
-          reverseOrder={false}
-        />
+        <Toaster position="top-center" reverseOrder={false} />
       </div>
     </>
   );

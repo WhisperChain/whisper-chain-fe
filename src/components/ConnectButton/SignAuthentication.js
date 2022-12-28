@@ -9,9 +9,9 @@ import {
   setDispatcher,
 } from "../../utils/lensFunction";
 import { loginApi } from "../../utils/Utils";
+import toast from "react-hot-toast";
 
-
-function SignAuthentication({ onSignInComplete, setOpenDispatcherModal, notify }) {
+function SignAuthentication({ onSignInComplete, setOpenDispatcherModal }) {
   const { address } = useAccount();
   const typedDataRef = React.useRef({});
   const [typedData, setTypedData] = useState(typedDataRef.current);
@@ -19,6 +19,8 @@ function SignAuthentication({ onSignInComplete, setOpenDispatcherModal, notify }
   const { signMessageAsync } = useSignMessage();
   const dispatcher = React.useRef(null);
   const isModalOpen = React.useRef(false);
+
+  const notify = () => toast("You’re on the Lens Testnet");
 
   const [signParam, setSignParam] = React.useState({
     wallet_address: address,
@@ -62,8 +64,16 @@ function SignAuthentication({ onSignInComplete, setOpenDispatcherModal, notify }
       window.localStorage.setItem("profile", JSON.stringify(profile));
       onSignInComplete?.();
       callLoginApi();
+
+      let isEnableDispatcher;
+      if (typeof window !== "undefined") {
+        isEnableDispatcher = JSON.parse(window.localStorage.getItem("profile"))
+          ?.dispatcher?.address;
+      }
       setOpenDispatcherModal(true);
-      notify();
+      if (isEnableDispatcher !== undefined) {
+        notify();
+      }
     } catch (error) {
       console.log({ error });
       onSignInComplete?.();

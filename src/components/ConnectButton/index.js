@@ -5,7 +5,7 @@ import { resetLocalStorage } from "../../utils/Utils";
 import SignAuthentication from "./SignAuthentication";
 import LensIcon from "../../assets/LensIcon";
 
-const CustomConnectButton = ({ onSignInComplete, setOpenDispatcherModal, notify }) => {
+const CustomConnectButton = ({ onSignInComplete, setOpenDispatcherModal }) => {
   return (
     <ConnectButton.Custom>
       {({
@@ -67,7 +67,6 @@ const CustomConnectButton = ({ onSignInComplete, setOpenDispatcherModal, notify 
                 <SignAuthentication
                   onSignInComplete={onSignInComplete}
                   setOpenDispatcherModal={setOpenDispatcherModal}
-                  notify={notify}
                 />
               );
             })()}

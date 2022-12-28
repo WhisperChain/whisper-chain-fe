@@ -91,7 +91,7 @@ const HeaderSignin = ({ handleOpen }) => {
                     onClick={handleModalOpen}
                   />
                   <Modal onRequestClose={handleModalClose} isOpen={open} style={customStyles} ariaHideApp={false}>
-                    <div className="flex flex-row items-center py-[15px] pl-[20px] color-red" onClick={
+                    <div className="flex flex-row items-center py-[15px] pl-[20px] w-full color-red" onClick={
                       () => {
                         callLogoutApi();
                         Router.reload();
