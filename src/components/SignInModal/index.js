@@ -10,9 +10,11 @@ import {
   refreshAuthentication,
 } from "../../utils/lensFunction";
 import { useAccount } from "wagmi";
+import toast, { Toaster } from 'react-hot-toast';
 
 const SignInModal = ({ onRequestClose, isOpen, onSignInComplete }) => {
   const [openDispatcherModal, setOpenDispatcherModal] = React.useState(false);
+  const [openToast, setOpenToast] = React.useState(false);
   // const signInModalCloseHandler = React.useCallback(() => {
   //   setOpenSignInModal(false);
   //   setOpenDispatcherModal(true);
@@ -22,6 +24,8 @@ const SignInModal = ({ onRequestClose, isOpen, onSignInComplete }) => {
   //   setOpenSignInModal(true);
   // });
   const { address } = useAccount();
+
+  const notify = () => toast('Here is your toast.');
 
   const customModalStyles = {
     content: {
@@ -168,6 +172,12 @@ const SignInModal = ({ onRequestClose, isOpen, onSignInComplete }) => {
           ) : null}
         </Modal>
       )}
+      <div>
+        <Toaster
+          position="top-center"
+          reverseOrder={false}
+        />
+      </div>
     </>
   );
 };

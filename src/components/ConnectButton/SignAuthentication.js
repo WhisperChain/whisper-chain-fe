@@ -10,7 +10,8 @@ import {
 } from "../../utils/lensFunction";
 import { loginApi } from "../../utils/Utils";
 
-function SignAuthentication({ onSignInComplete, setOpenDispatcherModal }) {
+
+function SignAuthentication({ onSignInComplete, setOpenDispatcherModal, setOpenToast }) {
   const { address } = useAccount();
   const typedDataRef = React.useRef({});
   const [typedData, setTypedData] = useState(typedDataRef.current);
@@ -62,6 +63,7 @@ function SignAuthentication({ onSignInComplete, setOpenDispatcherModal }) {
       onSignInComplete?.();
       callLoginApi();
       setOpenDispatcherModal(true);
+      setOpenToast(true)
     } catch (error) {
       console.log({ error });
       onSignInComplete?.();
@@ -114,37 +116,39 @@ function SignAuthentication({ onSignInComplete, setOpenDispatcherModal }) {
   }, []);
 
   return (
-    <div>Signing...</div>
-    // <div>
-    //   {window.localStorage.getItem("profileId") ? (
-    //     <Image
-    //       src={window.localStorage.getItem("profileImageUrl") || "https://cdn.stamp.fyi/avatar/eth:0x3a72452af2ddc056330bbcb43898134c9adb51cf?s=250"}
-    //       alt="profile"
-    //       className="rounded-[18px]"
-    //       width={36}
-    //       height={36}
-    //     />
-    //   ) : null}
-    //  Enable Dispatcher Flow
-    // {JSON.parse(window.localStorage.getItem("profile"))?.dispatcher
-    //   ?.address ? null : (
-    //   <div>
-    //     <button style={{ color: "white" }} onClick={enableDispatcher}>
-    //       Enable Dispatcher
-    //     </button>
-    //     {Object.keys(typedData)?.length > 0 ? (
-    //       <SignTypedData
-    //         typedData={typedDataRef.current}
-    //         id={enableDispatcherTxnId.current}
-    //         onSuccess= {async ()=>{
-    //           const profileRes = await getProfile(address);
-    //           const profile = profileRes.data.profiles.items[0];
-    //           window.localStorage.setItem("profile", JSON.stringify(profile));}}
-    //       />
-    //     ) : null}
-    //   </div>
-    // )}
-    // </div>
+    <>
+      <div>Signing...</div>
+      {/* <div>
+      {window.localStorage.getItem("profileId") ? (
+        <Image
+          src={window.localStorage.getItem("profileImageUrl") || "https://cdn.stamp.fyi/avatar/eth:0x3a72452af2ddc056330bbcb43898134c9adb51cf?s=250"}
+          alt="profile"
+          className="rounded-[18px]"
+          width={36}
+          height={36}
+        />
+      ) : null}
+     Enable Dispatcher Flow
+    {JSON.parse(window.localStorage.getItem("profile"))?.dispatcher
+      ?.address ? null : (
+      <div>
+        <button style={{ color: "white" }} onClick={enableDispatcher}>
+          Enable Dispatcher
+        </button>
+        {Object.keys(typedData)?.length > 0 ? (
+          <SignTypedData
+            typedData={typedDataRef.current}
+            id={enableDispatcherTxnId.current}
+            onSuccess= {async ()=>{
+              const profileRes = await getProfile(address);
+              const profile = profileRes.data.profiles.items[0];
+              window.localStorage.setItem("profile", JSON.stringify(profile));}}
+          />
+        ) : null}
+      </div>
+    )}
+    </div> */}
+    </>
   );
 }
 
