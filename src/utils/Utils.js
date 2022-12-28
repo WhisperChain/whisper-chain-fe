@@ -24,29 +24,15 @@ export const getImagesFromPrompt = async (prompt, filter = "") => {
 };
 
 export const loginApi = async (signParams) => {
-  const resp = await axios.post(
-    `/lens/connect`,
-    {
-      platform_profile_image_url,
-      platform_display_name,
-      platform_username,
-      challenge_message,
-      signed_challenge_message,
-      wallet_address,
-    },
-    {
-      withCredentials: true,
-    }
-  );
+  const resp = await axios.post(`/lens/connect`, signParams, {
+    withCredentials: true,
+  });
 };
 
 export const logoutApi = async () => {
-  const resp = await axios.post(
-    `/lens/logout`,
-    {
-      withCredentials: true,
-    }
-  );
+  const resp = await axios.post(`/lens/logout`, {
+    withCredentials: true,
+  });
 };
 
 export const getIpfsUrl = async (url) => {

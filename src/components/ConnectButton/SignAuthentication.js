@@ -6,8 +6,9 @@ import {
   getChallengeText,
   getProfile,
   refreshAuthentication,
-  setDispatcher
+  setDispatcher,
 } from "../../utils/lensFunction";
+import { loginApi } from "../../utils/Utils";
 
 function SignAuthentication({ onSignInComplete, setOpenDispatcherModal }) {
   const { address } = useAccount();
@@ -21,24 +22,26 @@ function SignAuthentication({ onSignInComplete, setOpenDispatcherModal }) {
   const challenge_message = React.useRef();
   const profileParams = React.useRef();
 
+  console.log("profileParams---", profileParams);
+
   const signParam = {
-    platform_profile_image_url: profileParams.picture?.original.url,
-    platform_user_id: profileParams.id,
-    platform_display_name: profileParams.name ? profileParams.name : null,
-    platform_username: profileParams.handle,
+    lens_profile_image_url: profileParams.picture?.original.url,
+    lens_user_id: profileParams.id,
+    lens_display_name: profileParams.name ? profileParams.name : null,
+    lens_username: profileParams.handle,
     challenge_message: challenge_message,
     signed_challenge_message: signed_challenge_message,
-    wallet_address : address,
+    wallet_address: address,
   };
-  
+
   const callLoginApi = async (profile) => {
-   await loginApi(profile);
+    await loginApi(profile);
   };
 
   const getChallenge = async () => {
     const resp = await getChallengeText(address);
     const challangeMessage = resp.data.challenge.text;
-    challenge_message.current = challangeMessage.challenge_message
+    challenge_message.current = challangeMessage.challenge_message;
     return challangeMessage;
   };
 
@@ -55,7 +58,7 @@ function SignAuthentication({ onSignInComplete, setOpenDispatcherModal }) {
         refreshToken
       );
       const profileRes = await getProfile(address);
-      console.log("----------",profileRes);
+      console.log("----------", profileRes);
       const profile = profileRes.data.profiles.items[0];
       profileParams.current = profile.profileParams;
       dispatcher.current = profile.dispatcher;
