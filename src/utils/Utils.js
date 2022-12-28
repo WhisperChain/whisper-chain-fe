@@ -8,7 +8,7 @@ import {
 import axios from "axios";
 
 // axios default settings
-axios.defaults.baseURL = process.env.NEXT_PUBLIC_API_BASE_URL
+axios.defaults.baseURL = process.env.NEXT_PUBLIC_API_BASE_URL;
 
 export const resetLocalStorage = () => {
   window.localStorage.removeItem(Constants.LOCAL_STORAGE_ACCESS_TOKEN_KEY);
@@ -17,13 +17,28 @@ export const resetLocalStorage = () => {
   window.localStorage.removeItem("profile");
 };
 
-
 export const getImagesFromPrompt = async (prompt, filter = "") => {
-  const resp = await axios.get(
-    `/images?prompt=${prompt}&art_style=${filter}`,
-  );
+  const resp = await axios.get(`/images?prompt=${prompt}&art_style=${filter}`, {
+    withCredentials: true,
+  });
   const responseData = resp?.data;
   return responseData.data;
+};
+
+export const loginApi = async (signParams) => {
+  const resp = await axios.post(`/lens/connect`, signParams, {
+    withCredentials: true,
+  });
+};
+
+export const logoutApi = async () => {
+  const resp = await axios.post(
+    `/lens/logout`,
+    {},
+    {
+      withCredentials: true,
+    }
+  );
 };
 
 export const getIpfsUrl = async (url) => {
@@ -31,6 +46,9 @@ export const getIpfsUrl = async (url) => {
     `https://whisperchain.xyz/api/whisper?s3_url=${url}`,
     {
       method: "GET",
+    },
+    {
+      withCredentials: true,
     }
   );
   const responseJSON = await resp.json();
@@ -43,12 +61,15 @@ export const createIpfsObjects = async (url) => {
   const resp = await axios.post(
     `/lens/ipfs-objects`,
     {
-      s3_url: url
+      s3_url: url,
     },
     {
       headers: {
         "Content-Type": "application/json",
-      }
+      },
+    },
+    {
+      withCredentials: true,
     }
   );
 
@@ -65,6 +86,9 @@ export const postWhisperResponse = async (url, txHash) => {
       whisper_ipfs_object_id: 1,
       image_ipfs_object_id: 1,
       chain_id: 1,
+    },
+    {
+      withCredentials: true,
     }
   );
 };

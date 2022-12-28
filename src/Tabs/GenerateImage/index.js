@@ -17,6 +17,7 @@ import { useRouter } from "next/router";
 import EmptyStateLogo from "../../assets/EmptyStateLogo";
 import { useAccount } from "wagmi";
 import ChevronIcon from "../../assets/ChevronIcon";
+import moment from "moment";
 
 function Generate() {
   const { address } = useAccount();
@@ -53,7 +54,6 @@ function Generate() {
       if (comment) {
         const porfileIdForGeneratedPost = comment.profile.id;
         const loggedInUserProfileId = localStorage.getItem("profileId");
-        debugger;
         if (porfileIdForGeneratedPost === loggedInUserProfileId) {
           setDisableGeneration(true);
         }
@@ -141,7 +141,8 @@ function Generate() {
           <div className="w-full">
             <div className="flex flex-col mb-[8px]">
               <div className={styles.mainText}>
-                Last whisper of {`December 13th`} chain
+                Last whisper of{" "}
+                {moment(publication?.createdAt).format("MMMM Do")} chain
               </div>
               <div className={styles.subText}>
                 Try to describe this whisper as best you can.
@@ -224,9 +225,11 @@ function Generate() {
               </div>
               <div className="flex justify-center items-center">
                 <select
-
-                  className={`${styles.selectBoxInput} ${disableGeneration ? "cursor-not-allowed	pointer-events-none" : ""}`}
-
+                  className={`${styles.selectBoxInput} ${
+                    disableGeneration
+                      ? "cursor-not-allowed	pointer-events-none"
+                      : ""
+                  }`}
                   value={selectedFilter}
                   onChange={(e) => {
                     setSelectedFilter(e.target.value);
@@ -238,18 +241,24 @@ function Generate() {
                     </option>
                   ))}
                 </select>
-                <div className="relative right-[25px] pointer-events-none"><ChevronIcon /></div>
+                <div className="relative right-[25px] pointer-events-none">
+                  <ChevronIcon />
+                </div>
               </div>
             </div>
           </div>
           {/* Generate Image Button */}
           <div
-            className={`w-full bottom-[16px] ${promptText === "" || promtEmpty || limit == 0 
-              ? "opacity-50 cursor-not-allowed	pointer-events-none"
-              : ""
-              } ${btnPosition}
-              ${disableGeneration ? 'opacity-25 cursor-not-allowed pointer-events-none' : ''}`
-            }
+            className={`w-full bottom-[16px] ${
+              promptText === "" || promtEmpty || limit == 0
+                ? "opacity-50 cursor-not-allowed	pointer-events-none"
+                : ""
+            } ${btnPosition}
+              ${
+                disableGeneration
+                  ? "opacity-25 cursor-not-allowed pointer-events-none"
+                  : ""
+              }`}
           >
             <div
               className="flex items-center cursor-pointer"
@@ -263,10 +272,7 @@ function Generate() {
                     </span>
                     <span className={styles.tryCounts}>&#x2022;</span>
 
-                    <span className={styles.tryCounts}>
-                      {limit} tries left
-                    </span>
-
+                    <span className={styles.tryCounts}>{limit} tries left</span>
                   </div>
                   <div>
                     <MagicStickIcon />
