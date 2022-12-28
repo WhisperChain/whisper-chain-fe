@@ -7,6 +7,7 @@ import {
   getProfile,
   refreshAuthentication,
   setDispatcher,
+  loginApi,
 } from "../../utils/lensFunction";
 
 function SignAuthentication({ onSignInComplete, setOpenDispatcherModal }) {
@@ -26,9 +27,9 @@ function SignAuthentication({ onSignInComplete, setOpenDispatcherModal }) {
     signed_challenge_message,
     wallet_address,
   };
-
-  const loginApi = async (signParam) => {
-    const res = await getIpfsUrlandUploadPublication(signParam);
+  
+  const callLoginApi = async () => {
+    const res = await loginApi(signParam);
   };
 
   const getChallenge = async () => {
@@ -49,13 +50,13 @@ function SignAuthentication({ onSignInComplete, setOpenDispatcherModal }) {
         refreshToken
       );
       const profileRes = await getProfile(address);
-      console.log(profileRes);
+      console.log("----------",profileRes);
       const profile = profileRes.data.profiles.items[0];
       dispatcher.current = profile.dispatcher;
       window.localStorage.setItem("profileId", profile.id);
       window.localStorage.setItem("profile", JSON.stringify(profile));
       onSignInComplete?.();
-      loginApi();
+      callLoginApi();
       setOpenDispatcherModal(true);
     } catch (error) {
       console.log({ error });

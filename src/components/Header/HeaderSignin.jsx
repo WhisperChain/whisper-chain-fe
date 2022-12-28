@@ -2,7 +2,7 @@ import { ConnectButton } from "@rainbow-me/rainbowkit";
 import React from "react";
 import Image from "next/image";
 import styles from "./Header.module.css";
-import { getProfileImage, resetLocalStorage } from "../../utils/Utils";
+import { getProfileImage, resetLocalStorage,logoutApi } from "../../utils/Utils";
 import Modal from "react-modal";
 import SignOutLogo from "../../assets/SignOutLogo";
 import Router from "next/router";
@@ -36,6 +36,9 @@ const HeaderSignin = ({ handleOpen }) => {
       background: "rgba(0, 0, 0, 0.4)",
     },
   };
+  const callLogoutApi = async () => {
+    await logoutApi();
+  }
 
   return (
     <ConnectButton.Custom>
@@ -93,6 +96,7 @@ const HeaderSignin = ({ handleOpen }) => {
                         Router.reload();
                         handleModalClose();
                         resetLocalStorage();
+                        callLogoutApi();
                       }
                     }
                     >

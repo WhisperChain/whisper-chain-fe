@@ -26,12 +26,23 @@ export const getImagesFromPrompt = async (prompt, filter = "") => {
 export const loginApi = async (signParams) => {
   const resp = await axios.post(
     `/lens/connect`,
-    signParams,
     {
-      headers: {
-        "Content-Type": "application/json",
-      },
+      platform_profile_image_url,
+      platform_display_name,
+      platform_username,
+      challenge_message,
+      signed_challenge_message,
+      wallet_address,
     },
+    {
+      withCredentials: true,
+    }
+  );
+};
+
+export const logoutApi = async () => {
+  const resp = await axios.post(
+    `/lens/logout`,
     {
       withCredentials: true,
     }
