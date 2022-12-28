@@ -6,8 +6,7 @@ import {
   getChallengeText,
   getProfile,
   refreshAuthentication,
-  setDispatcher,
-  loginApi,
+  setDispatcher
 } from "../../utils/lensFunction";
 
 function SignAuthentication({ onSignInComplete, setOpenDispatcherModal }) {
@@ -18,23 +17,29 @@ function SignAuthentication({ onSignInComplete, setOpenDispatcherModal }) {
   const { signMessageAsync } = useSignMessage();
   const dispatcher = React.useRef(null);
   const isModalOpen = React.useRef(false);
+  const signed_challenge_message = React.useRef();
+  const challenge_message = React.useRef();
+  const profileParams = React.useRef();
 
   const signParam = {
-    platform_profile_image_url,
-    platform_display_name,
-    platform_username,
-    challenge_message,
-    signed_challenge_message,
-    wallet_address,
+    platform_profile_image_url: profileParams.picture?.original.url,
+    platform_user_id: profileParams.id,
+    platform_display_name: profileParams.name ? profileParams.name : null,
+    platform_username: profileParams.handle,
+    challenge_message: challenge_message,
+    signed_challenge_message: signed_challenge_message,
+    wallet_address : address,
   };
   
-  const callLoginApi = async () => {
-    const res = await loginApi(signParam);
+  const callLoginApi = async (profile) => {
+   await loginApi(profile);
   };
 
   const getChallenge = async () => {
     const resp = await getChallengeText(address);
-    return resp.data.challenge.text;
+    const challangeMessage = resp.data.challenge.text;
+    challenge_message.current = challangeMessage.challenge_message
+    return challangeMessage;
   };
 
   const authenticate = async (signature) => {
@@ -52,11 +57,12 @@ function SignAuthentication({ onSignInComplete, setOpenDispatcherModal }) {
       const profileRes = await getProfile(address);
       console.log("----------",profileRes);
       const profile = profileRes.data.profiles.items[0];
+      profileParams.current = profile.profileParams;
       dispatcher.current = profile.dispatcher;
       window.localStorage.setItem("profileId", profile.id);
       window.localStorage.setItem("profile", JSON.stringify(profile));
       onSignInComplete?.();
-      callLoginApi();
+      callLoginApi(signParam);
       setOpenDispatcherModal(true);
     } catch (error) {
       console.log({ error });
@@ -70,6 +76,7 @@ function SignAuthentication({ onSignInComplete, setOpenDispatcherModal }) {
       const signature = await signMessageAsync({
         message: challenge,
       });
+      signed_challenge_message.current = signature.signed_challenge_message;
       authenticate(signature);
       isModalOpen.current = false;
     } else {

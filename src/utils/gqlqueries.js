@@ -20,6 +20,7 @@ export const GET_PROFILE = `
       items {
         id
         isDefault
+        name
         picture {
           ... on NftImage {
             contractAddress
