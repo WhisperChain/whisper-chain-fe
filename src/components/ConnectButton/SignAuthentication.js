@@ -11,7 +11,7 @@ import {
 import { loginApi } from "../../utils/Utils";
 
 
-function SignAuthentication({ onSignInComplete, setOpenDispatcherModal, setOpenToast }) {
+function SignAuthentication({ onSignInComplete, setOpenDispatcherModal, notify }) {
   const { address } = useAccount();
   const typedDataRef = React.useRef({});
   const [typedData, setTypedData] = useState(typedDataRef.current);
@@ -63,7 +63,7 @@ function SignAuthentication({ onSignInComplete, setOpenDispatcherModal, setOpenT
       onSignInComplete?.();
       callLoginApi();
       setOpenDispatcherModal(true);
-      setOpenToast(true)
+      notify();
     } catch (error) {
       console.log({ error });
       onSignInComplete?.();

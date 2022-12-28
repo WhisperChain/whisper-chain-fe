@@ -14,7 +14,6 @@ import toast, { Toaster } from 'react-hot-toast';
 
 const SignInModal = ({ onRequestClose, isOpen, onSignInComplete }) => {
   const [openDispatcherModal, setOpenDispatcherModal] = React.useState(false);
-  const [openToast, setOpenToast] = React.useState(false);
   // const signInModalCloseHandler = React.useCallback(() => {
   //   setOpenSignInModal(false);
   //   setOpenDispatcherModal(true);
@@ -25,7 +24,7 @@ const SignInModal = ({ onRequestClose, isOpen, onSignInComplete }) => {
   // });
   const { address } = useAccount();
 
-  const notify = () => toast('Here is your toast.');
+  const notify = () => toast('You’re on the Lens Testnet');
 
   const customModalStyles = {
     content: {
@@ -95,6 +94,7 @@ const SignInModal = ({ onRequestClose, isOpen, onSignInComplete }) => {
           <CustomConnectButton
             onSignInComplete={onSignInComplete}
             setOpenDispatcherModal={setOpenDispatcherModal}
+            notify={notify}
           />
           <div
             className={`flex justify-start flex-col gap-[12px] not-italic text-[12px] font-medium ${styles.LensInfo}`}
@@ -167,6 +167,7 @@ const SignInModal = ({ onRequestClose, isOpen, onSignInComplete }) => {
                 const profile = profileRes.data.profiles.items[0];
                 window.localStorage.setItem("profile", JSON.stringify(profile));
                 setOpenDispatcherModal(false);
+                notify();
               }}
             />
           ) : null}
