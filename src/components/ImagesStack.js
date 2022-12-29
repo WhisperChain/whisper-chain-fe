@@ -44,7 +44,7 @@ const ImagesStack = ({ imageDetails: imageDetailsArray, pub }) => {
           >
             <div className={`flex w-[360px] cursor-pointer`}>
               <ProfileLogo profileImageUrl={imageDetails?.profileImageUrl} />
-              <div className="ml-[5px] flex flex-col justify-center items-start">
+              <div className="ml-[5px] flex flex-col justify-center items-start gap-[4px]">
                 <div
                   className={`not-italic leading-[100%] text-[#FFFFFF] font-bold text-[14px] ${styles.name}`}
                 >

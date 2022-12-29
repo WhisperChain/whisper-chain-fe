@@ -20,7 +20,6 @@ const CollectIcon = () => {
         </radialGradient>
       </defs>
     </svg>
-
   );
 }
 
