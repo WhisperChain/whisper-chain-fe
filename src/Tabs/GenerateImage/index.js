@@ -184,6 +184,7 @@ function Generate() {
                 onMouseEnter={() => setTextAreaEntered(true)}
                 onMouseLeave={() => setTextAreaEntered(false)}
                 className={`${styles.promptInput} text-sm shadow-sm 
+                  placeholder-[#1d0545b8]
                   focus:outline-none focus:border-[#6f1aff3d] focus:ring-1 
                   ${promtEmpty ? "focus:ring-[red]" : "focus:ring-[#6f1aff3d]"}
                   ${

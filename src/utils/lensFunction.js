@@ -22,9 +22,6 @@ import {
   VERIFY_AUTHENTICATION,
   CREATE_PROFILE,
 } from "./gqlqueries";
-import moment from "moment";
-import { convertIntoIpfsUrl } from "./Utils";
-import ToastMessage from "../components/ToastMessage";
 import { Constants } from "./Constants";
 
 const API_URL = "https://api-mumbai.lens.dev";
@@ -117,64 +114,6 @@ export const getCommentFeed = async (publicationId, limit = 10) => {
       },
     },
   });
-};
-
-export const getLastCommentsOfPosts = async (profileId) => {
-  const dataObject = [];
-  const resp = await getPublication(profileId, 5);
-  const publicationItems = resp.data.publications.items;
-  for (let i = 0; i < publicationItems.length; i++) {
-    const item = publicationItems[i];
-    const comments = await getCommentFeed(item.id, 3);
-    const commentsArray = [];
-    if (comments.data.publications.items.length >= 1) {
-      comments.data.publications.items.map(async (comment) => {
-        const commentData = {
-          imageUrl: convertIntoIpfsUrl(comment.metadata.media[0].original.url),
-          profileHandle: comment.profile.handle,
-          name: comment.profile.name,
-          createdAt: moment(comment.createdAt).format("h:mm a"),
-          profileImageUrl: comment.profile.picture
-            ? convertIntoIpfsUrl(comment.profile.picture?.original?.url)
-            : `https://cdn.stamp.fyi/avatar/eth:${comment.profile.ownedBy}?s=250`,
-          lensterProfileUrl: `https://testnet.lenster.xyz/u/${comment.profile.handle}`,
-          lensterPostUrl: `https://testnet.lenster.xyz/posts/${comment.id}`,
-          profileId: comment.profile.id,
-          isFollowedByMe: comment.profile.isFollowedByMe,
-          followModule: comment.profile.followModule,
-        };
-
-        commentsArray.push(commentData);
-      });
-    } else {
-      commentsArray.push({
-        imageUrl: convertIntoIpfsUrl(item.metadata.media[0].original.url),
-        profileHandle: item.profile.handle,
-        name: item.profile.name,
-        createdAt: moment(item.createdAt).format("h:mm a"),
-        lensterProfileUrl: `https://testnet.lenster.xyz/u/${item.profile.handle}`,
-        lensterPostUrl: `https://testnet.lenster.xyz/posts/${item.id}`,
-        profileImageUrl: item.profile.picture
-          ? convertIntoIpfsUrl(item.profile.picture?.original?.url)
-          : `https://cdn.stamp.fyi/avatar/eth:${item.profile.ownedBy}?s=250`,
-        profileId: item.profile.id,
-        isFollowedByMe: item.profile.isFollowedByMe,
-        followModule: item.profile.followModule,
-      });
-    }
-
-    var a = moment(item.createdAt);
-    var b = moment();
-    dataObject.push({
-      pubId: item.id,
-      profile: item.profile,
-      createdAt: item.createdAt,
-      comments: commentsArray,
-      timeDifference: b.diff(a, "minutes"),
-      metadata: item.metadata,
-    });
-  }
-  return dataObject;
 };
 
 export const setDispatcher = async (profileId) => {

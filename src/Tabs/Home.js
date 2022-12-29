@@ -3,7 +3,7 @@ import React from "react";
 import HomeMessage from "../components/HomeMessage";
 import ImagesStack from "../components/ImagesStack";
 import Link from "../assets/Link";
-import { getLastCommentsOfPosts } from "../utils/lensFunction";
+import { getChainData, getLastCommentsOfPosts } from "../utils/ViewData";
 import SpinningLoader from "../components/SpinningLoader";
 import moment from "moment";
 import { getTimerClock } from "../utils/Utils";
@@ -14,30 +14,58 @@ import { Swiper, SwiperSlide } from "swiper/react";
 // Import Swiper styles
 import "swiper/css";
 import "swiper/css/effect-creative";
-import "swiper/css/effect-creative"
-
+import "swiper/css/effect-creative";
 
 // import required modules
 import { Mousewheel, EffectCreative } from "swiper";
 import styles from "./Home.module.css";
 
-const SEL = "custom-section";
-const SECTION_SEL = `.${SEL}`;
+// import Swiper core and required modules
+import SwiperCore, { Manipulation } from "swiper";
+
+// install Swiper modules
+SwiperCore.use([Manipulation]);
+
+const PAGE_LIMIT = 2;
 
 const Home = () => {
   const [publicationData, setPublicationData] = React.useState([]);
   const [isLoading, setIsloading] = React.useState(false);
   const [currentSlideIndex, setCurrentSlideIndex] = React.useState(0);
+  const paginationParams = React.useRef({
+    page: 1,
+    limit: PAGE_LIMIT
+  })
+  const isFirstLoad = React.useRef(true);
+  const [hasMore, setHasMore] = React.useState(false);
+
+  const fetchData = async (paginationParams) => {
+    setIsloading(true);
+    const data = await getChainData(paginationParams);
+    // const data = await getLastCommentsOfPosts("0x59cf");
+    const hasMoreFlag = data?.length >= PAGE_LIMIT;
+    setHasMore(hasMoreFlag);
+    setPublicationData([...publicationData, ...data]);
+    setIsloading(false);
+  }
 
   React.useEffect(() => {
-    async function fetchData() {
-      setIsloading(true);
-      const data = await getLastCommentsOfPosts("0x59cf");
-      setPublicationData(data);
-      setIsloading(false);
-    }
-    fetchData();
+    fetchData(paginationParams.current);
   }, []);
+
+  const onReachEndHandler = async () => {
+    if (isFirstLoad.current) {
+      isFirstLoad.current = false;
+    } else {
+      if (hasMore) {
+        paginationParams.current = {
+          page: paginationParams.current.page + 1,
+          limit: PAGE_LIMIT
+        }
+        await fetchData(paginationParams.current);
+      }
+    }
+  }
 
   return isLoading ? (
     <SpinningLoader height="80vh" width="100%" />
@@ -50,7 +78,9 @@ const Home = () => {
               <div
                 className={`h-[22px] text-[16px] not-italic font-medium leading-[140%] ${styles.Date}`}
               >
-                {moment(publicationData[currentSlideIndex]?.createdAt).format("Do MMMM YYYY")}
+                {moment(publicationData[currentSlideIndex]?.createdAt).format(
+                  "Do MMMM YYYY"
+                )}
               </div>
             </div>
             <Swiper
@@ -76,25 +106,23 @@ const Home = () => {
                 },
               }}
               modules={[Mousewheel, EffectCreative]}
-              onSlideChange={(swiper) => setCurrentSlideIndex(swiper.activeIndex)}
+              onSlideChange={(swiper) =>
+                setCurrentSlideIndex(swiper.activeIndex)
+              }
+              onReachEnd={onReachEndHandler}
             >
               {publicationData &&
-                publicationData.map(
-                  (
-                    pub,
-                    index
-                  ) => (
-                    <SwiperSlide key={pub?.pubId + index}>
-                      <div className={`${SEL} absolute top-0`}>
-                        <div className="slide w-full flex justify-start relative">
-                          {pub?.comments[0] ? (
-                            <ImagesStack imageDetails={pub?.comments} pub={pub} />
-                          ) : null}
-                        </div>
+                publicationData.map((pub, index) => (
+                  <SwiperSlide key={pub?.pubId + index}>
+                    <div className="absolute top-0">
+                      <div className="slide w-full flex justify-start relative">
+                        {pub?.comments[0] ? (
+                          <ImagesStack imageDetails={pub?.comments} pub={pub} />
+                        ) : null}
                       </div>
-                    </SwiperSlide>
-                  )
-                )}
+                    </div>
+                  </SwiperSlide>
+                ))}
             </Swiper>
           </div>
         </div>
@@ -105,7 +133,7 @@ const Home = () => {
           <HomeMessage publication={publicationData[currentSlideIndex]} />
         </div>
       </div>
-    </div>
+    </div >
   );
 };
 

@@ -1,10 +1,7 @@
 import React, { useState } from "react";
-import { useBottomTab } from "../context/BottomTabContext";
-import { usePublicationContext } from "../context/PublicationContext";
-import { TabItems } from "./Main/TabItems";
 import styles from "./AddWhisperBtn.module.css";
 
-const ShareBtn = ({ pageIndex, publication, height, width, text }) => {
+const ShareBtn = ({ height, width }) => {
   const [ulrCopy, setUrlCopy] = useState(false);
   const copyLink = () => {
     const tempInut = document.createElement('input');
@@ -12,7 +9,7 @@ const ShareBtn = ({ pageIndex, publication, height, width, text }) => {
     document.body.appendChild(tempInut);
     tempInut.select();
     document.execCommand('copy');
-    document.body.removeChild(tempInut); 
+    document.body.removeChild(tempInut);
     setUrlCopy(true);
     setTimeout(() => {
       setUrlCopy(false);
@@ -25,7 +22,7 @@ const ShareBtn = ({ pageIndex, publication, height, width, text }) => {
       onClick={copyLink}
     >
       <div className="not-italic -tracking-[0.03em] font-extrabold text-[16px] leading-[100%] text-center text-[#FFFFFF]">
-      {!ulrCopy ? "Share" : "Url Copied!"}
+        {!ulrCopy ? "Share" : "Url Copied!"}
       </div>
     </a>
   );

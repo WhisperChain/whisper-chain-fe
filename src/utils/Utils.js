@@ -59,7 +59,7 @@ export const getIpfsUrl = async (url) => {
 
 export const createIpfsObjects = async (url) => {
   const resp = await axios.post(
-    `/lens/ipfs-objects`,
+    "/lens/ipfs-objects",
     {
       s3_url: url,
     },
@@ -67,8 +67,6 @@ export const createIpfsObjects = async (url) => {
       headers: {
         "Content-Type": "application/json",
       },
-    },
-    {
       withCredentials: true,
     }
   );

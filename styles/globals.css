@@ -67,3 +67,14 @@ code {
 .swiperImg {
   width: 500px;
 }
+
+.infinite-scroll-component {
+  -ms-overflow-style: none !important;
+  /* IE and Edge */
+  scrollbar-width: none !important;
+  /* Firefox */
+}
+
+.infinite-scroll-component::-webkit-scrollbar {
+  display: none !important;
+}
