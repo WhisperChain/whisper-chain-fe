@@ -33,6 +33,7 @@ export const PostImage = ({ imageDetails }) => {
     if (
       window.localStorage.getItem(Constants.LOCAL_STORAGE_REFRESH_TOKEN_KEY)
     ) {
+      setIsOpen(false);
       try {
         await refreshAuthentication();
         await getApprovedModuleAllowance(imageDetails?.collectModule, signer);
@@ -197,7 +198,6 @@ export const PostImage = ({ imageDetails }) => {
         }}
         isOpen={isOpen}
         onSignInComplete={() => {
-          setIsOpen(false);
           onCollectPress();
         }}
       />

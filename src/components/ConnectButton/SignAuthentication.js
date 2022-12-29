@@ -21,24 +21,25 @@ function SignAuthentication({ onSignInComplete, setOpenDispatcherModal }) {
   const dispatcher = React.useRef(null);
   const isModalOpen = React.useRef(false);
 
-  const notify = () => toast.custom((t) => (
-    <div
-      className={`${
-        t.visible ? 'animate-enter' : 'animate-leave'
-      } max-w-md bg-white shadow-lg rounded-[16px] pointer-events-auto flex justify-center items-center ring-1 ring-black ring-opacity-5`}
-    >
-      <div className="flex-1 p-4">
-        <div className="flex items-center">
-          <div className="flex-shrink-0 pt-0.5">
-           <ToastIcon />
-          </div>  
+  const notify = (notifyText) =>
+    toast.custom((t) => (
+      <div
+        className={`${
+          t.visible ? "animate-enter" : "animate-leave"
+        } max-w-md bg-white shadow-lg rounded-[16px] pointer-events-auto flex justify-center items-center ring-1 ring-black ring-opacity-5`}
+      >
+        <div className="flex-1 p-4">
+          <div className="flex items-center">
+            <div className="flex-shrink-0 pt-0.5">
+              <ToastIcon />
+            </div>
             <p className="ml-[10px] text-[14px] text-[#000000] opacity-80">
-            You’re on the Lens Testnet
+              {notifyText}
             </p>
+          </div>
         </div>
       </div>
-    </div>
-  ));
+    ));
 
   const [signParam, setSignParam] = React.useState({
     wallet_address: address,
@@ -90,7 +91,7 @@ function SignAuthentication({ onSignInComplete, setOpenDispatcherModal }) {
       }
       setOpenDispatcherModal(true);
       if (isEnableDispatcher !== undefined) {
-        notify();
+        notify("You’re on the Lens Testnet");
       }
     } catch (error) {
       console.log({ error });
@@ -100,18 +101,23 @@ function SignAuthentication({ onSignInComplete, setOpenDispatcherModal }) {
 
   async function signMsg() {
     if (address) {
-      const challenge = await getChallenge();
-      const signature = await signMessageAsync({
-        message: challenge,
-      });
-      signParam.signed_challenge_message = signature;
-      setSignParam(signParam);
-      console.log(
-        "signParam.signed_challenge_message",
-        signParam.signed_challenge_message
-      );
-      authenticate(signature);
-      isModalOpen.current = false;
+      try {
+        const challenge = await getChallenge();
+        const signature = await signMessageAsync({
+          message: challenge,
+        });
+        signParam.signed_challenge_message = signature;
+        setSignParam(signParam);
+        console.log(
+          "signParam.signed_challenge_message",
+          signParam.signed_challenge_message
+        );
+        authenticate(signature);
+        isModalOpen.current = false;
+      } catch (error) {
+        onSignInComplete?.();
+        if (error) notify("user didnt signed in");
+      }
     } else {
       alert("Connect Wallet to sign In");
       isModalOpen.current = false;
