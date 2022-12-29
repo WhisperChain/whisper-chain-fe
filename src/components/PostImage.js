@@ -85,11 +85,7 @@ export const PostImage = ({ imageDetails }) => {
                 </div>
               </div>
             </div>
-            <div
-              className={`not-italic leading-[100%] text-[#FFFFFF] font-bold text-[17px] ${styles.name}`}
-            >
-              {imageDetails?.createdAt || "2:32 pm"}
-            </div>
+            {/* <div className="">{imageDetails?.createdAt || "2:32 pm"}</div> */}
 
             {/* <FollowButton data={imageDetails} /> */}
           </div>

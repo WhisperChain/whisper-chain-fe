@@ -4,10 +4,9 @@ import ChainPage from "../../src/components/ChainPage";
 
 const chain = () => {
   const router = useRouter();
-  const chainId = router?.query?.chainId;
   return (
     <div>
-      <ChainPage chainId={chainId} />
+      <ChainPage />
     </div>
   );
 };

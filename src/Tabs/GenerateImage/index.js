@@ -301,7 +301,6 @@ function Generate() {
               </div>
             </div>
           ))}
-
           {emptyState && (
             <div className="overflow-hidden w-full">
               {[...Array(2)].map((index) => (
