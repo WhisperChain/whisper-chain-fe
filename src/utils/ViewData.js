@@ -72,10 +72,11 @@ export const getChainData = async (paginationParams) => {
       const whisper = data?.whispers[whisperId];
       const image = data?.images[whisper?.image_id];
       const user = data?.users[whisper?.user_id];
+      console.log("user", user);
+      console.log("data?.images", data?.images);
       const profileImage = data?.images[user?.platform_profile_image_id];
       const whisperData = {
-        //TODO: remove the default image Url
-        imageUrl: "https://cdn.stamp.fyi/avatar/eth:1234?s=250" ?? image.url,
+        imageUrl: image.url,
         profileHandle: user?.platform_username,
         name: user?.platform_display_name,
         createdAt: moment(whisper?.uts).format("h:mm a"),
@@ -172,8 +173,7 @@ export const getChainWhispersData = async (chainId, paginationParams) => {
       const postData = {
         pubId: chain.platform_chain_id,
         createdAt: chain.start_ts,
-        //TODO: remove the default image Url
-        imageUrl: "https://cdn.stamp.fyi/avatar/eth:1234?s=250" ?? image.url,
+        imageUrl: image.url,
         profileHandle: user?.platform_username,
         name: user?.platform_display_name,
       };
@@ -183,8 +183,7 @@ export const getChainWhispersData = async (chainId, paginationParams) => {
     const user = data?.users[whisper?.user_id];
     const profileImage = data?.images[user?.platform_profile_image_id];
     const whisperData = {
-      //TODO: remove the default image Url
-      imageUrl: "https://cdn.stamp.fyi/avatar/eth:1234?s=250" ?? image.url,
+      imageUrl: image.url,
       profileHandle: user?.platform_username,
       name: user?.platform_display_name,
       createdAt: moment(whisper?.uts).format("h:mm a"),
