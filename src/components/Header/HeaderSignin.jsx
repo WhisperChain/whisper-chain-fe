@@ -106,7 +106,6 @@ const HeaderSignin = ({ handleOpen }) => {
                   </Modal>
                 </div>
               ) :
-
                 <button onClick={handleOpen} className={` w-[92px] h-[36px] bg-[#FFFFFF] rounded-[40px] not-italic font-bold text-[#6F1AFF] ${styles.HeaderSignInbtn}`}>
                   Sign In
                 </button>
