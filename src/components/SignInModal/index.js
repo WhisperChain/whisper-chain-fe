@@ -26,24 +26,24 @@ const SignInModal = ({ onRequestClose, isOpen, onSignInComplete }) => {
   const { address } = useAccount();
 
   const notify = (notifyText) =>
-  toast.custom((t) => (
-    <div
-      className={`${
-        t.visible ? "animate-enter" : "animate-leave"
-      } max-w-md bg-white shadow-lg rounded-[16px] pointer-events-auto flex justify-center items-center ring-1 ring-black ring-opacity-5`}
-    >
-      <div className="flex-1 p-4">
-        <div className="flex items-center">
-          <div className="flex-shrink-0 pt-0.5">
-            <ToastIcon />
+    toast.custom((t) => (
+      <div
+        className={`${
+          t.visible ? "animate-enter" : "animate-leave"
+        } max-w-md bg-white shadow-lg rounded-[16px] pointer-events-auto flex justify-center items-center ring-1 ring-black ring-opacity-5`}
+      >
+        <div className="flex-1 p-4">
+          <div className="flex items-center">
+            <div className="flex-shrink-0 pt-0.5">
+              <ToastIcon />
+            </div>
+            <p className="ml-[10px] text-[14px] text-[#000000] opacity-80">
+              {notifyText}
+            </p>
           </div>
-          <p className="ml-[10px] text-[14px] text-[#000000] opacity-80">
-            {notifyText}
-          </p>
         </div>
       </div>
-    </div>
-  ));
+    ));
 
   const customModalStyles = {
     content: {
@@ -131,7 +131,7 @@ const SignInModal = ({ onRequestClose, isOpen, onSignInComplete }) => {
             <div className="flex justify-start items-center text-[13px] leading-[160%] font-medium text-[#00000099]">
               New to Lens?
               <span
-                className="underline text-[#00501E]"
+                className="underline text-[#00501E] pl-[5px]"
                 onClick={() => {
                   window.open("https://claim.lens.xyz/", "_blank");
                 }}
