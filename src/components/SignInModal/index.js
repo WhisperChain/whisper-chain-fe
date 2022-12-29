@@ -14,7 +14,6 @@ import toast, { Toaster } from "react-hot-toast";
 
 const SignInModal = ({ onRequestClose, isOpen, onSignInComplete }) => {
   const [openDispatcherModal, setOpenDispatcherModal] = React.useState(false);
-  const [notifyToast, setNotifyTost] = React.useState(false);
   // const signInModalCloseHandler = React.useCallback(() => {
   //   setOpenSignInModal(false);
   //   setOpenDispatcherModal(true);
@@ -24,8 +23,6 @@ const SignInModal = ({ onRequestClose, isOpen, onSignInComplete }) => {
   //   setOpenSignInModal(true);
   // });
   const { address } = useAccount();
-
-  const notify = () => toast("You’re on the Lens Testnet");
 
   const customModalStyles = {
     content: {
