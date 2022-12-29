@@ -113,11 +113,11 @@ const Chain = () => {
   };
 
   const fetchNextData = () => {
-    const nextPageParams = {
+    paginationParams.current = {
       page: paginationParams.current.page + 1,
       limit: PAGE_LIMIT
     }
-    fetchData(chainId, nextPageParams)
+    fetchData(chainId, paginationParams.current)
   }
 
   return isLoading ? (
