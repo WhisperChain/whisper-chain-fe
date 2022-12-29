@@ -44,7 +44,7 @@ const ImagesStack = ({ imageDetails: imageDetailsArray, pub }) => {
           >
             <div className={`flex w-[360px] cursor-pointer`}>
               <ProfileLogo profileImageUrl={imageDetails?.profileImageUrl} />
-              <div className="ml-[5px] flex flex-col justify-center items-start gap-[4px]">
+              <div className="ml-[5px] flex flex-col justify-center items-start">
                 <div
                   className={`not-italic leading-[100%] text-[#FFFFFF] font-bold text-[14px] ${styles.name}`}
                 >
@@ -57,7 +57,11 @@ const ImagesStack = ({ imageDetails: imageDetailsArray, pub }) => {
                 </div>
               </div>
             </div>
-            {/* <div className="">{imageDetails?.createdAt || "2:32 pm"}</div> */}
+            <div
+              className={`not-italic text-[16px] leading-[100%] text-[#FFFFFF] font-medium ${styles.createdAt}`}
+            >
+              {imageDetails?.createdAt || "2:32 pm"}
+            </div>
 
             {/* <FollowButton data={imageDetails} /> */}
           </div>
@@ -65,7 +69,7 @@ const ImagesStack = ({ imageDetails: imageDetailsArray, pub }) => {
             className={`flex justify-center items-center absolute top-[85%] left-[50%] text-center gap-[8px] tablet:w-[340px] w-[432px] h-[40px] rounded-[4px] backdrop-blur-[60px] cursor-pointer ${styles.bottomBox}`}
             onClick={() => {
               setPublication(pub);
-              router.push("/chain");
+              router.push(`/chain/${pub?.chainId}`);
             }}
           >
             <div

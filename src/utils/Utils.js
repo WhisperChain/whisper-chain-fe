@@ -18,48 +18,14 @@ export const resetLocalStorage = () => {
 };
 
 export const getImagesFromPrompt = async (prompt, filter = "") => {
-  const resp = await axios.get(`/images?prompt=${prompt}&art_style=${filter}`, {
-    withCredentials: true,
-  });
+  const resp = await axios.get(`/images?prompt=${prompt}&art_style=${filter}`);
   const responseData = resp?.data;
   return responseData.data;
 };
 
-export const loginApi = async (signParams) => {
-  const resp = await axios.post(`/lens/connect`, signParams, {
-    withCredentials: true,
-  });
-};
-
-export const logoutApi = async () => {
-  const resp = await axios.post(
-    `/lens/logout`,
-    {},
-    {
-      withCredentials: true,
-    }
-  );
-};
-
-export const getIpfsUrl = async (url) => {
-  const resp = await fetch(
-    `https://whisperchain.xyz/api/whisper?s3_url=${url}`,
-    {
-      method: "GET",
-    },
-    {
-      withCredentials: true,
-    }
-  );
-  const responseJSON = await resp.json();
-  const contentId = responseJSON.data.cids.metadata;
-  const ipfsUrl = `ipfs://${contentId}`;
-  return ipfsUrl;
-};
-
 export const createIpfsObjects = async (url) => {
   const resp = await axios.post(
-    `/lens/ipfs-objects`,
+    "/lens/ipfs-objects",
     {
       s3_url: url,
     },
@@ -67,9 +33,6 @@ export const createIpfsObjects = async (url) => {
       headers: {
         "Content-Type": "application/json",
       },
-    },
-    {
-      withCredentials: true,
     }
   );
 
@@ -78,19 +41,31 @@ export const createIpfsObjects = async (url) => {
 };
 
 export const postWhisperResponse = async (url, txHash) => {
-  await axios.post(
-    `/lens/whispers`,
-    {
-      s3_url: url,
-      transaction_hash: txHash,
-      whisper_ipfs_object_id: 1,
-      image_ipfs_object_id: 1,
-      chain_id: 1,
-    },
-    {
-      withCredentials: true,
-    }
-  );
+  await axios.post("/lens/whispers", {
+    s3_url: url,
+    transaction_hash: txHash,
+    whisper_ipfs_object_id: 1,
+    image_ipfs_object_id: 1,
+    chain_id: 1,
+  });
+};
+
+export const getChains = async ({ page = 1, limit = 10 }) => {
+  const resp = await axios.get(`/lens/chains?page=${page}&limit=${limit}`);
+  const responseData = resp?.data;
+  return responseData.data;
+};
+
+export const getChainWhispers = async (chainId, { page = 1, limit = 10 }) => {
+  const resp = await axios.get(`/lens/${chainId}?page=${page}&limit=${limit}`);
+  const responseData = resp?.data;
+  return responseData.data;
+};
+
+export const getLatestWhisper = async (chainId) => {
+  const resp = await axios.get(`/lens/${chainId}?page=1&limit=1`);
+  const responseData = resp?.data;
+  return responseData.data;
 };
 
 export function convertIntoIpfsUrl(url) {
