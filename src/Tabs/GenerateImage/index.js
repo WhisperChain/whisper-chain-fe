@@ -1,8 +1,6 @@
 import React from "react";
 import { usePublicationContext } from "../../context/PublicationContext";
-import { getCommentFeed, getPublication } from "../../utils/lensFunction";
 import {
-  convertIntoIpfsUrl,
   getIpfsUrlandUploadPublication,
   getImagesFromPrompt,
   postWhisperResponse,
@@ -43,35 +41,15 @@ function Generate() {
   const [previousImageUrl, setPreviousImageUrl] = React.useState();
 
   React.useEffect(() => {
-    const fetchData = async () => {
-      const pub = (await getPublication("0x59cf", 1)).data.publications
-        .items[0];
-      const pubId = pub.id;
-
-      const comment = await (
-        await getCommentFeed(pubId, 1)
-      ).data.publications.items[0];
-      if (comment) {
-        const porfileIdForGeneratedPost = comment.profile.id;
-        const loggedInUserProfileId = localStorage.getItem("profileId");
-        if (porfileIdForGeneratedPost === loggedInUserProfileId) {
-          setDisableGeneration(true);
-        }
-      }
-      setPubsId(pubId);
-      setPreviousImageUrl(
-        convertIntoIpfsUrl(
-          comment.metadata.media[0].original.url ??
-            pub.metadata.media[0].original.url
-        )
-      );
-    };
     if (publication?.pubId) {
       setPubsId(publication?.pubId);
       setPreviousImageUrl(publication?.comments?.[0].imageUrl);
+      const profileIdForGeneratedPost = publication?.comments?.[0].profileId;
+      const loggedInUserProfileId = localStorage.getItem("profileId");
+      if (profileIdForGeneratedPost === loggedInUserProfileId) {
+        setDisableGeneration(true);
+      }
     }
-
-    fetchData();
   }, []);
 
   const onImageClickHandler = async (url) => {
@@ -150,9 +128,8 @@ function Generate() {
             </div>
             <div className="relative">
               <div
-                className={`w-[256px] h-[256px] relative flex justify-center items-center ${
-                  disableGeneration ? "opacity-25" : ""
-                }`}
+                className={`w-[256px] h-[256px] relative flex justify-center items-center ${disableGeneration ? "opacity-25" : ""
+                  }`}
               >
                 <WhisperImage
                   imgSrcUrl={previousImageUrl}
@@ -187,15 +164,13 @@ function Generate() {
                   placeholder-[#1d0545b8]
                   focus:outline-none focus:border-[#6f1aff3d] focus:ring-1 
                   ${promtEmpty ? "focus:ring-[red]" : "focus:ring-[#6f1aff3d]"}
-                  ${
-                    disableGeneration
-                      ? "cursor-not-allowed	pointer-events-none"
-                      : ""
+                  ${disableGeneration
+                    ? "cursor-not-allowed	pointer-events-none"
+                    : ""
                   }
-                  ${
-                    textAreaEntered
-                      ? "placeholder:text-[#1d0545b8]"
-                      : "placeholder:text-[#1d05458f]"
+                  ${textAreaEntered
+                    ? "placeholder:text-[#1d0545b8]"
+                    : "placeholder:text-[#1d05458f]"
                   }
                 `}
                 placeholder="Enter your prompt here to generate your very own whisper"
@@ -226,11 +201,10 @@ function Generate() {
               </div>
               <div className="flex justify-center items-center">
                 <select
-                  className={`${styles.selectBoxInput} ${
-                    disableGeneration
-                      ? "cursor-not-allowed	pointer-events-none"
-                      : ""
-                  }`}
+                  className={`${styles.selectBoxInput} ${disableGeneration
+                    ? "cursor-not-allowed	pointer-events-none"
+                    : ""
+                    }`}
                   value={selectedFilter}
                   onChange={(e) => {
                     setSelectedFilter(e.target.value);
@@ -250,15 +224,13 @@ function Generate() {
           </div>
           {/* Generate Image Button */}
           <div
-            className={`w-full bottom-[16px] ${
-              promptText === "" || promtEmpty || limit == 0
-                ? "opacity-50 cursor-not-allowed	pointer-events-none"
+            className={`w-full bottom-[16px] ${promptText === "" || promtEmpty || limit == 0
+              ? "opacity-50 cursor-not-allowed	pointer-events-none"
+              : ""
+              } ${btnPosition}
+              ${disableGeneration
+                ? "opacity-25 cursor-not-allowed pointer-events-none"
                 : ""
-            } ${btnPosition}
-              ${
-                disableGeneration
-                  ? "opacity-25 cursor-not-allowed pointer-events-none"
-                  : ""
               }`}
           >
             <div

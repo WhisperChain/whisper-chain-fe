@@ -163,7 +163,6 @@ export const getChainWhispersData = async (chainId, paginationParams) => {
   const hasMore = whisperIds?.length >= paginationParams.limit;
   const commentArray = [];
   let pubItem = {};
-  pubItem.hasMore = hasMore;
   whisperIds?.map((whisperId) => {
     const whisper = data?.whispers[whisperId];
     if (Object.keys(pubItem).length === 0) {
@@ -171,9 +170,9 @@ export const getChainWhispersData = async (chainId, paginationParams) => {
       const image = data?.images[chain?.image_id];
       const user = data?.users[whisper?.user_id];
       const postData = {
-        pubId: chain.platform_chain_id,
-        createdAt: chain.start_ts,
-        imageUrl: image.url,
+        pubId: chain?.platform_chain_id,
+        createdAt: chain?.start_ts,
+        imageUrl: image?.url,
         profileHandle: user?.platform_username,
         name: user?.platform_display_name,
       };
@@ -198,5 +197,6 @@ export const getChainWhispersData = async (chainId, paginationParams) => {
     commentArray.push(whisperData);
   });
   pubItem.comments = commentArray;
+  pubItem.hasMore = hasMore;
   return { pubItem, hasMore, commentArray };
 };

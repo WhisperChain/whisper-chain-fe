@@ -1,7 +1,6 @@
 import React from "react";
 import ChainLogo from "../assets/ChainLogo";
 import { PostImage } from "../components/PostImage";
-import { getPublication } from "../utils/lensFunction";
 import AddWhisperBtn from "../components/AddWhisperBtn";
 import ShareBtn from "../components/ShareBtn";
 import { timer } from "../utils/Utils";
@@ -10,7 +9,7 @@ import SpinningLoader from "../components/SpinningLoader";
 import style from "./Chain.module.css";
 import { useRouter } from "next/router";
 import ViewLensIcon from "../assets/ViewLensIcon";
-import { getChainPageData, getChainWhispersData } from "../utils/ViewData";
+import { getChainWhispersData } from "../utils/ViewData";
 import InfiniteScroll from "react-infinite-scroll-component";
 
 const PAGE_LIMIT = 2;
@@ -59,7 +58,6 @@ const Chain = () => {
       chainId,
       paginationParams
     );
-    // const {commentArray, pubItem} = await getChainPageData();
     setFirstCreatedAt(pubItem.createdAt);
     setHasMore(hasMore);
     setPublication(pubItem);
@@ -69,7 +67,6 @@ const Chain = () => {
   React.useEffect(() => {
     if (chainId) {
       fetchData(chainId, paginationParams.current);
-      setFirstCreatedAt(pubItem.createdAt);
       setIsloading(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

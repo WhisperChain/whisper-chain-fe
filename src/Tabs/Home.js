@@ -1,9 +1,8 @@
 import React from "react";
-
 import HomeMessage from "../components/HomeMessage";
 import ImagesStack from "../components/ImagesStack";
 import Link from "../assets/Link";
-import { getChainData, getLastCommentsOfPosts } from "../utils/ViewData";
+import { getChainData } from "../utils/ViewData";
 import SpinningLoader from "../components/SpinningLoader";
 import moment from "moment";
 import { getTimerClock } from "../utils/Utils";
@@ -22,6 +21,7 @@ import styles from "./Home.module.css";
 
 // import Swiper core and required modules
 import SwiperCore, { Manipulation } from "swiper";
+import { usePublicationContext } from "../context/PublicationContext";
 
 // install Swiper modules
 SwiperCore.use([Manipulation]);
@@ -32,6 +32,7 @@ const Home = () => {
   const [publicationData, setPublicationData] = React.useState([]);
   const [isLoading, setIsloading] = React.useState(false);
   const [currentSlideIndex, setCurrentSlideIndex] = React.useState(0);
+  const { setPublication } = usePublicationContext();
   const paginationParams = React.useRef({
     page: 1,
     limit: PAGE_LIMIT
@@ -42,9 +43,11 @@ const Home = () => {
   const fetchData = async (paginationParams) => {
     setIsloading(true);
     const data = await getChainData(paginationParams);
-    // const data = await getLastCommentsOfPosts("0x59cf");
     const hasMoreFlag = data?.length >= PAGE_LIMIT;
     setHasMore(hasMoreFlag);
+    if(publicationData.length == 0){
+      setPublication(data[0]);
+    }
     setPublicationData([...publicationData, ...data]);
     setIsloading(false);
   }
