@@ -57,11 +57,11 @@ const ImagesStack = ({ imageDetails: imageDetailsArray, pub }) => {
                 </div>
               </div>
             </div>
-            <div
+            {/* <div
               className={`not-italic text-[16px] leading-[100%] text-[#FFFFFF] font-medium ${styles.createdAt}`}
             >
               {imageDetails?.createdAt || "2:32 pm"}
-            </div>
+            </div> */}
 
             {/* <FollowButton data={imageDetails} /> */}
           </div>
