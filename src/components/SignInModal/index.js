@@ -10,7 +10,7 @@ import {
   refreshAuthentication,
 } from "../../utils/lensFunction";
 import { useAccount } from "wagmi";
-import toast from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
 import ToastIcon from "../../assets/ToastIcon";
 
 const SignInModal = ({ onRequestClose, isOpen, onSignInComplete }) => {
