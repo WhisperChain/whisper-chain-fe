@@ -10,7 +10,8 @@ import {
   refreshAuthentication,
 } from "../../utils/lensFunction";
 import { useAccount } from "wagmi";
-import toast, { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
+import ToastIcon from "../../assets/ToastIcon";
 
 const SignInModal = ({ onRequestClose, isOpen, onSignInComplete }) => {
   const [openDispatcherModal, setOpenDispatcherModal] = React.useState(false);
@@ -23,6 +24,26 @@ const SignInModal = ({ onRequestClose, isOpen, onSignInComplete }) => {
   //   setOpenSignInModal(true);
   // });
   const { address } = useAccount();
+
+  const notify = (notifyText) =>
+  toast.custom((t) => (
+    <div
+      className={`${
+        t.visible ? "animate-enter" : "animate-leave"
+      } max-w-md bg-white shadow-lg rounded-[16px] pointer-events-auto flex justify-center items-center ring-1 ring-black ring-opacity-5`}
+    >
+      <div className="flex-1 p-4">
+        <div className="flex items-center">
+          <div className="flex-shrink-0 pt-0.5">
+            <ToastIcon />
+          </div>
+          <p className="ml-[10px] text-[14px] text-[#000000] opacity-80">
+            {notifyText}
+          </p>
+        </div>
+      </div>
+    </div>
+  ));
 
   const customModalStyles = {
     content: {
