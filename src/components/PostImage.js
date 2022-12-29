@@ -196,7 +196,10 @@ export const PostImage = ({ imageDetails }) => {
           setIsOpen(false);
         }}
         isOpen={isOpen}
-        onSignInComplete={onCollectPress}
+        onSignInComplete={() => {
+          setIsOpen(false);
+          onCollectPress();
+        }}
       />
       {Object.keys(typedData)?.length > 0 ? (
         <SignTypedData
