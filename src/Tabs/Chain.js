@@ -78,7 +78,8 @@ const Chain = () => {
   const buttonRef = React.useRef();
   let dContainer = buttonRef.current;
   const onScroll = () => {
-    if (buttonRef.current?.scrollTop > 200) {
+    console.log(buttonRef.current?.scrollTop)
+    if (buttonRef.current?.scrollTop > 100) {
       increaseOpacity();
     } else {
       decreaseOpacity();
@@ -176,13 +177,7 @@ const Chain = () => {
         </div>
       </div>
 
-      <div
-        id="demmoId"
-        onScroll={onScroll}
-        className={style.chainContainer}
-        ref={buttonRef}
-      >
-        <InfiniteScroll
+      <InfiniteScroll
           dataLength={chainData?.length}
           next={fetchNextData}
           hasMore={hasMore}
@@ -190,6 +185,13 @@ const Chain = () => {
           height={"calc(100vh - 190px)"}
           endMessage={<div></div>}
         >
+      <div
+        id="demmoId"
+        className={style.chainContainer}
+        ref={buttonRef}
+        onScroll={onScroll}
+      >
+        
           <div className="flex justify-center sticky top-[5px] z-[1000]">
             <a
               onClick={() => {
@@ -286,8 +288,9 @@ const Chain = () => {
                 </div>
               ) : null;
             })}
-        </InfiniteScroll>
+        
       </div>
+      </InfiniteScroll>
     </div>
   );
 };
