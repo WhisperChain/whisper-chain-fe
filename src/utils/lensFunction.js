@@ -21,6 +21,7 @@ import {
   TRANSACTION_INDEXED,
   VERIFY_AUTHENTICATION,
   CREATE_PROFILE,
+  GET_COLLECT_DATA_FOR_PUBLICATIONS,
 } from "./gqlqueries";
 import { Constants } from "./Constants";
 
@@ -83,7 +84,7 @@ export const refetchActiveQueries = async () => {
   await apolloClient.refetchQueries({
     include: "active",
   });
-}
+};
 
 export const getPublication = async (profileId, limit = 10) => {
   return await apolloClient.query({
@@ -302,11 +303,11 @@ export const generateModuleCurrencyApproval = async ({
 }) => {
   const requestModule = isCollect
     ? {
-      collectModule: moduleType || Constants.FEE_COLLECT_MODULE,
-    }
+        collectModule: moduleType || Constants.FEE_COLLECT_MODULE,
+      }
     : {
-      followModule: moduleType || "FeeFollowModule",
-    };
+        followModule: moduleType || "FeeFollowModule",
+      };
   const res = await apolloClient.query({
     query: gql(GENERATE_MODULE_CURRENCY_APPROVAL),
     variables: {
@@ -344,15 +345,30 @@ export const collectPostTx = async ({
   return tx1;
 };
 
-
-export const createProfile = async (
-  handleProfileName,
-) => {
+export const createProfile = async (handleProfileName) => {
   const res = await apolloClient.mutate({
     mutation: gql(CREATE_PROFILE),
     variables: {
       handle: handleProfileName,
-    }
+    },
   });
   return res;
+};
+
+export const getPublicationCollectData = async (publicationsId) => {
+  let publicationCollectData = {};
+  const res = await apolloClient.query({
+    query: gql(GET_COLLECT_DATA_FOR_PUBLICATIONS),
+    variables: {
+      publicationIds: publicationsId,
+    },
+  });
+  res.data.publications.items.map((publication) => {
+    const publicationId = publication.id;
+    publicationCollectData = {
+      ...publicationCollectData,
+      [publicationId]: publication,
+    };
+  });
+  return publicationCollectData;
 };
