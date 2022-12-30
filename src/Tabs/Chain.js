@@ -133,17 +133,15 @@ const Chain = () => {
           onClick={() => {
             router.push("/");
           }}
-          className={`flex flex-row items-center justify-center not-italic font-medium text-[16px] leading-[140%] text-center text-[${
-            hoverBackBtn ? "#000000" : "#0000003C"
-          }] cursor-pointer`}
+          className={`flex flex-row items-center justify-center not-italic font-medium text-[16px] leading-[140%] cursor-pointer text-[#000000] opacity-60 hover:opacity-80`}
           onMouseEnter={() => setHoverBackBtn(true)}
           onMouseLeave={() => setHoverBackBtn(false)}
         >
-          <ArrowLeft />
-          <span className="ml-[6px] text-[#000000]">Back</span>
+          <ArrowLeft hoverBackBtn={hoverBackBtn} />
+          <span className="ml-[6px]">Back</span>
         </div>
         <div className="flex flex-col items-center sticky ml-[-32px] decoration-white">
-          <div className="not-italic font-medium text-[16px] leading-[140%] tracking-[-0.03em] text-[#000000] ">
+          <div className="not-italic font-medium text-[16px] leading-[140%] tracking-[-0.03em] text-[#000000] opacity-80">
             {moment(firstCreatedAt).format("Do MMMM YYYY")}
           </div>
         </div>
