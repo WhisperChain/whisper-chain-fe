@@ -116,7 +116,7 @@ function SignAuthentication({ onSignInComplete, setOpenDispatcherModal }) {
         isModalOpen.current = false;
       } catch (error) {
         onSignInComplete?.();
-        if (error) notify("user didnt signed in");
+        if (error) notify("user rejected signing");
       }
     } else {
       alert("Connect Wallet to sign In");

@@ -131,7 +131,7 @@ const SignInModal = ({ onRequestClose, isOpen, onSignInComplete }) => {
             <div className="flex justify-start items-center text-[13px] leading-[160%] font-medium text-[#00000099]">
               New to Lens?
               <span
-                className="underline text-[#00501E] pl-[5px]"
+                className="underline text-[#00501E] pl-[5px] cursor-pointer"
                 onClick={() => {
                   window.open("https://claim.lens.xyz/", "_blank");
                 }}
