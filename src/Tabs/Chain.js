@@ -11,6 +11,7 @@ import { useRouter } from "next/router";
 import ViewLensIcon from "../assets/ViewLensIcon";
 import { getChainWhispersData } from "../utils/ViewData";
 import InfiniteScroll from "react-infinite-scroll-component";
+import ArrowLeft from "../assets/ArrowLeft";
 
 const PAGE_LIMIT = 2;
 
@@ -138,31 +139,8 @@ const Chain = () => {
           onMouseEnter={() => setHoverBackBtn(true)}
           onMouseLeave={() => setHoverBackBtn(false)}
         >
-          <svg
-            width="20"
-            height="20"
-            viewBox="0 0 20 20"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M16.875 10H3.125"
-              stroke={hoverBackBtn ? "#000000" : "#0000003C"}
-              strokeOpacity="0.6"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-            <path
-              d="M8.75 4.375L3.125 10L8.75 15.625"
-              stroke={hoverBackBtn ? "#000000" : "#0000003C"}
-              strokeOpacity="0.6"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-          <span className="ml-[6px]">Back</span>
+          <ArrowLeft />
+          <span className="ml-[6px] text-[#000000]">Back</span>
         </div>
         <div className="flex flex-col items-center sticky ml-[-32px] decoration-white">
           <div className="not-italic font-medium text-[16px] leading-[140%] tracking-[-0.03em] text-[#000000] ">
