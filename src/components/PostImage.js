@@ -125,7 +125,9 @@ export const PostImage = ({ imageDetails }) => {
               <div
                 className={`flex box-border px-[12px] py-[7px] gap-[8px] rounded-[4px] text-[16px] font-bold leading-[160%] text-[#000000] ${styles.collectAmount}`}
               >
-                <PolygonLogo />1 WMATIC
+                {/* <PolygonLogo /> */}
+                <Image src="/../public/polygon.png" width={26} height={26} />
+                1 WMATIC
               </div>
               <div
                 className={`flex box-border px-[12px] py-[7px] gap-[8px] rounded-[4px] items-center ${styles.totalCollector}`}
