@@ -43,8 +43,8 @@ function Generate() {
   React.useEffect(() => {
     if (publication?.pubId) {
       setPubsId(publication?.pubId);
-      setPreviousImageUrl(publication?.comments?.[0].imageUrl);
-      const profileIdForGeneratedPost = publication?.comments?.[0].profileId;
+      setPreviousImageUrl(publication?.comments?.[0]?.imageUrl);
+      const profileIdForGeneratedPost = publication?.comments?.[0]?.profileId;
       const loggedInUserProfileId = localStorage.getItem("profileId");
       if (profileIdForGeneratedPost === loggedInUserProfileId) {
         setDisableGeneration(true);

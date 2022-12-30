@@ -12,7 +12,7 @@ import { loginApi } from "../../utils/Utils";
 import toast from "react-hot-toast";
 import ToastIcon from "../../assets/ToastIcon";
 
-function SignAuthentication({ onSignInComplete, setOpenDispatcherModal }) {
+function SignAuthentication({ onSignInComplete, setOpenDispatcherModal, setOpenClaimHandleModal }) {
   const { address } = useAccount();
   const typedDataRef = React.useRef({});
   const [typedData, setTypedData] = useState(typedDataRef.current);
@@ -24,9 +24,8 @@ function SignAuthentication({ onSignInComplete, setOpenDispatcherModal }) {
   const notify = (notifyText) =>
     toast.custom((t) => (
       <div
-        className={`${
-          t.visible ? "animate-enter" : "animate-leave"
-        } max-w-md bg-white shadow-lg rounded-[16px] pointer-events-auto flex justify-center items-center ring-1 ring-black ring-opacity-5`}
+        className={`${t.visible ? "animate-enter" : "animate-leave"
+          } max-w-md bg-white shadow-lg rounded-[16px] pointer-events-auto flex justify-center items-center ring-1 ring-black ring-opacity-5`}
       >
         <div className="flex-1 p-4">
           <div className="flex items-center">
@@ -71,27 +70,31 @@ function SignAuthentication({ onSignInComplete, setOpenDispatcherModal }) {
       );
       const profileRes = await getProfile(address);
       const profile = profileRes.data.profiles.items[0];
+      if (!profile) {
+        setOpenClaimHandleModal(true);
+        onSignInComplete?.();
+      } else {
+        signParam.platform_profile_image_url = profile.picture?.original?.url;
+        signParam.platform_user_id = profile.id;
+        signParam.platform_display_name = profile.name ? profile.name : "";
+        signParam.platform_username = profile.handle;
+        setSignParam(signParam);
 
-      signParam.platform_profile_image_url = profile.picture?.original?.url;
-      signParam.platform_user_id = profile.id;
-      signParam.platform_display_name = profile.name ? profile.name : "";
-      signParam.platform_username = profile.handle;
-      setSignParam(signParam);
+        dispatcher.current = profile.dispatcher;
+        window.localStorage.setItem("profileId", profile.id);
+        window.localStorage.setItem("profile", JSON.stringify(profile));
+        onSignInComplete?.();
+        callLoginApi();
 
-      dispatcher.current = profile.dispatcher;
-      window.localStorage.setItem("profileId", profile.id);
-      window.localStorage.setItem("profile", JSON.stringify(profile));
-      onSignInComplete?.();
-      callLoginApi();
-
-      let isEnableDispatcher;
-      if (typeof window !== "undefined") {
-        isEnableDispatcher = JSON.parse(window.localStorage.getItem("profile"))
-          ?.dispatcher?.address;
-      }
-      setOpenDispatcherModal(true);
-      if (isEnableDispatcher !== undefined) {
-        notify("You’re on the Lens Testnet");
+        let isEnableDispatcher;
+        if (typeof window !== "undefined") {
+          isEnableDispatcher = JSON.parse(window.localStorage.getItem("profile"))
+            ?.dispatcher?.address;
+        }
+        setOpenDispatcherModal(true);
+        if (isEnableDispatcher !== undefined) {
+          notify("You’re on the Lens Testnet");
+        }
       }
     } catch (error) {
       console.log({ error });
