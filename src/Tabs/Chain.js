@@ -118,11 +118,11 @@ const Chain = () => {
   };
 
   const fetchNextData = () => {
-    const nextPageParams = {
+     paginationParams.current = {
       page: paginationParams.current.page + 1,
       limit: PAGE_LIMIT,
     };
-    fetchData(chainId, nextPageParams);
+    fetchData(chainId, paginationParams.current);
   };
 
   return isLoading ? (
@@ -178,20 +178,20 @@ const Chain = () => {
       </div>
 
       <InfiniteScroll
-          dataLength={chainData?.length}
-          next={fetchNextData}
-          hasMore={hasMore}
-          loader={<SpinningLoader height="100px" width="100%" />}
-          height={"calc(100vh - 190px)"}
-          endMessage={<div></div>}
-        >
-      <div
-        id="demmoId"
-        className={style.chainContainer}
-        ref={buttonRef}
-        onScroll={onScroll}
+        dataLength={chainData?.length}
+        next={fetchNextData}
+        hasMore={hasMore}
+        loader={<SpinningLoader height="100px" width="100%" />}
+        height={"calc(100vh - 190px)"}
+        endMessage={<div></div>}
       >
-        
+        <div
+          id="demmoId"
+          className={style.chainContainer}
+          ref={buttonRef}
+          onScroll={onScroll}
+        >
+
           <div className="flex justify-center sticky top-[5px] z-[1000]">
             <a
               onClick={() => {
@@ -288,8 +288,8 @@ const Chain = () => {
                 </div>
               ) : null;
             })}
-        
-      </div>
+
+        </div>
       </InfiniteScroll>
     </div>
   );
