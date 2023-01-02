@@ -167,7 +167,9 @@ export const getChainWhispersData = async (chainId, paginationParams) => {
   const chainIds = [];
   whisperIds?.map((whisperId) => {
     const whisper = data?.whispers[whisperId];
-    chainIds.push(whisper.platform_chain_id);
+    if (whisper.status === "ACTIVE") {
+      chainIds.push(whisper.platform_chain_id);
+    }
   });
 
   //to-do: chain id with whisperids

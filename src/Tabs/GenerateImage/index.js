@@ -41,7 +41,6 @@ function Generate() {
   const [previousImageUrl, setPreviousImageUrl] = React.useState();
 
   React.useEffect(() => {
-    console.log(publication);
     if (publication?.pubId) {
       setPubsId(publication?.pubId);
       setPreviousImageUrl(publication?.comments?.[0]?.imageUrl);
