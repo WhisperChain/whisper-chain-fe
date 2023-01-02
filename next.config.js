@@ -24,6 +24,11 @@ module.exports = {
       },
       {
         protocol: 'https',
+        hostname: 'whisperchain-staging-assests.s3.amazonaws.com',
+        pathname: '/stability/**'
+      },
+      {
+        protocol: 'https',
         hostname: 'whisperchain-static.quick-poc.com',
       }
     ],

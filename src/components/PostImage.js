@@ -8,8 +8,8 @@ import {
   collectPost,
   getApprovedModuleAllowance,
   refreshAuthentication,
-  txIndexed,
   getPublicationCollectData,
+  getChainWhispers,
 } from "../utils/lensFunction";
 import { useSigner } from "wagmi";
 import SignTypedData from "./ConnectButton/SignTypedData";
@@ -23,6 +23,7 @@ import CollectButton from "./CollectButton";
 import AlertIcon from "../assets/AlertIcon";
 import SpinningLoader from "./SpinningLoader";
 import Loader from "./Loader";
+import { useRouter } from "next/router";
 
 export const PostImage = ({ imageDetails }) => {
   const [hovered, setHovered] = React.useState(false);
@@ -32,7 +33,13 @@ export const PostImage = ({ imageDetails }) => {
   const [isOpen, setIsOpen] = React.useState(false);
   const [onClickCollect, setOnClickCollect] = React.useState(false);
   const [collectError, setCollectError] = React.useState(false);
-
+  const router = useRouter();
+  const routerPath = router.query;
+  const paginationParams = React.useRef({
+    page: 1,
+    limit: 1,
+  });
+  const chainId = routerPath.chainId;
 
   const onCollectPress = async () => {
     if (
@@ -54,6 +61,37 @@ export const PostImage = ({ imageDetails }) => {
       setOnClickCollect(true);
     }
   };
+
+
+  let timeout = 0;
+  const hasWhisperProcessed = async () => {
+    const whisperRes = await getChainWhispers(
+      chainId,
+      paginationParams
+    );
+    console.log("-------------", whisperRes);
+    const whisperIds = whisperRes?.whisper_ids;
+    const whisper = whisperRes?.whispers[whisperIds[0]];
+    console.log(whisper);
+    return whisper;
+  };
+
+  if (routerPath?.isGenerated == "true" && imageDetails.status === "PROCESSING") {
+    timeout = setInterval(async () => {
+      const whisper = hasWhisperProcessed();
+      if (whisper?.status === "ACTIVE") {
+        clearInterval(timeout);
+        imageDetails.status = whisper?.status;
+        imageDetails.publicationId = whisper?.platform_chain_id;
+        const res = await getPublicationCollectData([whisper?.platform_chain_id]);
+        imageDetails.hasCollectedByMe = res[whisper?.platform_chain_id]?.hasCollectedByMe;
+        imageDetails.totalAmountOfCollects = res[whisper?.platform_chain_id]?.stats?.totalAmountOfCollects;
+        imageDetails.lensterPostUrl= `https://testnet.lenster.xyz/posts/${whisper.platform_chain_id}`;
+      }
+    }, 5000);
+  }
+
+
   // console.log("imageDetails", imageDetails);
 
   return (
@@ -239,7 +277,7 @@ export const PostImage = ({ imageDetails }) => {
             imageDetails.hasCollectedByMe = res[imageDetails?.publicationId]?.hasCollectedByMe;
             imageDetails.totalAmountOfCollects = res[imageDetails?.publicationId]?.stats?.totalAmountOfCollects;
           }}
-          pollIndexing = {true}
+          pollIndexing={true}
         />
       ) : null}
     </div>
