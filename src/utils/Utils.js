@@ -59,7 +59,7 @@ export const getIpfsUrl = async (url) => {
 
 export const createIpfsObjects = async (url) => {
   const resp = await axios.post(
-    `/lens/ipfs-objects`,
+    "/lens/ipfs-objects",
     {
       s3_url: url,
     },
@@ -67,8 +67,6 @@ export const createIpfsObjects = async (url) => {
       headers: {
         "Content-Type": "application/json",
       },
-    },
-    {
       withCredentials: true,
     }
   );
@@ -77,15 +75,15 @@ export const createIpfsObjects = async (url) => {
   return responseData.data;
 };
 
-export const postWhisperResponse = async (url, txHash) => {
+export const postWhisperResponse = async (url, txHash, whisperIpfsObjectId, imageIpfsObjectId, chainId) => {
   await axios.post(
     `/lens/whispers`,
     {
       s3_url: url,
       transaction_hash: txHash,
-      whisper_ipfs_object_id: 1,
-      image_ipfs_object_id: 1,
-      chain_id: 1,
+      whisper_ipfs_object_id: whisperIpfsObjectId,
+      image_ipfs_object_id: imageIpfsObjectId,
+      chain_id: chainId,
     },
     {
       withCredentials: true,
@@ -102,30 +100,6 @@ export function convertIntoIpfsUrl(url) {
   } else {
     return url;
   }
-}
-
-export async function getIpfsUrlandUploadPublication(url, pubId, address) {
-  const metadataResponse = await createIpfsObjects(url);
-  const ipfsObjectIds = metadataResponse?.ipfs_object_ids;
-  const ipfsObjects = metadataResponse?.ipfs_objects;
-  let ipfsUrl = "";
-  {
-    ipfsObjectIds.map((id) => {
-      const ipfsObject = ipfsObjects[id];
-      if (ipfsObject.entity_kind === "WHISPER") {
-        ipfsUrl = `ipfs://${ipfsObject.cid}`;
-      }
-    });
-  }
-  await refreshAuthentication();
-
-  const res = await commentViaDispatcher(
-    window.localStorage.getItem("profileId"),
-    pubId,
-    ipfsUrl,
-    address
-  );
-  return res?.data?.createCommentViaDispatcher?.txHash;
 }
 
 export const broadcastData = async (id, data) => {
@@ -171,3 +145,54 @@ export const getProfileImage = () => {
     ? convertIntoIpfsUrl(profile.picture?.original?.url)
     : `https://cdn.stamp.fyi/avatar/eth:${profile.ownedBy}?s=250`;
 };
+
+export const getChains = async ({ page = 1, limit = 10 }) => {
+  const resp = await axios.get(`/lens/chains?page=${page}&limit=${limit}`);
+  const responseData = resp?.data;
+  return responseData.data;
+};
+
+export const getChainWhispers = async (chainId, { page = 1, limit = 10 }) => {
+  const resp = await axios.get(`/lens/${chainId}?page=${page}&limit=${limit}`);
+  const responseData = resp?.data;
+  return responseData.data;
+};
+
+export const getLatestWhisper = async (chainId) => {
+  const resp = await axios.get(`/lens/${chainId}?page=1&limit=1`);
+  const responseData = resp?.data;
+  return responseData.data;
+};
+
+export async function getIpfsUrlandUploadPublication(url, pubId, address) {
+  let whisperIpfsObjectId;
+  let imageIpfsObjectId;
+  const metadataResponse = await createIpfsObjects(url);
+  const ipfsObjectIds = metadataResponse?.ipfs_object_ids;
+  const ipfsObjects = metadataResponse?.ipfs_objects;
+  let ipfsUrl = "";
+  {
+    ipfsObjectIds.map((id) => {
+      const ipfsObject = ipfsObjects[id];
+      if (ipfsObject.entity_kind === "WHISPER") {
+        ipfsUrl = `ipfs://${ipfsObject.cid}`;
+        whisperIpfsObjectId = id;
+      }else if(ipfsObject.entity_kind === "IMAGE"){
+         imageIpfsObjectId = id;
+      }
+    });
+  }
+  await refreshAuthentication();
+
+  const res = await commentViaDispatcher(
+    window.localStorage.getItem("profileId"),
+    pubId,
+    ipfsUrl,
+    address
+  );
+  return {
+    txHash: res?.data?.createCommentViaDispatcher?.txHash,
+    whisperIpfsObjectId,
+    imageIpfsObjectId,
+  };
+}

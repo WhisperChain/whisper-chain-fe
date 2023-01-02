@@ -11,7 +11,7 @@ import SignInModal from "../SignInModal";
 export default function GeneratedImageBox({ imgSrcUrl, clickHandler }) {
   const [isHover, setIsHover] = React.useState(false);
   const [isImageLoaded, setIsImageloaded] = React.useState(false);
-  const [addToChainClicked , setAddToChainClicked] = React.useState(false);
+  const [addToChainClicked, setAddToChainClicked] = React.useState(false);
   const [open, setOpen] = React.useState(false);
   const [signInOpen, setSignInOpen] = React.useState(false);
   const handleClose = () => {

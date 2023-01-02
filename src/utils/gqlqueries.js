@@ -481,3 +481,41 @@ export const CREATE_PROFILE = `mutation CreateProfile ($handle: CreateHandle!) {
       __typename
     }
   }`;
+
+export const GET_COLLECT_DATA_FOR_PUBLICATIONS = `
+query getPublications ($publicationIds : [InternalPublicationId!]) {
+  publications(
+    request: {  publicationIds: $publicationIds }
+  ) {
+    items {
+      ... on Post {
+        ...PostFields
+      }
+      ... on Comment {
+        ...CommentFields
+      }
+    }
+  }
+}
+
+fragment PublicationStatsFields on PublicationStats {
+  totalAmountOfCollects
+  }
+
+fragment CommentFields on Comment {
+  id
+  hasCollectedByMe
+  
+  stats {
+    ...PublicationStatsFields
+  }
+}
+
+fragment PostFields on Post {
+  id
+  hasCollectedByMe
+  stats {
+    ...PublicationStatsFields
+  }
+}
+  `;

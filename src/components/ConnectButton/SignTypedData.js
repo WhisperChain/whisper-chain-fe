@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useSignTypedData } from "wagmi";
-import { getProfile, txIndexed } from "../../utils/lensFunction";
+import { txIndexed } from "../../utils/lensFunction";
 import { broadcastData } from "../../utils/Utils";
 
 function SignTypedData({ id, typedData, onSuccess, pollIndexing = false }) {
@@ -42,11 +42,10 @@ function SignTypedData({ id, typedData, onSuccess, pollIndexing = false }) {
         const isIndexed = hasTxIndexed(res);
         if (!!isIndexed) {
           clearInterval(timeout);
+          onSuccess?.();
         }
       }, 5000);
     }
-
-    onSuccess?.();
   };
 
   return;

@@ -8,11 +8,15 @@ import {
   refreshAuthentication,
   setDispatcher,
 } from "../../utils/lensFunction";
-import { loginApi } from "../../utils/Utils";
+import { getProfileImage, loginApi } from "../../utils/Utils";
 import toast from "react-hot-toast";
 import ToastIcon from "../../assets/ToastIcon";
 
-function SignAuthentication({ onSignInComplete, setOpenDispatcherModal }) {
+function SignAuthentication({
+  onSignInComplete,
+  setOpenDispatcherModal,
+  setOpenClaimHandleModal,
+}) {
   const { address } = useAccount();
   const typedDataRef = React.useRef({});
   const [typedData, setTypedData] = useState(typedDataRef.current);
@@ -21,30 +25,32 @@ function SignAuthentication({ onSignInComplete, setOpenDispatcherModal }) {
   const dispatcher = React.useRef(null);
   const isModalOpen = React.useRef(false);
 
-  const notify = () => toast.custom((t) => (
-    <div
-      className={`${
-        t.visible ? 'animate-enter' : 'animate-leave'
-      } max-w-md bg-white shadow-lg rounded-[16px] pointer-events-auto flex justify-center items-center ring-1 ring-black ring-opacity-5`}
-    >
-      <div className="flex-1 p-4">
-        <div className="flex items-center">
-          <div className="flex-shrink-0 pt-0.5">
-           <ToastIcon />
-          </div>  
+  const notify = (notifyText) =>
+    toast.custom((t) => (
+      <div
+        className={`${
+          t.visible ? "animate-enter" : "animate-leave"
+        } max-w-md bg-white shadow-lg rounded-[16px] pointer-events-auto flex justify-center items-center ring-1 ring-black ring-opacity-5`}
+      >
+        <div className="flex-1 p-4">
+          <div className="flex items-center">
+            <div className="flex-shrink-0 pt-0.5">
+              <ToastIcon />
+            </div>
             <p className="ml-[10px] text-[14px] text-[#000000] opacity-80">
-            You’re on the Lens Testnet
+              {notifyText}
             </p>
+          </div>
         </div>
       </div>
-    </div>
-  ));
+    ));
 
   const [signParam, setSignParam] = React.useState({
     wallet_address: address,
   });
 
   const callLoginApi = async () => {
+    console.log("signParam", signParam);
     await loginApi(signParam);
   };
 
@@ -70,27 +76,32 @@ function SignAuthentication({ onSignInComplete, setOpenDispatcherModal }) {
       );
       const profileRes = await getProfile(address);
       const profile = profileRes.data.profiles.items[0];
+      if (!profile) {
+        setOpenClaimHandleModal(true);
+        onSignInComplete?.();
+      } else {
+        window.localStorage.setItem("profileId", profile.id);
+        window.localStorage.setItem("profile", JSON.stringify(profile));
+        signParam.platform_profile_image_url = getProfileImage();
+        signParam.platform_user_id = profile.id;
+        signParam.platform_display_name = profile.name ? profile.name : "";
+        signParam.platform_username = profile.handle;
+        setSignParam(signParam);
 
-      signParam.platform_profile_image_url = profile.picture?.original?.url;
-      signParam.platform_user_id = profile.id;
-      signParam.platform_display_name = profile.name ? profile.name : "";
-      signParam.platform_username = profile.handle;
-      setSignParam(signParam);
+        dispatcher.current = profile.dispatcher;
+        onSignInComplete?.();
+        callLoginApi();
 
-      dispatcher.current = profile.dispatcher;
-      window.localStorage.setItem("profileId", profile.id);
-      window.localStorage.setItem("profile", JSON.stringify(profile));
-      onSignInComplete?.();
-      callLoginApi();
-
-      let isEnableDispatcher;
-      if (typeof window !== "undefined") {
-        isEnableDispatcher = JSON.parse(window.localStorage.getItem("profile"))
-          ?.dispatcher?.address;
-      }
-      setOpenDispatcherModal(true);
-      if (isEnableDispatcher !== undefined) {
-        notify();
+        let isEnableDispatcher;
+        if (typeof window !== "undefined") {
+          isEnableDispatcher = JSON.parse(
+            window.localStorage.getItem("profile")
+          )?.dispatcher?.address;
+        }
+        setOpenDispatcherModal(true);
+        if (isEnableDispatcher !== undefined) {
+          notify("You’re on the Lens Testnet");
+        }
       }
     } catch (error) {
       console.log({ error });
@@ -100,18 +111,24 @@ function SignAuthentication({ onSignInComplete, setOpenDispatcherModal }) {
 
   async function signMsg() {
     if (address) {
-      const challenge = await getChallenge();
-      const signature = await signMessageAsync({
-        message: challenge,
-      });
-      signParam.signed_challenge_message = signature;
-      setSignParam(signParam);
-      console.log(
-        "signParam.signed_challenge_message",
-        signParam.signed_challenge_message
-      );
-      authenticate(signature);
-      isModalOpen.current = false;
+      try {
+        const challenge = await getChallenge();
+        const signature = await signMessageAsync({
+          message: challenge,
+        });
+        signParam.signed_challenge_message = signature;
+        setSignParam(signParam);
+        console.log(
+          "signParam.signed_challenge_message",
+          signParam.signed_challenge_message
+        );
+        authenticate(signature);
+        isModalOpen.current = false;
+      } catch (error) {
+        onSignInComplete?.();
+        if (error)
+          notify("Transaction signing was rejected. You are not signed in.");
+      }
     } else {
       alert("Connect Wallet to sign In");
       isModalOpen.current = false;

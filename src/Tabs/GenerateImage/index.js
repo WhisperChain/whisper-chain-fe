@@ -1,8 +1,6 @@
 import React from "react";
 import { usePublicationContext } from "../../context/PublicationContext";
-import { getCommentFeed, getPublication } from "../../utils/lensFunction";
 import {
-  convertIntoIpfsUrl,
   getIpfsUrlandUploadPublication,
   getImagesFromPrompt,
   postWhisperResponse,
@@ -43,44 +41,27 @@ function Generate() {
   const [previousImageUrl, setPreviousImageUrl] = React.useState();
 
   React.useEffect(() => {
-    const fetchData = async () => {
-      const pub = (await getPublication("0x59cf", 1)).data.publications
-        .items[0];
-      const pubId = pub.id;
-
-      const comment = await (
-        await getCommentFeed(pubId, 1)
-      ).data.publications.items[0];
-      if (comment) {
-        const porfileIdForGeneratedPost = comment.profile.id;
-        const loggedInUserProfileId = localStorage.getItem("profileId");
-        if (porfileIdForGeneratedPost === loggedInUserProfileId) {
-          setDisableGeneration(true);
-        }
-      }
-      setPubsId(pubId);
-      setPreviousImageUrl(
-        convertIntoIpfsUrl(
-          comment.metadata.media[0].original.url ??
-            pub.metadata.media[0].original.url
-        )
-      );
-    };
     if (publication?.pubId) {
       setPubsId(publication?.pubId);
-      setPreviousImageUrl(publication?.comments?.[0].imageUrl);
+      setPreviousImageUrl(publication?.comments?.[0]?.imageUrl);
+      const profileIdForGeneratedPost = publication?.comments?.[0]?.profileId;
+      const loggedInUserProfileId = localStorage.getItem("profileId");
+      if (profileIdForGeneratedPost === loggedInUserProfileId) {
+        setDisableGeneration(true);
+      }
     }
-
-    fetchData();
   }, []);
 
   const onImageClickHandler = async (url) => {
     setIsloading(true);
-    const txHash = await getIpfsUrlandUploadPublication(url, pubsId, address);
+    const {txHash, whisperIpfsObjectId, imageIpfsObjectId} = await getIpfsUrlandUploadPublication(url, pubsId, address);
     console.log({ txHash });
-    await postWhisperResponse(url, txHash);
+    await postWhisperResponse(url, txHash, whisperIpfsObjectId, imageIpfsObjectId, publication?.chainId);
     setIsloading(false);
-    router.push("/chain?isGenerated=true", "/chain");
+    router.push(
+      `/chain/${publication?.chainId}?isGenerated=true`,
+      `/chain/${publication?.chainId}`
+    );
   };
 
   const generateImageClickHandler = async () => {
@@ -142,7 +123,7 @@ function Generate() {
             <div className="flex flex-col mb-[8px]">
               <div className={styles.mainText}>
                 Last whisper of{" "}
-                {moment(publication?.createdAt).format("MMMM Do")} chain
+                {publication?.createdAt ? moment.unix(publication?.createdAt).format("MMMM Do") : null } chain
               </div>
               <div className={styles.subText}>
                 Try to describe this whisper as best you can.
@@ -184,6 +165,7 @@ function Generate() {
                 onMouseEnter={() => setTextAreaEntered(true)}
                 onMouseLeave={() => setTextAreaEntered(false)}
                 className={`${styles.promptInput} text-sm shadow-sm 
+                  placeholder-[#1d0545b8]
                   focus:outline-none focus:border-[#6f1aff3d] focus:ring-1 
                   ${promtEmpty ? "focus:ring-[red]" : "focus:ring-[#6f1aff3d]"}
                   ${

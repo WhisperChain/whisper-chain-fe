@@ -8,6 +8,8 @@ import {
   collectPost,
   getApprovedModuleAllowance,
   refreshAuthentication,
+  getPublicationCollectData,
+  getChainWhispers,
 } from "../utils/lensFunction";
 import { useSigner } from "wagmi";
 import SignTypedData from "./ConnectButton/SignTypedData";
@@ -19,6 +21,9 @@ import PolygonLogo from "../assets/PolygonLogo";
 import CollectorLogo from "../assets/CollectorLogo";
 import CollectButton from "./CollectButton";
 import AlertIcon from "../assets/AlertIcon";
+import SpinningLoader from "./SpinningLoader";
+import Loader from "./Loader";
+import { useRouter } from "next/router";
 
 export const PostImage = ({ imageDetails }) => {
   const [hovered, setHovered] = React.useState(false);
@@ -28,11 +33,19 @@ export const PostImage = ({ imageDetails }) => {
   const [isOpen, setIsOpen] = React.useState(false);
   const [onClickCollect, setOnClickCollect] = React.useState(false);
   const [collectError, setCollectError] = React.useState(false);
+  const router = useRouter();
+  const routerPath = router.query;
+  const paginationParams = React.useRef({
+    page: 1,
+    limit: 1,
+  });
+  const chainId = routerPath.chainId;
 
   const onCollectPress = async () => {
     if (
       window.localStorage.getItem(Constants.LOCAL_STORAGE_REFRESH_TOKEN_KEY)
     ) {
+      setIsOpen(false);
       try {
         await refreshAuthentication();
         await getApprovedModuleAllowance(imageDetails?.collectModule, signer);
@@ -48,6 +61,43 @@ export const PostImage = ({ imageDetails }) => {
       setOnClickCollect(true);
     }
   };
+
+  // polling for processing state
+  // let timeout = 0;
+  // const hasWhisperProcessed = async () => {
+  //   console.log("router", router);
+  //   console.log("chain id", chainId);
+  //   const whisperRes = await getChainWhispers(chainId, paginationParams);
+  //   console.log("-------------", whisperRes);
+  //   const whisperIds = whisperRes?.whisper_ids;
+  //   const whisper = whisperRes?.whispers[whisperIds[0]];
+  //   console.log(whisper);
+  //   return whisper;
+  // };
+
+  // if (
+  //   routerPath?.isGenerated == "true" &&
+  //   imageDetails.status === "PROCESSING"
+  // ) {
+  //   timeout = setInterval(async () => {
+  //     const whisper = hasWhisperProcessed();
+  //     if (whisper?.status === "ACTIVE") {
+  //       clearInterval(timeout);
+  //       imageDetails.status = whisper?.status;
+  //       imageDetails.publicationId = whisper?.platform_chain_id;
+  //       const res = await getPublicationCollectData([
+  //         whisper?.platform_chain_id,
+  //       ]);
+  //       imageDetails.hasCollectedByMe =
+  //         res[whisper?.platform_chain_id]?.hasCollectedByMe;
+  //       imageDetails.totalAmountOfCollects =
+  //         res[whisper?.platform_chain_id]?.stats?.totalAmountOfCollects;
+  //       imageDetails.lensterPostUrl = `https://testnet.lenster.xyz/posts/${whisper.platform_chain_id}`;
+  //     }
+  //   }, 5000);
+  // }
+
+  // console.log("imageDetails", imageDetails);
 
   return (
     <div className="flex flex-col items-center relative overflow-hidden">
@@ -84,7 +134,11 @@ export const PostImage = ({ imageDetails }) => {
                 </div>
               </div>
             </div>
-            {/* <div className="">{imageDetails?.createdAt || "2:32 pm"}</div> */}
+            {/* <div
+              className={`not-italic leading-[100%] text-[#FFFFFF] font-bold text-[17px] ${styles.name}`}
+            >
+              {imageDetails?.createdAt || "2:32 pm"}
+            </div> */}
 
             {/* <FollowButton data={imageDetails} /> */}
           </div>
@@ -120,13 +174,15 @@ export const PostImage = ({ imageDetails }) => {
               <div
                 className={`flex box-border px-[12px] py-[7px] gap-[8px] rounded-[4px] text-[16px] font-bold leading-[160%] text-[#000000] ${styles.collectAmount}`}
               >
-                <PolygonLogo />1 WMATIC
+                {/* <PolygonLogo /> */}
+                <Image src="/../public/polygon.png" width={26} height={26} />1
+                WMATIC
               </div>
               <div
                 className={`flex box-border px-[12px] py-[7px] gap-[8px] rounded-[4px] items-center ${styles.totalCollector}`}
               >
                 <CollectorLogo />
-                {imageDetails?.totalNumberOfCollects} Collectors
+                {imageDetails?.totalAmountOfCollects} Collectors
               </div>
               <CollectButton onCollectPress={onCollectPress} text={"Collect"} />
             </div>
@@ -161,34 +217,51 @@ export const PostImage = ({ imageDetails }) => {
               </div>
             </div>
           )}
-
-          <div
-            className={`flex justify-center items-center absolute top-[85%] left-[50%] text-center gap-[8px] w-[432px] -translate-x-[50%]`}
-          >
-            <button
-              onClick={() => {
-                window.open(imageDetails.lensterPostUrl, "_blank");
-              }}
-              className={`flex items-center p-[10px] w-[208px] h-[40px] justify-center rounded-[4px] backdrop-blur-[60px] ${styles.viewOnLensBtn}`}
+          {imageDetails.status === "PROCESSING" && (
+            <div
+              className={`flex justify-center items-center absolute top-[85%] left-[50%] text-center gap-[8px] w-[432px] -translate-x-[50%]`}
             >
-              <EyeIcon /> <span className="ml-[10px]">View on lens</span>
-            </button>
-            {imageDetails?.hasCollectedByMe ? (
-              <button
-                className={`flex items-center p-[10px] w-[208px] h-[40px] justify-center rounded-[4px] backdrop-blur-[60px] ${styles.collectedBtn}`}
-              >
-                Collected
-              </button>
-            ) : (
-              <button
-                onClick={() => setOnClickCollect(true)}
+              <div
                 className={`flex items-center p-[10px] w-[208px] h-[40px] justify-center rounded-[4px] backdrop-blur-[60px] ${styles.viewOnLensBtn}`}
               >
-                <CollectIcon />
-                <span className="ml-[10px]">Collect this post</span>
+                <Loader />
+              </div>
+              <div
+                className={`flex items-center p-[10px] w-[208px] h-[40px] justify-center rounded-[4px] backdrop-blur-[60px] ${styles.viewOnLensBtn}`}
+              >
+                <Loader />
+              </div>
+            </div>
+          )}
+          {imageDetails.status === "ACTIVE" && (
+            <div
+              className={`flex justify-center items-center absolute top-[85%] left-[50%] text-center gap-[8px] w-[432px] -translate-x-[50%]`}
+            >
+              <button
+                onClick={() => {
+                  window.open(imageDetails.lensterPostUrl, "_blank");
+                }}
+                className={`flex items-center p-[10px] w-[208px] h-[40px] justify-center rounded-[4px] backdrop-blur-[60px] ${styles.viewOnLensBtn}`}
+              >
+                <EyeIcon /> <span className="ml-[10px]">View on lens</span>
               </button>
-            )}
-          </div>
+              {imageDetails?.hasCollectedByMe ? (
+                <button
+                  className={`flex items-center p-[10px] w-[208px] h-[40px] justify-center rounded-[4px] backdrop-blur-[60px]  ${styles.collectedBtn}`}
+                >
+                  Collected
+                </button>
+              ) : (
+                <button
+                  onClick={() => setOnClickCollect(true)}
+                  className={`flex items-center p-[10px] w-[208px] h-[40px] justify-center rounded-[4px] backdrop-blur-[60px] cursor-pointer ${styles.viewOnLensBtn}`}
+                >
+                  <CollectIcon />
+                  <span className="ml-[10px]">Collect this post</span>
+                </button>
+              )}
+            </div>
+          )}
         </div>
       )}
       <SignInModal
@@ -196,13 +269,24 @@ export const PostImage = ({ imageDetails }) => {
           setIsOpen(false);
         }}
         isOpen={isOpen}
-        onSignInComplete={onCollectPress}
+        onSignInComplete={() => {
+          onCollectPress();
+        }}
       />
       {Object.keys(typedData)?.length > 0 ? (
         <SignTypedData
           typedData={typedData}
           id={transactionId.current}
-          onSuccess={() => {}}
+          onSuccess={async () => {
+            const res = await getPublicationCollectData([
+              imageDetails?.publicationId,
+            ]);
+            imageDetails.hasCollectedByMe =
+              res[imageDetails?.publicationId]?.hasCollectedByMe;
+            imageDetails.totalAmountOfCollects =
+              res[imageDetails?.publicationId]?.stats?.totalAmountOfCollects;
+          }}
+          pollIndexing={true}
         />
       ) : null}
     </div>

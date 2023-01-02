@@ -5,7 +5,7 @@ import { resetLocalStorage } from "../../utils/Utils";
 import SignAuthentication from "./SignAuthentication";
 import LensIcon from "../../assets/LensIcon";
 
-const CustomConnectButton = ({ onSignInComplete, setOpenDispatcherModal }) => {
+const CustomConnectButton = ({ onSignInComplete, setOpenDispatcherModal, setOpenClaimHandleModal }) => {
   return (
     <ConnectButton.Custom>
       {({
@@ -47,7 +47,7 @@ const CustomConnectButton = ({ onSignInComplete, setOpenDispatcherModal }) => {
                     }}
                   >
                     <div
-                      className={`flex justify-center box-border items-center w-[234px] h-[40px] bg-[#ABFE2C] text-[#00501E] backdrop-blur rounded-[4px] gap-[8px] cursor-pointer border-[1px] border-solid border-black/20`}
+                      className={`flex justify-center box-border items-center w-[200px] h-[40px] bg-[#ABFE2C] text-[#00501E] backdrop-blur rounded-[4px] gap-[8px] cursor-pointer border-[1px] border-solid border-black/20`}
                     >
                       <LensIcon />
                       Sign in with Lens
@@ -67,6 +67,7 @@ const CustomConnectButton = ({ onSignInComplete, setOpenDispatcherModal }) => {
                 <SignAuthentication
                   onSignInComplete={onSignInComplete}
                   setOpenDispatcherModal={setOpenDispatcherModal}
+                  setOpenClaimHandleModal={setOpenClaimHandleModal}
                 />
               );
             })()}
