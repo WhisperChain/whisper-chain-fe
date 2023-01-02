@@ -123,7 +123,7 @@ function Generate() {
             <div className="flex flex-col mb-[8px]">
               <div className={styles.mainText}>
                 Last whisper of{" "}
-                {moment(publication?.createdAt).format("MMMM Do")} chain
+                {publication?.createdAt ? moment.unix(publication?.createdAt).format("MMMM Do") : null } chain
               </div>
               <div className={styles.subText}>
                 Try to describe this whisper as best you can.

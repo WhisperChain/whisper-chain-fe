@@ -126,6 +126,7 @@ const Chain = () => {
     };
     await fetchData(chainId, paginationParams.current);
   };
+  console.log("created at-----", firstCreatedAt);
 
   return isLoading ? (
     <SpinningLoader height="80vh" width="100%" />
@@ -145,7 +146,7 @@ const Chain = () => {
         </div>
         <div className="flex flex-col items-center sticky ml-[-32px] decoration-white">
           <div className="not-italic font-medium text-[16px] leading-[140%] tracking-[-0.03em] text-[#000000] opacity-80">
-            {moment(firstCreatedAt).format("Do MMMM YYYY")}
+           {firstCreatedAt ? moment.unix(firstCreatedAt).format("Do MMMM YYYY") : null }
           </div>
         </div>
         <div className="relative h-[20px]">

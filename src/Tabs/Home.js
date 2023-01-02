@@ -81,9 +81,7 @@ const Home = () => {
               <div
                 className={`h-[22px] text-[16px] not-italic font-medium leading-[140%] ${styles.Date}`}
               >
-                {moment(publicationData[currentSlideIndex]?.createdAt).format(
-                  "Do MMMM YYYY"
-                )}
+                {publicationData[currentSlideIndex]?.createdAt ? moment.unix(publicationData[currentSlideIndex]?.createdAt).format("Do MMMM YYYY") : null }
               </div>
             </div>
             <Swiper
