@@ -51,7 +51,7 @@ export const PostImage = ({ imageDetails }) => {
       setOnClickCollect(true);
     }
   };
-  console.log("imageDetails", imageDetails);
+  // console.log("imageDetails", imageDetails);
 
   return (
     <div className="flex flex-col items-center relative overflow-hidden">
@@ -187,35 +187,35 @@ export const PostImage = ({ imageDetails }) => {
               </div>
             </div>
           )}
-            {imageDetails.status === "ACTIVE" && (
-              <div
-                className={`flex justify-center items-center absolute top-[85%] left-[50%] text-center gap-[8px] w-[432px] -translate-x-[50%]`}
+          {imageDetails.status === "ACTIVE" && (
+            <div
+              className={`flex justify-center items-center absolute top-[85%] left-[50%] text-center gap-[8px] w-[432px] -translate-x-[50%]`}
+            >
+              <button
+                onClick={() => {
+                  window.open(imageDetails.lensterPostUrl, "_blank");
+                }}
+                className={`flex items-center p-[10px] w-[208px] h-[40px] justify-center rounded-[4px] backdrop-blur-[60px] ${styles.viewOnLensBtn}`}
               >
+                <EyeIcon /> <span className="ml-[10px]">View on lens</span>
+              </button>
+              {imageDetails?.hasCollectedByMe ? (
                 <button
-                  onClick={() => {
-                    window.open(imageDetails.lensterPostUrl, "_blank");
-                  }}
-                  className={`flex items-center p-[10px] w-[208px] h-[40px] justify-center rounded-[4px] backdrop-blur-[60px] ${styles.viewOnLensBtn}`}
+                  className={`flex items-center p-[10px] w-[208px] h-[40px] justify-center rounded-[4px] backdrop-blur-[60px]  ${styles.collectedBtn}`}
                 >
-                  <EyeIcon /> <span className="ml-[10px]">View on lens</span>
+                  Collected
                 </button>
-                {imageDetails?.hasCollectedByMe ? (
-                  <button
-                    className={`flex items-center p-[10px] w-[208px] h-[40px] justify-center rounded-[4px] backdrop-blur-[60px]  ${styles.collectedBtn}`}
-                  >
-                    Collected
-                  </button>
-                ) : (
-                  <button
-                    onClick={() => setOnClickCollect(true)}
-                    className={`flex items-center p-[10px] w-[208px] h-[40px] justify-center rounded-[4px] backdrop-blur-[60px] cursor-pointer ${styles.viewOnLensBtn}`}
-                  >
-                    <CollectIcon />
-                    <span className="ml-[10px]">Collect this post</span>
-                  </button>
-                )}
-              </div>
-            )}
+              ) : (
+                <button
+                  onClick={() => setOnClickCollect(true)}
+                  className={`flex items-center p-[10px] w-[208px] h-[40px] justify-center rounded-[4px] backdrop-blur-[60px] cursor-pointer ${styles.viewOnLensBtn}`}
+                >
+                  <CollectIcon />
+                  <span className="ml-[10px]">Collect this post</span>
+                </button>
+              )}
+            </div>
+          )}
         </div>
       )}
       <SignInModal
@@ -231,7 +231,7 @@ export const PostImage = ({ imageDetails }) => {
         <SignTypedData
           typedData={typedData}
           id={transactionId.current}
-          onSuccess={() => { }}
+          onSuccess={() => {}}
         />
       ) : null}
     </div>

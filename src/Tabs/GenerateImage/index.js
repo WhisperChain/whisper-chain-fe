@@ -41,6 +41,7 @@ function Generate() {
   const [previousImageUrl, setPreviousImageUrl] = React.useState();
 
   React.useEffect(() => {
+    console.log(publication);
     if (publication?.pubId) {
       setPubsId(publication?.pubId);
       setPreviousImageUrl(publication?.comments?.[0]?.imageUrl);
@@ -58,7 +59,10 @@ function Generate() {
     console.log({ txHash });
     await postWhisperResponse(url, txHash);
     setIsloading(false);
-    router.push(`/chain/${publication?.chainId}?isGenerated=true`, `/chain/${publication?.chainId}`);
+    router.push(
+      `/chain/${publication?.chainId}?isGenerated=true`,
+      `/chain/${publication?.chainId}`
+    );
   };
 
   const generateImageClickHandler = async () => {
@@ -128,8 +132,9 @@ function Generate() {
             </div>
             <div className="relative">
               <div
-                className={`w-[256px] h-[256px] relative flex justify-center items-center ${disableGeneration ? "opacity-25" : ""
-                  }`}
+                className={`w-[256px] h-[256px] relative flex justify-center items-center ${
+                  disableGeneration ? "opacity-25" : ""
+                }`}
               >
                 <WhisperImage
                   imgSrcUrl={previousImageUrl}
@@ -164,13 +169,15 @@ function Generate() {
                   placeholder-[#1d0545b8]
                   focus:outline-none focus:border-[#6f1aff3d] focus:ring-1 
                   ${promtEmpty ? "focus:ring-[red]" : "focus:ring-[#6f1aff3d]"}
-                  ${disableGeneration
-                    ? "cursor-not-allowed	pointer-events-none"
-                    : ""
+                  ${
+                    disableGeneration
+                      ? "cursor-not-allowed	pointer-events-none"
+                      : ""
                   }
-                  ${textAreaEntered
-                    ? "placeholder:text-[#1d0545b8]"
-                    : "placeholder:text-[#1d05458f]"
+                  ${
+                    textAreaEntered
+                      ? "placeholder:text-[#1d0545b8]"
+                      : "placeholder:text-[#1d05458f]"
                   }
                 `}
                 placeholder="Enter your prompt here to generate your very own whisper"
@@ -201,10 +208,11 @@ function Generate() {
               </div>
               <div className="flex justify-center items-center">
                 <select
-                  className={`${styles.selectBoxInput} ${disableGeneration
-                    ? "cursor-not-allowed	pointer-events-none"
-                    : ""
-                    }`}
+                  className={`${styles.selectBoxInput} ${
+                    disableGeneration
+                      ? "cursor-not-allowed	pointer-events-none"
+                      : ""
+                  }`}
                   value={selectedFilter}
                   onChange={(e) => {
                     setSelectedFilter(e.target.value);
@@ -224,13 +232,15 @@ function Generate() {
           </div>
           {/* Generate Image Button */}
           <div
-            className={`w-full bottom-[16px] ${promptText === "" || promtEmpty || limit == 0
-              ? "opacity-50 cursor-not-allowed	pointer-events-none"
-              : ""
-              } ${btnPosition}
-              ${disableGeneration
-                ? "opacity-25 cursor-not-allowed pointer-events-none"
+            className={`w-full bottom-[16px] ${
+              promptText === "" || promtEmpty || limit == 0
+                ? "opacity-50 cursor-not-allowed	pointer-events-none"
                 : ""
+            } ${btnPosition}
+              ${
+                disableGeneration
+                  ? "opacity-25 cursor-not-allowed pointer-events-none"
+                  : ""
               }`}
           >
             <div

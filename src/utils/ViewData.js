@@ -164,12 +164,14 @@ export const getChainData = async (paginationParams) => {
 export const getChainWhispersData = async (chainId, paginationParams) => {
   const data = await getChainWhispers(chainId, paginationParams);
   const whisperIds = data?.whisper_ids;
+  const chainIds = [];
+  whisperIds?.map((whisperId) => {
+    const whisper = data?.whispers[whisperId];
+    chainIds.push(whisper.platform_chain_id);
+  });
 
   //to-do: chain id with whisperids
-  const Collectresponse = await getPublicationCollectData([
-    "0x5285-0x5f",
-    "0x12-0x01",
-  ]);
+  const Collectresponse = await getPublicationCollectData(chainIds);
   console.log("response", Collectresponse);
   const hasMore = whisperIds?.length >= paginationParams.limit;
   const commentArray = [];
@@ -182,6 +184,7 @@ export const getChainWhispersData = async (chainId, paginationParams) => {
       const user = data?.users[whisper?.user_id];
       const postData = {
         pubId: chain?.platform_chain_id,
+        chainId: chain?.id,
         createdAt: chain?.start_ts,
         imageUrl: image?.url,
         profileHandle: user?.platform_username,
@@ -205,9 +208,12 @@ export const getChainWhispersData = async (chainId, paginationParams) => {
       lensterPostUrl: `https://testnet.lenster.xyz/posts/${whisper.platform_chain_id}`,
       profileId: user?.platform_user_id,
       status: whisper?.status,
-      hasCollectedByMe: Collectresponse[whisperId]?.hasCollectedByMe,
+      publicationId: whisper.platform_chain_id,
+      hasCollectedByMe:
+        Collectresponse[whisper.platform_chain_id]?.hasCollectedByMe,
       totalAmountOfCollects:
-        Collectresponse[whisperId]?.stats?.totalAmountOfCollects,
+        Collectresponse[whisper.platform_chain_id]?.stats
+          ?.totalAmountOfCollects,
     };
     commentArray.push(whisperData);
   });
