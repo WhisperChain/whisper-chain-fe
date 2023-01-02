@@ -8,6 +8,8 @@ import {
   collectPost,
   getApprovedModuleAllowance,
   refreshAuthentication,
+  txIndexed,
+  getPublicationCollectData,
 } from "../utils/lensFunction";
 import { useSigner } from "wagmi";
 import SignTypedData from "./ConnectButton/SignTypedData";
@@ -30,6 +32,7 @@ export const PostImage = ({ imageDetails }) => {
   const [isOpen, setIsOpen] = React.useState(false);
   const [onClickCollect, setOnClickCollect] = React.useState(false);
   const [collectError, setCollectError] = React.useState(false);
+
 
   const onCollectPress = async () => {
     if (
@@ -231,7 +234,12 @@ export const PostImage = ({ imageDetails }) => {
         <SignTypedData
           typedData={typedData}
           id={transactionId.current}
-          onSuccess={() => {}}
+          onSuccess={async () => {
+            const res = await getPublicationCollectData([imageDetails?.publicationId]);
+            imageDetails.hasCollectedByMe = res[imageDetails?.publicationId]?.hasCollectedByMe;
+            imageDetails.totalAmountOfCollects = res[imageDetails?.publicationId]?.stats?.totalAmountOfCollects;
+          }}
+          pollIndexing = {true}
         />
       ) : null}
     </div>

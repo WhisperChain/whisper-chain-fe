@@ -55,12 +55,12 @@ const Chain = () => {
   }, [routerPath]);
 
   const fetchData = async (chainId, paginationParams) => {
-    const { pubItem, commentArray, hasMore } = await getChainWhispersData(
+    const { pubItem, commentArray, hasMore:_hasMore } = await getChainWhispersData(
       chainId,
       paginationParams
     );
     setFirstCreatedAt(pubItem.createdAt);
-    setHasMore(hasMore);
+    setHasMore(_hasMore);
     setPublication(pubItem);
     setChainData([...chainData, ...commentArray]);
   };
@@ -78,7 +78,7 @@ const Chain = () => {
   const buttonRef = React.useRef();
   let dContainer = buttonRef.current;
   const onScroll = () => {
-    console.log(buttonRef.current?.scrollTop)
+    // console.log(buttonRef.current?.scrollTop)
     if (buttonRef.current?.scrollTop > 100) {
       increaseOpacity();
     } else {
@@ -117,12 +117,12 @@ const Chain = () => {
     }
   };
 
-  const fetchNextData = () => {
+  const fetchNextData = async () => {
      paginationParams.current = {
       page: paginationParams.current.page + 1,
       limit: PAGE_LIMIT,
     };
-    fetchData(chainId, paginationParams.current);
+    await fetchData(chainId, paginationParams.current);
   };
 
   return isLoading ? (
@@ -181,7 +181,7 @@ const Chain = () => {
         dataLength={chainData?.length}
         next={fetchNextData}
         hasMore={hasMore}
-        loader={<SpinningLoader height="100px" width="100%" />}
+        loader={ <SpinningLoader height="100px" width="100%" /> }
         height={"calc(100vh - 190px)"}
         endMessage={<div></div>}
       >
