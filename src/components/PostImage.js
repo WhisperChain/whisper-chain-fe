@@ -62,39 +62,40 @@ export const PostImage = ({ imageDetails }) => {
     }
   };
 
-  let timeout = 0;
-  const hasWhisperProcessed = async () => {
-    console.log("router", router);
-    console.log("chain id", chainId);
-    const whisperRes = await getChainWhispers(chainId, paginationParams);
-    console.log("-------------", whisperRes);
-    const whisperIds = whisperRes?.whisper_ids;
-    const whisper = whisperRes?.whispers[whisperIds[0]];
-    console.log(whisper);
-    return whisper;
-  };
+  // polling for processing state
+  // let timeout = 0;
+  // const hasWhisperProcessed = async () => {
+  //   console.log("router", router);
+  //   console.log("chain id", chainId);
+  //   const whisperRes = await getChainWhispers(chainId, paginationParams);
+  //   console.log("-------------", whisperRes);
+  //   const whisperIds = whisperRes?.whisper_ids;
+  //   const whisper = whisperRes?.whispers[whisperIds[0]];
+  //   console.log(whisper);
+  //   return whisper;
+  // };
 
-  if (
-    routerPath?.isGenerated == "true" &&
-    imageDetails.status === "PROCESSING"
-  ) {
-    timeout = setInterval(async () => {
-      const whisper = hasWhisperProcessed();
-      if (whisper?.status === "ACTIVE") {
-        clearInterval(timeout);
-        imageDetails.status = whisper?.status;
-        imageDetails.publicationId = whisper?.platform_chain_id;
-        const res = await getPublicationCollectData([
-          whisper?.platform_chain_id,
-        ]);
-        imageDetails.hasCollectedByMe =
-          res[whisper?.platform_chain_id]?.hasCollectedByMe;
-        imageDetails.totalAmountOfCollects =
-          res[whisper?.platform_chain_id]?.stats?.totalAmountOfCollects;
-        imageDetails.lensterPostUrl = `https://testnet.lenster.xyz/posts/${whisper.platform_chain_id}`;
-      }
-    }, 5000);
-  }
+  // if (
+  //   routerPath?.isGenerated == "true" &&
+  //   imageDetails.status === "PROCESSING"
+  // ) {
+  //   timeout = setInterval(async () => {
+  //     const whisper = hasWhisperProcessed();
+  //     if (whisper?.status === "ACTIVE") {
+  //       clearInterval(timeout);
+  //       imageDetails.status = whisper?.status;
+  //       imageDetails.publicationId = whisper?.platform_chain_id;
+  //       const res = await getPublicationCollectData([
+  //         whisper?.platform_chain_id,
+  //       ]);
+  //       imageDetails.hasCollectedByMe =
+  //         res[whisper?.platform_chain_id]?.hasCollectedByMe;
+  //       imageDetails.totalAmountOfCollects =
+  //         res[whisper?.platform_chain_id]?.stats?.totalAmountOfCollects;
+  //       imageDetails.lensterPostUrl = `https://testnet.lenster.xyz/posts/${whisper.platform_chain_id}`;
+  //     }
+  //   }, 5000);
+  // }
 
   // console.log("imageDetails", imageDetails);
 

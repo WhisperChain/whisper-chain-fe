@@ -236,6 +236,28 @@ export const getChainWhispersData = async (chainId, paginationParams) => {
     };
     commentArray.push(whisperData);
   });
+  if (whisperIds.length == 0) {
+    const chain = data?.chains[chainId];
+    const image = data?.images[chain?.image_id];
+    const user = data?.users["1"];
+    const profileImage = data?.images[user?.platform_profile_image_id];
+      const postData = {
+        pubId: chain?.platform_chain_id,
+        chainId: chain?.id,
+        createdAt: chain?.start_ts,
+        imageUrl: image?.url,
+        profileHandle: user?.platform_username,
+        name: user?.platform_display_name,
+        profileImageUrl: profileImage
+          ? convertIntoIpfsUrl(profileImage?.url)
+          : "https://cdn.stamp.fyi/avatar/eth:1234?s=250",
+          status: chain.status,
+          lensterPostUrl: `https://testnet.lenster.xyz/posts/${chain.platform_chain_id}`,
+          publicationId: chain.platform_chain_id,
+      };
+      commentArray.push(postData);
+      pubItem = postData;
+  }
   pubItem.comments = commentArray;
   pubItem.hasMore = hasMore;
   return { pubItem, hasMore, commentArray };

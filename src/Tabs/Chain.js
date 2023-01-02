@@ -60,9 +60,11 @@ const Chain = () => {
       paginationParams
     );
     setFirstCreatedAt(pubItem.createdAt);
+    console.log("--------date---", moment(pubItem.createdAt).format("DD MMMM YYYY"))
     setHasMore(_hasMore);
     setPublication(pubItem);
     setChainData([...chainData, ...commentArray]);
+    console.log({pubItem, _hasMore, commentArray})
   };
 
   React.useEffect(() => {
@@ -154,7 +156,7 @@ const Chain = () => {
             className={`absolute flex ${style.viewOnLensContainer}`}
           >
             <a
-              href={`${viewLensUrl}/${publication?.id}`}
+              href={`${viewLensUrl}/${publication?.pubId}`}
               className="flex"
               target="_blank"
             >
