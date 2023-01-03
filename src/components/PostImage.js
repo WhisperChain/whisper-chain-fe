@@ -40,6 +40,7 @@ export const PostImage = ({ imageDetails }) => {
     limit: 1,
   });
   const chainId = routerPath.chainId;
+  const [collectLoaderStarted, setCollectLoaderStarted] = React.useState(false);
 
   const onCollectPress = async () => {
     if (
@@ -52,8 +53,10 @@ export const PostImage = ({ imageDetails }) => {
         const res = await collectPost(imageDetails?.publicationId);
         transactionId.current = res.data?.createCollectTypedData?.id;
         setTypedData(res.data?.createCollectTypedData?.typedData);
+        setCollectLoaderStarted(true);
       } catch (error) {
         setCollectError(true);
+        setCollectLoaderStarted(false);
       }
       setOnClickCollect(false);
     } else {
@@ -254,10 +257,24 @@ export const PostImage = ({ imageDetails }) => {
               ) : (
                 <button
                   onClick={() => setOnClickCollect(true)}
-                  className={`flex items-center p-[10px] w-[208px] h-[40px] justify-center rounded-[4px] backdrop-blur-[60px] cursor-pointer ${styles.viewOnLensBtn}`}
+                  className={`flex items-center p-[10px] w-[208px] h-[40px] justify-center rounded-[4px] backdrop-blur-[60px] cursor-pointer ${
+                    styles.viewOnLensBtn
+                  }
+                  ${
+                    collectLoaderStarted
+                      ? "cursor-auto pointer-events-none"
+                      : null
+                  }
+                  `}
                 >
-                  <CollectIcon />
-                  <span className="ml-[10px]">Collect this post</span>
+                  {collectLoaderStarted ? (
+                    <Loader />
+                  ) : (
+                    <>
+                      <CollectIcon />
+                      <span className="ml-[10px]">Collect this post</span>
+                    </>
+                  )}
                 </button>
               )}
             </div>
@@ -278,6 +295,7 @@ export const PostImage = ({ imageDetails }) => {
           typedData={typedData}
           id={transactionId.current}
           onSuccess={async () => {
+            setCollectLoaderStarted(false);
             const res = await getPublicationCollectData([
               imageDetails?.publicationId,
             ]);
