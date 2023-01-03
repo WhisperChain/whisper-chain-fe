@@ -26,6 +26,12 @@ const SignInModal = ({ onRequestClose, isOpen, onSignInComplete }) => {
   //   setOpenSignInModal(true);
   // });
   const { address } = useAccount();
+  const handleModalClose = () => {
+    setOpenDispatcherModal(false);
+  };
+  const handleClaimModalClose = () => {
+    setOpenClaimHandleModal(false);
+  };
 
   const notify = (notifyText) =>
     toast.custom((t) => (
@@ -149,7 +155,7 @@ const SignInModal = ({ onRequestClose, isOpen, onSignInComplete }) => {
 
       {isEnableDispatcher ? null : (
         <Modal
-          onRequestClose={onRequestClose}
+          onRequestClose={handleModalClose}
           isOpen={openDispatcherModal}
           style={customModalStyles}
         >
@@ -159,7 +165,9 @@ const SignInModal = ({ onRequestClose, isOpen, onSignInComplete }) => {
             <div>
               <div
                 className={`flex justify-center box-border items-center w-[234px] h-[40px] bg-[#ABFE2C] text-[#00501E] backdrop-blur rounded-[4px] gap-[8px] cursor-pointer border-[1px] border-solid border-black/20`}
-                onClick={enableDispatcher}
+                onClick={() => {
+                  enableDispatcher();
+                }}
               >
                 Enable Dispatcher
               </div>
@@ -182,12 +190,14 @@ const SignInModal = ({ onRequestClose, isOpen, onSignInComplete }) => {
               typedData={typedDataRef.current}
               id={enableDispatcherTxnId.current}
               onSuccess={async () => {
+                console.log("IN on succces")
                 const profileRes = await getProfile(address);
                 const profile = profileRes.data.profiles.items[0];
                 window.localStorage.setItem("profile", JSON.stringify(profile));
                 setOpenDispatcherModal(false);
-                notify();
+                notify("You’re on the Lens Testnet");
               }}
+              pollIndexing={true}
             />
           ) : null}
         </Modal>
@@ -197,7 +207,7 @@ const SignInModal = ({ onRequestClose, isOpen, onSignInComplete }) => {
       </div>
 
       <Modal
-        onRequestClose={onRequestClose}
+        onRequestClose={handleClaimModalClose}
         isOpen={openClaimHandleModal}
         style={customModalStyles}
       >
@@ -205,13 +215,20 @@ const SignInModal = ({ onRequestClose, isOpen, onSignInComplete }) => {
           className={`p-[20px] flex justify-start items-center bg-[#FFFFFF] rounded-[16px] backdrop-blur-3xl w-full ${styles.ModalContainer}`}
         >
           <div>
-            <h1 className="text-[16px] font-bold text-start leading-[100%] pb-[8px] text-[#000000] opacity-80">Unable to sign-in</h1>
-            <p className={`not-italic text-[12px] font-medium w-[200px] leading-[160% pb-[16px] text-start ${styles.claimText}`}>You do not have a lens account. Claim your handle on lens to log into WhisperChain.</p>
+            <h1 className="text-[16px] font-bold text-start leading-[100%] pb-[8px] text-[#000000] opacity-80">
+              Unable to sign-in
+            </h1>
+            <p
+              className={`not-italic text-[12px] font-medium w-[200px] leading-[160% pb-[16px] text-start ${styles.claimText}`}
+            >
+              You do not have a lens account. Claim your handle on lens to log
+              into WhisperChain.
+            </p>
             <div
               className={`flex justify-center box-border items-center w-[214px] h-[40px] bg-[#ABFE2C] text-[#00501E] backdrop-blur rounded-[4px] gap-[8px] cursor-pointer border-[1px] border-solid border-black/20`}
               onClick={() => {
                 window.open("https://claim.lens.xyz/", "_blank");
-                setOpenClaimHandleModal(false)
+                setOpenClaimHandleModal(false);
               }}
             >
               <LensIcon />

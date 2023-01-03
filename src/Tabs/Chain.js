@@ -55,16 +55,20 @@ const Chain = () => {
   }, [routerPath]);
 
   const fetchData = async (chainId, paginationParams) => {
-    const { pubItem, commentArray, hasMore:_hasMore } = await getChainWhispersData(
-      chainId,
-      paginationParams
-    );
+    const {
+      pubItem,
+      commentArray,
+      hasMore: _hasMore,
+    } = await getChainWhispersData(chainId, paginationParams);
     setFirstCreatedAt(pubItem.createdAt);
-    console.log("--------date---", moment(pubItem.createdAt).format("DD MMMM YYYY"))
+    console.log(
+      "--------date---",
+      moment(pubItem.createdAt).format("DD MMMM YYYY")
+    );
     setHasMore(_hasMore);
     setPublication(pubItem);
     setChainData([...chainData, ...commentArray]);
-    console.log({pubItem, _hasMore, commentArray})
+    console.log({ pubItem, _hasMore, commentArray });
   };
 
   React.useEffect(() => {
@@ -120,13 +124,13 @@ const Chain = () => {
   };
 
   const fetchNextData = async () => {
-     paginationParams.current = {
+    paginationParams.current = {
       page: paginationParams.current.page + 1,
       limit: PAGE_LIMIT,
     };
     await fetchData(chainId, paginationParams.current);
   };
-  console.log("created at-----", firstCreatedAt);
+  // console.log("created at-----", firstCreatedAt);
 
   return isLoading ? (
     <SpinningLoader height="80vh" width="100%" />
@@ -146,7 +150,9 @@ const Chain = () => {
         </div>
         <div className="flex flex-col items-center sticky ml-[-32px] decoration-white">
           <div className="not-italic font-medium text-[16px] leading-[140%] tracking-[-0.03em] text-[#000000] opacity-80">
-           {firstCreatedAt ? moment.unix(firstCreatedAt).format("Do MMMM YYYY") : null }
+            {firstCreatedAt
+              ? moment.unix(firstCreatedAt).format("Do MMMM YYYY")
+              : null}
           </div>
         </div>
         <div className="relative h-[20px]">
@@ -184,7 +190,7 @@ const Chain = () => {
         dataLength={chainData?.length}
         next={fetchNextData}
         hasMore={hasMore}
-        loader={ <SpinningLoader height="100px" width="100%" /> }
+        loader={<SpinningLoader height="100px" width="100%" />}
         height={"calc(100vh - 190px)"}
         endMessage={<div></div>}
       >
@@ -194,7 +200,6 @@ const Chain = () => {
           ref={buttonRef}
           onScroll={onScroll}
         >
-
           <div className="flex justify-center sticky top-[5px] z-[1000]">
             <a
               onClick={() => {
@@ -287,11 +292,10 @@ const Chain = () => {
                   <div className="flex w-full items-center justify-center">
                     <ChainLogo />
                   </div>
-                  <PostImage imageDetails={comment} />
+                  <PostImage imageDetails={comment} chainId={chainId} />
                 </div>
               ) : null;
             })}
-
         </div>
       </InfiniteScroll>
     </div>

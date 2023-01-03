@@ -32,7 +32,7 @@ const HomeMessage = ({ publication }) => {
           </div>
           <div className="text-black text-[16px] leading-[160%] w-full px-[24px] tablet:text-[14px]">
             A new fun take on age old game some of you might know as Chinese
-            whisper or Telephone. But with a twist of A.I,
+            whisper or Telephone. But with a twist of A.I.
           </div>
         </div>
       </div>

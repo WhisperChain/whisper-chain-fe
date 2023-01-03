@@ -16,6 +16,8 @@ import EmptyStateLogo from "../../assets/EmptyStateLogo";
 import { useAccount } from "wagmi";
 import ChevronIcon from "../../assets/ChevronIcon";
 import moment from "moment";
+import { useBottomTab } from "../../context/BottomTabContext";
+import { TabItems } from "../../components/Main/TabItems";
 
 function Generate() {
   const { address } = useAccount();
@@ -35,6 +37,7 @@ function Generate() {
   );
   const [emptyState, setEmptyState] = React.useState(true);
   const [disableGeneration, setDisableGeneration] = React.useState(false);
+  const { onTabChange } = useBottomTab();
 
   var regex = /[`!@#$%^&*()_+\-=\[\]{};':"\\|<>\/?~]/;
 
@@ -54,10 +57,18 @@ function Generate() {
 
   const onImageClickHandler = async (url) => {
     setIsloading(true);
-    const {txHash, whisperIpfsObjectId, imageIpfsObjectId} = await getIpfsUrlandUploadPublication(url, pubsId, address);
+    const { txHash, whisperIpfsObjectId, imageIpfsObjectId } =
+      await getIpfsUrlandUploadPublication(url, pubsId, address);
     console.log({ txHash });
-    await postWhisperResponse(url, txHash, whisperIpfsObjectId, imageIpfsObjectId, publication?.chainId);
+    await postWhisperResponse(
+      url,
+      txHash,
+      whisperIpfsObjectId,
+      imageIpfsObjectId,
+      publication?.chainId
+    );
     setIsloading(false);
+    onTabChange(TabItems[0]);
     router.push(
       `/chain/${publication?.chainId}?isGenerated=true`,
       `/chain/${publication?.chainId}`
@@ -123,7 +134,10 @@ function Generate() {
             <div className="flex flex-col mb-[8px]">
               <div className={styles.mainText}>
                 Last whisper of{" "}
-                {publication?.createdAt ? moment.unix(publication?.createdAt).format("MMMM Do") : null } chain
+                {publication?.createdAt
+                  ? moment.unix(publication?.createdAt).format("MMMM Do")
+                  : null}
+                chain
               </div>
               <div className={styles.subText}>
                 Try to describe this whisper as best you can.

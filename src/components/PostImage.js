@@ -9,7 +9,6 @@ import {
   getApprovedModuleAllowance,
   refreshAuthentication,
   getPublicationCollectData,
-  getChainWhispers,
 } from "../utils/lensFunction";
 import { useSigner } from "wagmi";
 import SignTypedData from "./ConnectButton/SignTypedData";
@@ -24,8 +23,9 @@ import AlertIcon from "../assets/AlertIcon";
 import SpinningLoader from "./SpinningLoader";
 import Loader from "./Loader";
 import { useRouter } from "next/router";
+import { getChainWhispers } from "../utils/Utils";
 
-export const PostImage = ({ imageDetails }) => {
+export const PostImage = ({ imageDetails, chainId }) => {
   const [hovered, setHovered] = React.useState(false);
   const { data: signer } = useSigner();
   const [typedData, setTypedData] = React.useState({});
@@ -39,7 +39,8 @@ export const PostImage = ({ imageDetails }) => {
     page: 1,
     limit: 1,
   });
-  const chainId = routerPath.chainId;
+  // const chainId = routerPath.chainId;
+  const [collectLoaderStarted, setCollectLoaderStarted] = React.useState(false);
 
   const onCollectPress = async () => {
     if (
@@ -53,7 +54,10 @@ export const PostImage = ({ imageDetails }) => {
         transactionId.current = res.data?.createCollectTypedData?.id;
         setTypedData(res.data?.createCollectTypedData?.typedData);
       } catch (error) {
-        setCollectError(true);
+        if (error) {
+          setCollectLoaderStarted(false);
+          setCollectError(true);
+        }
       }
       setOnClickCollect(false);
     } else {
@@ -63,39 +67,47 @@ export const PostImage = ({ imageDetails }) => {
   };
 
   // polling for processing state
-  // let timeout = 0;
-  // const hasWhisperProcessed = async () => {
-  //   console.log("router", router);
-  //   console.log("chain id", chainId);
-  //   const whisperRes = await getChainWhispers(chainId, paginationParams);
-  //   console.log("-------------", whisperRes);
-  //   const whisperIds = whisperRes?.whisper_ids;
-  //   const whisper = whisperRes?.whispers[whisperIds[0]];
-  //   console.log(whisper);
-  //   return whisper;
-  // };
+  let timeout = null;
+  let isPollingStarted = false;
+  const hasWhisperProcessed = async () => {
+    console.log("chain id", chainId);
+    const whisperRes = await getChainWhispers(
+      chainId,
+      paginationParams.current
+    );
+    console.log("-------------", whisperRes);
+    const whisperIds = whisperRes?.whisper_ids;
+    const whisper = whisperRes?.whispers[whisperIds[0]];
+    console.log(whisper);
+    return whisper;
+  };
 
-  // if (
-  //   routerPath?.isGenerated == "true" &&
-  //   imageDetails.status === "PROCESSING"
-  // ) {
-  //   timeout = setInterval(async () => {
-  //     const whisper = hasWhisperProcessed();
-  //     if (whisper?.status === "ACTIVE") {
-  //       clearInterval(timeout);
-  //       imageDetails.status = whisper?.status;
-  //       imageDetails.publicationId = whisper?.platform_chain_id;
-  //       const res = await getPublicationCollectData([
-  //         whisper?.platform_chain_id,
-  //       ]);
-  //       imageDetails.hasCollectedByMe =
-  //         res[whisper?.platform_chain_id]?.hasCollectedByMe;
-  //       imageDetails.totalAmountOfCollects =
-  //         res[whisper?.platform_chain_id]?.stats?.totalAmountOfCollects;
-  //       imageDetails.lensterPostUrl = `https://testnet.lenster.xyz/posts/${whisper.platform_chain_id}`;
-  //     }
-  //   }, 5000);
-  // }
+  React.useEffect(() => {
+    if (
+      routerPath?.isGenerated == "true" &&
+      imageDetails.status === "PROCESSING" &&
+      !isPollingStarted
+    ) {
+      isPollingStarted = true;
+      timeout = setInterval(async () => {
+        const whisper = await hasWhisperProcessed();
+        console.log({ whisperStatus: whisper?.status });
+        if (whisper?.status === "ACTIVE") {
+          clearInterval(timeout);
+          imageDetails.status = whisper?.status;
+          imageDetails.publicationId = whisper?.platform_chain_id;
+          const res = await getPublicationCollectData([
+            whisper?.platform_chain_id,
+          ]);
+          imageDetails.hasCollectedByMe =
+            res[whisper?.platform_chain_id]?.hasCollectedByMe;
+          imageDetails.totalAmountOfCollects =
+            res[whisper?.platform_chain_id]?.stats?.totalAmountOfCollects;
+          imageDetails.lensterPostUrl = `https://testnet.lenster.xyz/posts/${whisper.platform_chain_id}`;
+        }
+      }, 5000);
+    }
+  }, [imageDetails.status]);
 
   // console.log("imageDetails", imageDetails);
 
@@ -247,17 +259,31 @@ export const PostImage = ({ imageDetails }) => {
               </button>
               {imageDetails?.hasCollectedByMe ? (
                 <button
-                  className={`flex items-center p-[10px] w-[208px] h-[40px] justify-center rounded-[4px] backdrop-blur-[60px]  ${styles.collectedBtn}`}
+                  className={`flex items-center p-[10px] w-[208px] h-[40px] justify-center rounded-[4px] backdrop-blur-[60px] cursor-auto ${styles.collectedBtn}`}
                 >
                   Collected
                 </button>
               ) : (
                 <button
                   onClick={() => setOnClickCollect(true)}
-                  className={`flex items-center p-[10px] w-[208px] h-[40px] justify-center rounded-[4px] backdrop-blur-[60px] cursor-pointer ${styles.viewOnLensBtn}`}
+                  className={`flex items-center p-[10px] w-[208px] h-[40px] justify-center rounded-[4px] backdrop-blur-[60px] cursor-pointer ${
+                    styles.viewOnLensBtn
+                  }
+                  ${
+                    collectLoaderStarted
+                      ? "cursor-auto pointer-events-none"
+                      : null
+                  }
+                  `}
                 >
-                  <CollectIcon />
-                  <span className="ml-[10px]">Collect this post</span>
+                  {collectLoaderStarted ? (
+                    <Loader />
+                  ) : (
+                    <>
+                      <CollectIcon />
+                      <span className="ml-[10px]">Collect this post</span>
+                    </>
+                  )}
                 </button>
               )}
             </div>
@@ -278,6 +304,7 @@ export const PostImage = ({ imageDetails }) => {
           typedData={typedData}
           id={transactionId.current}
           onSuccess={async () => {
+            setCollectLoaderStarted(false);
             const res = await getPublicationCollectData([
               imageDetails?.publicationId,
             ]);
@@ -287,6 +314,7 @@ export const PostImage = ({ imageDetails }) => {
               res[imageDetails?.publicationId]?.stats?.totalAmountOfCollects;
           }}
           pollIndexing={true}
+          setCollectLoaderStarted={setCollectLoaderStarted}
         />
       ) : null}
     </div>
