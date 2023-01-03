@@ -29,13 +29,15 @@ const SignInModal = ({ onRequestClose, isOpen, onSignInComplete }) => {
   const handleModalClose = () => {
     setOpenDispatcherModal(false);
   };
+  const handleClaimModalClose = () => {
+    setOpenClaimHandleModal(false);
+  };
 
   const notify = (notifyText) =>
     toast.custom((t) => (
       <div
-        className={`${
-          t.visible ? "animate-enter" : "animate-leave"
-        } max-w-md bg-white shadow-lg rounded-[16px] pointer-events-auto flex justify-center items-center ring-1 ring-black ring-opacity-5`}
+        className={`${t.visible ? "animate-enter" : "animate-leave"
+          } max-w-md bg-white shadow-lg rounded-[16px] pointer-events-auto flex justify-center items-center ring-1 ring-black ring-opacity-5`}
       >
         <div className="flex-1 p-4">
           <div className="flex items-center">
@@ -163,9 +165,9 @@ const SignInModal = ({ onRequestClose, isOpen, onSignInComplete }) => {
             <div>
               <div
                 className={`flex justify-center box-border items-center w-[234px] h-[40px] bg-[#ABFE2C] text-[#00501E] backdrop-blur rounded-[4px] gap-[8px] cursor-pointer border-[1px] border-solid border-black/20`}
-                onClick = { () => {
-                   enableDispatcher();
-                } }
+                onClick={() => {
+                  enableDispatcher();
+                }}
               >
                 Enable Dispatcher
               </div>
@@ -195,7 +197,7 @@ const SignInModal = ({ onRequestClose, isOpen, onSignInComplete }) => {
                 setOpenDispatcherModal(false);
                 notify("You’re on the Lens Testnet");
               }}
-              pollIndexing = {true}
+              pollIndexing={true}
             />
           ) : null}
         </Modal>
@@ -205,7 +207,7 @@ const SignInModal = ({ onRequestClose, isOpen, onSignInComplete }) => {
       </div>
 
       <Modal
-        onRequestClose={onRequestClose}
+        onRequestClose={handleClaimModalClose}
         isOpen={openClaimHandleModal}
         style={customModalStyles}
       >
