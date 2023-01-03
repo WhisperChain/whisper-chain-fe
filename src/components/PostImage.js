@@ -9,7 +9,6 @@ import {
   getApprovedModuleAllowance,
   refreshAuthentication,
   getPublicationCollectData,
-  getChainWhispers,
 } from "../utils/lensFunction";
 import { useSigner } from "wagmi";
 import SignTypedData from "./ConnectButton/SignTypedData";
@@ -24,8 +23,9 @@ import AlertIcon from "../assets/AlertIcon";
 import SpinningLoader from "./SpinningLoader";
 import Loader from "./Loader";
 import { useRouter } from "next/router";
+import { getChainWhispers } from "../utils/Utils";
 
-export const PostImage = ({ imageDetails }) => {
+export const PostImage = ({ imageDetails, chainId }) => {
   const [hovered, setHovered] = React.useState(false);
   const { data: signer } = useSigner();
   const [typedData, setTypedData] = React.useState({});
@@ -39,7 +39,7 @@ export const PostImage = ({ imageDetails }) => {
     page: 1,
     limit: 1,
   });
-  const chainId = routerPath.chainId;
+  // const chainId = routerPath.chainId;
   const [collectLoaderStarted, setCollectLoaderStarted] = React.useState(false);
 
   const onCollectPress = async () => {
@@ -66,39 +66,39 @@ export const PostImage = ({ imageDetails }) => {
   };
 
   // polling for processing state
-  // let timeout = 0;
-  // const hasWhisperProcessed = async () => {
-  //   console.log("router", router);
-  //   console.log("chain id", chainId);
-  //   const whisperRes = await getChainWhispers(chainId, paginationParams);
-  //   console.log("-------------", whisperRes);
-  //   const whisperIds = whisperRes?.whisper_ids;
-  //   const whisper = whisperRes?.whispers[whisperIds[0]];
-  //   console.log(whisper);
-  //   return whisper;
-  // };
+  let timeout = 0;
+  const hasWhisperProcessed = async () => {
+    console.log("router", router);
+    console.log("chain id", chainId);
+    const whisperRes = await getChainWhispers(chainId, paginationParams);
+    console.log("-------------", whisperRes);
+    const whisperIds = whisperRes?.whisper_ids;
+    const whisper = whisperRes?.whispers[whisperIds[0]];
+    console.log(whisper);
+    return whisper;
+  };
 
-  // if (
-  //   routerPath?.isGenerated == "true" &&
-  //   imageDetails.status === "PROCESSING"
-  // ) {
-  //   timeout = setInterval(async () => {
-  //     const whisper = hasWhisperProcessed();
-  //     if (whisper?.status === "ACTIVE") {
-  //       clearInterval(timeout);
-  //       imageDetails.status = whisper?.status;
-  //       imageDetails.publicationId = whisper?.platform_chain_id;
-  //       const res = await getPublicationCollectData([
-  //         whisper?.platform_chain_id,
-  //       ]);
-  //       imageDetails.hasCollectedByMe =
-  //         res[whisper?.platform_chain_id]?.hasCollectedByMe;
-  //       imageDetails.totalAmountOfCollects =
-  //         res[whisper?.platform_chain_id]?.stats?.totalAmountOfCollects;
-  //       imageDetails.lensterPostUrl = `https://testnet.lenster.xyz/posts/${whisper.platform_chain_id}`;
-  //     }
-  //   }, 5000);
-  // }
+  if (
+    routerPath?.isGenerated == "true" &&
+    imageDetails.status === "PROCESSING"
+  ) {
+    timeout = setInterval(async () => {
+      const whisper = hasWhisperProcessed();
+      if (whisper?.status === "ACTIVE") {
+        clearInterval(timeout);
+        imageDetails.status = whisper?.status;
+        imageDetails.publicationId = whisper?.platform_chain_id;
+        const res = await getPublicationCollectData([
+          whisper?.platform_chain_id,
+        ]);
+        imageDetails.hasCollectedByMe =
+          res[whisper?.platform_chain_id]?.hasCollectedByMe;
+        imageDetails.totalAmountOfCollects =
+          res[whisper?.platform_chain_id]?.stats?.totalAmountOfCollects;
+        imageDetails.lensterPostUrl = `https://testnet.lenster.xyz/posts/${whisper.platform_chain_id}`;
+      }
+    }, 5000);
+  }
 
   // console.log("imageDetails", imageDetails);
 
