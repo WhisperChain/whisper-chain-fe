@@ -8,7 +8,7 @@ import {
   refreshAuthentication,
   setDispatcher,
 } from "../../utils/lensFunction";
-import { getProfileImage, loginApi } from "../../utils/Utils";
+import { getProfileImage, loginApi, resetLocalStorage } from "../../utils/Utils";
 import toast from "react-hot-toast";
 import ToastIcon from "../../assets/ToastIcon";
 
@@ -150,6 +150,7 @@ function SignAuthentication({
   };
 
   useEffect(() => {
+    console.log("-----is moddal open",isModalOpen.current)
     if (
       !window.localStorage.getItem(Constants.LOCAL_STORAGE_REFRESH_TOKEN_KEY) &&
       !isModalOpen.current
@@ -157,6 +158,7 @@ function SignAuthentication({
       isModalOpen.current = true;
       signMsg();
     }
+   
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
