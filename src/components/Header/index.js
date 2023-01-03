@@ -2,6 +2,7 @@ import React from "react";
 import Logo from "../../assets/Logo";
 import HeaderSignin from "./HeaderSignin";
 import SignInModal from "../SignInModal";
+import { resetLocalStorage } from "../../utils/Utils";
 
 const Header = () => {
   const [open, setOpen] = React.useState(false);
@@ -10,6 +11,7 @@ const Header = () => {
   };
   const handleOpen = () => {
     setOpen(true);
+    resetLocalStorage();
   };
   const customStyles = {
     content: {
