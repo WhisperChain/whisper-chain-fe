@@ -130,7 +130,7 @@ const Chain = () => {
     };
     await fetchData(chainId, paginationParams.current);
   };
-  console.log("created at-----", firstCreatedAt);
+  // console.log("created at-----", firstCreatedAt);
 
   return isLoading ? (
     <SpinningLoader height="80vh" width="100%" />

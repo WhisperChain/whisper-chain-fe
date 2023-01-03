@@ -53,10 +53,11 @@ export const PostImage = ({ imageDetails, chainId }) => {
         const res = await collectPost(imageDetails?.publicationId);
         transactionId.current = res.data?.createCollectTypedData?.id;
         setTypedData(res.data?.createCollectTypedData?.typedData);
-        setCollectLoaderStarted(true);
       } catch (error) {
-        setCollectError(true);
-        setCollectLoaderStarted(false);
+        if (error) {
+          setCollectLoaderStarted(false);
+          setCollectError(true);
+        }
       }
       setOnClickCollect(false);
     } else {
@@ -258,7 +259,7 @@ export const PostImage = ({ imageDetails, chainId }) => {
               </button>
               {imageDetails?.hasCollectedByMe ? (
                 <button
-                  className={`flex items-center p-[10px] w-[208px] h-[40px] justify-center rounded-[4px] backdrop-blur-[60px]  ${styles.collectedBtn}`}
+                  className={`flex items-center p-[10px] w-[208px] h-[40px] justify-center rounded-[4px] backdrop-blur-[60px] cursor-auto ${styles.collectedBtn}`}
                 >
                   Collected
                 </button>
@@ -313,6 +314,7 @@ export const PostImage = ({ imageDetails, chainId }) => {
               res[imageDetails?.publicationId]?.stats?.totalAmountOfCollects;
           }}
           pollIndexing={true}
+          setCollectLoaderStarted={setCollectLoaderStarted}
         />
       ) : null}
     </div>

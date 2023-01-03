@@ -3,7 +3,13 @@ import { useSignTypedData } from "wagmi";
 import { txIndexed } from "../../utils/lensFunction";
 import { broadcastData } from "../../utils/Utils";
 
-function SignTypedData({ id, typedData, onSuccess, pollIndexing = false }) {
+function SignTypedData({
+  id,
+  typedData,
+  onSuccess,
+  pollIndexing = false,
+  setCollectLoaderStarted,
+}) {
   delete typedData.domain.__typename;
   delete typedData.types.__typename;
   delete typedData.value.__typename;
@@ -38,6 +44,7 @@ function SignTypedData({ id, typedData, onSuccess, pollIndexing = false }) {
     const res = await broadcastData(id, data);
 
     if (pollIndexing) {
+      setCollectLoaderStarted(true);
       timeout = setInterval(() => {
         const isIndexed = hasTxIndexed(res);
         if (!!isIndexed) {
