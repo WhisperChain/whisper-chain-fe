@@ -26,6 +26,9 @@ const SignInModal = ({ onRequestClose, isOpen, onSignInComplete }) => {
   //   setOpenSignInModal(true);
   // });
   const { address } = useAccount();
+  const handleModalClose = () => {
+    setOpenDispatcherModal(false);
+  };
 
   const notify = (notifyText) =>
     toast.custom((t) => (
@@ -150,7 +153,7 @@ const SignInModal = ({ onRequestClose, isOpen, onSignInComplete }) => {
 
       {isEnableDispatcher ? null : (
         <Modal
-          onRequestClose={onRequestClose}
+          onRequestClose={handleModalClose}
           isOpen={openDispatcherModal}
           style={customModalStyles}
         >
@@ -160,7 +163,9 @@ const SignInModal = ({ onRequestClose, isOpen, onSignInComplete }) => {
             <div>
               <div
                 className={`flex justify-center box-border items-center w-[234px] h-[40px] bg-[#ABFE2C] text-[#00501E] backdrop-blur rounded-[4px] gap-[8px] cursor-pointer border-[1px] border-solid border-black/20`}
-                onClick={enableDispatcher}
+                onClick = { () => {
+                   enableDispatcher();
+                } }
               >
                 Enable Dispatcher
               </div>
@@ -183,12 +188,14 @@ const SignInModal = ({ onRequestClose, isOpen, onSignInComplete }) => {
               typedData={typedDataRef.current}
               id={enableDispatcherTxnId.current}
               onSuccess={async () => {
+                console.log("IN on succces")
                 const profileRes = await getProfile(address);
                 const profile = profileRes.data.profiles.items[0];
                 window.localStorage.setItem("profile", JSON.stringify(profile));
                 setOpenDispatcherModal(false);
-                notify();
+                notify("You’re on the Lens Testnet");
               }}
+              pollIndexing = {true}
             />
           ) : null}
         </Modal>

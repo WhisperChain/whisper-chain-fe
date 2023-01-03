@@ -44,7 +44,10 @@ function SignTypedData({
     const res = await broadcastData(id, data);
 
     if (pollIndexing) {
-      setCollectLoaderStarted(true);
+      if(setCollectLoaderStarted){
+        setCollectLoaderStarted(true);
+      }
+      
       timeout = setInterval(() => {
         const isIndexed = hasTxIndexed(res);
         if (!!isIndexed) {
