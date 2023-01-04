@@ -187,8 +187,12 @@ export const PostImage = ({ imageDetails, chainId }) => {
                 className={`flex box-border px-[12px] py-[7px] gap-[8px] rounded-[4px] text-[16px] font-bold leading-[160%] text-[#000000] ${styles.collectAmount}`}
               >
                 {/* <PolygonLogo /> */}
-                <Image src="/../public/polygon.png" width={26} height={26} />1
-                WMATIC
+                <Image
+                  src={`${process.env.NEXT_PUBLIC_AWS_CDN_URL}/whisperHomePage/polygonIcon.png`}
+                  width={26}
+                  height={26}
+                />
+                1 WMATIC
               </div>
               <div
                 className={`flex box-border px-[12px] py-[7px] gap-[8px] rounded-[4px] items-center ${styles.totalCollector}`}
