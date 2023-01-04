@@ -212,14 +212,6 @@ const Chain = () => {
         </div>
       </div>
       <div className={`m-auto h-[calc(100vh-160px)]`}>
-        {/* <InfiniteScroll
-          dataLength={chainData?.length}
-          next={fetchNextData}
-          hasMore={hasMore}
-          loader={<SpinningLoader height="100px" width="100%" />}
-          height={"calc(100vh - 190px)"}
-          endMessage={<div></div>}
-        > */}
         <div
           id="demmoId"
           className={style.chainContainer}
@@ -323,7 +315,6 @@ const Chain = () => {
               ) : null;
             })}
         </div>
-        {/* </InfiniteScroll> */}
       </div>
     </>
   );
