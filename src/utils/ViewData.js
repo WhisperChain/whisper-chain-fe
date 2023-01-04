@@ -192,7 +192,7 @@ export const getChainWhispersData = async (chainId, paginationParams) => {
   //to-do: chain id with whisperids
   const Collectresponse = await getPublicationCollectData(chainIds);
   console.log("response", Collectresponse);
-  const hasMore = whisperIds?.length >= paginationParams.limit;
+  const hasMore = whisperIds?.length > 0 && whisperIds.length === paginationParams.limit;
   const commentArray = [];
   let pubItem = {};
   whisperIds?.map((whisperId) => {
@@ -236,7 +236,7 @@ export const getChainWhispersData = async (chainId, paginationParams) => {
     };
     commentArray.push(whisperData);
   });
-  if (whisperIds.length == 0) {
+  if (whisperIds.length == 0 || whisperIds.length < paginationParams.limit) {
     const chain = data?.chains[chainId];
     const image = data?.images[chain?.image_id];
     const user = data?.users["1"];
