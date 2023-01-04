@@ -13,7 +13,7 @@ import { getChainWhispersData } from "../utils/ViewData";
 import InfiniteScroll from "react-infinite-scroll-component";
 import ArrowLeft from "../assets/ArrowLeft";
 
-const PAGE_LIMIT = 10;
+const PAGE_LIMIT = 2;
 
 const Chain = () => {
   const [chainData, setChainData] = React.useState([]);
@@ -33,7 +33,6 @@ const Chain = () => {
     },
   };
   const [publication, setPublication] = React.useState();
-
   const routerPath = router.query;
   const [isGenerated, setIsGenerated] = React.useState();
   const [chainId, setChainId] = React.useState();
@@ -61,10 +60,6 @@ const Chain = () => {
       hasMore: _hasMore,
     } = await getChainWhispersData(chainId, paginationParams);
     setFirstCreatedAt(pubItem.createdAt);
-    console.log(
-      "--------date---",
-      moment(pubItem.createdAt).format("DD MMMM YYYY")
-    );
     setHasMore(_hasMore);
     setPublication(pubItem);
     setChainData([...chainData, ...commentArray]);
@@ -85,7 +80,7 @@ const Chain = () => {
   let dContainer = buttonRef.current;
   const onScroll = () => {
     // console.log(buttonRef.current?.scrollTop)
-    if (buttonRef.current?.scrollTop > 100) {
+    if (buttonRef.current?.scrollTop > 50) {
       increaseOpacity();
     } else {
       decreaseOpacity();
@@ -135,8 +130,9 @@ const Chain = () => {
   return isLoading ? (
     <SpinningLoader height="80vh" width="100%" />
   ) : (
-    <div className="w-fit m-auto h-[calc(100vh-160px)]">
-      <div className="flex justify-between items-center h-[50px]">
+    <>
+
+      <div className="flex justify-between items-center h-[50px] m-auto w-[512px] mt-[50px]">
         <div
           onClick={() => {
             router.push("/");
@@ -185,121 +181,124 @@ const Chain = () => {
           </span>
         </div>
       </div>
-
-      <InfiniteScroll
-        dataLength={chainData?.length}
-        next={fetchNextData}
-        hasMore={hasMore}
-        loader={<SpinningLoader height="100px" width="100%" />}
-        height={"calc(100vh - 190px)"}
-        endMessage={<div></div>}
-      >
-        <div
-          id="demmoId"
-          className={style.chainContainer}
-          ref={buttonRef}
-          onScroll={onScroll}
+      <div className={`m-auto h-[calc(100vh-160px)]`}>
+        <InfiniteScroll
+          dataLength={chainData?.length}
+          next={fetchNextData}
+          hasMore={hasMore}
+          loader={<SpinningLoader height="100px" width="100%" />}
+          height={"calc(100vh - 190px)"}
+          endMessage={<div></div>}
         >
-          <div className="flex justify-center sticky top-[5px] z-[1000]">
-            <a
-              onClick={() => {
-                console.log("clicked");
-                dContainer.scrollTo(0, 100000);
-              }}
-              id="gopToTop"
-              className={`rounded-[20px] flex z-[10000] items-center justify-center ${style.bottomButton}`}
-            >
-              <svg
-                width="21"
-                height="20"
-                viewBox="0 0 21 20"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M16.75 7.5L10.5 13.75L4.25 7.5"
-                  stroke="black"
-                  strokeOpacity="0.6"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-              <span className="ml-[10px]">Go to bottom</span>
-            </a>
-            <a
-              onClick={() => {
-                console.log("clicked");
-                dContainer.scrollTo(0, 0);
-              }}
-              id="lastImage"
-              className={`rounded-[20px] ml-[20px] flex z-[10000] items-center justify-center ${style.lastImageButton}`}
-            >
-              <svg
-                width="20"
-                height="20"
-                viewBox="0 0 20 20"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M16.25 13.75L10 7.5L3.75 13.75"
-                  stroke="black"
-                  strokeOpacity="0.6"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-              <span className="ml-[10px]">Back to top</span>
-            </a>
-          </div>
           <div
-            className={`w-[512px] h-[222px] flex flex-col items-center rounded-[32px] box-border ${style.messageBox}`}
+            id="demmoId"
+            className={style.chainContainer}
+            ref={buttonRef}
+            onScroll={onScroll}
           >
-            <div className=" w-full pt-[38px] px-[40px] pb-[24px]">
-              <h1
-                className={`not-italic text-[16px] leading-[160%] font-bold ${style.messageText}`}
+            <div className="flex justify-center sticky top-[5px] z-[1000]">
+              <a
+                onClick={() => {
+                  console.log("clicked");
+                  dContainer.scrollTo(0, 100000);
+                }}
+                id="gopToTop"
+                className={`rounded-[20px] flex z-[10000] items-center justify-center ${style.bottomButton}`}
               >
-                {isGenerated ? messageBoxData.OnGenerate.h1 : ""}
-              </h1>
-              <div
-                className={`not-italic text-[16px] leading-[160%] font-medium ${style.messageText}`}
+                <svg
+                  width="21"
+                  height="20"
+                  viewBox="0 0 21 20"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M16.75 7.5L10.5 13.75L4.25 7.5"
+                    stroke="black"
+                    strokeOpacity="0.6"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+                <span className="ml-[10px]">Go to bottom</span>
+              </a>
+              <a
+                onClick={() => {
+                  console.log("clicked");
+                  dContainer.scrollTo(0, 0);
+                }}
+                id="lastImage"
+                className={`rounded-[20px] ml-[20px] flex z-[10000] items-center justify-center ${style.lastImageButton}`}
               >
-                {isGenerated
-                  ? messageBoxData.OnGenerate.text
-                  : messageBoxData.onChain.text}
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 20 20"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M16.25 13.75L10 7.5L3.75 13.75"
+                    stroke="black"
+                    strokeOpacity="0.6"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+                <span className="ml-[10px]">Back to top</span>
+              </a>
+            </div>
+            <div
+              className={`w-[512px] h-[222px] flex flex-col items-center rounded-[32px] m-auto box-border ${style.messageBox}`}
+            >
+              <div className=" w-full pt-[38px] px-[40px] pb-[24px]">
+                <h1
+                  className={`not-italic text-[16px] leading-[160%] font-bold ${style.messageText}`}
+                >
+                  {isGenerated ? messageBoxData.OnGenerate.h1 : ""}
+                </h1>
+                <div
+                  className={`not-italic text-[16px] leading-[160%] font-medium ${style.messageText}`}
+                >
+                  {isGenerated
+                    ? messageBoxData.OnGenerate.text
+                    : messageBoxData.onChain.text}
+                </div>
+              </div>
+              <div>
+                {isGenerated ? (
+                  <ShareBtn pageIndex={1} height={40} width={432} text="Share" />
+                ) : (
+                  <AddWhisperBtn
+                    pageIndex={1}
+                    publication={publication}
+                    height={40}
+                    width={432}
+                    text="Add to Chain"
+                  />
+                )}
               </div>
             </div>
-            <div>
-              {isGenerated ? (
-                <ShareBtn pageIndex={1} height={40} width={432} text="Share" />
-              ) : (
-                <AddWhisperBtn
-                  pageIndex={1}
-                  publication={publication}
-                  height={40}
-                  width={432}
-                  text="Add to Chain"
-                />
-              )}
-            </div>
-          </div>
-          {chainData &&
-            chainData.map((comment) => {
-              return comment.imageUrl ? (
-                <div key={comment.id}>
-                  <div className="flex w-full items-center justify-center">
-                    <ChainLogo />
+            {chainData &&
+              chainData.map((comment) => {
+                return comment.imageUrl ? (
+                  <div key={comment.id}>
+                    <div className="flex w-full items-center justify-center">
+                      <ChainLogo />
+                    </div>
+                    <PostImage imageDetails={comment} chainId={chainId} />
                   </div>
-                  <PostImage imageDetails={comment} chainId={chainId} />
-                </div>
-              ) : null;
-            })}
-        </div>
-      </InfiniteScroll>
-    </div>
+                ) : null;
+              })}
+          </div>
+        </InfiniteScroll>
+      </div>
+    </>
   );
+
 };
+
 
 export default Chain;
