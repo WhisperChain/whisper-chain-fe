@@ -26,7 +26,7 @@ import { usePublicationContext } from "../context/PublicationContext";
 // install Swiper modules
 SwiperCore.use([Manipulation]);
 
-const PAGE_LIMIT = 2;
+const PAGE_LIMIT = 10;
 
 const Home = () => {
   const [publicationData, setPublicationData] = React.useState([]);
@@ -35,8 +35,8 @@ const Home = () => {
   const { setPublication } = usePublicationContext();
   const paginationParams = React.useRef({
     page: 1,
-    limit: PAGE_LIMIT
-  })
+    limit: PAGE_LIMIT,
+  });
   const isFirstLoad = React.useRef(true);
   const [hasMore, setHasMore] = React.useState(false);
 
@@ -45,12 +45,12 @@ const Home = () => {
     const data = await getChainData(paginationParams);
     const hasMoreFlag = data?.length >= PAGE_LIMIT;
     setHasMore(hasMoreFlag);
-    if(publicationData.length == 0){
+    if (publicationData.length == 0) {
       setPublication(data[0]);
     }
     setPublicationData([...publicationData, ...data]);
     setIsloading(false);
-  }
+  };
 
   React.useEffect(() => {
     fetchData(paginationParams.current);
@@ -63,12 +63,12 @@ const Home = () => {
       if (hasMore) {
         paginationParams.current = {
           page: paginationParams.current.page + 1,
-          limit: PAGE_LIMIT
-        }
+          limit: PAGE_LIMIT,
+        };
         await fetchData(paginationParams.current);
       }
     }
-  }
+  };
 
   return isLoading ? (
     <SpinningLoader height="80vh" width="100%" />
@@ -81,7 +81,11 @@ const Home = () => {
               <div
                 className={`h-[22px] text-[16px] not-italic font-medium leading-[140%] ${styles.Date}`}
               >
-                {publicationData[currentSlideIndex]?.createdAt ? moment.unix(publicationData[currentSlideIndex]?.createdAt).format("Do MMMM YYYY") : null }
+                {publicationData[currentSlideIndex]?.createdAt
+                  ? moment
+                      .unix(publicationData[currentSlideIndex]?.createdAt)
+                      .format("Do MMMM YYYY")
+                  : null}
               </div>
             </div>
             <Swiper
@@ -95,7 +99,7 @@ const Home = () => {
                 releaseOnEdges: true,
                 sensitivity: 0.5,
                 thresholdDelta: 10,
-                thresholdTime: 1000
+                thresholdTime: 1000,
               }}
               effect={"creative"}
               creativeEffect={{
@@ -134,7 +138,7 @@ const Home = () => {
           <HomeMessage publication={publicationData[currentSlideIndex]} />
         </div>
       </div>
-    </div >
+    </div>
   );
 };
 

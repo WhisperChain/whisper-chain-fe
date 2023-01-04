@@ -196,7 +196,10 @@ export const PostImage = ({ imageDetails, chainId }) => {
                 <CollectorLogo />
                 {imageDetails?.totalAmountOfCollects} Collectors
               </div>
-              <CollectButton onCollectPress={onCollectPress} text={"Collect"} />
+              <CollectButton
+                onCollectPress={onCollectPress}
+                text={"Collect now"}
+              />
             </div>
           )}
           {/* collector error modal */}
