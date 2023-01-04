@@ -13,7 +13,7 @@ import { getChainWhispersData } from "../utils/ViewData";
 import InfiniteScroll from "react-infinite-scroll-component";
 import ArrowLeft from "../assets/ArrowLeft";
 
-const PAGE_LIMIT = 2;
+const PAGE_LIMIT = 10;
 
 const Chain = () => {
   const [chainData, setChainData] = React.useState([]);
