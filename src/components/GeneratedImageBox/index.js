@@ -14,6 +14,7 @@ export default function GeneratedImageBox({ imgSrcUrl, clickHandler }) {
   const [addToChainClicked, setAddToChainClicked] = React.useState(false);
   const [open, setOpen] = React.useState(false);
   const [signInOpen, setSignInOpen] = React.useState(false);
+  const [errorOccured, setErrorOccured] = React.useState(false);
   const handleClose = () => {
     setOpen(false);
   };
@@ -53,8 +54,9 @@ export default function GeneratedImageBox({ imgSrcUrl, clickHandler }) {
         height={404}
         onLoadingCompleteHandler={() => setIsImageloaded(true)}
         classes="absolute rounded-[16px] border-solid border-[1px] border-[#ffffff33]"
+        setErrorOccured={setErrorOccured}
       />
-      {isImageLoaded && imgSrcUrl && (
+      {isImageLoaded && imgSrcUrl && !errorOccured && (
         <div
           className="absolute bottom-0 w-[calc(100%-32px)] left-[16px] flex cursor-pointer"
           onClick={handleOpen}
@@ -93,14 +95,14 @@ export default function GeneratedImageBox({ imgSrcUrl, clickHandler }) {
               <MessageLogo />
               <span className={`flex  ${styles.MessageText}`}>
                 When you add a whisper to the chain, a comment is created on our
-                lenster thread
+                lens thread
               </span>
             </div>
             <div className="flex flex-col gap-[11px]">
               <CollectLogo />
               <span className={`flex ${styles.MessageText}`}>
                 {" "}
-                People can collect your comment on Whisperchain and lenster
+                People can collect your comment on Whisperchain and lens
               </span>
             </div>
             <div className="flex flex-col gap-[11px]">
@@ -114,14 +116,17 @@ export default function GeneratedImageBox({ imgSrcUrl, clickHandler }) {
           <div
             className="flex gap-[8px] w-full justify-start items-center"
             onClick={() => {
-              setAddToChainClicked(true)
-              clickHandler()
+              setAddToChainClicked(true);
+              clickHandler();
             }}
           >
-            <div className={`${styles.addToChainButton} ${addToChainClicked
-              ? "opacity-50 cursor-not-allowed	pointer-events-none"
-              : ""
-              }`}>
+            <div
+              className={`${styles.addToChainButton} ${
+                addToChainClicked
+                  ? "opacity-50 cursor-not-allowed	pointer-events-none"
+                  : ""
+              }`}
+            >
               <div className={styles.addToChainBtnText}>+ Add to chain</div>
             </div>
           </div>
