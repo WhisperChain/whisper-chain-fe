@@ -1,5 +1,5 @@
 import Home from "../../Tabs/Home";
-import Generate from "../../Tabs/GenerateImage";
+import Generate from "../../Tabs/GenerateImage/Generate.js";
 import ChainLogo from "../../assets/tabLogos/ChainLogo";
 import GenerateLogo from "../../assets/tabLogos/GenerateLogo";
 
