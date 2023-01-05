@@ -13,7 +13,8 @@ import { getChainWhispersData } from "../utils/ViewData";
 import InfiniteScroll from "react-infinite-scroll-component";
 import ArrowLeft from "../assets/ArrowLeft";
 
-const PAGE_LIMIT = 2;
+
+const PAGE_LIMIT = 10;
 
 const Chain = () => {
   const [chainData, setChainData] = React.useState([]);
@@ -33,7 +34,6 @@ const Chain = () => {
     },
   };
   const [publication, setPublication] = React.useState();
-
   const routerPath = router.query;
   const [isGenerated, setIsGenerated] = React.useState();
   const [chainId, setChainId] = React.useState();
@@ -43,6 +43,10 @@ const Chain = () => {
     page: 1,
     limit: PAGE_LIMIT,
   });
+  const [currPage, setCurrPage] = React.useState(1); // storing current page number
+  const [prevPage, setPrevPage] = React.useState(0); // storing prev page number
+  const [userList, setUserList] = React.useState([]); // storing list
+  const [wasLastList, setWasLastList] = React.useState(false); // setting a flag to know the last list
 
   React.useEffect(() => {
     setChainId(routerPath.chainId);
@@ -61,10 +65,6 @@ const Chain = () => {
       hasMore: _hasMore,
     } = await getChainWhispersData(chainId, paginationParams);
     setFirstCreatedAt(pubItem.createdAt);
-    console.log(
-      "--------date---",
-      moment(pubItem.createdAt).format("DD MMMM YYYY")
-    );
     setHasMore(_hasMore);
     setPublication(pubItem);
     setChainData([...chainData, ...commentArray]);
@@ -90,7 +90,30 @@ const Chain = () => {
     } else {
       decreaseOpacity();
     }
+    console.log(buttonRef.current?.scrollTop)
+
+    if (buttonRef.current) {
+      const { scrollTop, scrollHeight, clientHeight } = buttonRef.current;
+      if (scrollTop + clientHeight === scrollHeight) {
+        hasMore && fetchNextData();
+      }
+    } 
   };
+
+  React.useEffect(() => {
+    const fetchDataTry = async () => {
+      fetchData(chainId, paginationParams);
+      if (!hasMore) {
+        setWasLastList(true);
+        return;
+      }
+      setPrevPage(currPage);
+      setUserList([...userList, ...hasMore]);
+    };
+    if (!wasLastList && prevPage !== currPage && hasMore) {
+      fetchDataTry();
+    }
+  }, [currPage, wasLastList, prevPage, userList]);
 
   const onViewLensHover = () => {
     let viewlensContainer = document.getElementById("viewlensContainer");
@@ -114,6 +137,7 @@ const Chain = () => {
       bottomButton.style.opacity = "1";
     }
   };
+
   const decreaseOpacity = () => {
     let lastImageButton = document.getElementById("lastImage");
     let bottomButton = document.getElementById("gopToTop");
@@ -131,12 +155,14 @@ const Chain = () => {
     await fetchData(chainId, paginationParams.current);
   };
   // console.log("created at-----", firstCreatedAt);
+  console.log("chainData",chainData);
 
   return isLoading ? (
     <SpinningLoader height="80vh" width="100%" />
   ) : (
-    <div className="w-fit m-auto h-[calc(100vh-160px)]">
-      <div className="flex justify-between items-center h-[50px]">
+    <>
+
+      <div className="flex justify-between items-center h-[50px] m-auto w-[512px] mt-[50px]">
         <div
           onClick={() => {
             router.push("/");
@@ -185,15 +211,7 @@ const Chain = () => {
           </span>
         </div>
       </div>
-
-      <InfiniteScroll
-        dataLength={chainData?.length}
-        next={fetchNextData}
-        hasMore={hasMore}
-        loader={<SpinningLoader height="100px" width="100%" />}
-        height={"calc(100vh - 190px)"}
-        endMessage={<div></div>}
-      >
+      <div className={`m-auto h-[calc(100vh-160px)]`}>
         <div
           id="demmoId"
           className={style.chainContainer}
@@ -255,7 +273,7 @@ const Chain = () => {
             </a>
           </div>
           <div
-            className={`w-[512px] h-[222px] flex flex-col items-center rounded-[32px] box-border ${style.messageBox}`}
+            className={`w-[512px] h-[222px] flex flex-col items-center rounded-[32px] m-auto box-border ${style.messageBox}`}
           >
             <div className=" w-full pt-[38px] px-[40px] pb-[24px]">
               <h1
@@ -297,9 +315,11 @@ const Chain = () => {
               ) : null;
             })}
         </div>
-      </InfiniteScroll>
-    </div>
+      </div>
+    </>
   );
+
 };
+
 
 export default Chain;

@@ -11,6 +11,7 @@ export default function WhisperImage({
   priority = false,
   classes,
   onLoadingCompleteHandler,
+  setErrorOccured,
 }) {
   const [imgLoadingError, setImgLoadingError] = React.useState(false);
 
@@ -65,7 +66,10 @@ export default function WhisperImage({
                       (max-width: 1200px) 50vw,
                       33vw"
               onLoadingComplete={onLoadingCompleteHandler}
-              onError={() => setImgLoadingError(true)}
+              onError={() => {
+                setImgLoadingError(true);
+                setErrorOccured(true);
+              }}
             />
           )}
         </>

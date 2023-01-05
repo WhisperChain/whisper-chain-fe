@@ -8,9 +8,14 @@ import {
   refreshAuthentication,
   setDispatcher,
 } from "../../utils/lensFunction";
-import { getProfileImage, loginApi, resetLocalStorage } from "../../utils/Utils";
+import {
+  getProfileImage,
+  loginApi,
+  resetLocalStorage,
+} from "../../utils/Utils";
 import toast from "react-hot-toast";
 import ToastIcon from "../../assets/ToastIcon";
+import Loader from "../Loader";
 
 function SignAuthentication({
   onSignInComplete,
@@ -150,7 +155,7 @@ function SignAuthentication({
   };
 
   useEffect(() => {
-    console.log("-----is moddal open",isModalOpen.current)
+    console.log("-----is moddal open", isModalOpen.current);
     if (
       !window.localStorage.getItem(Constants.LOCAL_STORAGE_REFRESH_TOKEN_KEY) &&
       !isModalOpen.current
@@ -158,13 +163,18 @@ function SignAuthentication({
       isModalOpen.current = true;
       signMsg();
     }
-   
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
     <>
-      <div>Signing...</div>
+      <div
+        className={`flex justify-center box-border items-center w-[200px] h-[40px] bg-[#ABFE2C] text-[#00501E] backdrop-blur rounded-[4px] gap-[8px] cursor-auto border-[1px] border-solid border-black/20`}
+      >
+        <Loader />
+        Signing in...
+      </div>
       {/* <div>
       {window.localStorage.getItem("profileId") ? (
         <Image

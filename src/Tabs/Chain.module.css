@@ -7,9 +7,9 @@
 .chainContainer {
    height: calc(100vh - 190px);
    overflow: scroll;
+   scroll-behavior: smooth;
    padding-bottom: 50px;
    position: relative;
-   scroll-behavior: smooth;
 }
 
 .chainContainer::-webkit-scrollbar {

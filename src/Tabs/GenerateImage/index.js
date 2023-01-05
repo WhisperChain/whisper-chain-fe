@@ -38,6 +38,7 @@ function Generate() {
   const [emptyState, setEmptyState] = React.useState(true);
   const [disableGeneration, setDisableGeneration] = React.useState(false);
   const { onTabChange } = useBottomTab();
+  const [generatingImage, setGeneratingInage] = React.useState(false);
 
   var regex = /[`!@#$%^&*()_+\-=\[\]{};':"\\|<>\/?~]/;
 
@@ -80,10 +81,14 @@ function Generate() {
       setSpecialCharacter(true);
     } else {
       if (urls.length < 5) {
+        setGeneratingInage(true);
         setUrls([1, ...urls]);
         setEmptyState(false);
         setIsloading(true);
         const response = await getImagesFromPrompt(promptText, selectedFilter);
+        if (response) {
+          setGeneratingInage(false);
+        }
         const suggestionIds = response.suggestions_ids;
         const suggestions = response.suggestions;
         const images = [];
@@ -254,7 +259,10 @@ function Generate() {
                 disableGeneration
                   ? "opacity-25 cursor-not-allowed pointer-events-none"
                   : ""
-              }`}
+              }
+               ${
+                 generatingImage ? "cursor-not-allowed pointer-events-none" : ""
+               }`}
           >
             <div
               className="flex items-center cursor-pointer"
@@ -264,11 +272,18 @@ function Generate() {
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-[5px]">
                     <span className={styles.generateButtonText}>
-                      Generate whisper
+                      {generatingImage
+                        ? "Images being generated"
+                        : "Generate whisper"}
                     </span>
-                    <span className={styles.tryCounts}>&#x2022;</span>
-
-                    <span className={styles.tryCounts}>{limit} tries left</span>
+                    {!generatingImage && (
+                      <>
+                        <span className={styles.tryCounts}>&#x2022;</span>
+                        <span className={styles.tryCounts}>
+                          {limit} tries left
+                        </span>
+                      </>
+                    )}
                   </div>
                   <div>
                     <MagicStickIcon />
