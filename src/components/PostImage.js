@@ -24,6 +24,7 @@ import SpinningLoader from "./SpinningLoader";
 import Loader from "./Loader";
 import { useRouter } from "next/router";
 import { getChainWhispers } from "../utils/Utils";
+import ImageLoader from "./WhisperImage/ImageLoader";
 
 export const PostImage = ({ imageDetails, chainId }) => {
   const [hovered, setHovered] = React.useState(false);
@@ -243,12 +244,12 @@ export const PostImage = ({ imageDetails, chainId }) => {
               <div
                 className={`flex items-center p-[10px] w-[208px] h-[40px] justify-center rounded-[4px] backdrop-blur-[60px] ${styles.viewOnLensBtn}`}
               >
-                <Loader />
+                <ImageLoader height={24} width={24} />
               </div>
               <div
                 className={`flex items-center p-[10px] w-[208px] h-[40px] justify-center rounded-[4px] backdrop-blur-[60px] ${styles.viewOnLensBtn}`}
               >
-                <Loader />
+                <ImageLoader height={24} width={24} />
               </div>
             </div>
           )}
@@ -284,7 +285,7 @@ export const PostImage = ({ imageDetails, chainId }) => {
                   `}
                 >
                   {collectLoaderStarted ? (
-                    <Loader />
+                    <ImageLoader height={24} width={24} />
                   ) : (
                     <>
                       <CollectIcon />
