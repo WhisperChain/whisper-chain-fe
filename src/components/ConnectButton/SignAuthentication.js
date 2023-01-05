@@ -16,6 +16,7 @@ import {
 import toast from "react-hot-toast";
 import ToastIcon from "../../assets/ToastIcon";
 import Loader from "../Loader";
+import ImageLoader from "../WhisperImage/ImageLoader";
 
 function SignAuthentication({
   onSignInComplete,
@@ -172,7 +173,7 @@ function SignAuthentication({
       <div
         className={`flex justify-center box-border items-center w-[200px] h-[40px] bg-[#ABFE2C] text-[#00501E] backdrop-blur rounded-[4px] gap-[8px] cursor-auto border-[1px] border-solid border-black/20`}
       >
-        <Loader />
+        <ImageLoader height={24} width={24}/>
         Signing in...
       </div>
       {/* <div>
