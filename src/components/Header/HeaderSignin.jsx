@@ -6,6 +6,7 @@ import { getProfileImage, resetLocalStorage,logoutApi } from "../../utils/Utils"
 import Modal from "react-modal";
 import SignOutLogo from "../../assets/SignOutLogo";
 import Router from "next/router";
+import LensPurpleIcon from "../../assets/LensPurpleIcon";
 
 const HeaderSignin = ({ handleOpen }) => {
 
@@ -71,8 +72,9 @@ const HeaderSignin = ({ handleOpen }) => {
             {(() => {
               if (!connected) {
                 return (
-                  <button onClick={handleOpen} className={` w-[92px] h-[36px] bg-[#FFFFFF] rounded-[40px] not-italic font-bold text-[#6F1AFF] ${styles.HeaderSignInbtn}`}>
-                    Sign In
+                  <button onClick={handleOpen} className={`flex gap-[8px] w-full h-[36px] py-[7px] px-[24px] bg-[#FFFFFF] rounded-[40px] not-italic font-bold text-[#6F1AFF] ${styles.HeaderSignInbtn}`}>
+                    <LensPurpleIcon/>
+                    Sign In with lens
                   </button>
                 );
               }
@@ -106,8 +108,9 @@ const HeaderSignin = ({ handleOpen }) => {
                   </Modal>
                 </div>
               ) :
-                <button onClick={handleOpen} className={` w-[92px] h-[36px] bg-[#FFFFFF] rounded-[40px] not-italic font-bold text-[#6F1AFF] ${styles.HeaderSignInbtn}`}>
-                  Sign In
+                <button onClick={handleOpen} className={`flex gap-[8px]  w-full h-[36px] py-[7px] px-[24px] bg-[#FFFFFF] rounded-[40px] not-italic font-bold text-[#6F1AFF] ${styles.HeaderSignInbtn}`}>
+                  <LensPurpleIcon/>
+                  Sign In with lens
                 </button>
             })()}
           </div>
