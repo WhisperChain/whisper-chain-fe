@@ -36,8 +36,9 @@ const SignInModal = ({ onRequestClose, isOpen, onSignInComplete }) => {
   const notify = (notifyText) =>
     toast.custom((t) => (
       <div
-        className={`${t.visible ? "animate-enter" : "animate-leave"
-          } max-w-md bg-white shadow-lg rounded-[16px] pointer-events-auto flex justify-center items-center ring-1 ring-black ring-opacity-5`}
+        className={`${
+          t.visible ? "animate-enter" : "animate-leave"
+        } max-w-md bg-white shadow-lg rounded-[16px] pointer-events-auto flex justify-center items-center ring-1 ring-black ring-opacity-5`}
       >
         <div className="flex-1 p-4">
           <div className="flex items-center">
@@ -190,7 +191,7 @@ const SignInModal = ({ onRequestClose, isOpen, onSignInComplete }) => {
               typedData={typedDataRef.current}
               id={enableDispatcherTxnId.current}
               onSuccess={async () => {
-                console.log("IN on succces")
+                console.log("IN on succces");
                 const profileRes = await getProfile(address);
                 const profile = profileRes.data.profiles.items[0];
                 window.localStorage.setItem("profile", JSON.stringify(profile));
@@ -229,6 +230,7 @@ const SignInModal = ({ onRequestClose, isOpen, onSignInComplete }) => {
               onClick={() => {
                 window.open("https://claim.lens.xyz/", "_blank");
                 setOpenClaimHandleModal(false);
+                window.location.reload(false);
               }}
             >
               <LensIcon />
