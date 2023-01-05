@@ -8,7 +8,7 @@ export default function GeneratePage({ chainId }) {
     <div className={styles.pageWrapper}>
       <Header />
       <div className={styles.componentWrapper}>
-        <Generate />
+        <Generate chainId={chainId} />
       </div>
       <BottomTabSelector />
     </div>

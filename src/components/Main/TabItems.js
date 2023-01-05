@@ -1,5 +1,4 @@
-import Home from "../../Tabs/Home";
-import Generate from "../../Tabs/GenerateImage/Generate.js";
+import { useRouter } from "next/router";
 import ChainLogo from "../../assets/tabLogos/ChainLogo";
 import GenerateLogo from "../../assets/tabLogos/GenerateLogo";
 
@@ -7,15 +6,14 @@ export const TabItems = [
   {
     id: "Chains",
     tabName: "Chains",
-    Component: Home,
+    route: "/",
     Image: ChainLogo,
   },
   {
     id: "Generate",
     tabName: "Generate",
-    Component: Generate,
+    route: "/generate/",
     Image: GenerateLogo,
   },
 ];
-
 export const DEFAULT_TAB = TabItems[0];

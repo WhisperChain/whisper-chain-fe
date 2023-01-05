@@ -4,9 +4,11 @@ import GeneratePage from "../../src/components/GeneratePage";
 
 const generate = () => {
   const router = useRouter();
+  const chainId = router?.query?.chainId;
+  console.log("chainId", chainId);
   return (
     <div>
-      <GeneratePage />
+      <GeneratePage chainId={chainId} />
     </div>
   );
 };

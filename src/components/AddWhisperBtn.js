@@ -19,9 +19,12 @@ const AddWhisperBtn = ({ pageIndex, publication, height, width, text }) => {
           router.push("/");
         }
         onTabChange(TabItems[pageIndex]);
+        router.push(`/generate/${publication?.chainId}`);
       }}
     >
-      <div className={`not-italic font-bold text-[16px] leading-[160%] text-center text-[#FFFFFF] ${styles.ButtonText}`}>
+      <div
+        className={`not-italic font-bold text-[16px] leading-[160%] text-center text-[#FFFFFF] ${styles.ButtonText}`}
+      >
         {text}
       </div>
     </div>

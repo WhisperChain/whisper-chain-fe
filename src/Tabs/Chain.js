@@ -13,7 +13,6 @@ import { getChainWhispersData } from "../utils/ViewData";
 import InfiniteScroll from "react-infinite-scroll-component";
 import ArrowLeft from "../assets/ArrowLeft";
 
-
 const PAGE_LIMIT = 10;
 
 const Chain = () => {
@@ -90,14 +89,14 @@ const Chain = () => {
     } else {
       decreaseOpacity();
     }
-    console.log(buttonRef.current?.scrollTop)
+    console.log(buttonRef.current?.scrollTop);
 
     if (buttonRef.current) {
       const { scrollTop, scrollHeight, clientHeight } = buttonRef.current;
       if (scrollTop + clientHeight === scrollHeight) {
         hasMore && fetchNextData();
       }
-    } 
+    }
   };
 
   React.useEffect(() => {
@@ -155,13 +154,12 @@ const Chain = () => {
     await fetchData(chainId, paginationParams.current);
   };
   // console.log("created at-----", firstCreatedAt);
-  console.log("chainData",chainData);
+  console.log("chainData", chainData);
 
   return isLoading ? (
     <SpinningLoader height="80vh" width="100%" />
   ) : (
     <>
-
       <div className="flex justify-between items-center h-[50px] m-auto w-[512px] mt-[50px]">
         <div
           onClick={() => {
@@ -318,8 +316,6 @@ const Chain = () => {
       </div>
     </>
   );
-
 };
-
 
 export default Chain;
