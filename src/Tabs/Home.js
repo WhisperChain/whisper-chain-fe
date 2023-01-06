@@ -26,7 +26,7 @@ import { usePublicationContext } from "../context/PublicationContext";
 // install Swiper modules
 SwiperCore.use([Manipulation]);
 
-const PAGE_LIMIT = 10;
+const PAGE_LIMIT = 2;
 
 const Home = () => {
   const [publicationData, setPublicationData] = React.useState([]);
@@ -53,8 +53,22 @@ const Home = () => {
   };
 
   React.useEffect(() => {
-    fetchData(paginationParams.current);
+   if(isFirstLoad){
+    fetchData(paginationParams.current)
+   } else{
+    fetchNextData(paginationParams.current)
+   }
   }, []);
+
+  const fetchNextData = async (paginationParams) => {
+    const data = await getChainData(paginationParams);
+    const hasMoreFlag = data?.length >= PAGE_LIMIT;
+    setHasMore(hasMoreFlag);
+    if (publicationData.length == 0) {
+      setPublication(data[0]);
+    }
+    setPublicationData([...publicationData, ...data]);
+  };
 
   const onReachEndHandler = async () => {
     if (isFirstLoad.current) {
@@ -65,7 +79,7 @@ const Home = () => {
           page: paginationParams.current.page + 1,
           limit: PAGE_LIMIT,
         };
-        await fetchData(paginationParams.current);
+        await fetchNextData(paginationParams.current);
       }
     }
   };
@@ -83,8 +97,8 @@ const Home = () => {
               >
                 {publicationData[currentSlideIndex]?.createdAt
                   ? moment
-                      .unix(publicationData[currentSlideIndex]?.createdAt)
-                      .format("Do MMMM YYYY")
+                    .unix(publicationData[currentSlideIndex]?.createdAt)
+                    .format("Do MMMM YYYY")
                   : null}
               </div>
             </div>

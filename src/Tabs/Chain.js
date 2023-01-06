@@ -44,10 +44,10 @@ const Chain = () => {
     page: 1,
     limit: PAGE_LIMIT,
   });
-  const [currPage, setCurrPage] = React.useState(1); // storing current page number
-  const [prevPage, setPrevPage] = React.useState(0); // storing prev page number
-  const [userList, setUserList] = React.useState([]); // storing list
-  const [wasLastList, setWasLastList] = React.useState(false); // setting a flag to know the last list
+  const [currPage, setCurrPage] = React.useState(1);
+  const [prevPage, setPrevPage] = React.useState(0); 
+  const [userList, setUserList] = React.useState([]); 
+  const [wasLastList, setWasLastList] = React.useState(false);
 
   React.useEffect(() => {
     setChainId(routerPath.chainId);
@@ -117,20 +117,6 @@ const Chain = () => {
     }
   }, [currPage, wasLastList, prevPage, userList]);
 
-  const onViewLensHover = () => {
-    let viewlensContainer = document.getElementById("viewlensContainer");
-    if (viewlensContainer) {
-      viewlensContainer.style.left = "-70px";
-    }
-  };
-
-  const onViewLensHoverOff = () => {
-    let viewlensContainer = document.getElementById("viewlensContainer");
-    if (viewlensContainer) {
-      viewlensContainer.style.left = "0px";
-    }
-  };
-
   const increaseOpacity = () => {
     let lastImageButton = document.getElementById("lastImage");
     let bottomButton = document.getElementById("gopToTop");
@@ -168,26 +154,24 @@ const Chain = () => {
           onClick={() => {
             router.push("/");
           }}
-          className={`flex flex-row items-center justify-center not-italic font-medium text-[16px] leading-[140%] cursor-pointer text-[#000000] opacity-60 hover:opacity-80`}
+          className={`flex items-center relative right-[20px] justify-center not-italic font-medium text-[16px] leading-[140%] cursor-pointer text-[#000000] opacity-60 hover:opacity-80`}
           onMouseEnter={() => setHoverBackBtn(true)}
           onMouseLeave={() => setHoverBackBtn(false)}
         >
           <ArrowLeft hoverBackBtn={hoverBackBtn} />
           <span className="ml-[6px]">Back</span>
         </div>
-        <div className="flex flex-col items-center sticky ml-[-32px] decoration-white">
+        <div className="relative left-[20px]">
           <div className="not-italic font-medium text-[16px] leading-[140%] tracking-[-0.03em] text-[#000000] opacity-80">
             {firstCreatedAt
               ? moment.unix(firstCreatedAt).format("Do MMMM YYYY")
               : null}
           </div>
         </div>
-        <div className="relative h-[20px]">
+        <div className="relative left-[20px]">
           <span
-            onMouseEnter={() => onViewLensHover()}
-            onMouseLeave={() => onViewLensHoverOff()}
             id="viewlensContainer"
-            className={`absolute flex ${style.viewOnLensContainer}`}
+            className={`flex`}
           >
             <a
               href={`${viewLensUrl}/${publication?.pubId}`}
@@ -195,14 +179,14 @@ const Chain = () => {
               target="_blank"
             >
               <span
-                className="relative ml-[-20px]"
+                className=""
                 onMouseEnter={() => setHovered(true)}
                 onMouseLeave={() => setHovered(false)}
               >
                 <ViewLensIcon />
               </span>
               <span
-                className={`ml-[10px] w-[95px] text-[#00501E] ${style.viewOnLens}`}
+                className={`ml-[10px] w-[95px] text-[#00501E]`}
                 onMouseEnter={() => setHovered(true)}
                 onMouseLeave={() => setHovered(false)}
               >
