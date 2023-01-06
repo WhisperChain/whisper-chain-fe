@@ -43,10 +43,10 @@ const Chain = () => {
     page: 1,
     limit: PAGE_LIMIT,
   });
-  const [currPage, setCurrPage] = React.useState(1); // storing current page number
-  const [prevPage, setPrevPage] = React.useState(0); // storing prev page number
-  const [userList, setUserList] = React.useState([]); // storing list
-  const [wasLastList, setWasLastList] = React.useState(false); // setting a flag to know the last list
+  const [currPage, setCurrPage] = React.useState(1);
+  const [prevPage, setPrevPage] = React.useState(0); 
+  const [userList, setUserList] = React.useState([]); 
+  const [wasLastList, setWasLastList] = React.useState(false);
 
   React.useEffect(() => {
     setChainId(routerPath.chainId);
