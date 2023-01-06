@@ -22,6 +22,8 @@ export default function BottomTabSelector() {
   React.useEffect(() => {
     if (router.route.includes(`/generate`)) {
       onTabChange(TabItems[1]);
+    } else {
+      onTabChange(TabItems[0]);
     }
   }, []);
 

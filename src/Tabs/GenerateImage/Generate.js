@@ -170,7 +170,7 @@ function Generate({ chainId }) {
                 Last whisper of{" "}
                 {publication?.createdAt
                   ? moment.unix(publication?.createdAt).format("MMMM Do")
-                  : null}
+                  : null}{" "}
                 chain
               </div>
               <div className={styles.subText}>

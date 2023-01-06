@@ -12,6 +12,7 @@ import ViewLensIcon from "../assets/ViewLensIcon";
 import { getChainWhispersData } from "../utils/ViewData";
 import InfiniteScroll from "react-infinite-scroll-component";
 import ArrowLeft from "../assets/ArrowLeft";
+import { usePublicationContext } from "../context/PublicationContext";
 
 const PAGE_LIMIT = 10;
 
@@ -33,6 +34,7 @@ const Chain = () => {
     },
   };
   const [publication, setPublication] = React.useState();
+  const { setPublication: setPublicationContext } = usePublicationContext();
   const routerPath = router.query;
   const [isGenerated, setIsGenerated] = React.useState();
   const [chainId, setChainId] = React.useState();
@@ -66,6 +68,7 @@ const Chain = () => {
     setFirstCreatedAt(pubItem.createdAt);
     setHasMore(_hasMore);
     setPublication(pubItem);
+    setPublicationContext(pubItem);
     setChainData([...chainData, ...commentArray]);
     // console.log({ pubItem, _hasMore, commentArray });
   };
