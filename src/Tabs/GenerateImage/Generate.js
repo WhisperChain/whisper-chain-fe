@@ -4,6 +4,7 @@ import {
   getIpfsUrlandUploadPublication,
   getImagesFromPrompt,
   postWhisperResponse,
+  getChainWhispers,
 } from "../../utils/Utils";
 import { FILTER_OPTIONS } from "./filterDropdownOptions";
 
@@ -19,7 +20,7 @@ import moment from "moment";
 import { useBottomTab } from "../../context/BottomTabContext";
 import { TabItems } from "../../components/Main/TabItems";
 
-function Generate() {
+function Generate({ chainId }) {
   const { address } = useAccount();
 
   const { publication } = usePublicationContext();
@@ -39,6 +40,10 @@ function Generate() {
   const [disableGeneration, setDisableGeneration] = React.useState(false);
   const { onTabChange } = useBottomTab();
   const [generatingImage, setGeneratingInage] = React.useState(false);
+  const paginationParams = React.useRef({
+    page: 1,
+    limit: 1,
+  });
 
   var regex = /[`!@#$%^&*()_+\-=\[\]{};':"\\|<>\/?~]/;
 
@@ -53,26 +58,50 @@ function Generate() {
       if (profileIdForGeneratedPost === loggedInUserProfileId) {
         setDisableGeneration(true);
       }
+    } else {
+      fetchdata();
     }
-  }, []);
+  }, [chainId]);
+
+  const fetchdata = async () => {
+    // console.log("generatepage chainid", chainId);
+    const whisperRes = await getChainWhispers(
+      chainId,
+      paginationParams.current
+    );
+    // console.log("-------------", whisperRes);
+    const whisperIds = whisperRes?.whisper_ids;
+    const whisper = whisperRes?.whispers[whisperIds[0]];
+    const imageUrl = whisperRes?.images[whisper?.image_id]?.url;
+    const pubId = whisperRes?.chains[whisper?.chain_id]?.platform_chain_id;
+    // console.log(whisper);
+    setPreviousImageUrl(imageUrl);
+    setPubsId(pubId);
+    const profileIdForGeneratedPost =
+      whisperRes?.users[whisper?.user_id]?.platform_user_id;
+    const loggedInUserProfileId = localStorage.getItem("profileId");
+    if (profileIdForGeneratedPost === loggedInUserProfileId) {
+      setDisableGeneration(true);
+    }
+  };
 
   const onImageClickHandler = async (url) => {
     setIsloading(true);
     const { txHash, whisperIpfsObjectId, imageIpfsObjectId } =
       await getIpfsUrlandUploadPublication(url, pubsId, address);
-    console.log({ txHash });
+    // console.log({ txHash });
     await postWhisperResponse(
       url,
       txHash,
       whisperIpfsObjectId,
       imageIpfsObjectId,
-      publication?.chainId
+      chainId || publication?.chainId
     );
     setIsloading(false);
     onTabChange(TabItems[0]);
     router.push(
-      `/chain/${publication?.chainId}?isGenerated=true`,
-      `/chain/${publication?.chainId}`
+      `/chain/${chainId || publication?.chainId}?isGenerated=true`,
+      `/chain/${chainId || publication?.chainId}`
     );
   };
 
@@ -141,7 +170,7 @@ function Generate() {
                 Last whisper of{" "}
                 {publication?.createdAt
                   ? moment.unix(publication?.createdAt).format("MMMM Do")
-                  : null}
+                  : null}{" "}
                 chain
               </div>
               <div className={styles.subText}>

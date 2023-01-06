@@ -12,7 +12,7 @@ import ViewLensIcon from "../assets/ViewLensIcon";
 import { getChainWhispersData } from "../utils/ViewData";
 import InfiniteScroll from "react-infinite-scroll-component";
 import ArrowLeft from "../assets/ArrowLeft";
-
+import { usePublicationContext } from "../context/PublicationContext";
 
 const PAGE_LIMIT = 10;
 
@@ -34,6 +34,7 @@ const Chain = () => {
     },
   };
   const [publication, setPublication] = React.useState();
+  const { setPublication: setPublicationContext } = usePublicationContext();
   const routerPath = router.query;
   const [isGenerated, setIsGenerated] = React.useState();
   const [chainId, setChainId] = React.useState();
@@ -43,10 +44,10 @@ const Chain = () => {
     page: 1,
     limit: PAGE_LIMIT,
   });
-  const [currPage, setCurrPage] = React.useState(1); // storing current page number
-  const [prevPage, setPrevPage] = React.useState(0); // storing prev page number
-  const [userList, setUserList] = React.useState([]); // storing list
-  const [wasLastList, setWasLastList] = React.useState(false); // setting a flag to know the last list
+  const [currPage, setCurrPage] = React.useState(1);
+  const [prevPage, setPrevPage] = React.useState(0); 
+  const [userList, setUserList] = React.useState([]); 
+  const [wasLastList, setWasLastList] = React.useState(false);
 
   React.useEffect(() => {
     setChainId(routerPath.chainId);
@@ -67,8 +68,9 @@ const Chain = () => {
     setFirstCreatedAt(pubItem.createdAt);
     setHasMore(_hasMore);
     setPublication(pubItem);
+    setPublicationContext(pubItem);
     setChainData([...chainData, ...commentArray]);
-    console.log({ pubItem, _hasMore, commentArray });
+    // console.log({ pubItem, _hasMore, commentArray });
   };
 
   React.useEffect(() => {
@@ -90,14 +92,14 @@ const Chain = () => {
     } else {
       decreaseOpacity();
     }
-    console.log(buttonRef.current?.scrollTop)
+    // console.log(buttonRef.current?.scrollTop);
 
     if (buttonRef.current) {
       const { scrollTop, scrollHeight, clientHeight } = buttonRef.current;
       if (scrollTop + clientHeight === scrollHeight) {
         hasMore && fetchNextData();
       }
-    } 
+    }
   };
 
   React.useEffect(() => {
@@ -114,20 +116,6 @@ const Chain = () => {
       fetchDataTry();
     }
   }, [currPage, wasLastList, prevPage, userList]);
-
-  const onViewLensHover = () => {
-    let viewlensContainer = document.getElementById("viewlensContainer");
-    if (viewlensContainer) {
-      viewlensContainer.style.left = "-70px";
-    }
-  };
-
-  const onViewLensHoverOff = () => {
-    let viewlensContainer = document.getElementById("viewlensContainer");
-    if (viewlensContainer) {
-      viewlensContainer.style.left = "0px";
-    }
-  };
 
   const increaseOpacity = () => {
     let lastImageButton = document.getElementById("lastImage");
@@ -155,38 +143,35 @@ const Chain = () => {
     await fetchData(chainId, paginationParams.current);
   };
   // console.log("created at-----", firstCreatedAt);
-  console.log("chainData",chainData);
+  // console.log("chainData", chainData);
 
   return isLoading ? (
     <SpinningLoader height="80vh" width="100%" />
   ) : (
     <>
-
       <div className="flex justify-between items-center h-[50px] m-auto w-[512px] mt-[50px]">
         <div
           onClick={() => {
             router.push("/");
           }}
-          className={`flex flex-row items-center justify-center not-italic font-medium text-[16px] leading-[140%] cursor-pointer text-[#000000] opacity-60 hover:opacity-80`}
+          className={`flex items-center relative right-[20px] justify-center not-italic font-medium text-[16px] leading-[140%] cursor-pointer text-[#000000] opacity-60 hover:opacity-80`}
           onMouseEnter={() => setHoverBackBtn(true)}
           onMouseLeave={() => setHoverBackBtn(false)}
         >
           <ArrowLeft hoverBackBtn={hoverBackBtn} />
           <span className="ml-[6px]">Back</span>
         </div>
-        <div className="flex flex-col items-center sticky ml-[-32px] decoration-white">
+        <div className="relative left-[20px]">
           <div className="not-italic font-medium text-[16px] leading-[140%] tracking-[-0.03em] text-[#000000] opacity-80">
             {firstCreatedAt
               ? moment.unix(firstCreatedAt).format("Do MMMM YYYY")
               : null}
           </div>
         </div>
-        <div className="relative h-[20px]">
+        <div className="relative left-[20px]">
           <span
-            onMouseEnter={() => onViewLensHover()}
-            onMouseLeave={() => onViewLensHoverOff()}
             id="viewlensContainer"
-            className={`absolute flex ${style.viewOnLensContainer}`}
+            className={`flex`}
           >
             <a
               href={`${viewLensUrl}/${publication?.pubId}`}
@@ -194,14 +179,14 @@ const Chain = () => {
               target="_blank"
             >
               <span
-                className="relative ml-[-20px]"
+                className=""
                 onMouseEnter={() => setHovered(true)}
                 onMouseLeave={() => setHovered(false)}
               >
                 <ViewLensIcon />
               </span>
               <span
-                className={`ml-[10px] w-[95px] text-[#00501E] ${style.viewOnLens}`}
+                className={`ml-[10px] w-[95px] text-[#00501E]`}
                 onMouseEnter={() => setHovered(true)}
                 onMouseLeave={() => setHovered(false)}
               >
@@ -221,7 +206,7 @@ const Chain = () => {
           <div className="flex justify-center sticky top-[5px] z-[1000]">
             <a
               onClick={() => {
-                console.log("clicked");
+                // console.log("clicked");
                 dContainer.scrollTo(0, 100000);
               }}
               id="gopToTop"
@@ -247,7 +232,7 @@ const Chain = () => {
             </a>
             <a
               onClick={() => {
-                console.log("clicked");
+                // console.log("clicked");
                 dContainer.scrollTo(0, 0);
               }}
               id="lastImage"
@@ -318,8 +303,6 @@ const Chain = () => {
       </div>
     </>
   );
-
 };
-
 
 export default Chain;

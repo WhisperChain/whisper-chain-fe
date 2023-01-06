@@ -56,7 +56,7 @@ function SignAuthentication({
   });
 
   const callLoginApi = async () => {
-    console.log("signParam", signParam);
+    // console.log("signParam", signParam);
     await loginApi(signParam);
   };
 
@@ -110,7 +110,7 @@ function SignAuthentication({
         }
       }
     } catch (error) {
-      console.log({ error });
+      // console.log({ error });
       onSignInComplete?.();
     }
   };
@@ -124,10 +124,10 @@ function SignAuthentication({
         });
         signParam.signed_challenge_message = signature;
         setSignParam(signParam);
-        console.log(
-          "signParam.signed_challenge_message",
-          signParam.signed_challenge_message
-        );
+        // console.log(
+        //   "signParam.signed_challenge_message",
+        //   signParam.signed_challenge_message
+        // );
         authenticate(signature);
         isModalOpen.current = false;
       } catch (error) {
@@ -156,7 +156,7 @@ function SignAuthentication({
   };
 
   useEffect(() => {
-    console.log("-----is moddal open", isModalOpen.current);
+    // console.log("-----is moddal open", isModalOpen.current);
     if (
       !window.localStorage.getItem(Constants.LOCAL_STORAGE_REFRESH_TOKEN_KEY) &&
       !isModalOpen.current
@@ -173,7 +173,7 @@ function SignAuthentication({
       <div
         className={`flex justify-center box-border items-center w-[200px] h-[40px] bg-[#ABFE2C] text-[#00501E] backdrop-blur rounded-[4px] gap-[8px] cursor-auto border-[1px] border-solid border-black/20`}
       >
-        <ImageLoader height={24} width={24}/>
+        <ImageLoader height={24} width={24} />
         Signing in...
       </div>
       {/* <div>

@@ -75,7 +75,13 @@ export const createIpfsObjects = async (url) => {
   return responseData.data;
 };
 
-export const postWhisperResponse = async (url, txHash, whisperIpfsObjectId, imageIpfsObjectId, chainId) => {
+export const postWhisperResponse = async (
+  url,
+  txHash,
+  whisperIpfsObjectId,
+  imageIpfsObjectId,
+  chainId
+) => {
   await axios.post(
     `/lens/whispers`,
     {
@@ -92,8 +98,10 @@ export const postWhisperResponse = async (url, txHash, whisperIpfsObjectId, imag
 };
 
 export function convertIntoIpfsUrl(url) {
+  // console.log("image url", url);
   if (url.toString().startsWith("ipfs://")) {
     const cid = url.split("ipfs://")[1];
+    // console.log("cid", cid);
     return `https://${cid}.ipfs.w3s.link`;
   } else if (!url.toString().startsWith("https://")) {
     return `https://${url}`;
@@ -177,8 +185,8 @@ export async function getIpfsUrlandUploadPublication(url, pubId, address) {
       if (ipfsObject.entity_kind === "WHISPER") {
         ipfsUrl = `ipfs://${ipfsObject.cid}`;
         whisperIpfsObjectId = id;
-      }else if(ipfsObject.entity_kind === "IMAGE"){
-         imageIpfsObjectId = id;
+      } else if (ipfsObject.entity_kind === "IMAGE") {
+        imageIpfsObjectId = id;
       }
     });
   }

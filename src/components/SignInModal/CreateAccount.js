@@ -58,7 +58,7 @@ const CreateAccount = ({ onRequestClose, isOpen }) => {
         (async function () {
           const profileRes = await getProfile(address);
           const profile = profileRes.data.profiles.items[0];
-          console.log("profile-----" + profile);
+          // console.log("profile-----" + profile);
           dispatcher.current = profile.dispatcher;
           window.localStorage.setItem("profileId", profile.id);
           window.localStorage.setItem("profile", JSON.stringify(profile));

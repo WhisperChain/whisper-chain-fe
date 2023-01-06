@@ -212,7 +212,7 @@ export const collectPost = async (publicationId) => {
       },
     },
   });
-  console.log(res);
+  // console.log(res);
   return res;
 };
 

@@ -71,16 +71,3 @@
    backdrop-filter: blur(12px);
    border-radius: 24px;
 }
-
-.viewOnLensContainer {
-   transition: left 0.5s;
-   /* left: 0; */
-}
-
-.viewOnLensContainer:hover .viewOnLens {
-   display: block !important;
-}
-
-.viewOnLensContainer .viewOnLens {
-   display: none;
-}

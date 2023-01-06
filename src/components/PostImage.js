@@ -71,15 +71,15 @@ export const PostImage = ({ imageDetails, chainId }) => {
   let timeout = null;
   let isPollingStarted = false;
   const hasWhisperProcessed = async () => {
-    console.log("chain id", chainId);
+    // console.log("chain id", chainId);
     const whisperRes = await getChainWhispers(
       chainId,
       paginationParams.current
     );
-    console.log("-------------", whisperRes);
+    // console.log("-------------", whisperRes);
     const whisperIds = whisperRes?.whisper_ids;
     const whisper = whisperRes?.whispers[whisperIds[0]];
-    console.log(whisper);
+    // console.log(whisper);
     return whisper;
   };
 
@@ -92,7 +92,7 @@ export const PostImage = ({ imageDetails, chainId }) => {
       isPollingStarted = true;
       timeout = setInterval(async () => {
         const whisper = await hasWhisperProcessed();
-        console.log({ whisperStatus: whisper?.status });
+        // console.log({ whisperStatus: whisper?.status });
         if (whisper?.status === "ACTIVE") {
           clearInterval(timeout);
           imageDetails.status = whisper?.status;

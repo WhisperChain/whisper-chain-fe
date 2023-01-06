@@ -76,8 +76,8 @@ export const getChainData = async (paginationParams) => {
       const whisper = data?.whispers[whisperId];
       const image = data?.images[whisper?.image_id];
       const user = data?.users[whisper?.user_id];
-      console.log("user", user);
-      console.log("data?.images", data?.images);
+      // console.log("user", user);
+      // console.log("data?.images", data?.images);
       const profileImage = data?.images[user?.platform_profile_image_id];
       const whisperData = {
         imageUrl: image.url,
@@ -85,7 +85,7 @@ export const getChainData = async (paginationParams) => {
         name: user?.platform_display_name,
         createdAt: moment(whisper?.uts).format("h:mm a"),
         profileImageUrl: profileImage
-          ? profileImage?.url
+          ? convertIntoIpfsUrl(profileImage?.url)
           : "https://cdn.stamp.fyi/avatar/eth:1234?s=250",
         lensterProfileUrl: `https://testnet.lenster.xyz/u/${user?.platform_username}`,
         lensterPostUrl: `https://testnet.lenster.xyz/posts/${whisper.platform_chain_id}`,
@@ -191,8 +191,9 @@ export const getChainWhispersData = async (chainId, paginationParams) => {
 
   //to-do: chain id with whisperids
   const Collectresponse = await getPublicationCollectData(chainIds);
-  console.log("response", Collectresponse);
-  const hasMore = whisperIds?.length > 0 && whisperIds.length === paginationParams.limit;
+  // console.log("response", Collectresponse);
+  const hasMore =
+    whisperIds?.length > 0 && whisperIds.length === paginationParams.limit;
   const commentArray = [];
   let pubItem = {};
   whisperIds?.map((whisperId) => {
@@ -221,7 +222,7 @@ export const getChainWhispersData = async (chainId, paginationParams) => {
       createdAt: moment(whisper?.uts).format("h:mm a"),
       id: whisperId,
       profileImageUrl: profileImage
-        ? profileImage?.url
+        ? convertIntoIpfsUrl(profileImage?.url)
         : "https://cdn.stamp.fyi/avatar/eth:1234?s=250",
       lensterProfileUrl: `https://testnet.lenster.xyz/u/${user?.platform_username}`,
       lensterPostUrl: `https://testnet.lenster.xyz/posts/${whisper.platform_chain_id}`,
@@ -236,27 +237,27 @@ export const getChainWhispersData = async (chainId, paginationParams) => {
     };
     commentArray.push(whisperData);
   });
-  if (whisperIds.length == 0 || whisperIds.length < paginationParams.limit) {
+  if (whisperIds?.length == 0 || whisperIds?.length < paginationParams.limit) {
     const chain = data?.chains[chainId];
     const image = data?.images[chain?.image_id];
     const user = data?.users["1"];
     const profileImage = data?.images[user?.platform_profile_image_id];
-      const postData = {
-        pubId: chain?.platform_chain_id,
-        chainId: chain?.id,
-        createdAt: chain?.start_ts,
-        imageUrl: image?.url,
-        profileHandle: user?.platform_username,
-        name: user?.platform_display_name,
-        profileImageUrl: profileImage
-          ? convertIntoIpfsUrl(profileImage?.url)
-          : "https://cdn.stamp.fyi/avatar/eth:1234?s=250",
-          status: chain.status,
-          lensterPostUrl: `https://testnet.lenster.xyz/posts/${chain.platform_chain_id}`,
-          publicationId: chain.platform_chain_id,
-      };
-      commentArray.push(postData);
-      pubItem = postData;
+    const postData = {
+      pubId: chain?.platform_chain_id,
+      chainId: chain?.id,
+      createdAt: chain?.start_ts,
+      imageUrl: image?.url,
+      profileHandle: user?.platform_username,
+      name: user?.platform_display_name,
+      profileImageUrl: profileImage
+        ? convertIntoIpfsUrl(profileImage?.url)
+        : "https://cdn.stamp.fyi/avatar/eth:1234?s=250",
+      status: chain.status,
+      lensterPostUrl: `https://testnet.lenster.xyz/posts/${chain.platform_chain_id}`,
+      publicationId: chain.platform_chain_id,
+    };
+    commentArray.push(postData);
+    pubItem = postData;
   }
   pubItem.comments = commentArray;
   pubItem.hasMore = hasMore;
