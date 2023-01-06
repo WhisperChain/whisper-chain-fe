@@ -95,7 +95,6 @@ const Chain = () => {
     // console.log(buttonRef.current?.scrollTop);
 
     if (buttonRef.current) {
-      const { scrollTop, scrollHeight, clientHeight } = buttonRef.current;
       if (scrollTop + clientHeight === scrollHeight) {
         hasMore && fetchNextData();
       }
