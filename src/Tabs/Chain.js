@@ -67,7 +67,7 @@ const Chain = () => {
     setHasMore(_hasMore);
     setPublication(pubItem);
     setChainData([...chainData, ...commentArray]);
-    console.log({ pubItem, _hasMore, commentArray });
+    // console.log({ pubItem, _hasMore, commentArray });
   };
 
   React.useEffect(() => {
@@ -89,7 +89,7 @@ const Chain = () => {
     } else {
       decreaseOpacity();
     }
-    console.log(buttonRef.current?.scrollTop);
+    // console.log(buttonRef.current?.scrollTop);
 
     if (buttonRef.current) {
       const { scrollTop, scrollHeight, clientHeight } = buttonRef.current;
@@ -154,7 +154,7 @@ const Chain = () => {
     await fetchData(chainId, paginationParams.current);
   };
   // console.log("created at-----", firstCreatedAt);
-  console.log("chainData", chainData);
+  // console.log("chainData", chainData);
 
   return isLoading ? (
     <SpinningLoader height="80vh" width="100%" />
@@ -219,7 +219,7 @@ const Chain = () => {
           <div className="flex justify-center sticky top-[5px] z-[1000]">
             <a
               onClick={() => {
-                console.log("clicked");
+                // console.log("clicked");
                 dContainer.scrollTo(0, 100000);
               }}
               id="gopToTop"
@@ -245,7 +245,7 @@ const Chain = () => {
             </a>
             <a
               onClick={() => {
-                console.log("clicked");
+                // console.log("clicked");
                 dContainer.scrollTo(0, 0);
               }}
               id="lastImage"

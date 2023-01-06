@@ -64,17 +64,17 @@ function Generate({ chainId }) {
   }, [chainId]);
 
   const fetchdata = async () => {
-    console.log("generatepage chainid", chainId);
+    // console.log("generatepage chainid", chainId);
     const whisperRes = await getChainWhispers(
       chainId,
       paginationParams.current
     );
-    console.log("-------------", whisperRes);
+    // console.log("-------------", whisperRes);
     const whisperIds = whisperRes?.whisper_ids;
     const whisper = whisperRes?.whispers[whisperIds[0]];
     const imageUrl = whisperRes?.images[whisper?.image_id]?.url;
     const pubId = whisperRes?.chains[whisper?.chain_id]?.platform_chain_id;
-    console.log(whisper);
+    // console.log(whisper);
     setPreviousImageUrl(imageUrl);
     setPubsId(pubId);
     const profileIdForGeneratedPost =
@@ -89,7 +89,7 @@ function Generate({ chainId }) {
     setIsloading(true);
     const { txHash, whisperIpfsObjectId, imageIpfsObjectId } =
       await getIpfsUrlandUploadPublication(url, pubsId, address);
-    console.log({ txHash });
+    // console.log({ txHash });
     await postWhisperResponse(
       url,
       txHash,

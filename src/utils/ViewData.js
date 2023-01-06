@@ -76,8 +76,8 @@ export const getChainData = async (paginationParams) => {
       const whisper = data?.whispers[whisperId];
       const image = data?.images[whisper?.image_id];
       const user = data?.users[whisper?.user_id];
-      console.log("user", user);
-      console.log("data?.images", data?.images);
+      // console.log("user", user);
+      // console.log("data?.images", data?.images);
       const profileImage = data?.images[user?.platform_profile_image_id];
       const whisperData = {
         imageUrl: image.url,
@@ -191,7 +191,7 @@ export const getChainWhispersData = async (chainId, paginationParams) => {
 
   //to-do: chain id with whisperids
   const Collectresponse = await getPublicationCollectData(chainIds);
-  console.log("response", Collectresponse);
+  // console.log("response", Collectresponse);
   const hasMore =
     whisperIds?.length > 0 && whisperIds.length === paginationParams.limit;
   const commentArray = [];

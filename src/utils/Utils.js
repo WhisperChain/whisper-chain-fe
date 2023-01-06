@@ -98,10 +98,10 @@ export const postWhisperResponse = async (
 };
 
 export function convertIntoIpfsUrl(url) {
-  console.log("image url", url);
+  // console.log("image url", url);
   if (url.toString().startsWith("ipfs://")) {
     const cid = url.split("ipfs://")[1];
-    console.log("cid", cid);
+    // console.log("cid", cid);
     return `https://${cid}.ipfs.w3s.link`;
   } else if (!url.toString().startsWith("https://")) {
     return `https://${url}`;

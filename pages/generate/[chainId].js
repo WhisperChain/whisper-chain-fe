@@ -5,7 +5,7 @@ import GeneratePage from "../../src/components/GeneratePage";
 const generate = () => {
   const router = useRouter();
   const chainId = router?.query?.chainId;
-  console.log("chainId", chainId);
+  // console.log("chainId", chainId);
   return (
     <div>
       <GeneratePage chainId={chainId} />

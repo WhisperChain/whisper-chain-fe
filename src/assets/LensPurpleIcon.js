@@ -22,8 +22,8 @@ const LensPurpleIcon = () => {
           gradientUnits="userSpaceOnUse"
           gradientTransform="translate(9.98789 15.7165) rotate(-90) scale(19.8086 20.1429)"
         >
-          <stop stop-color="#6F1AFF" />
-          <stop offset="1" stop-color="#C6A4FF" />
+          <stop stopColor="#6F1AFF" />
+          <stop offset="1" stopColor="#C6A4FF" />
         </radialGradient>
       </defs>
     </svg>
