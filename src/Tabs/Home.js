@@ -87,11 +87,11 @@ const Home = () => {
   return isLoading ? (
     <SpinningLoader height="80vh" width="100%" />
   ) : (
-    <div className="w-full">
+    <div className="w-full md:h-[calc(100vh - 190px)]">
       <div className="flex h-[780px] relative w-fit gap-[40px] m-auto tablet:h-[650px] tablet:gap-0">
         <div className="flex w-full	flex-col items-center justify-center">
           <div className="w-[512px] h-fit mt-[calc(100vh-512px)] tablet:mt-[calc(100vh-404px)]">
-            <div className="relative top-[10%] left-[0%]">
+            <div className="absolute top-[10%] left-[0%]">
               <div
                 className={`h-[22px] text-[16px] not-italic font-medium leading-[140%] ${styles.Date}`}
               >
