@@ -93,7 +93,7 @@ const Chain = () => {
       decreaseOpacity();
     }
     // console.log(buttonRef.current?.scrollTop);
-
+    const { scrollTop, scrollHeight, clientHeight } = buttonRef.current;
     if (buttonRef.current) {
       if (scrollTop + clientHeight === scrollHeight) {
         hasMore && fetchNextData();
