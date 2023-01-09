@@ -239,15 +239,15 @@ export const PostImage = ({ imageDetails, chainId }) => {
           )}
           {imageDetails.status === "PROCESSING" && (
             <div
-              className={`flex justify-center items-center absolute top-[85%] left-[50%] text-center gap-[8px] w-[432px] -translate-x-[50%]`}
+              className={`flex flex-col justify-center items-center absolute top-[85%] left-[50%] text-center gap-[8px] w-[432px] -translate-x-[50%]`}
             >
               <div
-                className={`flex items-center p-[10px] w-[208px] h-[40px] justify-center rounded-[4px] backdrop-blur-[60px] ${styles.viewOnLensBtn}`}
+                className={`flex items-center p-[10px] w-full h-[40px] justify-center rounded-[4px] backdrop-blur-[60px] ${styles.viewOnLensBtn}`}
               >
                 <ImageLoader height={24} width={24} />
               </div>
               <div
-                className={`flex items-center p-[10px] w-[208px] h-[40px] justify-center rounded-[4px] backdrop-blur-[60px] ${styles.viewOnLensBtn}`}
+                className={`flex items-center p-[10px] w-full h-[40px] justify-center rounded-[4px] backdrop-blur-[60px] ${styles.viewOnLensBtn}`}
               >
                 <ImageLoader height={24} width={24} />
               </div>
