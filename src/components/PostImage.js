@@ -254,19 +254,20 @@ export const PostImage = ({ imageDetails, chainId }) => {
             </div>
           )}
           {imageDetails.status === "ACTIVE" && (
-            <div
-              className={`flex flex-col justify-center items-center absolute top-[80%] left-[50%] text-center gap-[8px] w-[432px] -translate-x-[50%]`}
+            <div>
+              <div
+              className={`flex flex-col justify-center items-center absolute top-[82%] left-[50%] text-center gap-[8px] w-full -translate-x-[50%] rounded-br-[48px] rounded-bl-[48px] ${styles.bottomBackdrop}`}
             >
               {imageDetails?.hasCollectedByMe ? (
                 <button
-                  className={`flex items-center p-[10px] w-full h-[40px] justify-center rounded-[4px] backdrop-blur-[60px] cursor-auto ${styles.collectedBtn}`}
+                  className={`flex items-center p-[10px] w-[432px] h-[40px] justify-center rounded-[4px] backdrop-blur-[60px] cursor-auto ${styles.collectedBtn}`}
                 >
                   Collected
                 </button>
               ) : (
                 <button
                   onClick={() => setOnClickCollect(true)}
-                  className={`flex items-center p-[10px] w-full h-[40px] justify-center rounded-[4px] backdrop-blur-[60px] cursor-pointer ${
+                  className={`flex items-center p-[10px] w-[432px] h-[40px] justify-center rounded-[4px] backdrop-blur-[60px] cursor-pointer ${
                     styles.viewOnLensBtn
                   }
                   ${
@@ -297,6 +298,7 @@ export const PostImage = ({ imageDetails, chainId }) => {
                   View on lens
                 </span>
               </button>
+            </div>
             </div>
           )}
         </div>

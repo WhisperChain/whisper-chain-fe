@@ -8,6 +8,12 @@
     background: linear-gradient(180deg, rgba(0, 0, 0, 0.56) 0%, rgba(0, 0, 0, 0) 100%);
 }
 
+.bottomBackdrop {
+    background: linear-gradient(360deg, rgba(0, 0, 0, 0.56) 0%, rgba(0, 0, 0, 0) 100%);
+    backdrop-filter: blur(2px);
+
+}
+
 .name {
     letter-spacing: -0.01em;
     font-family: 'Satoshi Variable';
@@ -34,6 +40,7 @@
     font-family: 'Satoshi Variable';
     font-feature-settings: 'tnum' on, 'onum' on, 'ordn' on, 'salt' on, 'ss01' on, 'ss02' on, 'ss03' on, 'ss04' on, 'ss05' on;
 }
+
 .createdAt {
     letter-spacing: -0.01em;
     font-family: 'Satoshi Variable';
@@ -50,14 +57,14 @@
     background: rgba(255, 255, 255, 0.2);
 }
 
-.collectedBtn{
+.collectedBtn {
     background: rgba(255, 255, 255, 0.56);
     opacity: 0.5;
     border: 1px solid rgba(255, 255, 255, 0.2);
     color: #000000;
 }
 
-.collectModal{
+.collectModal {
     font-family: 'Satoshi Variable';
     font-style: normal;
     font-feature-settings: 'salt' on;
@@ -66,16 +73,16 @@
     background: rgba(255, 255, 255, 0.6);
 }
 
-.collectInfo{
+.collectInfo {
     color: rgba(0, 0, 0, 0.6);
 }
 
-.collectAmount{
+.collectAmount {
     background: rgba(255, 255, 255, 0.6);
     border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-.totalCollector{
+.totalCollector {
     font-weight: 500;
     font-size: 16px;
     line-height: 160%;
@@ -95,4 +102,8 @@
 .ButtonText {
     font-family: 'Satoshi Variable';
     font-feature-settings: 'salt' on;
+}
+
+.hoverBtn {
+    backdrop-filter: blur(2px);
 }
