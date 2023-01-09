@@ -93,9 +93,8 @@ const Chain = () => {
       decreaseOpacity();
     }
     // console.log(buttonRef.current?.scrollTop);
-
+    const { scrollTop, scrollHeight, clientHeight } = buttonRef.current;
     if (buttonRef.current) {
-      const { scrollTop, scrollHeight, clientHeight } = buttonRef.current;
       if (scrollTop + clientHeight === scrollHeight) {
         hasMore && fetchNextData();
       }
@@ -196,7 +195,7 @@ const Chain = () => {
           </span>
         </div>
       </div>
-      <div className={`m-auto h-[calc(100vh-160px)]`}>
+      <div className={`m-auto h-[calc(100vh-190px)]`}>
         <div
           id="demmoId"
           className={style.chainContainer}

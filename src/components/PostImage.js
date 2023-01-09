@@ -2,7 +2,6 @@ import React from "react";
 import ProfileLogo from "../assets/ProfileLogo";
 import Image from "next/image";
 import styles from "./ImageStack.module.css";
-import EyeIcon from "../assets/EyeIcon";
 import CollectIcon from "../assets/CollectIcon";
 import {
   collectPost,
@@ -25,6 +24,7 @@ import Loader from "./Loader";
 import { useRouter } from "next/router";
 import { getChainWhispers } from "../utils/Utils";
 import ImageLoader from "./WhisperImage/ImageLoader";
+import WhiteEyeIcon from "../assets/whiteEyeIcon";
 
 export const PostImage = ({ imageDetails, chainId }) => {
   const [hovered, setHovered] = React.useState(false);
@@ -239,61 +239,66 @@ export const PostImage = ({ imageDetails, chainId }) => {
           )}
           {imageDetails.status === "PROCESSING" && (
             <div
-              className={`flex justify-center items-center absolute top-[85%] left-[50%] text-center gap-[8px] w-[432px] -translate-x-[50%]`}
+              className={`flex flex-col justify-center items-center absolute top-[85%] left-[50%] text-center gap-[8px] w-[432px] -translate-x-[50%]`}
             >
               <div
-                className={`flex items-center p-[10px] w-[208px] h-[40px] justify-center rounded-[4px] backdrop-blur-[60px] ${styles.viewOnLensBtn}`}
+                className={`flex items-center p-[10px] w-full h-[40px] justify-center rounded-[4px] backdrop-blur-[60px] ${styles.viewOnLensBtn}`}
               >
                 <ImageLoader height={24} width={24} />
               </div>
               <div
-                className={`flex items-center p-[10px] w-[208px] h-[40px] justify-center rounded-[4px] backdrop-blur-[60px] ${styles.viewOnLensBtn}`}
+                className={`flex items-center p-[10px] w-full h-[40px] justify-center rounded-[4px] backdrop-blur-[60px] ${styles.viewOnLensBtn}`}
               >
                 <ImageLoader height={24} width={24} />
               </div>
             </div>
           )}
           {imageDetails.status === "ACTIVE" && (
-            <div
-              className={`flex justify-center items-center absolute top-[85%] left-[50%] text-center gap-[8px] w-[432px] -translate-x-[50%]`}
-            >
-              <button
-                onClick={() => {
-                  window.open(imageDetails.lensterPostUrl, "_blank");
-                }}
-                className={`flex items-center p-[10px] w-[208px] h-[40px] justify-center rounded-[4px] backdrop-blur-[60px] ${styles.viewOnLensBtn}`}
+            <div>
+              <div
+                className={`flex flex-col justify-center items-center absolute top-[82%] left-[50%] text-center gap-[8px] w-full -translate-x-[50%] rounded-br-[48px] rounded-bl-[48px] ${styles.bottomBackdrop}`}
               >
-                <EyeIcon /> <span className="ml-[10px]">View on lens</span>
-              </button>
-              {imageDetails?.hasCollectedByMe ? (
-                <button
-                  className={`flex items-center p-[10px] w-[208px] h-[40px] justify-center rounded-[4px] backdrop-blur-[60px] cursor-auto ${styles.collectedBtn}`}
-                >
-                  Collected
-                </button>
-              ) : (
-                <button
-                  onClick={() => setOnClickCollect(true)}
-                  className={`flex items-center p-[10px] w-[208px] h-[40px] justify-center rounded-[4px] backdrop-blur-[60px] cursor-pointer ${
-                    styles.viewOnLensBtn
-                  }
+                {imageDetails?.hasCollectedByMe ? (
+                  <button
+                    className={`flex items-center p-[10px] w-[432px] h-[40px] justify-center rounded-[4px] backdrop-blur-[60px] cursor-auto ${styles.collectedBtn}`}
+                  >
+                    Collected
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => setOnClickCollect(true)}
+                    className={`flex items-center p-[10px] w-[432px] h-[40px] justify-center rounded-[4px] backdrop-blur-[60px] cursor-pointer ${
+                      styles.viewOnLensBtn
+                    }
                   ${
                     collectLoaderStarted
                       ? "cursor-auto pointer-events-none"
                       : null
                   }
                   `}
+                  >
+                    {collectLoaderStarted ? (
+                      <ImageLoader height={24} width={24} />
+                    ) : (
+                      <>
+                        <CollectIcon />
+                        <span className="ml-[10px]">Collect this post</span>
+                      </>
+                    )}
+                  </button>
+                )}
+                <button
+                  onClick={() => {
+                    window.open(imageDetails.lensterPostUrl, "_blank");
+                  }}
+                  className={`flex items-center p-[10px] justify-center `}
                 >
-                  {collectLoaderStarted ? (
-                    <ImageLoader height={24} width={24} />
-                  ) : (
-                    <>
-                      <CollectIcon />
-                      <span className="ml-[10px]">Collect this post</span>
-                    </>
-                  )}
+                  <WhiteEyeIcon />{" "}
+                  <span className="ml-[10px] text-white opacity-[0.6]">
+                    View on lens
+                  </span>
                 </button>
-              )}
+              </div>
             </div>
           )}
         </div>

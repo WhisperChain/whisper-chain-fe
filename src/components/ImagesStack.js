@@ -3,8 +3,8 @@ import ProfileLogo from "../assets/ProfileLogo";
 import { usePublicationContext } from "../context/PublicationContext";
 import Image from "next/image";
 import styles from "./ImageStack.module.css";
-import EyeIcon from "../assets/EyeIcon";
 import { useRouter } from "next/router";
+import BlackEyeIcon from "../assets/BlackEyeIcon";
 // import FollowButton from "./FollowButton";
 
 const ImagesStack = ({ imageDetails: imageDetailsArray, pub }) => {
@@ -75,7 +75,7 @@ const ImagesStack = ({ imageDetails: imageDetailsArray, pub }) => {
             <div
               className={`flex justify-center items-center absolute text-center text-[#000000] not-italic font-medium text-[16px] leading-[100%] gap-[8px] ${styles.bottomBoxText}`}
             >
-              <EyeIcon />
+              <BlackEyeIcon />
               <div>View Chain </div>
             </div>
           </div>
