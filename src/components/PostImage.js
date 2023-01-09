@@ -255,26 +255,18 @@ export const PostImage = ({ imageDetails, chainId }) => {
           )}
           {imageDetails.status === "ACTIVE" && (
             <div
-              className={`flex justify-center items-center absolute top-[85%] left-[50%] text-center gap-[8px] w-[432px] -translate-x-[50%]`}
+              className={`flex flex-col justify-center items-center absolute top-[80%] left-[50%] text-center gap-[8px] w-[432px] -translate-x-[50%]`}
             >
-              <button
-                onClick={() => {
-                  window.open(imageDetails.lensterPostUrl, "_blank");
-                }}
-                className={`flex items-center p-[10px] w-[208px] h-[40px] justify-center rounded-[4px] backdrop-blur-[60px] ${styles.viewOnLensBtn}`}
-              >
-                <EyeIcon /> <span className="ml-[10px]">View on lens</span>
-              </button>
               {imageDetails?.hasCollectedByMe ? (
                 <button
-                  className={`flex items-center p-[10px] w-[208px] h-[40px] justify-center rounded-[4px] backdrop-blur-[60px] cursor-auto ${styles.collectedBtn}`}
+                  className={`flex items-center p-[10px] w-full h-[40px] justify-center rounded-[4px] backdrop-blur-[60px] cursor-auto ${styles.collectedBtn}`}
                 >
                   Collected
                 </button>
               ) : (
                 <button
                   onClick={() => setOnClickCollect(true)}
-                  className={`flex items-center p-[10px] w-[208px] h-[40px] justify-center rounded-[4px] backdrop-blur-[60px] cursor-pointer ${
+                  className={`flex items-center p-[10px] w-full h-[40px] justify-center rounded-[4px] backdrop-blur-[60px] cursor-pointer ${
                     styles.viewOnLensBtn
                   }
                   ${
@@ -294,6 +286,17 @@ export const PostImage = ({ imageDetails, chainId }) => {
                   )}
                 </button>
               )}
+              <button
+                onClick={() => {
+                  window.open(imageDetails.lensterPostUrl, "_blank");
+                }}
+                className={`flex items-center p-[10px] justify-center `}
+              >
+                <EyeIcon />{" "}
+                <span className="ml-[10px] text-white opacity-[0.6]">
+                  View on lens
+                </span>
+              </button>
             </div>
           )}
         </div>

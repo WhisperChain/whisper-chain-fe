@@ -7,21 +7,62 @@ import MessageLogo from "../../assets/addWhisperLogos/MessageLogo";
 import CollectLogo from "../../assets/addWhisperLogos/CollectLogo";
 import WalletLogo from "../../assets/addWhisperLogos/WalletLogo";
 import SignInModal from "../SignInModal";
+import { getChainWhispers } from "../../utils/Utils";
 
-export default function GeneratedImageBox({ imgSrcUrl, clickHandler }) {
+export default function GeneratedImageBox({
+  imgSrcUrl,
+  clickHandler,
+  setDisableGeneration,
+  chainId,
+}) {
   const [isHover, setIsHover] = React.useState(false);
   const [isImageLoaded, setIsImageloaded] = React.useState(false);
   const [addToChainClicked, setAddToChainClicked] = React.useState(false);
   const [open, setOpen] = React.useState(false);
   const [signInOpen, setSignInOpen] = React.useState(false);
   const [errorOccured, setErrorOccured] = React.useState(false);
+  const paginationParams = React.useRef({
+    page: 1,
+    limit: 1,
+  });
+  const [disableAddToChainbtn, setDisableAddToChainbtn] = React.useState();
+
   const handleClose = () => {
     setOpen(false);
   };
-  const handleOpen = () => {
+
+  // React.useEffect(() => {
+  //   if (publication?.pubId) {
+  //     const profileIdForGeneratedPost = publication?.comments?.[0]?.profileId;
+  //     const loggedInUserProfileId = localStorage.getItem("profileId");
+  //     if (profileIdForGeneratedPost === loggedInUserProfileId) {
+  //       setDisableGeneration(true);
+  //       setOpen(false);
+  //     }
+  //   }
+  // }, []);
+
+  const handleOpen = async () => {
     if (window.localStorage.getItem("profileId")) {
       setSignInOpen(false);
-      setOpen(true);
+      const whisperRes = await getChainWhispers(
+        chainId,
+        paginationParams.current
+      );
+      const whisperIds = whisperRes?.whisper_ids;
+      const whisper = whisperRes?.whispers[whisperIds[0]];
+      const profileIdForGeneratedPost =
+        whisperRes?.users[whisper?.user_id]?.platform_user_id;
+      const loggedInUserProfileId = localStorage.getItem("profileId");
+      if (profileIdForGeneratedPost === loggedInUserProfileId) {
+        setDisableGeneration(true);
+        setOpen(false);
+        setDisableAddToChainbtn(true);
+      } else {
+        setDisableAddToChainbtn(false);
+        setDisableGeneration(false);
+        setOpen(true);
+      }
     } else {
       setSignInOpen(true);
     }
@@ -58,7 +99,9 @@ export default function GeneratedImageBox({ imgSrcUrl, clickHandler }) {
       />
       {isImageLoaded && imgSrcUrl && !errorOccured && (
         <div
-          className="absolute bottom-0 w-[calc(100%-32px)] left-[16px] flex cursor-pointer"
+          className={`absolute bottom-0 w-[calc(100%-32px)] left-[16px] flex  ${
+            disableAddToChainbtn ? "cursor-default " : "cursor-pointer"
+          } `}
           onClick={handleOpen}
         >
           <motion.div
@@ -77,7 +120,7 @@ export default function GeneratedImageBox({ imgSrcUrl, clickHandler }) {
             }}
           >
             {isHover && (
-              <div className={styles.addToChainButton}>
+              <div className={`${styles.addToChainButton}`}>
                 <div className={styles.addToChainBtnText}>+ Add to chain</div>
               </div>
             )}
