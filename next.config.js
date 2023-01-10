@@ -27,9 +27,13 @@ module.exports = {
         hostname: 'whisperchain-staging-assests.s3.amazonaws.com',
         pathname: '/stability/**'
       },
+      // {
+      //   protocol: 'https',
+      //   hostname: 'whisperchain-static.quick-poc.com',
+      // },
       {
         protocol: 'https',
-        hostname: 'whisperchain-static.quick-poc.com',
+        hostname: 'static.staging.whisperchain.xyz',
       }
     ],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048],
