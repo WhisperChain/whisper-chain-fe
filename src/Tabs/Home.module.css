@@ -5,6 +5,12 @@
     font-feature-settings: 'pnum' on, 'onum' on, 'zero' on, 'salt' on, 'ss01' on, 'ss02' on, 'ss03' on, 'ss05' on, 'ss04' on;
 }
 
+  @media (max-width: 1200px) {
+    .homeWrapper{
+        height: calc(100vh - 190px);
+    }    
+  }
+
 /* .status{
     letter-spacing: -0.03em;
     color: rgba(0, 0, 0, 0.8);
