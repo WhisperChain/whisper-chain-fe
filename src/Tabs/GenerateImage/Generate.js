@@ -180,9 +180,8 @@ function Generate({ chainId }) {
             </div>
             <div className="relative">
               <div
-                className={`w-[256px] h-[256px] relative flex justify-center items-center ${
-                  disableGeneration ? "opacity-25" : ""
-                }`}
+                className={`w-[256px] h-[256px] relative flex justify-center items-center ${disableGeneration ? "opacity-25" : ""
+                  }`}
               >
                 <WhisperImage
                   imgSrcUrl={previousImageUrl}
@@ -206,14 +205,13 @@ function Generate({ chainId }) {
               )}
             </div>
           </div>
-          {/* Generate Image form (prompt and filter option) */}
-          <div
-            className={`flex justify-center w-full  ${
-              disableGeneration ? "opacity-25" : ""
-            }`}
-          >
-            <div className="flex flex-col items-start p-0 gap-[8px] w-auto">
-              <div className={styles.mainText}>Enter prompt</div>
+
+          <div>
+            <div
+              className={`${disableGeneration ? "opacity-25" : ""
+                }`}
+            >
+              <div className={`mb-[8px] ${styles.mainText}`}>Enter prompt</div>
               <textarea
                 onMouseEnter={() => setTextAreaEntered(true)}
                 onMouseLeave={() => setTextAreaEntered(false)}
@@ -221,15 +219,13 @@ function Generate({ chainId }) {
                   placeholder-[#1d0545b8]
                   focus:outline-none focus:border-[#6f1aff3d] focus:ring-1 
                   ${promtEmpty ? "focus:ring-[red]" : "focus:ring-[#6f1aff3d]"}
-                  ${
-                    disableGeneration
-                      ? "cursor-not-allowed	pointer-events-none"
-                      : ""
+                  ${disableGeneration
+                    ? "cursor-not-allowed	pointer-events-none"
+                    : ""
                   }
-                  ${
-                    textAreaEntered
-                      ? "placeholder:text-[#1d0545b8]"
-                      : "placeholder:text-[#1d05458f]"
+                  ${textAreaEntered
+                    ? "placeholder:text-[#1d0545b8]"
+                    : "placeholder:text-[#1d05458f]"
                   }
                 `}
                 placeholder="Enter your prompt here to generate your very own whisper"
@@ -250,21 +246,17 @@ function Generate({ chainId }) {
                 </span>
               )}
             </div>
-          </div>
-          {/* Select filter option */}
-          <div className={`w-full  ${disableGeneration ? "opacity-25" : ""}`}>
-            <div className="box-border">
+            <div className={`w-full mt-[8px]  ${disableGeneration ? "opacity-25" : ""}`}>
               <div className={styles.mainText}>Filter</div>
               <div className={`${styles.subText} mb-[8px]`}>
                 Select a style to create more refined whispers
               </div>
-              <div className="flex justify-center items-center">
+              <div>
                 <select
-                  className={`${styles.selectBoxInput} ${
-                    disableGeneration
+                  className={`${styles.selectBoxInput} ${disableGeneration
                       ? "cursor-not-allowed	pointer-events-none"
                       : ""
-                  }`}
+                    }`}
                   value={selectedFilter}
                   onChange={(e) => {
                     setSelectedFilter(e.target.value);
@@ -276,7 +268,7 @@ function Generate({ chainId }) {
                     </option>
                   ))}
                 </select>
-                <div className="relative right-[25px] pointer-events-none">
+                <div className="relative flex justify-end bottom-[25px] right-[10px] pointer-events-none">
                   <ChevronIcon />
                 </div>
               </div>
@@ -284,19 +276,16 @@ function Generate({ chainId }) {
           </div>
           {/* Generate Image Button */}
           <div
-            className={`w-full bottom-[16px] ${
-              promptText === "" || promtEmpty || limit == 0
-                ? "opacity-50 cursor-not-allowed	pointer-events-none"
+            className={`w-full bottom-[16px] ${promptText === "" || promtEmpty || limit == 0
+              ? "opacity-50 cursor-not-allowed	pointer-events-none"
+              : ""
+              } ${btnPosition}
+              ${disableGeneration
+                ? "opacity-25 cursor-not-allowed pointer-events-none"
                 : ""
-            } ${btnPosition}
-              ${
-                disableGeneration
-                  ? "opacity-25 cursor-not-allowed pointer-events-none"
-                  : ""
               }
-               ${
-                 generatingImage ? "cursor-not-allowed pointer-events-none" : ""
-               }`}
+               ${generatingImage ? "cursor-not-allowed pointer-events-none" : ""
+              }`}
           >
             <div
               className="flex items-center cursor-pointer"
