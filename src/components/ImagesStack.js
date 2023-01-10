@@ -42,7 +42,7 @@ const ImagesStack = ({ imageDetails: imageDetailsArray, pub }) => {
           <div
             className={`flex relative p-[40px] rounded-tr-[48px] rounded-tl-[48px]  backdrop-blur-[2px] ${styles.backdrop} `}
           >
-            <div className={`flex w-[360px] cursor-pointer`}>
+            <div className={`flex w-[360px]`}>
               <ProfileLogo profileImageUrl={imageDetails?.profileImageUrl} />
               <div className="ml-[5px] flex flex-col justify-center items-start gap-[4px]">
                 <div

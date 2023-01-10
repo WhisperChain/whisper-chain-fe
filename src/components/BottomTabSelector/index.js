@@ -59,7 +59,7 @@ export default function BottomTabSelector() {
               }}
               id={tab.id}
               className={`${styles.tabContainer} ${
-                isSelected ? styles.selectedTab : {}
+                isSelected ? styles.selectedTab : styles.notSelectedTab
               }`}
             >
               {tab.Image()}
