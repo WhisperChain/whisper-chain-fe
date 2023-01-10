@@ -207,7 +207,11 @@ function Generate({ chainId }) {
             </div>
           </div>
           {/* Generate Image form (prompt and filter option) */}
-          <div className={`w-full  ${disableGeneration ? "opacity-25" : ""}`}>
+          <div
+            className={`flex justify-center w-full  ${
+              disableGeneration ? "opacity-25" : ""
+            }`}
+          >
             <div className="flex flex-col items-start p-0 gap-[8px] w-auto">
               <div className={styles.mainText}>Enter prompt</div>
               <textarea

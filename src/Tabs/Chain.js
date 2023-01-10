@@ -45,8 +45,8 @@ const Chain = () => {
     limit: PAGE_LIMIT,
   });
   const [currPage, setCurrPage] = React.useState(1);
-  const [prevPage, setPrevPage] = React.useState(0); 
-  const [userList, setUserList] = React.useState([]); 
+  const [prevPage, setPrevPage] = React.useState(0);
+  const [userList, setUserList] = React.useState([]);
   const [wasLastList, setWasLastList] = React.useState(false);
 
   React.useEffect(() => {
@@ -92,11 +92,18 @@ const Chain = () => {
     } else {
       decreaseOpacity();
     }
-    // console.log(buttonRef.current?.scrollTop);
     const { scrollTop, scrollHeight, clientHeight } = buttonRef.current;
+    // console.log("scrollTop", scrollTop);
+    // console.log("clientHeight", clientHeight);
+    // console.log("scrollTop + clientHeight", scrollTop + clientHeight);
+    // console.log("scrollHeight", scrollHeight);
+    // const halfscrollHeight = scrollHeight / 2;
+    // console.log("halfscrollHeight", halfscrollHeight);
+
     if (buttonRef.current) {
       if (scrollTop + clientHeight === scrollHeight) {
         hasMore && fetchNextData();
+        return;
       }
     }
   };
@@ -168,10 +175,7 @@ const Chain = () => {
           </div>
         </div>
         <div className="relative left-[20px]">
-          <span
-            id="viewlensContainer"
-            className={`flex`}
-          >
+          <span id="viewlensContainer" className={`flex`}>
             <a
               href={`${viewLensUrl}/${publication?.pubId}`}
               className="flex"

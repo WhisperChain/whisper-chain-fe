@@ -26,7 +26,6 @@ import { getChainWhispers } from "../utils/Utils";
 import ImageLoader from "./WhisperImage/ImageLoader";
 import WhiteEyeIcon from "../assets/WhiteEyeIcon";
 
-
 export const PostImage = ({ imageDetails, chainId }) => {
   const [hovered, setHovered] = React.useState(false);
   const { data: signer } = useSigner();
@@ -133,7 +132,7 @@ export const PostImage = ({ imageDetails, chainId }) => {
           <div
             className={`flex relative p-[40px] rounded-tr-[48px] rounded-tl-[48px]  backdrop-blur-[2px] ${styles.backdrop} `}
           >
-            <div className={`flex w-[360px] cursor-pointer`}>
+            <div className={`flex w-[360px]`}>
               <ProfileLogo profileImageUrl={imageDetails?.profileImageUrl} />
               <div className="ml-[5px] flex flex-col justify-center items-start gap-[4px]">
                 <div
@@ -294,7 +293,7 @@ export const PostImage = ({ imageDetails, chainId }) => {
                   }}
                   className={`flex items-center p-[10px] justify-center `}
                 >
-                  <WhiteEyeIcon /> {" "}
+                  <WhiteEyeIcon />{" "}
                   <span className="ml-[10px] text-white opacity-[0.6]">
                     View on lens
                   </span>
