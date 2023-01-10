@@ -267,7 +267,7 @@ export const PostImage = ({ imageDetails, chainId }) => {
                 ) : (
                   <button
                     onClick={() => setOnClickCollect(true)}
-                    className={`flex items-center p-[10px] w-[432px] h-[40px] justify-center rounded-[4px] backdrop-blur-[60px] cursor-pointer ${
+                    className={`flex items-center relative bottom-[10px] p-[10px] w-[432px] h-[40px] justify-center rounded-[4px] backdrop-blur-[60px] cursor-pointer ${
                       styles.viewOnLensBtn
                     }
                   ${
@@ -291,7 +291,7 @@ export const PostImage = ({ imageDetails, chainId }) => {
                   onClick={() => {
                     window.open(imageDetails.lensterPostUrl, "_blank");
                   }}
-                  className={`flex items-center p-[10px] justify-center `}
+                  className={`flex items-center relative bottom-[10px] p-[10px] justify-center `}
                 >
                   <WhiteEyeIcon />{" "}
                   <span className="ml-[10px] text-white opacity-[0.6]">
