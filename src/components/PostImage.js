@@ -24,7 +24,8 @@ import Loader from "./Loader";
 import { useRouter } from "next/router";
 import { getChainWhispers } from "../utils/Utils";
 import ImageLoader from "./WhisperImage/ImageLoader";
-import WhiteEyeIcon from "../assets/whiteEyeIcon";
+import WhiteEyeIcon from "../assets/WhiteEyeIcon";
+
 
 export const PostImage = ({ imageDetails, chainId }) => {
   const [hovered, setHovered] = React.useState(false);
@@ -293,7 +294,7 @@ export const PostImage = ({ imageDetails, chainId }) => {
                   }}
                   className={`flex items-center p-[10px] justify-center `}
                 >
-                  <WhiteEyeIcon />{" "}
+                  <WhiteEyeIcon /> {" "}
                   <span className="ml-[10px] text-white opacity-[0.6]">
                     View on lens
                   </span>
